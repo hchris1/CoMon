@@ -1,0 +1,14 @@
+<apx-chart
+  [series]="chartOptions.series"
+  [chart]="chartOptions.chart"
+  [xaxis]="chartOptions.xaxis"
+  [theme]="chartOptions.theme"
+  [title]="chartOptions.title"
+  [subtitle]="chartOptions.subTitle"
+  *ngIf="chartOptions"
+  #chartObj
+></apx-chart>
+
+<div *ngIf="!chartOptions" class="card-body" style="text-align: center">
+  <app-loading-animation></app-loading-animation>
+</div>

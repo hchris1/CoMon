@@ -1,0 +1,93 @@
+<div class="modal-header">
+  <h4>{{ 'Edit.CreateDashboardTileTitle' | localize }}</h4>
+</div>
+
+<div class="modal-body" *ngIf="options">
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="type">{{ 'Edit.DashboardTileType' | localize }}</label>
+      <select
+        class="form-control"
+        id="type"
+        formControlName="type"
+        class="form-control"
+      >
+        <option *ngFor="let type of types" [value]="type.value">
+          {{ type.name | localize }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === groupTileType">
+      <label for="type">{{ 'Edit.TileTypeGroup' | localize }}</label>
+      <select
+        class="form-control"
+        id="groupId"
+        formControlName="groupId"
+        class="form-control"
+        [class.is-invalid]="
+          form.get('groupId').invalid &&
+          (form.get('groupId').dirty || form.get('groupId').touched)
+        "
+      >
+        <option *ngFor="let group of options.groups" [value]="group.id">
+          <app-path [group]="group"></app-path>
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === assetTileType">
+      <label for="type">{{ 'Edit.TileTypeAsset' | localize }}</label>
+      <select
+        class="form-control"
+        id="assetId"
+        formControlName="assetId"
+        class="form-control"
+        [class.is-invalid]="
+          form.get('assetId').invalid &&
+          (form.get('assetId').dirty || form.get('assetId').touched)
+        "
+      >
+        <option *ngFor="let asset of options.assets" [value]="asset.id">
+          <app-path [group]="asset.group" [asset]="asset"></app-path>
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === packageTileType">
+      <label for="type">{{ 'Edit.TileTypePackage' | localize }}</label>
+      <select
+        class="form-control"
+        id="packageId"
+        formControlName="packageId"
+        class="form-control"
+        [class.is-invalid]="
+          form.get('packageId').invalid &&
+          (form.get('packageId').dirty || form.get('packageId').touched)
+        "
+      >
+        <option *ngFor="let package of options.packages" [value]="package.id">
+          <app-path
+            [group]="package.group"
+            [asset]="package.asset"
+            [package]="package"
+          ></app-path>
+        </option>
+      </select>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button
+    type="submit"
+    class="btn btn-primary"
+    (click)="onSubmit()"
+    [disabled]="form.invalid"
+  >
+    {{ 'Create' | localize }}
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">
+    {{ 'Cancel' | localize }}
+  </button>
+</div>

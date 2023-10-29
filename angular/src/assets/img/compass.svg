@@ -1,0 +1,19 @@
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 200px; height: 200px;"><style>
+     .compass3 {animation: compass3 4s infinite; transform-origin: 75px 75px;}
+     @keyframes compass3{
+         0% {transform:rotate(0deg);}
+         20%{transform:rotate(40deg);}
+         30%{transform:rotate(40deg);}
+         60%{transform:rotate(-40deg);}
+         70%{transform:rotate(-40deg);}
+         90%{transform:rotate(0deg);}
+         100%{transform:rotate(0deg);}
+     }
+
+     @media (prefers-reduced-motion: reduce) {
+         .compass3 {
+             animation: none;
+         }
+     }
+     
+    </style><path class="fillCls1" d="M74.9989 140.106C110.956 140.106 140.105 110.957 140.105 75C140.105 39.0428 110.956 9.89368 74.9989 9.89368C39.0417 9.89368 9.89258 39.0428 9.89258 75C9.89258 110.957 39.0417 140.106 74.9989 140.106Z" fill="rgba(103,153,154,1)" stroke-width="2px" style="animation-duration: 15s;"></path><g class="compass3" style="animation-duration: 15s;"><path class="fillCls2" d="M75.0072 24.748L64.4512 75H75.0072H85.5001L75.0072 24.748Z" fill="#092A3C" stroke-width="2px"></path><path class="fillCls3" d="M75.0072 125.252L85.5001 74.9998H75.0072H64.4512L75.0072 125.252Z" fill="rgba(43,43,43,1)" stroke-width="2px"></path><path class="fillCls4" d="M74.9838 79.993C77.7417 79.993 79.9774 77.7573 79.9774 74.9994C79.9774 72.2416 77.7417 70.0059 74.9838 70.0059C72.2259 70.0059 69.9902 72.2416 69.9902 74.9994C69.9902 77.7573 72.2259 79.993 74.9838 79.993Z" fill="rgba(255,255,255,1)" stroke-width="2px"></path></g></svg>

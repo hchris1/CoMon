@@ -1,0 +1,11 @@
+<app-carousel
+  [images]="images"
+  [editMode]="editMode"
+  (imageAdded)="addImage($event)"
+  (imageDeleted)="deleteImage($event)"
+  *ngIf="!isLoading"
+></app-carousel>
+
+<div class="card-body" style="text-align: center">
+  <app-loading-animation *ngIf="isLoading"></app-loading-animation>
+</div>

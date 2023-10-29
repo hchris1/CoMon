@@ -1,0 +1,104 @@
+<div [@routerTransition]>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row" style="justify-content: space-between">
+        <div class="col-auto">
+          <h1>📊 {{ 'Dashboard.Overview' | localize }}</h1>
+        </div>
+        <div class="row">
+          <button
+            class="col-auto text-right btn btn-circle btn-link"
+            (click)="onCreateDashboardModal()"
+            *ngIf="editMode"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
+          <button
+            type="button"
+            class="col-auto btn btn-circle btn-link text-right"
+            (click)="activateEditMode()"
+            *ngIf="!editMode"
+          >
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+          <button
+            type="button"
+            class="col-auto btn btn-circle btn-link text-right"
+            (click)="deactivateEditMode()"
+            *ngIf="editMode"
+          >
+            <i class="fa-solid fa-check"></i>
+          </button>
+        </div>
+      </div>
+      <div class="row pl-2" style="justify-content: space-between">
+        <p>
+          {{ 'Dashboard.OverviewDescription' | localize }}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content" *ngIf="dashboards && !isLoading">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div
+            class="card card-outline"
+            style="cursor: pointer"
+            (click)="routeToStatisticsDashboard()"
+          >
+            <div class="card-header">
+              <h3 class="card-title">
+                {{ 'Dashboard.StatisticsTitle' | localize }}
+              </h3>
+            </div>
+            <div class="card-body">
+              {{ 'Dashboard.StatisticsDescription' | localize }}
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-auto"
+          style="min-width: 12rem"
+          *ngFor="let dashboard of dashboards"
+          (click)="routeToDashboard(dashboard)"
+        >
+          <div class="card card-outline">
+            <div class="card-header">
+              <div class="row">
+                <h3 class="col card-title">{{ dashboard.name }}</h3>
+                <button
+                  class="col-1 btn btn-circle btn-link text"
+                  style="padding: 0 !important"
+                  (click)="deleteDashboardClicked(dashboard)"
+                  *ngIf="editMode"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row" style="justify-content: space-between">
+                <p class="col-auto">📁 Groups</p>
+                <p class="col-auto">{{ dashboard.groupCount }}</p>
+              </div>
+              <div class="row" style="justify-content: space-between">
+                <p class="col-auto">📇 Assets</p>
+                <p class="col-auto">{{ dashboard.assetCount }}</p>
+              </div>
+              <div class="row" style="justify-content: space-between">
+                <p class="col-auto">📦 Packages</p>
+                <p class="col-auto">{{ dashboard.packageCount }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div *ngIf="isLoading" style="text-align: center; padding-top: 25vh">
+  <app-loading-animation></app-loading-animation>
+</div>

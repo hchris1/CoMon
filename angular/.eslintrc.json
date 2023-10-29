@@ -1,0 +1,8 @@
+{
+  "extends": "./node_modules/gts/",
+  "ignorePatterns": ["src/shared/service-proxies/*.ts"],
+  "rules": {
+    "node/no-unpublished-require": "off",
+    "node/no-unpublished-import": "off"
+  }
+}

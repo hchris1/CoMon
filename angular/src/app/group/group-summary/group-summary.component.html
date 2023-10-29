@@ -1,0 +1,32 @@
+<div
+  class="card {{ getCardOutlineClass() }}"
+  style="cursor: pointer"
+  (click)="onGroupClick(group)"
+  *ngIf="group"
+>
+  <div class="card-header">
+    <div class="row">
+      <app-criticality-indicator
+        [criticality]="group.worstStatus?.criticality"
+      ></app-criticality-indicator>
+      <p class="col card-title">{{ group.name }}</p>
+      <button
+        class="col-1 btn btn-circle btn-link text"
+        style="padding: 0 !important"
+        (click)="deleteGroupClicked()"
+        *ngIf="editMode"
+      >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
+    <div class="row" *ngIf="showPath">
+      <app-path [group]="group" class="pl-2 pt-2"></app-path>
+    </div>
+  </div>
+</div>
+
+<div class="card" *ngIf="!group">
+  <div class="card-body" style="text-align: center">
+    <app-loading-animation></app-loading-animation>
+  </div>
+</div>

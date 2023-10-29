@@ -1,0 +1,57 @@
+<div [@routerTransition]>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <button
+          class="col-auto btn btn-link btn-sm"
+          (click)="routeToDashboards()"
+        >
+          <i class="fas fa-arrow-left pt-2"></i>
+        </button>
+        <div class="col-auto">
+          <h1>📊 {{ 'Dashboard.StatisticsTitle' | localize }}</h1>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-auto">
+          {{ 'Dashboard.StatisticsDescription' | localize }}
+        </p>
+      </div>
+      <div class="row" style="justify-content: space-between">
+        <div class="col-auto">
+          <select
+            class="form-control"
+            [(ngModel)]="selectedTime"
+            (change)="onTimeChange()"
+          >
+            <option *ngFor="let option of timespanOptions" [ngValue]="option">
+              {{ option.name | localize }}
+            </option>
+          </select>
+        </div>
+        <p class="col-auto text-muted small" style="margin-top: 0.5rem">
+          {{ 'Dashboard.StatisticsNextRefresh' | localize }}
+          {{ nextRefresh.fromNow() }}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <app-statistics-dashboard-tile
+          *ngFor="let statistic of statistics; index as i"
+          [statistic]="statistic"
+          [index]="i"
+          [hours]="selectedTime.hours"
+          class="col-12 col-xl-4"
+        ></app-statistics-dashboard-tile>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div *ngIf="isLoading" style="text-align: center; padding-top: 25vh">
+  <app-loading-animation></app-loading-animation>
+</div>

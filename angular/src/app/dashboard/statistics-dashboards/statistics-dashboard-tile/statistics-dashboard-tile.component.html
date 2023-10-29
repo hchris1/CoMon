@@ -1,0 +1,45 @@
+<div class="card" (click)="openPackageStatisticsModal(statistic.package)">
+  <div class="card-header">
+    <div class="row" style="justify-content: space-between">
+      <h4 class="card-title ml-1">
+        {{ index + 1 }}. {{ statistic.package.name }}
+      </h4>
+      <div class="row">
+        <span
+          class="col-auto badge badge-danger mt-1 mr-1"
+          style="font-size: 0.85rem"
+        >
+          {{ statistic.alertPercent | percent }}
+        </span>
+        <span
+          class="col-auto badge badge-warning mt-1 mr-1"
+          style="font-size: 0.85rem"
+        >
+          {{ statistic.warningPercent | percent }}
+        </span>
+        <span
+          class="col-auto badge badge-success mt-1 mr-3"
+          style="font-size: 0.85rem"
+        >
+          {{ statistic.healthyPercent | percent }}
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <app-path
+        [group]="statistic.package.asset.group"
+        [asset]="statistic.package.asset"
+        [package]="statistic.package"
+        class="pt-2"
+      ></app-path>
+    </div>
+
+    <div class="row">
+      <app-statistics-dashboard-timeline
+        [timeline]="statistic.timeline"
+        class="col-12 mb-1"
+      ></app-statistics-dashboard-timeline>
+    </div>
+  </div>
+  <div class="card-content"></div>
+</div>

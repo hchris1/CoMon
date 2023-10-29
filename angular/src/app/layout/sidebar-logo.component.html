@@ -1,0 +1,24 @@
+<a class="brand-link" [routerLink]="['overview']">
+  <img
+    src="assets/img/beating-heart.svg"
+    alt="CoMon Logo"
+    class="brand-image"
+    *ngIf="_coMonHubService.connectionEstablished | async"
+  />
+  <img
+    src="assets/img/flat-heart.svg"
+    alt="CoMon Logo"
+    class="brand-image"
+    *ngIf="!(_coMonHubService.connectionEstablished | async)"
+  />
+  <span
+    class="brand-text"
+    *ngIf="_coMonHubService.connectionEstablished | async"
+    >CoMon</span
+  >
+  <span
+    class="brand-text"
+    *ngIf="!(_coMonHubService.connectionEstablished | async)"
+    >Disconnected</span
+  >
+</a>

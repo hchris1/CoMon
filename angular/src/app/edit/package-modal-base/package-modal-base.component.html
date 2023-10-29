@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <ng-content select=".modal-title"></ng-content>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="form">
+    <!-- Common form fields -->
+    <ng-content select=".additional-fields"></ng-content>
+
+    <ng-container *ngIf="currentType === pingPackageType">
+      <!-- Ping package fields -->
+    </ng-container>
+
+    <ng-container *ngIf="currentType === httpPackageType">
+      <!-- HTTP package fields -->
+    </ng-container>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="form.invalid"
+    (click)="onSubmit()"
+  >
+    <ng-content select=".submit-button-label"></ng-content>
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">
+    {{ 'Cancel' | localize }}
+  </button>
+</div>

@@ -1,0 +1,66 @@
+<div
+  class="card {{ getCardOutlineClass() }}"
+  style="cursor: pointer"
+  *ngIf="statusPreview"
+>
+  <div
+    class="card-header"
+    [style.background]="getBackgroundStyle()"
+    (click)="openStatusModal()"
+  >
+    <div class="row justify-content-between">
+      <app-criticality-indicator
+        [criticality]="statusPreview.criticality"
+      ></app-criticality-indicator>
+      <p class="col card-title" style="float: none">
+        {{ statusPreview.package?.name }}
+      </p>
+      <p
+        class="col text-right card-subtitle text-muted pt-2"
+        *ngIf="!editMode && statusPreview.time && showDate"
+      >
+        {{ statusPreview.time.fromNow() }}
+      </p>
+      <button
+        type="button"
+        class="col-1 btn btn-circle btn-link"
+        (click)="copyClicked()"
+        *ngIf="editMode && statusPreview.package?.type === 10"
+        tooltip="Copy GUID to clipboard"
+      >
+        <i class="fa-solid fa-copy"></i>
+      </button>
+      <button
+        type="button"
+        class="col-1 btn btn-circle btn-link"
+        (click)="editClicked()"
+        *ngIf="editMode"
+      >
+        <i class="fa-solid fa-pencil"></i>
+      </button>
+      <button
+        type="button"
+        class="col-1 btn btn-circle btn-link"
+        (click)="deletePackageClicked()"
+        *ngIf="editMode"
+      >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
+    <div class="row">
+      <app-path
+        *ngIf="showPath"
+        [group]="statusPreview.package.asset?.group"
+        [asset]="statusPreview.package.asset"
+        [package]="statusPreview.package"
+        class="pl-2 pt-2"
+      ></app-path>
+    </div>
+    <div class="row pt-3" *ngIf="showTimeline && statistic">
+      <app-statistics-dashboard-timeline
+        [timeline]="statistic.timeline"
+        class="col-12 mb-1"
+      ></app-statistics-dashboard-timeline>
+    </div>
+  </div>
+</div>

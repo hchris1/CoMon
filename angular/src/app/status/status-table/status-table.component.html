@@ -1,0 +1,151 @@
+<section class="content" *ngIf="options">
+  <div class="container-fluid">
+    <div class="form-group row pl-3 pt-3 pr-2">
+      <select
+        class="form-control col-12"
+        [(ngModel)]="option"
+        (ngModelChange)="assetGroupChanged($event)"
+        *ngIf="showAssetGroupFilter"
+      >
+        <option *ngFor="let option of options" [ngValue]="option">
+          <div *ngIf="option.isRoot">
+            <p>🌱</p>
+          </div>
+          <div *ngIf="option.isGroup && !option.isRoot">
+            <app-path [group]="option.dto"></app-path>
+          </div>
+          <div *ngIf="!option.isGroup">
+            <app-path
+              [asset]="option.dto"
+              [group]="option.dto.group"
+            ></app-path>
+          </div>
+        </option>
+      </select>
+
+      <select
+        class="form-control col-lg-2 col-md-3 col-sm-4 col-12"
+        [(ngModel)]="criticality"
+        (ngModelChange)="setCriticality($event)"
+        *ngIf="showCriticalityFilter"
+      >
+        <option
+          *ngFor="let criticality of criticalities"
+          [ngValue]="criticality"
+        >
+          <div *ngIf="criticality === undefined">
+            <p>🌈 {{ 'Criticality.All' | localize }}</p>
+          </div>
+          <div *ngIf="criticality === 1">
+            <p>🟢 {{ 'Criticality.Healthy' | localize }}</p>
+          </div>
+          <div *ngIf="criticality === 3">
+            <p>🟡 {{ 'Criticality.Warning' | localize }}</p>
+          </div>
+          <div *ngIf="criticality === 5">
+            <p>🔴 {{ 'Criticality.Alert' | localize }}</p>
+          </div>
+        </option>
+      </select>
+
+      <div
+        class="form-check col-lg-2 col-md-3 col-sm-4 col-12 pt-2"
+        style="padding-left: 2rem"
+        *ngIf="showLatestOnlyFilter"
+      >
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id="latestOnly"
+          [(ngModel)]="latestOnly"
+          (ngModelChange)="setLatestOnly($event)"
+        />
+        <label class="form-check-label" for="latestOnly"
+          ><p>{{ 'StatusTable.LatestOnlyOption' | localize }}</p></label
+        >
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row" *ngIf="statusChanged && showRefreshBanner">
+      <button class="btn col-12" (click)="loadStatuses()">
+        <alert type="info">
+          {{ 'StatusTable.RefreshAvailable' | localize }}
+        </alert>
+      </button>
+    </div>
+
+    <div *ngIf="statusPreviews">
+      <div class="row" *ngIf="statusPreviews.totalCount === 0">
+        <div class="col text-center">
+          <figure class="figure">
+            <img
+              src="assets/img/person-with-status.svg"
+              class="figure-img img-fluid rounded"
+              alt="No statuses found."
+              style="width: 250px"
+            />
+            <figcaption class="figure-caption text-center">
+              No statuses found.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div *ngFor="let statusPreview of statusPreviews.items">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col">
+              <app-status-preview
+                [statusPreview]="statusPreview"
+              ></app-status-preview>
+            </div>
+          </div>
+        </div>
+      </div>
+      <pagination
+        [totalItems]="statusPreviews.totalCount"
+        (pageChanged)="changePage($event)"
+        [itemsPerPage]="10"
+        [maxSize]="10"
+        class="justify-content-center"
+        [customPreviousTemplate]="prevTemplate"
+        [customNextTemplate]="nextTemplate"
+      ></pagination>
+    </div>
+
+    <div
+      *ngIf="!statusPreviews"
+      class="row justify-content-center"
+      style="text-align: center"
+    >
+      <app-loading-animation></app-loading-animation>
+    </div>
+  </div>
+</section>
+
+<ng-template
+  #nextTemplate
+  let-disabled="disabled"
+  let-currentPage="currentPage"
+>
+  <ng-container>
+    {{ 'Pagination.Next' | localize }}
+  </ng-container>
+</ng-template>
+
+<ng-template
+  #prevTemplate
+  let-disabled="disabled"
+  let-currentPage="currentPage"
+>
+  <ng-container>
+    {{ 'Pagination.Previous' | localize }}
+  </ng-container>
+</ng-template>
+
+<div *ngIf="!options" style="text-align: center; padding-top: 40vh">
+  <app-loading-animation></app-loading-animation>
+</div>

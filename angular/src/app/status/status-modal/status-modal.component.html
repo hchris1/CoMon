@@ -1,0 +1,146 @@
+<div *ngIf="status">
+  <div
+    class="modal-header"
+    style="border-bottom: none; display: block"
+    [style.background]="getBackgroundStyle()"
+  >
+    <div class="row modal-title pull-left">
+      <app-criticality-indicator
+        [criticality]="status.criticality"
+        class="col-auto pr-0"
+        style="padding-top: 0.1rem"
+      ></app-criticality-indicator>
+      <h4 class="col-auto">
+        {{ status.package.name }}
+      </h4>
+    </div>
+    <p style="position: absolute; top: 0; right: 1.5rem; margin: 1.5rem">
+      {{ status.time.format('DD.MM.YYYY HH:mm:ss') }}
+    </p>
+    <div class="row">
+      <app-path
+        [group]="status.package.asset?.group"
+        [asset]="status.package.asset"
+        (pathClicked)="closeClicked()"
+        class="col pl-4"
+      ></app-path>
+    </div>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      (click)="closeClicked()"
+      aria-label="Close"
+      style="position: absolute; top: 0; right: 0; margin: 0.5rem"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div
+    class="modal-content pl-3 pt-2"
+    style="border-top: none; box-shadow: none"
+  >
+    <div class="container-fluid">
+      <app-status-timeline
+        [statusId]="status.id"
+        [reloadHistory]="reloadHistory"
+        (statusClicked)="switchModal($event)"
+      ></app-status-timeline>
+
+      <hr />
+
+      <div class="row">
+        <div class="col-12">
+          <h4>{{ 'Status.MessagesTitle' | localize }}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center" *ngIf="status.messages.length === 0">
+          <figure class="figure">
+            <img
+              src="assets/img/message.svg"
+              class="figure-img img-fluid rounded"
+              alt="No messages."
+              style="width: 80px"
+            />
+            <figcaption class="figure-caption text-center">
+              {{ 'Status.NoMessages' | localize }}
+            </figcaption>
+          </figure>
+        </div>
+        <div class="col-auto" *ngFor="let message of status.messages">
+          <app-status-message [message]="message"></app-status-message>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="row">
+        <div class="col-12">
+          <h4>
+            {{ 'Status.KPIsTitle' | localize }}
+          </h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center" *ngIf="status.kpIs.length === 0">
+          <figure class="figure">
+            <img
+              src="assets/img/compass.svg"
+              class="figure-img img-fluid rounded"
+              alt="No KPIs."
+              style="width: 100px"
+            />
+            <figcaption class="figure-caption text-center">
+              {{ 'Status.NoKPIs' | localize }}
+            </figcaption>
+          </figure>
+        </div>
+        <div *ngFor="let kpi of status.kpIs">
+          <div class="col">
+            <app-status-kpi [kpi]="kpi"></app-status-kpi>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="row">
+        <div class="col-12">
+          <h4>
+            {{ 'Status.ChartsTitle' | localize }}
+          </h4>
+        </div>
+      </div>
+
+      <div *ngIf="status.charts.length === 0" class="row">
+        <div class="col text-center" *ngIf="status.charts.length === 0">
+          <figure class="figure">
+            <img
+              src="assets/img/planet.svg"
+              class="figure-img img-fluid rounded"
+              alt="No charts."
+            />
+            <figcaption class="figure-caption text-center">
+              {{ 'Status.NoCharts' | localize }}
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="row">
+        <app-chart-wrapper
+          class="col-lg-4 col-md-6 col-sm-12 h-100"
+          *ngFor="let chart of status.charts"
+          [chart]="chart"
+        ></app-chart-wrapper>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal-header"
+  style="text-align: center; margin: 0 auto; width: fit-content"
+  *ngIf="!status"
+>
+  <app-loading-animation></app-loading-animation>
+</div>

@@ -1,0 +1,16 @@
+<app-status-preview
+  [statusPreview]="status"
+  [showPath]="showPath"
+  [editMode]="editMode"
+  [showDate]="showDate"
+  [showTimeline]="showTimeline"
+  (packageDeleted)="packageDeleted.emit()"
+  (packageEdited)="packageEdited.emit()"
+  *ngIf="status"
+></app-status-preview>
+
+<div class="card" *ngIf="!status">
+  <div class="card-body" style="text-align: center">
+    <app-loading-animation></app-loading-animation>
+  </div>
+</div>

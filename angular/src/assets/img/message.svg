@@ -1,0 +1,15 @@
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 200px; height: 200px;"><style>
+     .message15-a {animation:message15 1s ease-in-out infinite;}
+     .message15-b {animation:message15 1s ease-in-out 200ms infinite;}
+     .message15-c {animation:message15 1s ease-in-out 400ms infinite;}
+     @keyframes message15 {
+         0%{transform:translate3d(0, 4px, 0);}
+         50%{transform:translate3d(0, -6px, 0);}
+         100%{transform:translate3d(0, 4px, 0);}
+     }
+     @media (prefers-reduced-motion: reduce) {
+         .message15-a, .message15-b, .message15-c {
+             animation: none;
+         }
+     }
+    </style><path class="fillCls1" fill-rule="evenodd" clip-rule="evenodd" d="M75.4722 130.942C61.1966 131.315 47.113 127.59 34.8883 120.208L7 148V66.9692L7.04833 66.9933C7.04431 66.6026 7 66.2361 7 65.8333C7 28.6529 32.1615 3 75.4722 3C118.783 3 143.944 29.7928 143.944 66.9692C143.944 104.146 118.783 130.942 75.4722 130.942Z" fill="rgba(103,153,154,1)" stroke-width="2px" style="animation-duration: 1s;"></path><path class="message15-c fillCls2" fill-rule="evenodd" clip-rule="evenodd" d="M107.671 55.3218C114.345 55.3218 119.755 60.7317 119.755 67.4051C119.755 74.0786 114.345 79.4884 107.671 79.4884C100.998 79.4884 95.5879 74.0786 95.5879 67.4051C95.5879 60.7317 100.998 55.3218 107.671 55.3218V55.3218Z" fill="rgba(0,0,0,1)" stroke-width="2px" style="animation-duration: 1s;"></path><path class="message15-b fillCls2" fill-rule="evenodd" clip-rule="evenodd" d="M75.472 55.3611C82.1454 55.3611 87.5553 60.771 87.5553 67.4444C87.5553 74.1179 82.1454 79.5278 75.472 79.5278C68.7986 79.5278 63.3887 74.1179 63.3887 67.4444C63.3887 60.771 68.7986 55.3611 75.472 55.3611Z" fill="rgba(0,0,0,1)" stroke-width="2px" style="animation-duration: 1s;"></path><path class="message15-a fillCls2" fill-rule="evenodd" clip-rule="evenodd" d="M43.2513 55.3611C49.9247 55.3611 55.3346 60.771 55.3346 67.4444C55.3346 74.1179 49.9247 79.5278 43.2513 79.5278C36.5779 79.5278 31.168 74.1179 31.168 67.4444C31.168 60.771 36.5779 55.3611 43.2513 55.3611Z" fill="rgba(0,0,0,1)" stroke-width="2px" style="animation-duration: 1s;"></path></svg>

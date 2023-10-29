@@ -1,0 +1,61 @@
+.grey-dark {
+  background: #5e666f;
+  color: #efefef;
+}
+
+.red-gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(207, 82, 82, 1) 0%,
+    rgba(121, 9, 9, 1) 80%
+  );
+  color: #fff;
+}
+.red {
+  background: #a83b3b;
+  color: #fff;
+}
+
+.purple {
+  background: #886ab5;
+  color: #fff;
+}
+
+.orange {
+  background: #ffc241;
+  color: #fff;
+}
+
+.kpi-card {
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  padding: 1em;
+  border-radius: 0.3em;
+  font-family: sans-serif;
+  width: 240px;
+  min-width: 180px;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+}
+
+.card-value {
+  display: block;
+  font-size: 180%;
+  font-weight: bolder;
+}
+
+.card-text {
+  display: block;
+  font-size: 80%;
+  padding-left: 0.2em;
+}
+
+.icon {
+  float: right;
+  font-size: 500% !important;
+  position: absolute;
+  top: 0rem;
+  right: -0.3rem;
+  opacity: 0.16;
+}

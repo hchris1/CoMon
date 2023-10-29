@@ -1,0 +1,60 @@
+<div
+  class="card h-100 {{ getCardOutlineClass(asset) }}"
+  style="cursor: pointer"
+  (click)="onAssetClick(asset)"
+  *ngIf="asset"
+>
+  <div class="card-header">
+    <div class="row">
+      <app-criticality-indicator
+        [criticality]="worstCriticality"
+      ></app-criticality-indicator>
+      <p class="col card-title">
+        {{ asset.name }}
+      </p>
+      <button
+        class="col-1 btn btn-circle btn-link text"
+        style="padding: 0 !important"
+        (click)="deleteAssetClicked()"
+        *ngIf="editMode"
+      >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
+    <div class="row" *ngIf="showPath">
+      <app-path
+        [group]="asset.group"
+        [asset]="asset"
+        class="pl-2 pt-2"
+      ></app-path>
+    </div>
+  </div>
+  <div class="card-body" *ngIf="showImage">
+    <app-asset-image-carousel
+      [assetId]="asset.id"
+      [titleImageOnly]="true"
+      style="max-height: 10rem; min-height: 10rem"
+    ></app-asset-image-carousel>
+  </div>
+  <div class="card-footer" *ngIf="showPackages">
+    <div class="row">
+      <div
+        class="col-auto"
+        *ngIf="!asset.packages || asset.packages.length === 0"
+      >
+        <span class="badge badge-secondary">🤷</span>
+      </div>
+      <div class="col-auto" *ngFor="let package of asset.packages">
+        <span class="badge {{ getBadgeClass(package) }}">{{
+          package.name
+        }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card h-100" *ngIf="!asset">
+  <div class="card-body" style="text-align: center">
+    <app-loading-animation></app-loading-animation>
+  </div>
+</div>

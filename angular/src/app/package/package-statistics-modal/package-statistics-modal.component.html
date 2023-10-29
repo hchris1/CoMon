@@ -1,0 +1,21 @@
+<div class="modal-content pl-3 pt-2" style="border-top: none; box-shadow: none">
+  <div class="container-fluid">
+    <div class="col-12">
+      <app-package-bar-chart
+        [packageId]="package.id"
+        class="card-body"
+        [numHours]="hours"
+        [useHourBuckets]="hours === 24"
+      ></app-package-bar-chart>
+    </div>
+    <div class="col-12">
+      <app-package-bar-chart
+        [packageId]="package.id"
+        class="card-body"
+        [numHours]="hours"
+        [useHourBuckets]="hours === 24"
+        [useChanges]="true"
+      ></app-package-bar-chart>
+    </div>
+  </div>
+</div>

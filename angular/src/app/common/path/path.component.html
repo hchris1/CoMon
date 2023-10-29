@@ -1,0 +1,24 @@
+<p style="padding-right: 1rem">
+  <a (click)="onRootClick()" style="cursor: pointer"> 🌱 </a>
+  <span *ngFor="let group of groups">
+    <span class="mx-2">/</span>
+    <a (click)="onGroupClick(group)" style="cursor: pointer" class="text-link">
+      📁 {{ group.name }}
+    </a>
+  </span>
+  <span *ngIf="asset">
+    <span class="mx-2">/</span>
+    <a (click)="onAssetClick(asset)" class="text-link" style="cursor: pointer"
+      >📇 {{ asset.name }}</a
+    >
+  </span>
+  <span *ngIf="package">
+    <span class="mx-2">/</span>
+    <a
+      (click)="onPackageClick(package)"
+      class="text-link"
+      style="cursor: pointer"
+      >📦 {{ package.name }}</a
+    >
+  </span>
+</p>
