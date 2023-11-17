@@ -1,0 +1,67 @@
+<div class="modal-header">
+  <h4>{{ "Edit.EditPackageTitle" | localize }}</h4>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="name">{{ "Edit.PackageName" | localize }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        formControlName="name"
+        placeholder="{{ 'Edit.PackageNamePlaceholder' | localize }}"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="asset">{{ "Edit.PackageAssignedAsset" | localize }}</label>
+      <select id="asset" formControlName="asset" class="form-control">
+        <option *ngFor="let asset of assets" [ngValue]="asset">
+          <app-path [group]="asset.group" [asset]="asset"></app-path>
+        </option>
+      </select>
+    </div>
+
+    <!-- Small subheader for pingPackageType section -->
+    <div class="form-group" *ngIf="currentType === pingPackageType">
+      <h5>{{ "Edit.PackageTypePing" | localize }}</h5>
+    </div>
+
+    <!-- If type is pingPackageType, show input field for host and cycleSeconds -->
+    <div class="form-group" *ngIf="currentType === pingPackageType">
+      <label for="host">{{ "Edit.PackageHost" | localize }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="host"
+        formControlName="host"
+        placeholder="{{ 'Edit.PackageHostPlaceholder' | localize }}"
+      />
+    </div>
+
+    <div class="form-group" *ngIf="currentType === pingPackageType">
+      <label for="cycleSeconds">{{
+        "Edit.PackageCycleSeconds" | localize
+      }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="cycleSeconds"
+        formControlName="cycleSeconds"
+        min="30"
+        placeholder="{{ 'Edit.PackageCycleSecondsPlaceholder' | localize }}"
+      />
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+    {{ "Save" | localize }}
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">
+    {{ "Cancel" | localize }}
+  </button>
+</div>

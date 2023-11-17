@@ -1,0 +1,15 @@
+<app-carousel
+  [images]="images"
+  [editMode]="editMode"
+  (imageAdded)="addImage($event)"
+  (imageDeleted)="deleteImage($event)"
+  *ngIf="!isLoading"
+></app-carousel>
+
+<div
+  class="row"
+  style="justify-content: center; padding-top: 2rem"
+  *ngIf="isLoading"
+>
+  <div class="spinner-border" role="status"></div>
+</div>

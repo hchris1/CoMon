@@ -1,0 +1,49 @@
+<div
+  class="card elevation-2"
+  style="cursor: pointer"
+  (click)="onAssetClick(asset)"
+>
+  <div class="card-header">
+    <div class="row">
+      <h3 class="col card-title">{{ getEmoji() }} {{ asset.name }}</h3>
+      <button
+        class="col-1 btn btn-circle btn-link text"
+        style="padding: 0 !important"
+        (click)="openDeletionModal(deletionTemplate)"
+        *ngIf="editMode"
+      >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <app-asset-image-carousel
+      [assetId]="asset.id"
+      [titleImageOnly]="true"
+      style="max-height: 10rem; min-height: 10rem"
+    ></app-asset-image-carousel>
+  </div>
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-auto" *ngFor="let package of asset.packages">
+        <span class="badge {{ getBadgeClass(package) }}">{{
+          package.name
+        }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #deletionTemplate>
+  <div class="modal-body">
+    <p>{{ "Edit.ConfirmDeletion" | localize }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="confirmDeletion()">
+      {{ "Yes" | localize }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="cancelDeletion()">
+      {{ "No" | localize }}
+    </button>
+  </div>
+</ng-template>

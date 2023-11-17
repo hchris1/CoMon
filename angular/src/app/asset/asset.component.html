@@ -1,0 +1,188 @@
+<div [@routerTransition]>
+  <div *ngIf="asset && statusPreviews">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-auto" *ngIf="!editTitle">
+            <h1>{{ getEmoji() }} {{ asset.name }}</h1>
+          </div>
+          <div class="col-auto" *ngIf="editTitle">
+            <form [formGroup]="editFormGroup">
+              <input type="text" class="form-control" formControlName="title" />
+            </form>
+          </div>
+          <div class="col-auto" *ngIf="editMode && !editTitle">
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              style="padding-left: 0 !important"
+              (click)="editTitleClicked()"
+            >
+              <i class="fa-solid fa-edit"></i>
+            </button>
+          </div>
+          <div class="col-auto" *ngIf="editMode && editTitle">
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              (click)="saveTitleClicked()"
+            >
+              <i class="fa-solid fa-save"></i>
+            </button>
+          </div>
+          <button
+            type="button"
+            class="col btn btn-circle btn-link text-right"
+            (click)="activateEditMode()"
+            *ngIf="!editMode"
+          >
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+          <button
+            type="button"
+            class="col btn btn-circle btn-link text-right"
+            (click)="deactivateEditMode()"
+            *ngIf="editMode"
+          >
+            <i class="fa-solid fa-check"></i>
+          </button>
+        </div>
+        <div class="row">
+          <app-path
+            class="col-auto pt-2"
+            [group]="asset.group"
+            [asset]="asset"
+            *ngIf="!editGroup"
+          ></app-path>
+          <button
+            type="button"
+            class="col-auto btn btn-circle btn-link"
+            style="padding-top: 0 !important"
+            (click)="editGroupClick()"
+            *ngIf="editMode && !editGroup"
+          >
+            <i class="fa-solid fa-edit"></i>
+          </button>
+          <form [formGroup]="editFormGroup" *ngIf="editGroup">
+            <select
+              id="group"
+              formControlName="group"
+              style="min-width: 12rem"
+              class="form-control"
+            >
+              <option *ngFor="let group of groups" [ngValue]="group">
+                <app-path [group]="group"></app-path>
+              </option>
+            </select>
+          </form>
+          <button
+            type="button"
+            class="col-auto btn btn-circle btn-link"
+            style="padding-top: 0 !important"
+            (click)="saveGroup()"
+            *ngIf="editGroup"
+          >
+            <i class="fa-solid fa-save"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row d-flex justify-content-start align-items-stretch pb-3">
+          <div class="col">
+            <div class="card elevation-2 h-100">
+              <div class="card-body">
+                <div class="row">
+                  <h5 class="col-auto">
+                    {{ "Assets.DescriptionTitle" | localize }}
+                  </h5>
+
+                  <div class="col-auto" *ngIf="editMode && !editDescription">
+                    <button
+                      type="button"
+                      class="btn btn-circle btn-link"
+                      style="padding: 0"
+                      (click)="editDescriptionClicked()"
+                    >
+                      <i class="fa-solid fa-edit"></i>
+                    </button>
+                  </div>
+                  <div class="col-auto" *ngIf="editMode && editDescription">
+                    <button
+                      type="button"
+                      class="btn btn-circle btn-link"
+                      style="padding: 0"
+                      (click)="saveDescription()"
+                    >
+                      <i class="fa-solid fa-save"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <p *ngIf="!editDescription">{{ asset.description }}</p>
+                <form [formGroup]="editFormGroup">
+                  <textarea
+                    class="form-control"
+                    formControlName="description"
+                    *ngIf="editDescription"
+                  ></textarea>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-md-6 col-sm-8 col-12">
+            <div class="card elevation-2 h-100">
+              <div class="card-body">
+                <app-asset-image-carousel
+                  [assetId]="asset.id"
+                  [editMode]="editMode"
+                  (onImageDeleted)="deleteImage($event)"
+                  (onImageAdded)="uploadImage($event)"
+                ></app-asset-image-carousel>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row pt-3 pr-1" style="justify-content: space-between">
+          <h3 class="col">
+            {{ "Assets.PackagesTitle" | localize }}
+          </h3>
+          <button
+            type="button"
+            class="col-1 text-right btn btn-circle btn-link"
+            (click)="tableLinkClicked()"
+          >
+            <i class="fa-solid fa-table"></i>
+          </button>
+          <!-- Add Package button in edit mode -->
+          <button
+            type="button"
+            class="col-auto text-right btn btn-circle btn-link"
+            (click)="openCreatePackageModal()"
+            *ngIf="editMode"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+
+        <div class="row pt-3" *ngIf="statusPreviews">
+          <div
+            class="col-xl-4 col-md-6 col-12"
+            *ngFor="let statusPreview of statusPreviews"
+          >
+            <app-status-preview
+              [statusPreview]="statusPreview"
+              [showPath]="false"
+              [editMode]="editMode"
+              (packageDeleted)="loadStatusPreviews()"
+              (packageEdited)="loadStatusPreviews()"
+            ></app-status-preview>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<carousel class="carousel slide" [interval]="false">
+  <div *ngFor="let image of images">
+    <slide>
+      <div class="row" *ngIf="editMode">
+        <button
+          type="button"
+          class="col btn btn-circle btn-link"
+          style="padding: 0"
+          (click)="addImageClicked(addImageTemplate)"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+        <button
+          type="button"
+          class="col btn btn-circle btn-link"
+          style="padding: 0"
+          (click)="deleteImageClicked(deletionTemplate, image)"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      <img
+        class="d-block w-100"
+        src="data:{{ image.mimeType }};base64,{{ image.data }}"
+        alt="First slide"
+        style="height: 10rem; object-fit: contain"
+      />
+    </slide>
+  </div>
+  <slide *ngIf="images.length === 0">
+    <div class="row" *ngIf="editMode">
+      <button
+        type="button"
+        class="col btn btn-circle btn-link"
+        style="padding: 0"
+        (click)="addImageClicked(addImageTemplate)"
+      >
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+    <img
+      src="assets/img/no-image.svg"
+      class="img-fluid pad"
+      alt="Asset image"
+      style="height: 10rem; width: 100%; object-fit: contain"
+    />
+  </slide>
+</carousel>
+
+<ng-template #deletionTemplate>
+  <div class="modal-body">
+    <p>{{ "Edit.ConfirmDeletion" | localize }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="confirmDeletion()">
+      {{ "Yes" | localize }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="declineDeletion()">
+      {{ "No" | localize }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #addImageTemplate>
+  <div class="modal-body">
+    <label for="image">{{ "Edit.AddImage" | localize }}</label>
+    <input
+      accept=".jpeg, .png, .svg, .gif"
+      type="file"
+      class="file-upload"
+      (change)="onFileSelected($event)"
+    />
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="confirmAddImage()">
+      {{ "Save" | localize }}
+    </button>
+    <button type="button" class="btn btn-default" (click)="declineAddImage()">
+      {{ "Cancel" | localize }}
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<localizationDictionary culture="de">
+	<texts>
+		<text name="HomePage" value="Startseite" />
+		<text name="About" value="Über" />
+		<text name="WelcomeMessage" value="Willkommen bei CoMon!" />
+		<text name="FormIsNotValidMessage" value="Formular ist nicht gültig. Bitte überprüfen und Fehler beheben." />
+		<text name="TenantNameCanNotBeEmpty" value="Tenant-Name darf nicht leer sein" />
+		<text name="InvalidUserNameOrPassword" value="Ungültiger Benutzername oder Passwort" />
+		<text name="ThereIsNoTenantDefinedWithName{0}" value="Es gibt keinen definierten Tenant mit dem Namen {0}" />
+		<text name="TenantIsNotActive" value="Tenant {0} ist nicht aktiv." />
+		<text name="UserIsNotActiveAndCanNotLogin" value="Benutzer {0} ist nicht aktiv und kann sich nicht anmelden." />
+		<text name="UserEmailIsNotConfirmedAndCanNotLogin">Ihre E-Mail-Adresse ist nicht bestätigt. Sie können sich nicht anmelden.</text>
+		<text name="UserLockedOutMessage">Das Benutzerkonto wurde gesperrt. Bitte versuchen Sie es später erneut.</text>
+		<text name="PleaseEnterLoginInformation" value="Bitte geben Sie Ihre Anmeldedaten ein." />
+		<text name="TenancyName" value="Tenant-Name" />
+		<text name="UserNameOrEmail" value="Benutzername oder E-Mail" />
+		<text name="Password" value="Passwort" />
+		<text name="ResetPassword" value="Passwort zurücksetzen" />
+		<text name="UpdatePassword" value="Passwort aktualisieren" />
+		<text name="RememberMe" value="Angemeldet bleiben" />
+		<text name="LogIn" value="Anmelden" />
+		<text name="LoginFailed" value="Anmeldung fehlgeschlagen!" />
+		<text name="NameSurname" value="Name Nachname" />
+		<text name="UserName" value="Benutzername" />
+		<text name="Name" value="Name" />
+		<text name="Surname" value="Nachname" />
+		<text name="EmailAddress" value="E-Mail-Adresse" />
+		<text name="Tenants" value="Tenants" />
+		<text name="SavedSuccessfully" value="Erfolgreich gespeichert" />
+		<text name="CreateNewTenant" value="Neuen Tenant erstellen" />
+		<text name="AdminEmailAddress" value="Admin E-Mail-Adresse" />
+		<text name="AdminPassword" value="Admin-Passwort" />
+		<text name="Save" value="Speichern" />
+		<text name="Cancel" value="Abbrechen" />
+		<text name="TenantName_Regex_Description" value="Tenant-Name muss mindestens 2 Zeichen lang sein und mit einem Buchstaben beginnen, gefolgt von Buchstaben, Zahlen, Bindestrich oder Unterstrich." />
+		<text name="DefaultPasswordIs" value="Das Standardpasswort ist {0}" />
+		<text name="CanBeEmptyToLoginAsHost" value="Kann leer sein, um sich als Host anzumelden." />
+		<text name="Register" value="Registrieren" />
+		<text name="OrLoginWith" value="Oder anmelden mit" />
+		<text name="WaitingForActivationMessage" value="Ihr Konto wartet darauf, vom Systemadministrator aktiviert zu werden." />
+		<text name="TenantSelection" value="Tenant-Auswahl" />
+		<text name="TenantSelection_Detail" value="Bitte wählen Sie einen der folgenden Tenants." />
+		<text name="Logout" value="Abmelden" />
+		<text name="RegisterFormUserNameInvalidMessage">Bitte geben Sie keine E-Mail-Adresse als Benutzernamen ein.</text>
+		<text name="DatabaseConnectionString" value="Datenbank-Verbindungszeichenfolge" />
+		<text name="Users" value="Benutzer" />
+		<text name="IsActive" value="Ist aktiv" />
+		<text name="FullName" value="Vollständiger Name" />
+		<text name="CreateNewUser" value="Neuen Benutzer erstellen" />
+		<text name="Yes" value="Ja" />
+		<text name="No" value="Nein" />
+		<text name="Optional" value="Optional" />
+		<text name="LeaveEmptyToSwitchToHost">Leer lassen, um zum Host zu wechseln</text>
+		<text name="CurrentTenant">Aktueller Tenant</text>
+		<text name="NotSelected">Nicht ausgewählt</text>
+		<text name="Change">Ändern</text>
+		<text name="ChangeTenant">Tenant ändern</text>
+		<text name="MultiLevelMenu">Mehrstufiges Menü</text>
+		<text name="Back">Zurück</text>
+		<text name="SuccessfullyRegistered">Erfolgreich registriert</text>
+		<text name="WaitingForEmailActivation">Ihre E-Mail-Adresse muss aktiviert werden</text>
+		<text name="Roles">Rollen</text>
+		<text name="DisplayName">Anzeigename</text>
+		<text name="Edit">Bearbeiten</text>
+		<text name="Delete">Löschen</text>
+		<text name="CreateNewRole">Neue Rolle erstellen</text>
+		<text name="RoleName">Rollenname</text>
+		<text name="Actions">Aktionen</text>
+		<text name="CouldNotCompleteLoginOperation">Anmeldevorgang konnte nicht abgeschlossen werden. Bitte versuchen Sie es später erneut.</text>
+		<text name="CouldNotValidateExternalUser">Externer Benutzer konnte nicht validiert werden</text>
+		<text name="EditRole">Rolle bearbeiten</text>
+		<text name="EditTenant">Tenant bearbeiten</text>
+		<text name="EditUser">Benutzer bearbeiten</text>
+		<text name="TenantIdIsNotActive{0}">TenantId {0} ist nicht aktiv</text>
+		<text name="UnknownTenantId{0}">Unbekannte TenantId {0}</text>
+		<text name="ThisFieldIsRequired">Dieses Feld ist erforderlich</text>
+		<text name="PleaseWait">Bitte warten...</text>
+		<text name="Administration">Verwaltung</text>
+		<text name="ClearAll">Alle löschen</text>
+		<text name="ClearOthers">Andere löschen</text>
+		<text name="LabelOptions">Label-Optionen</text>
+		<text name="Permissions">Berechtigungen</text>
+		<text name="RoleDescription">Rollenbeschreibung</text>
+		<text name="Refresh">Aktualisieren</text>
+		<text name="Create">Erstellen</text>
+		<text name="UserDetails">Benutzerdetails</text>
+		<text name="UserRoles">Benutzerrollen</text>
+		<text name="ConfirmPassword">Passwort bestätigen</text>
+		<text name="Version">Version</text>
+		<text name="On">Ein</text>
+		<text name="Off">Aus</text>
+		<text name="AreYouSureWantToDelete">Sind Sie sicher, dass Sie {0} löschen möchten?</text>
+		<text name="SuccessfullyDeleted">Erfolgreich gelöscht</text>
+		<text name="StartTyping">Tippen beginnen</text>
+		<text name="Skins">Skins</text>
+		<text name="Settings">Einstellungen</text>
+		<text name="Filter">Filtern</text>
+		<text name="CurrentPassword">Aktuelles Passwort</text>
+		<text name="NewPassword">Neues Passwort</text>
+		<text name="ConfirmNewPassword">Neues Passwort bestätigen</text>
+		<text name="PasswordsDoNotMatch">Passwörter stimmen nicht überein</text>
+		<text name="PasswordsMustBeAtLeast8CharactersContainLowercaseUppercaseNumber">Passwörter müssen mindestens 8 Zeichen lang sein und einen Kleinbuchstaben, einen Großbuchstaben und eine Zahl enthalten</text>
+		<text name="UserDeleteWarningMessage">Benutzer {0} wird gelöscht.</text>
+		<text name="RoleDeleteWarningMessage">Rolle {0} wird gelöscht und von allen zugewiesenen Benutzern entbunden.</text>
+		<text name="TenantDeleteWarningMessage">Tenant {0} wird gelöscht.</text>
+		<text name="SearchWithThreeDot">Suchen...</text>
+		<text name="PleaseEnterAtLeastNCharacter">Bitte geben Sie mindestens {0} Zeichen ein</text>
+		<text name="PleaseEnterNoMoreThanNCharacter">Bitte geben Sie nicht mehr als {0} Zeichen ein</text>
+		<text name="InvalidEmailAddress">Ungültige E-Mail-Adresse</text>
+		<text name="InvalidPattern">Ungültig</text>
+		<text name="PairsDoNotMatch">Stimmen nicht überein</text>
+		<text name="All">Alle</text>
+		<text name="TotalRecordsCount">Gesamt: {0}</text>
+		<text name="Search">Suche</text>
+		<text name="Clear">Löschen</text>
+		<text name="ResetPasswordStepOneInfo">1. Geben Sie Ihr Administratorpasswort ein</text>
+		<text name="ResetPasswordStepTwoInfo">2. Kopieren Sie dieses zufällige Passwort, um es dem Benutzer zu senden</text>
+		<text name="UsersActivation">Benutzeraktivierung</text>
+		<text name="Sidebar.Overview">Übersicht</text>
+		<text name="Sidebar.Assets">Assets</text>
+		<text name="Sidebar.StatusTable">Statustabelle</text>
+		<text name="Overview.RootTitle">Root</text>
+		<text name="Overview.RootInfo">Die 🌱 beinhaltet alle Gruppen und Assets, die zu keiner anderen Gruppe gehören.</text>
+		<text name="Overview.GroupsTitle">Gruppen</text>
+		<text name="Overview.AssetsTitle">Assets</text>
+		<text name="Overview.NoAssets">In dieser Gruppe gibt es bisher keine Assets.</text>
+		<text name="Overview.NoGroups">In dieser Gruppe gibt es bisher keine Gruppen.</text>
+		<text name="Overview.StatusTableLink">Statustabelle</text>
+		<text name="Assets.DescriptionTitle">Beschreibung</text>
+		<text name="Assets.PackagesTitle">Pakete</text>
+		<text name="Assets.StatusTableLink">Statustabelle</text>
+		<text name="Assets.AllAssetsTitle">Assets</text>
+		<text name="Assets.AllAssetsDescription">Diese Seite zeigt alle Assets im System. Klicken Sie auf eines, um Genaueres zu erfahren.</text>
+		<text name="Status.PreviousStatusTooltip">Gehe zu vorigem Status</text>
+		<text name="Status.NextStatusTooltip">Gehe zu nächstem Status</text>
+		<text name="Status.LatestStatusTooltip">Gehe zu aktuellem Status</text>
+		<text name="Status.NoPreviousStatus">Kein früherer Status</text>
+		<text name="Status.NoNextStatus">Kein neuerer Status</text>
+		<text name="Status.NoLatestStatus">Kein aktuellerer Status</text>
+		<text name="Status.MessagesTitle">Meldungen</text>
+		<text name="Status.NoMessages">Keine Meldungen.</text>
+		<text name="Status.KPIsTitle">KPIs</text>
+		<text name="Status.NoKPIs">Keine KPIs.</text>
+		<text name="Status.ChartsTitle">Diagramme</text>
+		<text name="Status.NoCharts">Keine Diagramme.</text>
+		<text name="StatusTable.LatestOnlyOption">Nur aktuelle</text>
+		<text name="StatusTable.RefreshAvailable">Im Hintergrund sind neue Statusmeldungen aufgetreten. Klicken Sie hier, um die Tabelle zu aktualisieren.</text>
+		<text name="Criticality.All">Alle</text>
+		<text name="Criticality.Healthy">Gut</text>
+		<text name="Criticality.Warning">Warnung</text>
+		<text name="Criticality.Alert">Alarm</text>
+		<text name="Pagination.Previous">Vorige Seite</text>
+		<text name="Pagination.Next">Nächste Seite</text>
+		<text name="Edit.EditModeInfo">Editierungsmodus</text>
+		<text name="Edit.AddImage">Bild hochladen</text>
+		<text name="Edit.ConfirmDeletion">Sind Sie sicher?</text>
+		<text name="Edit.CreateGroupTitle">Gruppe erstellen</text>
+		<text name="Edit.CreateGroupName">Name</text>
+		<text name="Edit.CreateGroupNamePlaceholder">Gruppenname</text>
+		<text name="Edit.CreateAssetTitle">Asset erstellen</text>
+		<text name="Edit.CreateAssetName">Name</text>
+		<text name="Edit.CreateAssetNamePlaceholder">Assetname</text>
+		<text name="Edit.CreateAssetDescription">Beschreibung</text>
+		<text name="Edit.CreateAssetDescriptionPlaceholder">Assetbeschreibung</text>
+		<text name="Edit.CreatePackageTitle">Paket erstellen</text>
+		<text name="Edit.EditPackageTitle">Paket bearbeiten</text>
+		<text name="Edit.PackageName">Paketname</text>
+		<text name="Edit.PackageNamePlaceholder">Benutzerdefinierter Name</text>
+		<text name="Edit.PackageType">Pakettyp</text>
+		<text name="Edit.PackageTypePing">Ping Paket</text>
+		<text name="Edit.PackageTypeExternal">Externes Paket</text>
+		<text name="Edit.PackageHost">Host</text>
+		<text name="Edit.PackageHostPlaceholder">192.168.178.1</text>
+		<text name="Edit.PackageCycleSeconds">Zyklus (seconds)</text>
+		<text name="Edit.PackageCycleSecondsPlaceholder">60</text>
+		<text name="Edit.PackageAssignedAsset">Asset</text>
+	</texts>
+</localizationDictionary>

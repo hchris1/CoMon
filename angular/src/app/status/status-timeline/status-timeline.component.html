@@ -1,0 +1,29 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row justify-content-center" *ngIf="statusHistory">
+      <div class="col-4">
+        <app-status-timeline-button
+          [statusPreview]="statusHistory.previousStatus"
+          (clicked)="statusClicked.emit(statusHistory.previousStatus)"
+          [type]="0"
+        ></app-status-timeline-button>
+      </div>
+
+      <div class="col-4">
+        <app-status-timeline-button
+          [statusPreview]="statusHistory.nextStatus"
+          (clicked)="statusClicked.emit(statusHistory.nextStatus)"
+          [type]="1"
+        ></app-status-timeline-button>
+      </div>
+
+      <div class="col-4">
+        <app-status-timeline-button
+          [statusPreview]="statusHistory.latestStatus"
+          (clicked)="statusClicked.emit(statusHistory.latestStatus)"
+          [type]="2"
+        ></app-status-timeline-button>
+      </div>
+    </div>
+  </div>
+</section>

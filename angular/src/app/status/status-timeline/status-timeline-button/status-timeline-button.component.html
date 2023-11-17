@@ -1,0 +1,13 @@
+<button
+  class="btn btn-circle btn-xl {{ buttonClass }}"
+  type="button"
+  (click)="clicked.emit()"
+  [disabled]="disabled"
+  tooltip="{{ tooltipText }}"
+>
+  <i class="fas {{ icon }}"></i>
+</button>
+<small style="display: block" *ngIf="statusPreview">{{
+  statusPreview.time.fromNow()
+}}</small>
+<small style="display: block" *ngIf="!statusPreview">{{ infoText }}</small>

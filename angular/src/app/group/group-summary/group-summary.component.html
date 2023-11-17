@@ -1,0 +1,35 @@
+<div
+  class="card elevation-2"
+  style="cursor: pointer"
+  (click)="onGroupClick(group)"
+>
+  <div class="card-header">
+    <div class="row">
+      <h3 class="col card-title">
+        {{ group.name }}
+      </h3>
+      <button
+        class="col-1 btn btn-circle btn-link text"
+        style="padding: 0 !important"
+        (click)="onDeleteClicked(deletionTemplate)"
+        *ngIf="editMode"
+      >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #deletionTemplate>
+  <div class="modal-body">
+    <p>{{ "Edit.ConfirmDeletion" | localize }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="confirmDeletion()">
+      {{ "Yes" | localize }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="declineDeletion()">
+      {{ "No" | localize }}
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,13 @@
+<button
+  class="btn navbar-link"
+  style="background-color: transparent"
+  (click)="toggleDarkMode()"
+  title="Toggle Dark Mode"
+>
+  <div *ngIf="!isDarkMode">
+    <i class="fas fa-toggle-off"></i>
+  </div>
+  <div *ngIf="isDarkMode">
+    <i class="fas fa-toggle-on"></i>
+  </div>
+</button>

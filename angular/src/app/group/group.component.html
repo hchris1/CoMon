@@ -1,0 +1,184 @@
+<div [@routerTransition]>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div *ngIf="group">
+        <div class="row">
+          <button
+            *ngIf="!isRoot"
+            class="col-auto btn btn-link btn-sm"
+            (click)="routeToParent()"
+          >
+            <i class="fas fa-arrow-left pt-2"></i>
+          </button>
+
+          <h1 class="col-auto" *ngIf="!editName">{{ group.name }}</h1>
+
+          <div class="col-auto" *ngIf="editName">
+            <form [formGroup]="editFormGroup">
+              <input type="text" class="form-control" formControlName="name" />
+            </form>
+          </div>
+          <div class="col-auto" *ngIf="editMode && !editName && !isRoot">
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              style="padding-left: 0 !important"
+              (click)="activateEditName()"
+            >
+              <i class="fa-solid fa-edit"></i>
+            </button>
+          </div>
+          <div class="col-auto" *ngIf="editMode && editName">
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              (click)="saveName()"
+            >
+              <i class="fa-solid fa-save"></i>
+            </button>
+          </div>
+
+          <div class="col text-right">
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              (click)="routeToTable()"
+            >
+              <i class="fa-solid fa-table"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              (click)="activateEditMode()"
+              *ngIf="!editMode"
+            >
+              <i class="fa-solid fa-pencil"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              (click)="deactivateEditMode()"
+              *ngIf="editMode"
+            >
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+        <p *ngIf="isRoot">
+          {{ "Overview.RootInfo" | localize }}
+        </p>
+
+        <div class="row" *ngIf="!isRoot">
+          <app-path
+            *ngIf="!editGroup"
+            class="col-auto"
+            [group]="group"
+          ></app-path>
+          <button
+            type="button"
+            class="col-auto btn btn-circle btn-link"
+            style="padding-top: 0 !important"
+            (click)="activateEditGroup()"
+            *ngIf="editMode && !editGroup"
+          >
+            <i class="fa-solid fa-edit"></i>
+          </button>
+          <form [formGroup]="editFormGroup" *ngIf="editGroup">
+            <select
+              id="group"
+              formControlName="group"
+              style="min-width: 12rem"
+              class="form-control"
+            >
+              <option *ngFor="let group of groups" [ngValue]="group">
+                <app-path [group]="group"></app-path>
+              </option>
+            </select>
+          </form>
+          <button
+            type="button"
+            class="col-auto btn btn-circle btn-link"
+            style="padding-top: 0 !important"
+            (click)="saveGroup()"
+            *ngIf="editGroup"
+          >
+            <i class="fa-solid fa-save"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row" style="justify-content: space-between">
+        <h3 class="col">{{ "Overview.GroupsTitle" | localize }}</h3>
+        <button
+          class="col-auto btn btn-primary btn-circle btn-xl"
+          (click)="openCreateGroupModal()"
+          *ngIf="editMode"
+        >
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+  <div *ngIf="group">
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <p *ngIf="group.subGroups.length === 0" class="col pl-4">
+            {{ "Overview.NoGroups" | localize }}
+          </p>
+          <div
+            class="col-12 col-sm-6 col-md-4"
+            *ngFor="let subGroup of group.subGroups"
+          >
+            <app-group-summary
+              [group]="subGroup"
+              [editMode]="editMode"
+              (groupClicked)="routeToGroup($event)"
+              (groupDeleted)="loadGroup()"
+            ></app-group-summary>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row" style="justify-content: space-between">
+        <h1 class="col">{{ "Overview.AssetsTitle" | localize }}</h1>
+        <button
+          class="col-auto btn btn-primary btn-circle btn-xl"
+          (click)="openCreateAssetModal()"
+          *ngIf="editMode"
+        >
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div *ngIf="group">
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <p *ngIf="group.assets.length === 0" class="col pl-4">
+            {{ "Overview.NoAssets" | localize }}
+          </p>
+          <div
+            class="col-12 col-sm-6 col-md-4"
+            *ngFor="let asset of group.assets"
+          >
+            <app-asset-summary
+              [asset]="asset"
+              [editMode]="editMode"
+              (assetClicked)="routeToAsset($event)"
+              (assetDeleted)="loadGroup()"
+            ></app-asset-summary>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

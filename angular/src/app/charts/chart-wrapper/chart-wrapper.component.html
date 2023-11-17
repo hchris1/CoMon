@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="card-body">
+    <app-donut-chart
+      [chart]="chart"
+      *ngIf="isDonutChart(chart)"
+    ></app-donut-chart>
+    <app-line-chart [chart]="chart" *ngIf="isLineChart(chart)"></app-line-chart>
+    <app-area-chart [chart]="chart" *ngIf="isAreaChart(chart)"></app-area-chart>
+    <app-bar-chart [chart]="chart" *ngIf="isBarChart(chart)"></app-bar-chart>
+    <app-pie-chart [chart]="chart" *ngIf="isPieChart(chart)"></app-pie-chart>
+    <app-radial-bar-chart
+      [chart]="chart"
+      *ngIf="isRadialBarChart(chart)"
+    ></app-radial-bar-chart>
+    <app-scatter-chart
+      [chart]="chart"
+      *ngIf="isScatterChart(chart)"
+    ></app-scatter-chart>
+    <app-heat-map-chart
+      [chart]="chart"
+      *ngIf="isHeatMapChart(chart)"
+    ></app-heat-map-chart>
+    <app-radar-chart
+      [chart]="chart"
+      *ngIf="isRadarChart(chart)"
+    ></app-radar-chart>
+    <app-polar-area-chart
+      [chart]="chart"
+      *ngIf="isPolarAreaChart(chart)"
+    ></app-polar-area-chart>
+    <app-range-area-chart
+      [chart]="chart"
+      *ngIf="isRangeAreaChart(chart)"
+    ></app-range-area-chart>
+    <app-tree-map-chart
+      [chart]="chart"
+      *ngIf="isTreeMapChart(chart)"
+    ></app-tree-map-chart>
+  </div>
+</div>
