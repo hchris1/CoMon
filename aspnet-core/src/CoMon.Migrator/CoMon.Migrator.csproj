@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <AssemblyName>CoMon.Migrator</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -15,7 +15,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Abp.Castle.Log4Net" Version="8.4.0" />
+    <PackageReference Include="Abp.Castle.Log4Net" Version="9.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoMon.Core\CoMon.Core.csproj" />
