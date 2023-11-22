@@ -18,12 +18,14 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
     menuItems: MenuItem[];
     menuItemsMap: { [key: number]: MenuItem } = {};
     activatedMenuItems: MenuItem[] = [];
-    routerEvents: BehaviorSubject<RouterEvent> = new BehaviorSubject(undefined);
+    routerEvents: BehaviorSubject<any> = new BehaviorSubject(undefined);
     homeRoute = '/app/overview';
 
     constructor(injector: Injector, private router: Router, private changeDetectorRef: ChangeDetectorRef) {
         super(injector);
-        this.router.events.subscribe(this.routerEvents);
+        this.router.events.subscribe((event) => {
+            this.routerEvents.next(event)
+        });
     }
 
     ngOnInit(): void {
