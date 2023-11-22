@@ -76,6 +76,10 @@ import { CreateGroupModalComponent } from './edit/create-group-modal/create-grou
 import { CreatePackageModalComponent } from './edit/create-package-modal/create-package-modal.component';
 import { EditPackageModalComponent } from './edit/edit-package-modal/edit-package-modal.component';
 import { AssetImageCarouselComponent } from './asset/asset-image-carousel/asset-image-carousel.component';
+import { PackageTimelineChartComponent } from './package/package-timeline-chart/package-timeline-chart.component';
+import { PackageComponent } from './package/package.component';
+import { PackageBarChartComponent } from './package/package-bar-chart/package-bar-chart.component';
+import { PackageChartWrapperComponent } from './package/package-chart-wrapper/package-chart-wrapper.component';
 
 @NgModule({
     declarations: [
@@ -137,7 +141,11 @@ import { AssetImageCarouselComponent } from './asset/asset-image-carousel/asset-
         CreateGroupModalComponent,
         CreatePackageModalComponent,
         EditPackageModalComponent,
-        AssetImageCarouselComponent
+        AssetImageCarouselComponent,
+        PackageTimelineChartComponent,
+        PackageComponent,
+        PackageBarChartComponent,
+        PackageChartWrapperComponent
     ],
     imports: [
         CommonModule,

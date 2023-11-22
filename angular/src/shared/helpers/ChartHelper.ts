@@ -1,4 +1,4 @@
-import { ChartDto, VizType } from '@shared/service-proxies/service-proxies';
+import { ChartDto, Criticality, VizType } from '@shared/service-proxies/service-proxies';
 import { ApexAxisChartSeries, ApexChart, ApexNonAxisChartSeries, ApexXAxis, ApexYAxis, ChartType } from 'ng-apexcharts';
 
 export class ChartHelper {
@@ -192,6 +192,19 @@ export class ChartHelper {
         return '#17a2b8';
       default:
         return '#007bff';
+    }
+  }
+
+  static getColorForCriticality(criticality: Criticality): string {
+    switch (criticality) {
+      case Criticality._1:
+        return '#28a745';
+      case Criticality._3:
+        return '#ffc107';
+      case Criticality._5:
+        return '#dc3545';
+      default:
+        return '#28a745';
     }
   }
 }

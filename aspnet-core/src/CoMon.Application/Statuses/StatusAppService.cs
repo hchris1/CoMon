@@ -124,7 +124,7 @@ namespace CoMon.Statuses
             };
         }
 
-        public async Task<PagedResultDto<StatusPreviewDto>> GetStatusTable(PagedResultRequestDto request, long? assetId, long? groupId, Criticality? criticality, bool latestOnly = true)
+        public async Task<PagedResultDto<StatusPreviewDto>> GetStatusTable(PagedResultRequestDto request, long? assetId, long? groupId, long? packageId, Criticality? criticality, bool latestOnly = true)
         {
             IQueryable<Status> query = _statusRepository
                 .GetAll()
@@ -155,6 +155,9 @@ namespace CoMon.Statuses
                     s.Package.Asset.Group.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Id == groupId
                     );
             }
+
+            if (packageId != null)
+                query = query.Where(s => s.Package.Id == packageId);
 
             if (latestOnly)
             {

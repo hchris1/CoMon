@@ -4,21 +4,26 @@
   [style.background]="getBackgroundStyle()"
   *ngIf="status"
 >
-  <h4 *ngIf="status" class="modal-title pull-left">
-    {{ getEmoji() }} {{ status.package.name }}
-  </h4>
+  <button class="btn btn-link" (click)="routeToPackage()">
+    <h4 *ngIf="status" class="modal-title pull-left">
+      {{ getEmoji() }} {{ status.package.name }}
+    </h4>
+  </button>
   <p
     *ngIf="status"
     style="position: absolute; top: 0; right: 1.5rem; margin: 1.5rem"
   >
     {{ status.time.format("DD.MM.YYYY HH:mm:ss") }}
   </p>
-  <app-path
-    *ngIf="status"
-    [group]="status.package.asset?.group"
-    [asset]="status.package.asset"
-    (pathClicked)="closeClicked()"
-  ></app-path>
+  <div class="row">
+    <app-path
+      *ngIf="status"
+      [group]="status.package.asset?.group"
+      [asset]="status.package.asset"
+      (pathClicked)="closeClicked()"
+      class="col pl-4"
+    ></app-path>
+  </div>
   <button
     type="button"
     class="btn-close close pull-right"

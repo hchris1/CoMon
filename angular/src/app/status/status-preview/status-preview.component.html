@@ -1,10 +1,9 @@
-<div
-  class="card border-0"
-  style="cursor: pointer"
-  *ngIf="statusPreview"
-  (click)="openStatusModal()"
->
-  <div class="card-header" [style.background]="getBackgroundStyle()">
+<div class="card border-0" style="cursor: pointer" *ngIf="statusPreview">
+  <div
+    class="card-header"
+    [style.background]="getBackgroundStyle()"
+    (click)="openStatusModal()"
+  >
     <div class="row justify-content-between">
       <p class="col card-title" style="float: none">
         {{ getEmoji() }} {{ statusPreview.package?.name }}
@@ -50,6 +49,11 @@
       ></app-path>
     </div>
   </div>
+  <!-- <div class="card-body">
+    <app-package-timeline-chart
+      [packageId]="statusPreview.package.id"
+    ></app-package-timeline-chart>
+  </div> -->
   <!-- <div class="card-body" (click)="openStatusModal()">
     <div class="container-fluid">
       <div class="row pt-2">

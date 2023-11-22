@@ -1,0 +1,46 @@
+<div [@routerTransition] *ngIf="package">
+  <section class="content-header">
+    <h1>{{ package.name }}</h1>
+    <app-path [group]="package.asset.group" [asset]="package.asset">
+      *ngIf="package"
+    </app-path>
+  </section>
+
+  <section class="content">
+    <div class="row" *ngIf="statusChanged">
+      <button class="btn col-12" (click)="refresh()">
+        <alert type="info">
+          {{ "StatusTable.RefreshAvailable" | localize }}
+        </alert>
+      </button>
+    </div>
+    <tabset>
+      <tab heading="24h" (selectTab)="tabChanged()">
+        <app-package-chart-wrapper
+          [packageId]="packageId"
+          [triggerReload]="triggerReload"
+          [triggerRender]="triggerRender"
+        ></app-package-chart-wrapper>
+      </tab>
+      <tab heading="30d" (selectTab)="tabChanged()">
+        <app-package-chart-wrapper
+          [packageId]="packageId"
+          [triggerReload]="triggerReload"
+          [triggerRender]="triggerRender"
+          [numHours]="720"
+        ></app-package-chart-wrapper>
+      </tab>
+    </tabset>
+  </section>
+
+  <section class="content-header">
+    <h1>Table</h1>
+  </section>
+  <app-status-table
+    [showAssetGroupFilter]="false"
+    [showLatestOnlyFilter]="false"
+    [packageId]="packageId"
+    [showRefreshBanner]="false"
+    [triggerReload]="triggerReload"
+  ></app-status-table>
+</div>

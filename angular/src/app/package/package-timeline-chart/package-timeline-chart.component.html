@@ -1,0 +1,17 @@
+<apx-chart
+  [series]="chartOptions.series"
+  [chart]="chartOptions.chart"
+  [plotOptions]="chartOptions.plotOptions"
+  [xaxis]="chartOptions.xaxis"
+  [grid]="chartOptions.grid"
+  [yaxis]="chartOptions.yaxis"
+  *ngIf="chartOptions"
+  #chartObj
+></apx-chart>
+
+<!-- Show loading animation -->
+<div class="d-flex justify-content-center" *ngIf="!chartOptions">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>

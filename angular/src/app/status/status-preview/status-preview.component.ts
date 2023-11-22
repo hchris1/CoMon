@@ -5,6 +5,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { StatusModalComponent } from '../status-modal/status-modal.component';
 import { EditPackageModalComponent } from '@app/edit/edit-package-modal/edit-package-modal.component';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-status-preview',
@@ -25,7 +26,8 @@ export class StatusPreviewComponent {
   constructor(
     private _modalService: BsModalService,
     private _packageService: PackageServiceProxy,
-    private _clipboard: Clipboard
+    private _clipboard: Clipboard,
+    private _router: Router
   ) { }
 
   getBackgroundClass(status: any) {

@@ -5,6 +5,7 @@
         class="form-control col-12"
         [(ngModel)]="option"
         (ngModelChange)="assetGroupChanged($event)"
+        *ngIf="showAssetGroupFilter"
       >
         <option *ngFor="let option of options" [ngValue]="option">
           <div *ngIf="option.isRoot">
@@ -26,6 +27,7 @@
         class="form-control col-lg-2 col-md-3 col-sm-4 col-12"
         [(ngModel)]="criticality"
         (ngModelChange)="setCriticality($event)"
+        *ngIf="showCriticalityFilter"
       >
         <option
           *ngFor="let criticality of criticalities"
@@ -49,6 +51,7 @@
       <div
         class="form-check col-lg-2 col-md-3 col-sm-4 col-12 pt-2"
         style="padding-left: 2rem"
+        *ngIf="showLatestOnlyFilter"
       >
         <input
           class="form-check-input"
@@ -68,7 +71,7 @@
     <hr />
 
     <!-- Info for number of status changes -->
-    <div class="row" *ngIf="statusChanged">
+    <div class="row" *ngIf="statusChanged && showRefreshBanner">
       <button class="btn col-12" (click)="loadStatuses()">
         <alert type="info">
           {{ "StatusTable.RefreshAvailable" | localize }}

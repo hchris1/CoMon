@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { CoMonHubService } from '@app/comon-hub.service';
 import { DynamicStylesHelper } from '@shared/helpers/DynamicStylesHelper';
 import { StatusDto, StatusPreviewDto, StatusServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -21,6 +22,7 @@ export class StatusModalComponent implements OnInit, OnDestroy {
     private _coMonHubService: CoMonHubService,
     private _statusService: StatusServiceProxy,
     private _changeDetector: ChangeDetectorRef,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -66,5 +68,10 @@ export class StatusModalComponent implements OnInit, OnDestroy {
     this.statusId = statusPreview.id;
     this.loadStatus();
     this.reloadHistory.emit(statusPreview);
+  }
+
+  routeToPackage() {
+    this._router.navigate(['app', 'overview', 'packages', this.status.package.id]);
+    this.closeClicked();
   }
 }

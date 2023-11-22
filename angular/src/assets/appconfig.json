@@ -1,6 +1,6 @@
 {
-  "remoteServiceBaseUrl": "https://localhost:44311",
-  "appBaseUrl": "http://localhost:4200",
+  "remoteServiceBaseUrl": "https://comonbackend.hchris.cloud",
+  "appBaseUrl": "https://comon.hchris.cloud",
   "localeMappings": [
     {
       "from": "pt-BR",

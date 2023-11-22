@@ -9,6 +9,7 @@ import { ChangePasswordComponent } from './users/change-password/change-password
 import { AssetComponent } from './asset/asset.component';
 import { GroupComponent } from './group/group.component';
 import { StatusTableComponent } from './status/status-table/status-table.component';
+import { PackageComponent } from './package/package.component';
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { StatusTableComponent } from './status/status-table/status-table.compone
                     { path: 'overview', component: GroupComponent, canActivate: [AppRouteGuard] },
                     { path: 'overview/:id', component: GroupComponent, canActivate: [AppRouteGuard] },
                     { path: 'overview/assets/:id', component: AssetComponent, canActivate: [AppRouteGuard] },
+                    { path: 'overview/packages/:id', component: PackageComponent, canActivate: [AppRouteGuard] },
                     { path: 'table', component: StatusTableComponent, canActivate: [AppRouteGuard] },
                     { path: 'users', component: UsersComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },

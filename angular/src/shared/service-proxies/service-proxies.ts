@@ -1396,6 +1396,62 @@ export class PackageServiceProxy {
     }
 
     /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getPreview(id: number | undefined): Observable<PackagePreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Package/GetPreview?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPreview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPreview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PackagePreviewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PackagePreviewDto>;
+        }));
+    }
+
+    protected processGetPreview(response: HttpResponseBase): Observable<PackagePreviewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PackagePreviewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -1547,6 +1603,356 @@ export class PackageServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param hours (optional) 
+     * @return Success
+     */
+    getPackageStatusHistory(id: number | undefined, hours: number | undefined): Observable<StatusPreviewDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Package/GetPackageStatusHistory?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (hours === null)
+            throw new Error("The parameter 'hours' cannot be null.");
+        else if (hours !== undefined)
+            url_ += "hours=" + encodeURIComponent("" + hours) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPackageStatusHistory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPackageStatusHistory(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StatusPreviewDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StatusPreviewDto[]>;
+        }));
+    }
+
+    protected processGetPackageStatusHistory(response: HttpResponseBase): Observable<StatusPreviewDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(StatusPreviewDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param packageId (optional) 
+     * @param numOfHours (optional) 
+     * @param useHourBuckets (optional) 
+     * @return Success
+     */
+    getPackageStatusUpdateBuckets(packageId: number | undefined, numOfHours: number | undefined, useHourBuckets: boolean | undefined): Observable<PackageStatusCountDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Package/GetPackageStatusUpdateBuckets?";
+        if (packageId === null)
+            throw new Error("The parameter 'packageId' cannot be null.");
+        else if (packageId !== undefined)
+            url_ += "packageId=" + encodeURIComponent("" + packageId) + "&";
+        if (numOfHours === null)
+            throw new Error("The parameter 'numOfHours' cannot be null.");
+        else if (numOfHours !== undefined)
+            url_ += "numOfHours=" + encodeURIComponent("" + numOfHours) + "&";
+        if (useHourBuckets === null)
+            throw new Error("The parameter 'useHourBuckets' cannot be null.");
+        else if (useHourBuckets !== undefined)
+            url_ += "useHourBuckets=" + encodeURIComponent("" + useHourBuckets) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPackageStatusUpdateBuckets(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPackageStatusUpdateBuckets(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PackageStatusCountDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PackageStatusCountDto[]>;
+        }));
+    }
+
+    protected processGetPackageStatusUpdateBuckets(response: HttpResponseBase): Observable<PackageStatusCountDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PackageStatusCountDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param packageId (optional) 
+     * @param numOfHours (optional) 
+     * @param useHourBuckets (optional) 
+     * @return Success
+     */
+    getPackageStatusChangeBuckets(packageId: number | undefined, numOfHours: number | undefined, useHourBuckets: boolean | undefined): Observable<PackageStatusCountDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Package/GetPackageStatusChangeBuckets?";
+        if (packageId === null)
+            throw new Error("The parameter 'packageId' cannot be null.");
+        else if (packageId !== undefined)
+            url_ += "packageId=" + encodeURIComponent("" + packageId) + "&";
+        if (numOfHours === null)
+            throw new Error("The parameter 'numOfHours' cannot be null.");
+        else if (numOfHours !== undefined)
+            url_ += "numOfHours=" + encodeURIComponent("" + numOfHours) + "&";
+        if (useHourBuckets === null)
+            throw new Error("The parameter 'useHourBuckets' cannot be null.");
+        else if (useHourBuckets !== undefined)
+            url_ += "useHourBuckets=" + encodeURIComponent("" + useHourBuckets) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPackageStatusChangeBuckets(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPackageStatusChangeBuckets(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PackageStatusCountDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PackageStatusCountDto[]>;
+        }));
+    }
+
+    protected processGetPackageStatusChangeBuckets(response: HttpResponseBase): Observable<PackageStatusCountDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PackageStatusCountDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param packageId (optional) 
+     * @param numOfHours (optional) 
+     * @return Success
+     */
+    getStatusUpdateKPIs(packageId: number | undefined, numOfHours: number | undefined): Observable<KPIDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Package/GetStatusUpdateKPIs?";
+        if (packageId === null)
+            throw new Error("The parameter 'packageId' cannot be null.");
+        else if (packageId !== undefined)
+            url_ += "packageId=" + encodeURIComponent("" + packageId) + "&";
+        if (numOfHours === null)
+            throw new Error("The parameter 'numOfHours' cannot be null.");
+        else if (numOfHours !== undefined)
+            url_ += "numOfHours=" + encodeURIComponent("" + numOfHours) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStatusUpdateKPIs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStatusUpdateKPIs(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<KPIDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<KPIDto[]>;
+        }));
+    }
+
+    protected processGetStatusUpdateKPIs(response: HttpResponseBase): Observable<KPIDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(KPIDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param packageId (optional) 
+     * @param numOfHours (optional) 
+     * @return Success
+     */
+    getStatusChangeKPIs(packageId: number | undefined, numOfHours: number | undefined): Observable<KPIDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Package/GetStatusChangeKPIs?";
+        if (packageId === null)
+            throw new Error("The parameter 'packageId' cannot be null.");
+        else if (packageId !== undefined)
+            url_ += "packageId=" + encodeURIComponent("" + packageId) + "&";
+        if (numOfHours === null)
+            throw new Error("The parameter 'numOfHours' cannot be null.");
+        else if (numOfHours !== undefined)
+            url_ += "numOfHours=" + encodeURIComponent("" + numOfHours) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStatusChangeKPIs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStatusChangeKPIs(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<KPIDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<KPIDto[]>;
+        }));
+    }
+
+    protected processGetStatusChangeKPIs(response: HttpResponseBase): Observable<KPIDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(KPIDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2260,11 +2666,12 @@ export class StatusServiceProxy {
      * @param maxResultCount (optional) 
      * @param assetId (optional) 
      * @param groupId (optional) 
+     * @param packageId (optional) 
      * @param criticality (optional) 
      * @param latestOnly (optional) 
      * @return Success
      */
-    getStatusTable(skipCount: number | undefined, maxResultCount: number | undefined, assetId: number | undefined, groupId: number | undefined, criticality: Criticality | undefined, latestOnly: boolean | undefined): Observable<StatusPreviewDtoPagedResultDto> {
+    getStatusTable(skipCount: number | undefined, maxResultCount: number | undefined, assetId: number | undefined, groupId: number | undefined, packageId: number | undefined, criticality: Criticality | undefined, latestOnly: boolean | undefined): Observable<StatusPreviewDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/Status/GetStatusTable?";
         if (skipCount === null)
             throw new Error("The parameter 'skipCount' cannot be null.");
@@ -2282,6 +2689,10 @@ export class StatusServiceProxy {
             throw new Error("The parameter 'groupId' cannot be null.");
         else if (groupId !== undefined)
             url_ += "groupId=" + encodeURIComponent("" + groupId) + "&";
+        if (packageId === null)
+            throw new Error("The parameter 'packageId' cannot be null.");
+        else if (packageId !== undefined)
+            url_ += "packageId=" + encodeURIComponent("" + packageId) + "&";
         if (criticality === null)
             throw new Error("The parameter 'criticality' cannot be null.");
         else if (criticality !== undefined)
@@ -5953,6 +6364,61 @@ export interface IPackagePreviewDto {
     guid: string;
     type: PackageType;
     asset: AssetPreviewDto;
+}
+
+export class PackageStatusCountDto implements IPackageStatusCountDto {
+    date: moment.Moment;
+    healthyCount: number;
+    warningCount: number;
+    alertCount: number;
+
+    constructor(data?: IPackageStatusCountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.date = _data["date"] ? moment(_data["date"].toString()) : <any>undefined;
+            this.healthyCount = _data["healthyCount"];
+            this.warningCount = _data["warningCount"];
+            this.alertCount = _data["alertCount"];
+        }
+    }
+
+    static fromJS(data: any): PackageStatusCountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PackageStatusCountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["healthyCount"] = this.healthyCount;
+        data["warningCount"] = this.warningCount;
+        data["alertCount"] = this.alertCount;
+        return data;
+    }
+
+    clone(): PackageStatusCountDto {
+        const json = this.toJSON();
+        let result = new PackageStatusCountDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPackageStatusCountDto {
+    date: moment.Moment;
+    healthyCount: number;
+    warningCount: number;
+    alertCount: number;
 }
 
 export enum PackageType {
