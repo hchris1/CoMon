@@ -3,7 +3,7 @@ import { StatusModalComponent } from '@app/status/status-modal/status-modal.comp
 import { ChartHelper } from '@shared/helpers/ChartHelper';
 import { Criticality, PackageServiceProxy, StatusPreviewDto } from '@shared/service-proxies/service-proxies';
 import * as moment from 'moment';
-import { ApexChart, ApexAxisChartSeries, ApexXAxis, ApexPlotOptions, ApexGrid, ApexYAxis, ApexLegend, ApexMarkers, ApexDataLabels, ChartComponent } from 'ng-apexcharts';
+import { ApexChart, ApexAxisChartSeries, ApexXAxis, ApexPlotOptions, ApexGrid, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 export type ChartOptions = {
@@ -52,9 +52,6 @@ export class PackageTimelineChartComponent {
 
   setBoundaryDates() {
     this.minDate = moment().utc().subtract(this.numOfHours, 'hour');
-    // if (this.statusPreviews.length === 0 || this.statusPreviews[0].time > this.minDate) {
-    //   this.minDate = this.statusPreviews[0].time;
-    // }
     this.maxDate = moment().utc();
   }
 
@@ -134,9 +131,7 @@ export class PackageTimelineChartComponent {
       },
       yaxis: {
         show: false,
-        // max of this.numOfHours or earliest status
         min: this.minDate.valueOf(),
-        // min: moment().utc().subtract(this.numOfHours, 'hour').valueOf(),
         max: this.maxDate.add(1, 'hour').valueOf(),
       }
     };

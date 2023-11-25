@@ -38,7 +38,7 @@ export class AssetImageCarouselComponent implements OnInit {
   }
 
   addImage(image: FileParameter) {
-    this._assetService.uploadImage(this.assetId, image).subscribe((result) => {
+    this._assetService.uploadImage(this.assetId, image).subscribe(() => {
       this.loadImages();
     });
   }
