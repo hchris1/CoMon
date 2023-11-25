@@ -67,7 +67,6 @@ import { RangeAreaChartComponent } from './charts/custom-charts/range-area-chart
 import { TreeMapChartComponent } from './charts/custom-charts/tree-map-chart.component';
 import { StatusTableComponent } from './status/status-table/status-table.component';
 import { StatusTimelineComponent } from './status/status-timeline/status-timeline.component';
-import { StatusTimelineSpacerComponent } from './status/status-timeline/status-timeline-spacer/status-timeline-spacer.component';
 import { StatusTimelineButtonComponent } from './status/status-timeline/status-timeline-button/status-timeline-button.component';
 import { StatusPreviewComponent } from './status/status-preview/status-preview.component';
 import { StatusModalComponent } from './status/status-modal/status-modal.component';
@@ -133,7 +132,6 @@ import { PackageChartWrapperComponent } from './package/package-chart-wrapper/pa
         TreeMapChartComponent,
         StatusTableComponent,
         StatusTimelineComponent,
-        StatusTimelineSpacerComponent,
         StatusTimelineButtonComponent,
         StatusPreviewComponent,
         StatusModalComponent,
