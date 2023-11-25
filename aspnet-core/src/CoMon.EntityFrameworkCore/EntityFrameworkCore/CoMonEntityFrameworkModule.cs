@@ -1,8 +1,11 @@
-﻿using Abp.EntityFrameworkCore.Configuration;
+﻿using Abp.Dependency;
+using Abp.EntityFrameworkCore;
+using Abp.EntityFrameworkCore.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Zero.EntityFrameworkCore;
 using CoMon.EntityFrameworkCore.Seed;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoMon.EntityFrameworkCore
 {
@@ -41,6 +44,20 @@ namespace CoMon.EntityFrameworkCore
 
         public override void PostInitialize()
         {
+            using (var scope = IocManager.CreateScope())
+            {
+                var dbContextResolver = scope.Resolve<IDbContextResolver>();
+                var context = dbContextResolver.Resolve<CoMonDbContext>(Configuration.DefaultNameOrConnectionString, null);
+
+                if (context.Database.IsNpgsql())
+                {
+                    Logger.Info("Applying migrations...");
+                    context.Database.Migrate();
+                    Logger.Info("Finished migrations");
+                }
+            }
+
+
             if (!SkipDbSeed)
             {
                 SeedHelper.SeedHostDb(IocManager);

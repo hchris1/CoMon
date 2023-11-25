@@ -64,7 +64,7 @@ namespace CoMon.Assets
 
             var asset = new Asset()
             {
-                Name = input.Name,
+                Name = input.Name.Trim(),
                 Description = input.Description,
                 Group = group
             };
@@ -77,7 +77,7 @@ namespace CoMon.Assets
             var asset = await _assetRepository.GetAsync(id)
                 ?? throw new EntityNotFoundException("Asset not found.");
 
-            asset.Name = name;
+            asset.Name = name.Trim();
             await _assetRepository.UpdateAsync(asset);
         }
 
@@ -86,7 +86,7 @@ namespace CoMon.Assets
             var asset = await _assetRepository.GetAsync(id)
                 ?? throw new EntityNotFoundException("Asset not found.");
 
-            asset.Description = description;
+            asset.Description = description.Trim();
             await _assetRepository.UpdateAsync(asset);
         }
 
@@ -110,54 +110,12 @@ namespace CoMon.Assets
 
         public async Task Delete(long id)
         {
-            //var asset = await _assetRepository
-            //    .GetAll()
-            //    .Where(p => p.Id == id)
-                //.Include(a => a.Images)
-                //.Include(a => a.Packages)
-                //.ThenInclude(p => p.PingPackageSettings)
-                //.Include(a => a.Packages)
-                //.ThenInclude(p => p.Statuses)
-                //.ThenInclude(s => s.KPIs)
-                //.Include(a => a.Packages)
-                //.ThenInclude(p => p.Statuses)
-                //.ThenInclude(s => s.Charts)
-                //.ThenInclude(c => c.Series)
-                //.ThenInclude(s => s.DataPoints)
-                //.FirstOrDefaultAsync()
-                //?? throw new EntityNotFoundException("Asset not found.");
             await _assetRepository.DeleteAsync(id);
-        }
-
-        private Image CreateImageFromFormFile(IFormFile file)
-        {
-            if (file == null || file.Length <= 0)
-                throw new AbpValidationException("Invalid file.");
-
-            // Check that size of image is less than 2MB
-            if (file.Length > 2 * 1024 * 1024)
-                throw new AbpValidationException("Image size must be less than 5MB.");
-
-            // Check if mime type is valid
-            var mimeType = file.ContentType;
-            if (mimeType != "image/jpeg" && mimeType != "image/png" && mimeType != "image/gif" && mimeType != "image/svg+xml")
-                throw new AbpValidationException("Invalid mime type. Must be image/jpeg, image/png, image/gif, or image/svg.");
-
-            using var stream = file.OpenReadStream();
-            using var binaryReader = new BinaryReader(stream);
-            var data = binaryReader.ReadBytes((int)file.Length);
-
-            return new Image
-            {
-                MimeType = mimeType,
-                Data = data,
-                Size = file.Length
-            };
         }
 
         public async Task UploadImage(long id, IFormFile file)
         {
-            var image = CreateImageFromFormFile(file);
+            var image = Image.CreateImageFromFormFile(file);
 
             var asset = await _assetRepository
                 .GetAll()

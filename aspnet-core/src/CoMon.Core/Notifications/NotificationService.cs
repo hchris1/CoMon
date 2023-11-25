@@ -1,48 +1,59 @@
 ﻿using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Events.Bus.Entities;
+using Abp.Events.Bus.Handlers;
+using CoMon.Packages;
 using CoMon.Statuses;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoMon.Notifications
 {
-    public class NotificationService : ISingletonDependency
+    public class NotificationService : ISingletonDependency, INotificationService, IAsyncEventHandler<EntityCreatedEventData<Status>>
     {
         private readonly CoMonHub _comonHub;
-        private readonly IRepository<Status, long> _statusRepository;
+        private readonly IRepository<Package, long> _packageRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
-        public NotificationService(CoMonHub comonHub, IRepository<Status, long> statusRepository, IUnitOfWorkManager unitOfWorkManager)
+        public NotificationService(CoMonHub comonHub, IUnitOfWorkManager unitOfWorkManager, IRepository<Package, long> packageRepository)
         {
             _comonHub = comonHub;
-            _statusRepository = statusRepository;
             _unitOfWorkManager = unitOfWorkManager;
-        }
-        public async Task SendStatusUpdate(Status status)
-        {
-            await _comonHub.SendStatusUpdate(status);
-            await CheckAndSendStatusChange(status);
+            _packageRepository = packageRepository;
         }
 
-        private async Task CheckAndSendStatusChange(Status status)
+        public async Task HandleEventAsync(EntityCreatedEventData<Status> eventData)
         {
-            using var uow = _unitOfWorkManager.Begin();
-            var previousCriticality = _statusRepository
-                .GetAll()
-                .Include(s => s.Package)
-                .Where(s => s.Package.Id == status.Package.Id)
-                .Where(s => s.Time < status.Time)
-                .OrderByDescending(s => s.Time)
-                .Select(s => s.Criticality)
-                .FirstOrDefault();
-            uow.Complete();
+            try
+            {
+                using var uow = _unitOfWorkManager.Begin();
+                var status = eventData.Entity;
 
-            if (previousCriticality == status.Criticality)
-                return;
+                var package = await _packageRepository
+                        .GetAll()
+                        .Where(p => p.Id == status.PackageId)
+                        .Include(p => p.Asset)
+                        .Include(p => p.Statuses
+                            .Where(s => s.Time < status.Time)
+                            .OrderByDescending(s => s.Time)
+                            .Take(1))
+                        .FirstOrDefaultAsync();
+                uow.Complete();
 
-            await _comonHub.SendStatusChange(status, previousCriticality);
+                status.Package = package;
+                await _comonHub.SendStatusUpdate(status);
+
+                if (status.Criticality != package.LastStatus?.Criticality)
+                    await _comonHub.SendStatusChange(status, package.LastStatus.Criticality);
+
+            }
+            catch (Exception ex)
+            {
+                var a = ex.Message;
+            }
         }
     }
 }

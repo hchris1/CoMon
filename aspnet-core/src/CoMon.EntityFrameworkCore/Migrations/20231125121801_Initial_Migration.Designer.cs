@@ -13,15 +13,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoMon.Migrations
 {
     [DbContext(typeof(CoMonDbContext))]
-    [Migration("20231115113551_Remove_Image_Auditing")]
-    partial class Remove_Image_Auditing
+    [Migration("20231125121801_Initial_Migration")]
+    partial class Initial_Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -86,7 +86,8 @@ namespace CoMon.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(21)
+                        .HasColumnType("character varying(21)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -202,7 +203,8 @@ namespace CoMon.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(21)
+                        .HasColumnType("character varying(21)");
 
                     b.Property<bool>("IsGranted")
                         .HasColumnType("boolean");
@@ -1654,17 +1656,15 @@ namespace CoMon.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<byte[]>("Data")
+                        .HasMaxLength(2097152)
                         .HasColumnType("bytea");
 
                     b.Property<string>("MimeType")
                         .HasColumnType("text");
-
-                    b.Property<long>("Size")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1745,7 +1745,7 @@ namespace CoMon.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<Guid>("Guid")
@@ -1798,13 +1798,10 @@ namespace CoMon.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("Criticality")
-                        .HasColumnType("integer");
-
                     b.Property<List<string>>("Labels")
                         .HasColumnType("text[]");
 
-                    b.Property<long?>("StatusId")
+                    b.Property<long>("StatusId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("SubTitle")
@@ -1831,7 +1828,7 @@ namespace CoMon.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("SeriesId")
+                    b.Property<long>("SeriesId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Tag")
@@ -1864,7 +1861,7 @@ namespace CoMon.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<long?>("StatusId")
+                    b.Property<long>("StatusId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Unit")
@@ -1888,7 +1885,7 @@ namespace CoMon.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("ChartId")
+                    b.Property<long>("ChartId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
@@ -1924,7 +1921,7 @@ namespace CoMon.Migrations
                     b.Property<List<string>>("Messages")
                         .HasColumnType("text[]");
 
-                    b.Property<long?>("PackageId")
+                    b.Property<long>("PackageId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Time")
@@ -2175,9 +2172,13 @@ namespace CoMon.Migrations
 
             modelBuilder.Entity("CoMon.Images.Image", b =>
                 {
-                    b.HasOne("CoMon.Assets.Asset", null)
+                    b.HasOne("CoMon.Assets.Asset", "Asset")
                         .WithMany("Images")
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("CoMon.MultiTenancy.Tenant", b =>
@@ -2211,7 +2212,9 @@ namespace CoMon.Migrations
                 {
                     b.HasOne("CoMon.Assets.Asset", "Asset")
                         .WithMany("Packages")
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CoMon.Packages.Settings.PingPackageSettings", "PingPackageSettings")
                         .WithMany()
@@ -2224,37 +2227,55 @@ namespace CoMon.Migrations
 
             modelBuilder.Entity("CoMon.Statuses.Chart", b =>
                 {
-                    b.HasOne("CoMon.Statuses.Status", null)
+                    b.HasOne("CoMon.Statuses.Status", "Status")
                         .WithMany("Charts")
-                        .HasForeignKey("StatusId");
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("CoMon.Statuses.DataPoint", b =>
                 {
-                    b.HasOne("CoMon.Statuses.Series", null)
+                    b.HasOne("CoMon.Statuses.Series", "Series")
                         .WithMany("DataPoints")
-                        .HasForeignKey("SeriesId");
+                        .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Series");
                 });
 
             modelBuilder.Entity("CoMon.Statuses.KPI", b =>
                 {
-                    b.HasOne("CoMon.Statuses.Status", null)
+                    b.HasOne("CoMon.Statuses.Status", "Status")
                         .WithMany("KPIs")
-                        .HasForeignKey("StatusId");
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("CoMon.Statuses.Series", b =>
                 {
-                    b.HasOne("CoMon.Statuses.Chart", null)
+                    b.HasOne("CoMon.Statuses.Chart", "Chart")
                         .WithMany("Series")
-                        .HasForeignKey("ChartId");
+                        .HasForeignKey("ChartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chart");
                 });
 
             modelBuilder.Entity("CoMon.Statuses.Status", b =>
                 {
                     b.HasOne("CoMon.Packages.Package", "Package")
                         .WithMany("Statuses")
-                        .HasForeignKey("PackageId");
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Package");
                 });

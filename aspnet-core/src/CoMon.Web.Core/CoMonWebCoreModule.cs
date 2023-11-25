@@ -30,7 +30,7 @@ namespace CoMon
         public CoMonWebCoreModule(IWebHostEnvironment env)
         {
             _env = env;
-            _appConfiguration = env.GetAppConfiguration();
+            _appConfiguration = _env.GetAppConfiguration();
         }
 
         public override void PreInitialize()

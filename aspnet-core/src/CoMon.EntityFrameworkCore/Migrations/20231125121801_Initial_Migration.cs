@@ -450,13 +450,13 @@ namespace CoMon.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Groups",
+                name: "CoMonGroups",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    GroupId = table.Column<long>(type: "bigint", nullable: true),
+                    Group = table.Column<long>(type: "bigint", nullable: true),
                     CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
                     LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
@@ -467,12 +467,26 @@ namespace CoMon.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
+                    table.PrimaryKey("PK_CoMonGroups", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Groups_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
+                        name: "FK_CoMonGroups_CoMonGroups_Group",
+                        column: x => x.Group,
+                        principalTable: "CoMonGroups",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CoMonPingPackageSettings",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Host = table.Column<string>(type: "text", nullable: false),
+                    CycleSeconds = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoMonPingPackageSettings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -526,7 +540,7 @@ namespace CoMon.Migrations
                     TenantId = table.Column<int>(type: "integer", nullable: true),
                     Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    Discriminator = table.Column<string>(type: "text", nullable: false),
+                    Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
                     EditionId = table.Column<int>(type: "integer", nullable: true),
                     CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
@@ -802,23 +816,15 @@ namespace CoMon.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Description = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
-                    ImagePaths = table.Column<List<string>>(type: "text[]", nullable: true),
-                    GroupId = table.Column<long>(type: "bigint", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    GroupId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CoMonAssets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CoMonAssets_Groups_GroupId",
+                        name: "FK_CoMonAssets_CoMonGroups_GroupId",
                         column: x => x.GroupId,
-                        principalTable: "Groups",
+                        principalTable: "CoMonGroups",
                         principalColumn: "Id");
                 });
 
@@ -879,7 +885,7 @@ namespace CoMon.Migrations
                     TenantId = table.Column<int>(type: "integer", nullable: true),
                     Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     IsGranted = table.Column<bool>(type: "boolean", nullable: false),
-                    Discriminator = table.Column<string>(type: "text", nullable: false),
+                    Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
                     RoleId = table.Column<int>(type: "integer", nullable: true),
                     UserId = table.Column<long>(type: "bigint", nullable: true),
                     CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -927,6 +933,27 @@ namespace CoMon.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CoMonImages",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Data = table.Column<byte[]>(type: "bytea", maxLength: 2097152, nullable: true),
+                    MimeType = table.Column<string>(type: "text", nullable: true),
+                    AssetId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoMonImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CoMonImages_CoMonAssets_AssetId",
+                        column: x => x.AssetId,
+                        principalTable: "CoMonAssets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CoMonPackages",
                 columns: table => new
                 {
@@ -934,14 +961,9 @@ namespace CoMon.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    AssetId = table.Column<long>(type: "bigint", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    PingPackageSettingsId = table.Column<long>(type: "bigint", nullable: true),
+                    Guid = table.Column<Guid>(type: "uuid", nullable: false),
+                    AssetId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -950,6 +972,12 @@ namespace CoMon.Migrations
                         name: "FK_CoMonPackages_CoMonAssets_AssetId",
                         column: x => x.AssetId,
                         principalTable: "CoMonAssets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CoMonPackages_CoMonPingPackageSettings_PingPackageSettingsId",
+                        column: x => x.PingPackageSettingsId,
+                        principalTable: "CoMonPingPackageSettings",
                         principalColumn: "Id");
                 });
 
@@ -960,9 +988,9 @@ namespace CoMon.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Criticality = table.Column<int>(type: "integer", nullable: false),
+                    Criticality = table.Column<int>(type: "integer", nullable: true),
                     Messages = table.Column<List<string>>(type: "text[]", nullable: true),
-                    PackageId = table.Column<long>(type: "bigint", nullable: true)
+                    PackageId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -971,7 +999,31 @@ namespace CoMon.Migrations
                         name: "FK_CoMonStatuses_CoMonPackages_PackageId",
                         column: x => x.PackageId,
                         principalTable: "CoMonPackages",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CoMonCharts",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    SubTitle = table.Column<string>(type: "text", nullable: true),
+                    Labels = table.Column<List<string>>(type: "text[]", nullable: true),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    StatusId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoMonCharts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CoMonCharts_CoMonStatuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "CoMonStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -983,7 +1035,7 @@ namespace CoMon.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     Value = table.Column<double>(type: "double precision", nullable: true),
                     Unit = table.Column<string>(type: "text", nullable: true),
-                    StatusId = table.Column<long>(type: "bigint", nullable: true)
+                    StatusId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -992,7 +1044,54 @@ namespace CoMon.Migrations
                         name: "FK_CoMonKPIs_CoMonStatuses_StatusId",
                         column: x => x.StatusId,
                         principalTable: "CoMonStatuses",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CoMonSeries",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    VizType = table.Column<int>(type: "integer", nullable: false),
+                    XUnit = table.Column<string>(type: "text", nullable: true),
+                    YUnit = table.Column<string>(type: "text", nullable: true),
+                    ChartId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoMonSeries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CoMonSeries_CoMonCharts_ChartId",
+                        column: x => x.ChartId,
+                        principalTable: "CoMonCharts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CoMonDataPoints",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Time = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Tag = table.Column<string>(type: "text", nullable: true),
+                    X = table.Column<double>(type: "double precision", nullable: true),
+                    Y = table.Column<List<double>>(type: "double precision[]", nullable: true),
+                    SeriesId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoMonDataPoints", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CoMonDataPoints_CoMonSeries_SeriesId",
+                        column: x => x.SeriesId,
+                        principalTable: "CoMonSeries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -1350,6 +1449,26 @@ namespace CoMon.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CoMonCharts_StatusId",
+                table: "CoMonCharts",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CoMonDataPoints_SeriesId",
+                table: "CoMonDataPoints",
+                column: "SeriesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CoMonGroups_Group",
+                table: "CoMonGroups",
+                column: "Group");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CoMonImages_AssetId",
+                table: "CoMonImages",
+                column: "AssetId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CoMonKPIs_StatusId",
                 table: "CoMonKPIs",
                 column: "StatusId");
@@ -1360,14 +1479,19 @@ namespace CoMon.Migrations
                 column: "AssetId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CoMonPackages_PingPackageSettingsId",
+                table: "CoMonPackages",
+                column: "PingPackageSettingsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CoMonSeries_ChartId",
+                table: "CoMonSeries",
+                column: "ChartId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CoMonStatuses_PackageId",
                 table: "CoMonStatuses",
                 column: "PackageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Groups_GroupId",
-                table: "Groups",
-                column: "GroupId");
         }
 
         /// <inheritdoc />
@@ -1455,6 +1579,12 @@ namespace CoMon.Migrations
                 name: "AbpWebhookSubscriptions");
 
             migrationBuilder.DropTable(
+                name: "CoMonDataPoints");
+
+            migrationBuilder.DropTable(
+                name: "CoMonImages");
+
+            migrationBuilder.DropTable(
                 name: "CoMonKPIs");
 
             migrationBuilder.DropTable(
@@ -1473,7 +1603,7 @@ namespace CoMon.Migrations
                 name: "AbpWebhookEvents");
 
             migrationBuilder.DropTable(
-                name: "CoMonStatuses");
+                name: "CoMonSeries");
 
             migrationBuilder.DropTable(
                 name: "AbpDynamicProperties");
@@ -1485,13 +1615,22 @@ namespace CoMon.Migrations
                 name: "AbpUsers");
 
             migrationBuilder.DropTable(
+                name: "CoMonCharts");
+
+            migrationBuilder.DropTable(
+                name: "CoMonStatuses");
+
+            migrationBuilder.DropTable(
                 name: "CoMonPackages");
 
             migrationBuilder.DropTable(
                 name: "CoMonAssets");
 
             migrationBuilder.DropTable(
-                name: "Groups");
+                name: "CoMonPingPackageSettings");
+
+            migrationBuilder.DropTable(
+                name: "CoMonGroups");
         }
     }
 }

@@ -57,7 +57,7 @@ namespace CoMon.Groups
         {
             var group = new Group()
             {
-                Name = input.Name
+                Name = input.Name.Trim()
             };
 
             // Insert in root
@@ -84,7 +84,7 @@ namespace CoMon.Groups
             var group = await _groupRepository.GetAsync(id)
                 ?? throw new EntityNotFoundException("Group not found.");
 
-            group.Name = name;
+            group.Name = name.Trim();
             await _groupRepository.UpdateAsync(group);
         }
 
@@ -132,7 +132,6 @@ namespace CoMon.Groups
                     .OrderByDescending(s => s.Time)
                     .Take(1))
                 .Include(g => g.Assets)
-                .ThenInclude(a => a.Images)
                 .FirstOrDefaultAsync();
 
             return _objectMapper.Map<GroupDto>(group);
