@@ -26,32 +26,21 @@ using Microsoft.EntityFrameworkCore;
 namespace CoMon.Users
 {
     [AbpAuthorize(PermissionNames.Pages_Users)]
-    public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUserResultRequestDto, CreateUserDto, UserDto>, IUserAppService
+    public class UserAppService(
+        IRepository<User, long> repository,
+        UserManager userManager,
+        RoleManager roleManager,
+        IRepository<Role> roleRepository,
+        IPasswordHasher<User> passwordHasher,
+        IAbpSession abpSession,
+        LogInManager logInManager) : AsyncCrudAppService<User, UserDto, long, PagedUserResultRequestDto, CreateUserDto, UserDto>(repository), IUserAppService
     {
-        private readonly UserManager _userManager;
-        private readonly RoleManager _roleManager;
-        private readonly IRepository<Role> _roleRepository;
-        private readonly IPasswordHasher<User> _passwordHasher;
-        private readonly IAbpSession _abpSession;
-        private readonly LogInManager _logInManager;
-
-        public UserAppService(
-            IRepository<User, long> repository,
-            UserManager userManager,
-            RoleManager roleManager,
-            IRepository<Role> roleRepository,
-            IPasswordHasher<User> passwordHasher,
-            IAbpSession abpSession,
-            LogInManager logInManager)
-            : base(repository)
-        {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _roleRepository = roleRepository;
-            _passwordHasher = passwordHasher;
-            _abpSession = abpSession;
-            _logInManager = logInManager;
-        }
+        private readonly UserManager _userManager = userManager;
+        private readonly RoleManager _roleManager = roleManager;
+        private readonly IRepository<Role> _roleRepository = roleRepository;
+        private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
+        private readonly IAbpSession _abpSession = abpSession;
+        private readonly LogInManager _logInManager = logInManager;
 
         public override async Task<UserDto> CreateAsync(CreateUserDto input)
         {
@@ -103,18 +92,18 @@ namespace CoMon.Users
         [AbpAuthorize(PermissionNames.Pages_Users_Activation)]
         public async Task Activate(EntityDto<long> user)
         {
-            await Repository.UpdateAsync(user.Id, async (entity) =>
-            {
+            await Repository.UpdateAsync(user.Id, (entity) => {
                 entity.IsActive = true;
+                return Task.CompletedTask;
             });
         }
 
         [AbpAuthorize(PermissionNames.Pages_Users_Activation)]
         public async Task DeActivate(EntityDto<long> user)
         {
-            await Repository.UpdateAsync(user.Id, async (entity) =>
-            {
+            await Repository.UpdateAsync(user.Id, (entity) => {
                 entity.IsActive = false;
+                return Task.CompletedTask;
             });
         }
 
@@ -153,7 +142,7 @@ namespace CoMon.Users
             var roles = _roleManager.Roles.Where(r => roleIds.Contains(r.Id)).Select(r => r.NormalizedName);
 
             var userDto = base.MapToEntityDto(user);
-            userDto.RoleNames = roles.ToArray();
+            userDto.RoleNames = [.. roles];
 
             return userDto;
         }
@@ -167,12 +156,8 @@ namespace CoMon.Users
 
         protected override async Task<User> GetEntityByIdAsync(long id)
         {
-            var user = await Repository.GetAllIncluding(x => x.Roles).FirstOrDefaultAsync(x => x.Id == id);
-
-            if (user == null)
-            {
-                throw new EntityNotFoundException(typeof(User), id);
-            }
+            var user = await Repository.GetAllIncluding(x => x.Roles).FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new EntityNotFoundException(typeof(User), id);
 
             return user;
         }
@@ -191,12 +176,9 @@ namespace CoMon.Users
         {
             await _userManager.InitializeOptionsAsync(AbpSession.TenantId);
 
-            var user = await _userManager.FindByIdAsync(AbpSession.GetUserId().ToString());
-            if (user == null)
-            {
-                throw new Exception("There is no current user!");
-            }
-            
+            var user = await _userManager.FindByIdAsync(AbpSession.GetUserId().ToString())
+                ?? throw new Exception("There is no current user!");
+
             if (await _userManager.CheckPasswordAsync(user, input.CurrentPassword))
             {
                 CheckErrors(await _userManager.ChangePasswordAsync(user, input.NewPassword));
@@ -218,19 +200,19 @@ namespace CoMon.Users
             {
                 throw new UserFriendlyException("Please log in before attempting to reset password.");
             }
-            
+
             var currentUser = await _userManager.GetUserByIdAsync(_abpSession.GetUserId());
             var loginAsync = await _logInManager.LoginAsync(currentUser.UserName, input.AdminPassword, shouldLockout: false);
             if (loginAsync.Result != AbpLoginResultType.Success)
             {
                 throw new UserFriendlyException("Your 'Admin Password' did not match the one on record.  Please try again.");
             }
-            
+
             if (currentUser.IsDeleted || !currentUser.IsActive)
             {
                 return false;
             }
-            
+
             var roles = await _userManager.GetRolesAsync(currentUser);
             if (!roles.Contains(StaticRoleNames.Tenants.Admin))
             {

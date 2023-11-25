@@ -12,18 +12,12 @@ using System.Threading.Tasks;
 
 namespace CoMon.Notifications
 {
-    public class NotificationService : ISingletonDependency, INotificationService, IAsyncEventHandler<EntityCreatedEventData<Status>>
+    public class NotificationService(CoMonHub comonHub, IUnitOfWorkManager unitOfWorkManager, IRepository<Package, long> packageRepository)
+        : ISingletonDependency, INotificationService, IAsyncEventHandler<EntityCreatedEventData<Status>>
     {
-        private readonly CoMonHub _comonHub;
-        private readonly IRepository<Package, long> _packageRepository;
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
-
-        public NotificationService(CoMonHub comonHub, IUnitOfWorkManager unitOfWorkManager, IRepository<Package, long> packageRepository)
-        {
-            _comonHub = comonHub;
-            _unitOfWorkManager = unitOfWorkManager;
-            _packageRepository = packageRepository;
-        }
+        private readonly CoMonHub _comonHub = comonHub;
+        private readonly IRepository<Package, long> _packageRepository = packageRepository;
+        private readonly IUnitOfWorkManager _unitOfWorkManager = unitOfWorkManager;
 
         public async Task HandleEventAsync(EntityCreatedEventData<Status> eventData)
         {

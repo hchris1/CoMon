@@ -12,7 +12,7 @@ namespace CoMon.Statuses
         public string SubTitle { get; set; }
         public List<string> Labels { get; set; }
         public ChartType Type { get; set; }
-        public List<Series> Series { get; set; } = new List<Series>();
+        public List<Series> Series { get; set; } = [];
 
         [ForeignKey(nameof(Status))]
         public long StatusId { get; set; }
@@ -26,7 +26,7 @@ namespace CoMon.Statuses
         public VizType VizType { get; set; }
         public string XUnit { get; set; }
         public string YUnit { get; set; }
-        public List<DataPoint> DataPoints { get; set; } = new List<DataPoint>();
+        public List<DataPoint> DataPoints { get; set; } = [];
 
         [ForeignKey(nameof(Chart))]
         public long ChartId { get; set; }
@@ -39,7 +39,7 @@ namespace CoMon.Statuses
         public DateTime? Time { get; set; }
         public string Tag { get; set; } // Needed for TreeMaps
         public double? X { get; set; }
-        public List<double> Y { get; set; } = new List<double>(); // Support for multiple values needed for RangeArea
+        public List<double> Y { get; set; } = []; // Support for multiple values needed for RangeArea
 
         [ForeignKey(nameof(Series))]
         public long SeriesId { get; set; }

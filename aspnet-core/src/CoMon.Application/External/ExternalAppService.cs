@@ -10,19 +10,12 @@ using System.Threading.Tasks;
 
 namespace CoMon.External
 {
-    public class ExternalAppService : CoMonAppServiceBase
+    public class ExternalAppService(IRepository<Package, long> packageRepository,
+        IRepository<Status, long> statusRepository, IObjectMapper mapper) : CoMonAppServiceBase
     {
-        private readonly IRepository<Package, long> _packageRepository;
-        private readonly IRepository<Status, long> _statusRepository;
-        private readonly IObjectMapper _mapper;
-
-        public ExternalAppService(IRepository<Package, long> packageRepository,
-            IRepository<Status, long> statusRepository, IObjectMapper mapper)
-        {
-            _packageRepository = packageRepository;
-            _statusRepository = statusRepository;
-            _mapper = mapper;
-        }
+        private readonly IRepository<Package, long> _packageRepository = packageRepository;
+        private readonly IRepository<Status, long> _statusRepository = statusRepository;
+        private readonly IObjectMapper _mapper = mapper;
 
         public async Task<long> CreateStatus(Guid packageGuid, CreateStatusDto input)
         {

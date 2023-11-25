@@ -11,19 +11,12 @@ using System.Threading.Tasks;
 
 namespace CoMon.Groups
 {
-    public class GroupAppService : CoMonAppServiceBase, IGroupAppService
+    public class GroupAppService(IRepository<Group, long> groupRepository, IRepository<Asset, long> assetRepository, IObjectMapper objectMapper)
+        : CoMonAppServiceBase, IGroupAppService
     {
-        private readonly IRepository<Group, long> _groupRepository;
-        private readonly IRepository<Asset, long> _assetRepository;
-        private readonly IObjectMapper _objectMapper;
-        public GroupAppService(IRepository<Group, long> groupRepository,
-            IRepository<Asset, long> assetRepository,
-            IObjectMapper objectMapper)
-        {
-            _groupRepository = groupRepository;
-            _assetRepository = assetRepository;
-            _objectMapper = objectMapper;
-        }
+        private readonly IRepository<Group, long> _groupRepository = groupRepository;
+        private readonly IRepository<Asset, long> _assetRepository = assetRepository;
+        private readonly IObjectMapper _objectMapper = objectMapper;
 
         /// <summary>
         /// Creates an artifical root group that contains all asset that don't belong to any group and all top groups.

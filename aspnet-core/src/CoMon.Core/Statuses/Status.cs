@@ -11,9 +11,9 @@ namespace CoMon.Statuses
     {
         public DateTime Time { get; set; }
         public Criticality? Criticality { get; set; }
-        public List<string> Messages { get; set; } = new();
-        public List<KPI> KPIs { get; set; } = new();
-        public List<Chart> Charts { get; set; } = new();
+        public List<string> Messages { get; set; } = [];
+        public List<KPI> KPIs { get; set; } = [];
+        public List<Chart> Charts { get; set; } = [];
 
         [ForeignKey(nameof(Package))]
         public long PackageId { get; set; }

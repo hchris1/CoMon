@@ -11,39 +11,27 @@ using System.Threading.Tasks;
 
 namespace CoMon.Notifications
 {
-    public class CoMonHub : Hub, ITransientDependency
+    public class CoMonHub(IHubContext<CoMonHub> hubContext) : Hub, ITransientDependency
     {
-        public IAbpSession AbpSession { get; set; }
-        protected IHubContext<CoMonHub> HubContext { get; set; }
+        public IAbpSession AbpSession { get; set; } = NullAbpSession.Instance;
+        public IHubContext<CoMonHub> HubContext { get; set; } = hubContext;
+        public ILogger Logger { get; set; } = NullLogger.Instance;
 
-        public ILogger Logger { get; set; }
-
-        public CoMonHub(IHubContext<CoMonHub> hubContext)
+        private readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
-            AbpSession = NullAbpSession.Instance;
-            Logger = NullLogger.Instance;
-            HubContext = hubContext;
-        }
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        };
 
         public async Task SendStatusUpdate(Status status)
         {
-            JsonSerializerOptions options = new()
-            {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles,
-                WriteIndented = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            };
-            var jsonString = JsonSerializer.Serialize(status, options);
+            var jsonString = JsonSerializer.Serialize(status, _jsonSerializerOptions);
             await HubContext.Clients.All.SendAsync("CoMon.Status.Update", jsonString);
         }
 
         public async Task SendStatusChange(Status status, Criticality? previousCriticality)
         {
-            JsonSerializerOptions options = new()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };
-
             var data = new Dictionary<string, object>
             {
                 ["id"] = status.Id,
@@ -56,7 +44,7 @@ namespace CoMon.Notifications
                 ["assetName"] = status.Package.Asset.Name
             };
 
-            var jsonString = JsonSerializer.Serialize(data, options);
+            var jsonString = JsonSerializer.Serialize(data, _jsonSerializerOptions);
             await HubContext.Clients.All.SendAsync("CoMon.Status.Change", jsonString);
         }
 

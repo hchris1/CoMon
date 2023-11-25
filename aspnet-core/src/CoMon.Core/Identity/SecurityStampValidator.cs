@@ -10,16 +10,14 @@ using Abp.Domain.Uow;
 
 namespace CoMon.Identity
 {
-    public class SecurityStampValidator : AbpSecurityStampValidator<Tenant, Role, User>
+    public class SecurityStampValidator(
+        IOptions<SecurityStampValidatorOptions> options,
+        SignInManager signInManager,
+#pragma warning disable CS0618 // Type or member is obsolete
+        ISystemClock systemClock,
+#pragma warning restore CS0618 // Type or member is obsolete
+        ILoggerFactory loggerFactory,
+        IUnitOfWorkManager unitOfWorkManager) : AbpSecurityStampValidator<Tenant, Role, User>(options, signInManager, systemClock, loggerFactory, unitOfWorkManager)
     {
-        public SecurityStampValidator(
-            IOptions<SecurityStampValidatorOptions> options,
-            SignInManager signInManager,
-            ISystemClock systemClock,
-            ILoggerFactory loggerFactory,
-            IUnitOfWorkManager unitOfWorkManager)
-            : base(options, signInManager, systemClock, loggerFactory, unitOfWorkManager)
-        {
-        }
     }
 }

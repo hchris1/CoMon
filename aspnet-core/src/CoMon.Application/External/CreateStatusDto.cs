@@ -27,7 +27,7 @@ namespace CoMon.External
     {
         public string Title { get; set; }
         public string SubTitle { get; set; } = null;
-        public List<string> Labels { get; set; } = new();
+        public List<string> Labels { get; set; } = [];
         public ChartType Type { get; set; }
         public List<CreateSeriesDto> Series { get; set; }
     }
@@ -39,7 +39,7 @@ namespace CoMon.External
         public VizType VizType { get; set; }
         public string XUnit { get; set; } = null;
         public string YUnit { get; set; } = null;
-        public List<CreateDataPointDto> DataPoints { get; set; } = new();
+        public List<CreateDataPointDto> DataPoints { get; set; } = [];
     }
 
     [AutoMapTo(typeof(DataPoint))]
@@ -48,6 +48,6 @@ namespace CoMon.External
         public DateTime? Time { get; set; } = null;
         public string Tag { get; set; } = null;
         public double? X { get; set; } = null;
-        public List<double> Y { get; set; } = new();
+        public List<double> Y { get; set; } = [];
     }
 }

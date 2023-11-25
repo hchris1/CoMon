@@ -9,16 +9,11 @@ using System.Threading.Tasks;
 
 namespace CoMon.Assets
 {
-    public class ImageAppService : CoMonAppServiceBase, IImageAppService
+    public class ImageAppService(IRepository<Image, long> imageRepository, IObjectMapper mapper) 
+        : CoMonAppServiceBase, IImageAppService
     {
-        private readonly IRepository<Image, long> _imageRepository;
-        private readonly IObjectMapper _mapper;
-
-        public ImageAppService(IRepository<Image, long> imageRepository, IObjectMapper mapper)
-        {
-            _imageRepository = imageRepository;
-            _mapper = mapper;
-        }
+        private readonly IRepository<Image, long> _imageRepository = imageRepository;
+        private readonly IObjectMapper _mapper = mapper;
 
         public async Task<ImageDto> GetTitleImageForAsset(long assetId)
         {
@@ -39,7 +34,7 @@ namespace CoMon.Assets
 
         public async Task Delete(long id)
         {
-            _imageRepository.Delete(id);
+            await _imageRepository.DeleteAsync(id);
         }
     }
 }

@@ -14,19 +14,12 @@ using System.Threading.Tasks;
 
 namespace CoMon.Assets
 {
-    public class AssetAppService : CoMonAppServiceBase, IAssetAppService
+    public class AssetAppService(IObjectMapper objectMapper, IRepository<Asset, long> assetRepository,
+        IRepository<Group, long> groupRepository) : CoMonAppServiceBase, IAssetAppService
     {
-        private readonly IObjectMapper _objectMapper;
-        private readonly IRepository<Asset, long> _assetRepository;
-        private readonly IRepository<Group, long> _groupRepository;
-
-        public AssetAppService(IObjectMapper objectMapper, IRepository<Asset, long> assetRepository, 
-            IRepository<Group, long> groupRepository)
-        {
-            _assetRepository = assetRepository;
-            _objectMapper = objectMapper;
-            _groupRepository = groupRepository;
-        }
+        private readonly IObjectMapper _objectMapper = objectMapper;
+        private readonly IRepository<Asset, long> _assetRepository = assetRepository;
+        private readonly IRepository<Group, long> _groupRepository = groupRepository;
 
         public async Task<AssetDto> Get(long id)
         {
