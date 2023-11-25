@@ -107,13 +107,19 @@ namespace CoMon.Web.Host.Startup
             app.UseAuthorization();
 
             app.UseAbpRequestLocalization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
                 endpoints.MapHub<CoMonHub>("/signalr-comonhub");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapFallbackToFile("index.html");
+                endpoints.Map("", context =>
+                {
+                    context.Response.Redirect("/index.html");
+                    return System.Threading.Tasks.Task.CompletedTask;
+                });
             });
 
             // Enable middleware to serve generated Swagger as a JSON endpoint
@@ -129,7 +135,7 @@ namespace CoMon.Web.Host.Startup
                 options.DisplayRequestDuration(); // Controls the display of the request duration (in milliseconds) for "Try it out" requests.  
             }); // URL: /swagger
         }
-        
+
         private void ConfigureSwagger(IServiceCollection services)
         {
             services.AddSwaggerGen(options =>

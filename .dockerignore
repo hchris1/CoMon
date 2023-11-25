@@ -1,0 +1,7 @@
+./angular/.angular
+./angular/bin
+./angular/dist
+./angular/node_modules
+./angular/obj
+./aspnet-core/**/bin
+./aspnet-core/**/obj
