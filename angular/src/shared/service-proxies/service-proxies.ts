@@ -6004,7 +6004,6 @@ export interface IGroupPreviewDto {
 export class ImageDto implements IImageDto {
     id: number;
     mimeType: string | undefined;
-    size: number;
     data: string | undefined;
 
     constructor(data?: IImageDto) {
@@ -6020,7 +6019,6 @@ export class ImageDto implements IImageDto {
         if (_data) {
             this.id = _data["id"];
             this.mimeType = _data["mimeType"];
-            this.size = _data["size"];
             this.data = _data["data"];
         }
     }
@@ -6036,7 +6034,6 @@ export class ImageDto implements IImageDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["mimeType"] = this.mimeType;
-        data["size"] = this.size;
         data["data"] = this.data;
         return data;
     }
@@ -6052,7 +6049,6 @@ export class ImageDto implements IImageDto {
 export interface IImageDto {
     id: number;
     mimeType: string | undefined;
-    size: number;
     data: string | undefined;
 }
 
