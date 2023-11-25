@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { DarkModeService } from '@app/dark-mode.service';
 import { PackageServiceProxy, PackageStatusCountDto } from '@shared/service-proxies/service-proxies';
-import { ApexAxisChartSeries, ApexChart, ApexGrid, ApexPlotOptions, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexGrid, ApexPlotOptions, ApexTheme, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import { BehaviorSubject } from 'rxjs';
 
 export type ChartOptions = {
@@ -10,6 +11,7 @@ export type ChartOptions = {
   yaxis: ApexYAxis;
   plotOptions: ApexPlotOptions;
   grid: ApexGrid;
+  theme: ApexTheme;
 };
 
 @Component({
@@ -33,7 +35,12 @@ export class PackageBarChartComponent implements OnInit {
 
   constructor(
     private _packageService: PackageServiceProxy,
-  ) { }
+    private _darkModeService: DarkModeService
+  ) {
+    this._darkModeService.isDarkMode.subscribe(() => {
+      this.createChartOptions();
+    });
+  }
 
   ngOnInit(): void {
     this.loadData();
@@ -112,10 +119,14 @@ export class PackageBarChartComponent implements OnInit {
           show: true
         },
         stacked: true,
+        background: 'none'
       },
       series: this.series,
       xaxis: {
         type: 'datetime'
+      },
+      theme: {
+        mode: this._darkModeService.isDarkMode.value ? 'dark' : 'light'
       },
     }
   }
