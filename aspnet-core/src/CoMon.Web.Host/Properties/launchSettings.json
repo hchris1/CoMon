@@ -17,8 +17,8 @@
     },
     "CoMon.Web.Host": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "https://localhost:44311/",
+      "launchBrowser": false,
+      "launchUrl": "http://localhost:8080/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
