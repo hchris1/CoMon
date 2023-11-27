@@ -10,6 +10,7 @@ using CoMon.Assets;
 using CoMon.Packages;
 using CoMon.Statuses;
 using CoMon.Images;
+using CoMon.Dashboards;
 
 namespace CoMon.EntityFrameworkCore
 {
@@ -25,6 +26,8 @@ namespace CoMon.EntityFrameworkCore
         public virtual DbSet<Chart> Charts { get; set; }
         public virtual DbSet<Series> Series { get; set; }
         public virtual DbSet<DataPoint> DataPoints { get; set; }
+        public virtual DbSet<Dashboard> Dashboards { get; set; }
+        public virtual DbSet<DashboardTile> DashboardTiles { get; set; }
 
         public CoMonDbContext(DbContextOptions<CoMonDbContext> options)
             : base(options)
