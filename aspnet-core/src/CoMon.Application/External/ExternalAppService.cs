@@ -27,7 +27,7 @@ namespace CoMon.External
                 ?? throw new EntityNotFoundException($"Package not found for GUID {packageGuid}.");
 
             var status = _mapper.Map<Status>(input);
-            status.Time = DateTime.Now;
+            status.Time = DateTime.UtcNow;
             status.Package = package;
             return await _statusRepository.InsertAndGetIdAsync(status);
         }
