@@ -1,0 +1,89 @@
+<div [@routerTransition]>
+  <div>
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-auto">
+            <h1>Dashboards</h1>
+          </div>
+          <button
+            class="col-auto btn btn-primary btn-circle btn-xl"
+            (click)="onCreateDashboardModal()"
+            *ngIf="editMode"
+          >
+            <i class="fa fa-plus"></i>
+          </button>
+          <button
+            type="button"
+            class="col btn btn-circle btn-link text-right"
+            (click)="activateEditMode()"
+            *ngIf="!editMode"
+          >
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+          <button
+            type="button"
+            class="col btn btn-circle btn-link text-right"
+            (click)="deactivateEditMode()"
+            *ngIf="editMode"
+          >
+            <i class="fa-solid fa-check"></i>
+          </button>
+        </div>
+        <p>Help text t.b.d.</p>
+      </div>
+    </section>
+
+    <section class="content" *ngIf="dashboards && !isLoading">
+      <div class="container-fluid">
+        <div class="row">
+          <div
+            class="col-auto card"
+            *ngFor="let dashboard of dashboards"
+            (click)="routeToDashboard(dashboard)"
+          >
+            <div class="card-header">
+              <div class="row">
+                <h4 class="col card-title">{{ dashboard.name }}</h4>
+                <button
+                  class="col-1 btn btn-circle btn-link text"
+                  style="padding: 0 !important"
+                  (click)="openDeletionModal(deletionTemplate, dashboard)"
+                  *ngIf="editMode"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content" *ngIf="isLoading">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<ng-template #deletionTemplate>
+  <div class="modal-body">
+    <p>{{ "Edit.ConfirmDeletion" | localize }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="confirmDeletion()">
+      {{ "Yes" | localize }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="cancelDeletion()">
+      {{ "No" | localize }}
+    </button>
+  </div>
+</ng-template>

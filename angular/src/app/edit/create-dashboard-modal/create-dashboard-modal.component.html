@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <h4>{{ "Edit.CreateDashboardTitle" | localize }}</h4>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="name">{{ "Edit.CreateDashboardName" | localize }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        formControlName="name"
+        placeholder="{{ 'Edit.CreateDashboardNamePlaceholder' | localize }}"
+      />
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+    {{ "Save" | localize }}
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">
+    {{ "Cancel" | localize }}
+  </button>
+</div>

@@ -1,0 +1,71 @@
+<div [@routerTransition]>
+  <div *ngIf="dashboard">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-auto" *ngIf="!editName">
+            <h1>{{ dashboard.name }}</h1>
+          </div>
+          <div class="col-auto" *ngIf="editName">
+            <form [formGroup]="editFormGroup">
+              <input type="text" class="form-control" formControlName="name" />
+            </form>
+          </div>
+          <div class="col-auto" *ngIf="editMode && !editName">
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              style="padding-left: 0 !important"
+              (click)="editNameClicked()"
+            >
+              <i class="fa-solid fa-edit"></i>
+            </button>
+          </div>
+          <div class="col-auto" *ngIf="editMode && editName">
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              (click)="saveNameClicked()"
+            >
+              <i class="fa-solid fa-save"></i>
+            </button>
+          </div>
+          <button
+            type="button"
+            class="col btn btn-circle btn-link text-right"
+            (click)="activateEditMode()"
+            *ngIf="!editMode"
+          >
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+          <button
+            type="button"
+            class="col btn btn-circle btn-link text-right"
+            (click)="deactivateEditMode()"
+            *ngIf="editMode"
+          >
+            <i class="fa-solid fa-check"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <app-dashboard-tile
+            class="col-auto"
+            *ngFor="let tile of dashboard.tiles"
+            [dashboardId]="dashboard.id"
+            [tile]="tile"
+            [editMode]="editMode"
+            [isFirst]="isFirst(tile)"
+            [isLast]="isLast(tile)"
+            (tileDeleted)="loadDashboard()"
+            (tileMoved)="loadDashboard()"
+          ></app-dashboard-tile>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

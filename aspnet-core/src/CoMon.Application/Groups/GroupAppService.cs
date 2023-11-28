@@ -129,5 +129,17 @@ namespace CoMon.Groups
 
             return _objectMapper.Map<GroupDto>(group);
         }
+
+        public async Task<GroupPreviewDto> GetPreview(long id)
+        {
+            var group = await _groupRepository
+                    .GetAll()
+                    .OrderBy(g => g.Name)
+                    .Where(g => g.Parent == null)
+                    .SingleOrDefaultAsync()
+                    ?? throw new EntityNotFoundException("Group not found.");
+
+            return _objectMapper.Map<GroupPreviewDto>(group);
+        }
     }
 }

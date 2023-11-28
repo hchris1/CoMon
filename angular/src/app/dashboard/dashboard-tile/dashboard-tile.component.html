@@ -1,0 +1,62 @@
+<!-- Button to move tile up if editMode true -->
+<div class="container-fluid">
+  <div class="row pr-3" style="justify-content: right">
+    <button
+      type="button"
+      class="col-1 btn btn-circle btn-link"
+      (click)="moveUp()"
+      *ngIf="editMode && !isFirst"
+    >
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+    <button
+      type="button"
+      class="col-1 btn btn-circle btn-link"
+      (click)="moveDown()"
+      *ngIf="editMode && !isLast"
+    >
+      <i class="fa-solid fa-arrow-down"></i>
+    </button>
+    <!-- Delete -->
+    <button
+      type="button"
+      class="col-1 btn btn-circle btn-link"
+      (click)="openDeletionModal(deletionTemplate)"
+      *ngIf="editMode"
+    >
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <app-status-preview
+    *ngIf="statusPreview"
+    [statusPreview]="statusPreview"
+    [showPath]="true"
+  ></app-status-preview>
+  <app-asset-summary
+    *ngIf="asset"
+    [asset]="asset"
+    (assetClicked)="routeToAsset()"
+  ></app-asset-summary>
+  <app-group-summary
+    *ngIf="group"
+    [group]="group"
+    (groupClicked)="routeToGroup()"
+  ></app-group-summary>
+</div>
+
+<ng-template #deletionTemplate>
+  <div class="modal-body">
+    <p>{{ "Edit.ConfirmDeletion" | localize }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="confirmDeletion()">
+      {{ "Yes" | localize }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="cancelDeletion()">
+      {{ "No" | localize }}
+    </button>
+  </div>
+</ng-template>

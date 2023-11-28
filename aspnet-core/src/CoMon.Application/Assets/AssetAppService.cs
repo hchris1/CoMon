@@ -47,6 +47,18 @@ namespace CoMon.Assets
             return _objectMapper.Map<List<AssetPreviewDto>>(assets);    
         }
 
+        public async Task<AssetPreviewDto> GetPreview(long id)
+        {
+            var asset = await _assetRepository
+                    .GetAll()
+                    .Where(a => a.Id == id)
+                    .Include(a => a.Group.Parent.Parent)
+                    .SingleOrDefaultAsync()
+                    ?? throw new EntityNotFoundException("Asset not found.");
+
+            return _objectMapper.Map<AssetPreviewDto>(asset);
+        }
+
         public async Task<long> Create(CreateAssetDto input)
         {
             Group group = null;

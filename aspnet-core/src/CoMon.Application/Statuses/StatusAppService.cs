@@ -36,7 +36,7 @@ namespace CoMon.Statuses
                 .Include(s => s.Charts)
                 .ThenInclude(c => c.Series)
                 .ThenInclude(s => s.DataPoints)
-                .FirstOrDefaultAsync() 
+                .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Status not found.");
 
             status.IsLatest = await IsLatest(status);
@@ -61,7 +61,7 @@ namespace CoMon.Statuses
                 .GetAll()
                 .Include(s => s.Package)
                 .Where(s => s.Id == id)
-                .FirstOrDefaultAsync() 
+                .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Status not found.");
 
             var latestStatus = await _statusRepository
@@ -194,6 +194,23 @@ namespace CoMon.Statuses
                 .ToListAsync();
 
             return _objectMapper.Map<List<StatusPreviewDto>>(statuses);
+        }
+
+        public async Task<StatusPreviewDto> GetLatestStatusPreview(long packageId)
+        {
+            var status = await _statusRepository
+                .GetAll()
+                .Include(s => s.Package)
+                .ThenInclude(p => p.Asset)
+                .ThenInclude(a => a.Group.Parent.Parent)
+                .Where(s => s.Package.Id == packageId)
+                .GroupBy(s => s.Package)
+                .OrderBy(p => p.Key.Name)
+                .Select(g => g.OrderByDescending(s => s.Time).FirstOrDefault())
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("No latest status found.");
+
+            return _objectMapper.Map<StatusPreviewDto>(status);
         }
     }
 }

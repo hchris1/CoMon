@@ -78,6 +78,10 @@ import { AssetImageCarouselComponent } from './asset/asset-image-carousel/asset-
 import { PackageComponent } from './package/package.component';
 import { PackageBarChartComponent } from './package/package-bar-chart/package-bar-chart.component';
 import { PackageChartWrapperComponent } from './package/package-chart-wrapper/package-chart-wrapper.component';
+import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+import { DashboardOverviewComponent } from './dashboard/dashboard-overview/dashboard-overview.component';
+import { CreateDashboardModalComponent } from './edit/create-dashboard-modal/create-dashboard-modal.component';
+import { DashboardTileComponent } from './dashboard/dashboard-tile/dashboard-tile.component';
 
 @NgModule({
     declarations: [
@@ -141,7 +145,11 @@ import { PackageChartWrapperComponent } from './package/package-chart-wrapper/pa
         AssetImageCarouselComponent,
         PackageComponent,
         PackageBarChartComponent,
-        PackageChartWrapperComponent
+        PackageChartWrapperComponent,
+        DashboardComponent,
+        DashboardOverviewComponent,
+        CreateDashboardModalComponent,
+        DashboardTileComponent
     ],
     imports: [
         CommonModule,
