@@ -28,16 +28,12 @@ namespace CoMon.Groups
             {
                 Id = 0,
                 Name = "Root",
-                Assets = _objectMapper.Map<List<AssetDto>>(await _assetRepository
+                AssetIds = await _assetRepository
                     .GetAll()
                     .Where(a => a.Group == null)
                     .OrderBy(a => a.Name)
-                    .Include(a => a.Packages.OrderBy(p => p.Name))
-                    .ThenInclude(p => p.Statuses
-                        .OrderByDescending(s => s.Time)
-                        .Take(1))
-                    .ThenInclude(s => s.KPIs)
-                    .ToListAsync()),
+                    .Select(a => a.Id)
+                    .ToListAsync(),
                 SubGroups = _objectMapper.Map<List<GroupPreviewDto>>(await _groupRepository
                     .GetAll()
                     .OrderBy(g => g.Name)
@@ -134,8 +130,7 @@ namespace CoMon.Groups
         {
             var group = await _groupRepository
                     .GetAll()
-                    .OrderBy(g => g.Name)
-                    .Where(g => g.Parent == null)
+                    .Where(g => g.Id == id)
                     .SingleOrDefaultAsync()
                     ?? throw new EntityNotFoundException("Group not found.");
 

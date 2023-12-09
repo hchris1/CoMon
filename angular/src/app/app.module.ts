@@ -82,6 +82,8 @@ import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { DashboardOverviewComponent } from './dashboard/dashboard-overview/dashboard-overview.component';
 import { CreateDashboardModalComponent } from './edit/create-dashboard-modal/create-dashboard-modal.component';
 import { DashboardTileComponent } from './dashboard/dashboard-tile/dashboard-tile.component';
+import { CreateDashboardTileModalComponent } from './edit/create-dashboard-tile-modal/create-dashboard-tile-modal.component';
+
 
 @NgModule({
     declarations: [
@@ -149,7 +151,8 @@ import { DashboardTileComponent } from './dashboard/dashboard-tile/dashboard-til
         DashboardComponent,
         DashboardOverviewComponent,
         CreateDashboardModalComponent,
-        DashboardTileComponent
+        DashboardTileComponent,
+        CreateDashboardTileModalComponent
     ],
     imports: [
         CommonModule,

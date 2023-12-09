@@ -1,0 +1,91 @@
+<div class="modal-header">
+  <h4>{{ "Edit.CreateDashboardTileTitle" | localize }}</h4>
+</div>
+
+<div class="modal-body" *ngIf="options">
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="type">{{ "Edit.DashboardTileType" | localize }}</label>
+      <select
+        class="form-control"
+        id="type"
+        formControlName="type"
+        class="form-control"
+      >
+        <option *ngFor="let type of types" [value]="type.value">
+          {{ type.name | localize }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Groups -->
+    <div class="form-group" *ngIf="currentType === groupTileType">
+      <h5>{{ "Edit.DashboardTileTypeGroup" | localize }}</h5>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === groupTileType">
+      <label for="type">{{ "Edit.DashboardTileGroup" | localize }}</label>
+      <select
+        class="form-control"
+        id="groupId"
+        formControlName="groupId"
+        class="form-control"
+      >
+        <option *ngFor="let group of options.groups" [value]="group.id">
+          <app-path [group]="group"></app-path>
+        </option>
+      </select>
+    </div>
+
+    <!-- Assets -->
+    <div class="form-group" *ngIf="currentType === assetTileType">
+      <h5>{{ "Edit.DashboardTileTypeAsset" | localize }}</h5>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === assetTileType">
+      <label for="type">{{ "Edit.DashboardTileAsset" | localize }}</label>
+      <select
+        class="form-control"
+        id="assetId"
+        formControlName="assetId"
+        class="form-control"
+      >
+        <option *ngFor="let asset of options.assets" [value]="asset.id">
+          <app-path [group]="asset.group" [asset]="asset"></app-path>
+        </option>
+      </select>
+    </div>
+
+    <!-- Packages -->
+    <div class="form-group" *ngIf="currentType === packageTileType">
+      <h5>{{ "Edit.DashboardTileTypePackage" | localize }}</h5>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === packageTileType">
+      <label for="type">{{ "Edit.DashboardTilePackage" | localize }}</label>
+      <select
+        class="form-control"
+        id="packageId"
+        formControlName="packageId"
+        class="form-control"
+      >
+        <option *ngFor="let package of options.packages" [value]="package.id">
+          <app-path
+            [group]="package.group"
+            [asset]="package.asset"
+            [package]="package"
+          ></app-path>
+        </option>
+      </select>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+    {{ "Create" | localize }}
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">
+    {{ "Cancel" | localize }}
+  </button>
+</div>

@@ -1133,6 +1133,57 @@ export class DashboardServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getDashboardTileOptions(): Observable<DashboardTileOptionDto> {
+        let url_ = this.baseUrl + "/api/services/app/Dashboard/GetDashboardTileOptions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDashboardTileOptions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDashboardTileOptions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DashboardTileOptionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DashboardTileOptionDto>;
+        }));
+    }
+
+    protected processGetDashboardTileOptions(response: HttpResponseBase): Observable<DashboardTileOptionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DashboardTileOptionDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @param tileId (optional) 
      * @return Success
@@ -5800,6 +5851,81 @@ export interface IDashboardTileDto {
     itemId: number;
 }
 
+export class DashboardTileOptionDto implements IDashboardTileOptionDto {
+    groups: GroupPreviewDto[] | undefined;
+    assets: AssetPreviewDto[] | undefined;
+    packages: PackagePreviewDto[] | undefined;
+
+    constructor(data?: IDashboardTileOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["groups"])) {
+                this.groups = [] as any;
+                for (let item of _data["groups"])
+                    this.groups.push(GroupPreviewDto.fromJS(item));
+            }
+            if (Array.isArray(_data["assets"])) {
+                this.assets = [] as any;
+                for (let item of _data["assets"])
+                    this.assets.push(AssetPreviewDto.fromJS(item));
+            }
+            if (Array.isArray(_data["packages"])) {
+                this.packages = [] as any;
+                for (let item of _data["packages"])
+                    this.packages.push(PackagePreviewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): DashboardTileOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DashboardTileOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.groups)) {
+            data["groups"] = [];
+            for (let item of this.groups)
+                data["groups"].push(item.toJSON());
+        }
+        if (Array.isArray(this.assets)) {
+            data["assets"] = [];
+            for (let item of this.assets)
+                data["assets"].push(item.toJSON());
+        }
+        if (Array.isArray(this.packages)) {
+            data["packages"] = [];
+            for (let item of this.packages)
+                data["packages"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): DashboardTileOptionDto {
+        const json = this.toJSON();
+        let result = new DashboardTileOptionDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDashboardTileOptionDto {
+    groups: GroupPreviewDto[] | undefined;
+    assets: AssetPreviewDto[] | undefined;
+    packages: PackagePreviewDto[] | undefined;
+}
+
 export enum DashboardTileType {
     _0 = 0,
     _1 = 1,
@@ -6041,7 +6167,7 @@ export interface IGetRoleForEditOutput {
 export class GroupDto implements IGroupDto {
     id: number;
     name: string | undefined;
-    assets: AssetDto[] | undefined;
+    assetIds: number[] | undefined;
     parent: GroupPreviewDto;
     subGroups: GroupPreviewDto[] | undefined;
 
@@ -6058,10 +6184,10 @@ export class GroupDto implements IGroupDto {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
-            if (Array.isArray(_data["assets"])) {
-                this.assets = [] as any;
-                for (let item of _data["assets"])
-                    this.assets.push(AssetDto.fromJS(item));
+            if (Array.isArray(_data["assetIds"])) {
+                this.assetIds = [] as any;
+                for (let item of _data["assetIds"])
+                    this.assetIds.push(item);
             }
             this.parent = _data["parent"] ? GroupPreviewDto.fromJS(_data["parent"]) : <any>undefined;
             if (Array.isArray(_data["subGroups"])) {
@@ -6083,10 +6209,10 @@ export class GroupDto implements IGroupDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        if (Array.isArray(this.assets)) {
-            data["assets"] = [];
-            for (let item of this.assets)
-                data["assets"].push(item.toJSON());
+        if (Array.isArray(this.assetIds)) {
+            data["assetIds"] = [];
+            for (let item of this.assetIds)
+                data["assetIds"].push(item);
         }
         data["parent"] = this.parent ? this.parent.toJSON() : <any>undefined;
         if (Array.isArray(this.subGroups)) {
@@ -6108,7 +6234,7 @@ export class GroupDto implements IGroupDto {
 export interface IGroupDto {
     id: number;
     name: string | undefined;
-    assets: AssetDto[] | undefined;
+    assetIds: number[] | undefined;
     parent: GroupPreviewDto;
     subGroups: GroupPreviewDto[] | undefined;
 }

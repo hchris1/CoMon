@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutingHelper } from '@shared/helpers/RoutingHelper';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { CreateDashboardTileModalComponent } from '@app/edit/create-dashboard-tile-modal/create-dashboard-tile-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,11 +20,14 @@ export class DashboardComponent {
   editFormGroup: FormGroup;
   id: number;
 
+  createDashboardTileModal: BsModalRef;
+
   constructor(
     formBuilder: FormBuilder,
     private _dashboardService: DashboardServiceProxy,
     private _route: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    private _modalService: BsModalService
   ) {
     this.editFormGroup = formBuilder.group({
       name: ['', [Validators.required]],
@@ -84,5 +89,24 @@ export class DashboardComponent {
 
   isLast(tile: DashboardTileDto) {
     return tile.sortIndex === Math.max(...this.dashboard.tiles.map(x => x.sortIndex));
+  }
+
+  onCreateDashboardModal() {
+    this.createDashboardTileModal = this._modalService.show(CreateDashboardTileModalComponent,
+      {
+        class: 'modal-lg',
+        initialState: {
+          dashboardId: this.dashboard.id
+        }
+      });
+    this.createDashboardTileModal.content.closeBtnName = 'Close';
+
+    this.createDashboardTileModal.content.onClose.subscribe(() => {
+      this.createDashboardTileModal.hide();
+    });
+
+    this.createDashboardTileModal.content.onCreated.subscribe(() => {
+      this.loadDashboard();
+    });
   }
 }

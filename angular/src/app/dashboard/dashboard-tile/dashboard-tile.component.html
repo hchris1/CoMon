@@ -37,7 +37,7 @@
   ></app-status-preview>
   <app-asset-summary
     *ngIf="asset"
-    [asset]="asset"
+    [assetId]="asset.id"
     (assetClicked)="routeToAsset()"
   ></app-asset-summary>
   <app-group-summary

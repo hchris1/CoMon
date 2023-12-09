@@ -12,4 +12,13 @@
       >📇 {{ asset.name }}</a
     >
   </span>
+  <span *ngIf="package">
+    <span class="mx-2">/</span>
+    <a
+      (click)="onPackageClick(package)"
+      class="text-link"
+      style="cursor: pointer"
+      >📦 {{ package.name }}</a
+    >
+  </span>
 </p>

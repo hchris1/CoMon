@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { Router } from '@angular/router';
 import { GroupPathHelper } from '@shared/helpers/GroupPathHelper';
 import { RoutingHelper } from '@shared/helpers/RoutingHelper';
-import { AssetDto, GroupPreviewDto } from '@shared/service-proxies/service-proxies';
+import { AssetDto, GroupPreviewDto, PackagePreviewDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-path',
@@ -11,10 +11,12 @@ import { AssetDto, GroupPreviewDto } from '@shared/service-proxies/service-proxi
 export class PathComponent implements OnInit, OnChanges {
   @Input() group: GroupPreviewDto;
   @Input() asset: AssetDto;
+  @Input() package: PackagePreviewDto;
   @Input() editMode: boolean = false;
   @Output() rootClicked = new EventEmitter<void>();
   @Output() groupClicked = new EventEmitter<GroupPreviewDto>();
   @Output() assetClicked = new EventEmitter<AssetDto>();
+  @Output() packageClicked = new EventEmitter<PackagePreviewDto>();
   @Output() pathClicked = new EventEmitter<void>();
 
   groups: GroupPreviewDto[];
@@ -50,6 +52,12 @@ export class PathComponent implements OnInit, OnChanges {
   onAssetClick(asset: AssetDto) {
     this._router.navigate(['app', 'overview', 'assets', asset.id], RoutingHelper.buildEditModeQueryParams(this.editMode));
     this.assetClicked.emit(asset);
+    this.pathClicked.emit();
+  }
+
+  onPackageClick(packagePreview: PackagePreviewDto) {
+    this._router.navigate(['app', 'overview', 'assets', packagePreview.asset.id], RoutingHelper.buildEditModeQueryParams(this.editMode));
+    this.packageClicked.emit(packagePreview);
     this.pathClicked.emit();
   }
 }

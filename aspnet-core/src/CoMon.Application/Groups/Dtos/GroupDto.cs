@@ -9,7 +9,7 @@ namespace CoMon.Groups.Dtos
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public List<AssetDto> Assets { get; set; }
+        public List<long> AssetIds { get; set; }
         public GroupPreviewDto Parent { get; set; }
         public List<GroupPreviewDto> SubGroups { get; set; }
     }

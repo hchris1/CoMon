@@ -163,15 +163,18 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <p *ngIf="group.assets.length === 0" class="col pl-4">
+          <p
+            *ngIf="group.assetIds && group.assetIds.length === 0"
+            class="col pl-4"
+          >
             {{ "Overview.NoAssets" | localize }}
           </p>
           <div
             class="col-12 col-sm-6 col-md-4"
-            *ngFor="let asset of group.assets"
+            *ngFor="let assetId of group.assetIds"
           >
             <app-asset-summary
-              [asset]="asset"
+              [assetId]="assetId"
               [editMode]="editMode"
               (assetClicked)="routeToAsset($event)"
               (assetDeleted)="loadGroup()"

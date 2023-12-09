@@ -10,10 +10,12 @@ import { Subscription } from 'rxjs';
   templateUrl: './asset-summary.component.html',
 })
 export class AssetSummaryComponent implements OnInit, OnDestroy {
-  @Input() asset: AssetDto;
+  @Input() assetId: number;
   @Input() editMode: boolean = false;
   @Output() assetClicked = new EventEmitter<AssetDto>();
   @Output() assetDeleted = new EventEmitter<null>();
+
+  asset: AssetDto;
 
   confirmDeletionModal: BsModalRef;
   statusChangeSubscription: Subscription;
@@ -28,7 +30,7 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.statusChangeSubscription = this._comonHubService.statusUpdate.subscribe((status) => {
-      if (this.asset.id === status.package.asset.id) {
+      if (this.assetId === status.package.asset.id) {
         this.loadAsset();
       }
     });
@@ -40,7 +42,7 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
   }
 
   loadAsset() {
-    this._assetService.get(this.asset.id).subscribe((asset) => {
+    this._assetService.get(this.assetId).subscribe((asset) => {
       this.asset = asset;
       this._changeDetector.detectChanges();
     });

@@ -3,9 +3,14 @@ using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using Abp.Runtime.Validation;
 using CoMon.Assets;
+using CoMon.Assets.Dtos;
 using CoMon.Dashboards.Dtos;
 using CoMon.Groups;
+using CoMon.Groups.Dtos;
 using CoMon.Packages;
+using CoMon.Packages.Dtos;
+using CoMon.Statuses;
+using CoMon.Statuses.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,15 +25,18 @@ namespace CoMon.Dashboards
         private readonly IRepository<Dashboard, long> _dashboardRepository;
         private readonly IRepository<Group, long> _groupRepository;
         private readonly IRepository<Package, long> _packageRepository;
+        private readonly IRepository<Status, long> _statusRepository;
 
         public DashboardAppService(IObjectMapper mapper, IRepository<Asset, long> assetRepository,
-            IRepository<Dashboard, long> dashboardRepository, IRepository<Group, long> groupRepository, IRepository<Package, long> packageRepository)
+            IRepository<Dashboard, long> dashboardRepository, IRepository<Group, long> groupRepository,
+            IRepository<Package, long> packageRepository, IRepository<Status, long> statusRepository)
         {
             _mapper = mapper;
             _assetRepository = assetRepository;
             _dashboardRepository = dashboardRepository;
             _groupRepository = groupRepository;
             _packageRepository = packageRepository;
+            _statusRepository = statusRepository;
         }
 
         public async Task<List<DashboardDto>> GetAll()
@@ -132,7 +140,28 @@ namespace CoMon.Dashboards
             await _dashboardRepository.UpdateAsync(dashboard);
         }
 
-        // DOESNT WORK YET
+        public async Task<DashboardTileOptionDto> GetDashboardTileOptions()
+        {
+            return new DashboardTileOptionDto()
+            {
+                Assets = _mapper.Map<List<AssetPreviewDto>>(await _assetRepository
+                    .GetAll()
+                    .OrderBy(g => g.Name)
+                    .Include(a => a.Group.Parent.Parent)
+                    .ToListAsync()),
+                Groups = _mapper.Map<List<GroupPreviewDto>>(await _groupRepository
+                    .GetAll()
+                    .OrderBy(g => g.Name)
+                    .Include(g => g.Parent.Parent)
+                    .ToListAsync()),
+                Packages = _mapper.Map<List<PackagePreviewDto>>(await _packageRepository
+                    .GetAll()
+                    .Include(p => p.Asset)
+                    .ThenInclude(a => a.Group.Parent.Parent)
+                    .ToListAsync())
+            };
+        }
+
         public async Task MoveTileUp(long id, long tileId)
         {
             var dashboard = await _dashboardRepository
@@ -154,7 +183,7 @@ namespace CoMon.Dashboards
                 .Where(t => t.SortIndex < tileToMoveUp.SortIndex && t.Id != tileToMoveUp.Id)
                 .FirstOrDefault();
 
-            tileToMoveUp.SortIndex = tileToMoveDown?.SortIndex 
+            tileToMoveUp.SortIndex = tileToMoveDown?.SortIndex
                 ?? throw new AbpValidationException("Can't move the tile further down.");
 
             if (tileToMoveDown != null)
@@ -184,7 +213,7 @@ namespace CoMon.Dashboards
                 .Where(t => t.SortIndex > tileToMoveDown.SortIndex && t.Id != tileToMoveDown.Id)
                 .FirstOrDefault();
 
-            tileToMoveDown.SortIndex = tileToMoveUp?.SortIndex 
+            tileToMoveDown.SortIndex = tileToMoveUp?.SortIndex
                 ?? throw new AbpValidationException("Can't move the tile further down.");
 
             if (tileToMoveUp != null)
