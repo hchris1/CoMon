@@ -62,6 +62,11 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
     return DynamicStylesHelper.getBadgeClass(pack.lastCriticality);
   }
 
+  getCardOutlineClass(asset: AssetDto) {
+    const worstCriticality = DynamicStylesHelper.getWorstCriticality(asset);
+    return DynamicStylesHelper.getCardOutlineClass(worstCriticality);
+  }
+
   onAssetClick(asset: AssetDto) {
     if (this.editMode)
       return;

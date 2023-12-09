@@ -182,6 +182,12 @@
             ></app-status-preview>
           </div>
         </div>
+
+        <div class="row pt-3 pl-1" *ngIf="statusPreviews.length === 0">
+          <div class="col">
+            <p>{{ "Assets.NoPackages" | localize }}</p>
+          </div>
+        </div>
       </div>
     </section>
   </div>

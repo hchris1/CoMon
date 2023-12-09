@@ -1,4 +1,8 @@
-<div class="card border-0" style="cursor: pointer" *ngIf="statusPreview">
+<div
+  class="card {{ getCardOutlineClass() }}"
+  style="cursor: pointer"
+  *ngIf="statusPreview"
+>
   <div
     class="card-header"
     [style.background]="getBackgroundStyle()"

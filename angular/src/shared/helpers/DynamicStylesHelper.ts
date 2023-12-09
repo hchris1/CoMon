@@ -21,6 +21,10 @@ export class DynamicStylesHelper {
     }
   }
 
+  static getCardOutlineClass(criticality: Criticality) {
+    return 'card-' + this.getClass(criticality) + ' card-outline';
+  }
+
   static getWorstCriticality(asset: AssetDto) {
     if (!asset.packages || asset.packages.length == 0)
       return null;

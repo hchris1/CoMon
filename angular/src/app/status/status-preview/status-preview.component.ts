@@ -42,6 +42,10 @@ export class StatusPreviewComponent {
     return DynamicStylesHelper.getHistoricBackgroundClass(this.statusPreview.isLatest);
   }
 
+  getCardOutlineClass() {
+    return DynamicStylesHelper.getCardOutlineClass(this.statusPreview.criticality);
+  }
+
   openStatusModal() {
     if (this.editMode)
       return;

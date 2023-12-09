@@ -1,5 +1,5 @@
 <div
-  class="card"
+  class="card {{ getCardOutlineClass(asset) }}"
   style="cursor: pointer"
   (click)="onAssetClick(asset)"
   *ngIf="asset"
@@ -26,6 +26,12 @@
   </div>
   <div class="card-footer">
     <div class="row">
+      <div
+        class="col-auto"
+        *ngIf="!asset.packages || asset.packages.length === 0"
+      >
+        <span class="badge badge-secondary">🤷</span>
+      </div>
       <div class="col-auto" *ngFor="let package of asset.packages">
         <span class="badge {{ getBadgeClass(package) }}">{{
           package.name

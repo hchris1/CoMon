@@ -133,6 +133,7 @@
 		<text name="Assets.StatusTableLink">Statustabelle</text>
 		<text name="Assets.AllAssetsTitle">Assets</text>
 		<text name="Assets.AllAssetsDescription">Diese Seite zeigt alle Assets im System. Klicken Sie auf eines, um Genaueres zu erfahren.</text>
+		<text name="Assets.NoPackages">In diesem Asset gibt es bisher keine Pakete.</text>
 		<text name="Status.PreviousStatusTooltip">Gehe zu vorigem Status</text>
 		<text name="Status.NextStatusTooltip">Gehe zu nächstem Status</text>
 		<text name="Status.LatestStatusTooltip">Gehe zu aktuellem Status</text>
