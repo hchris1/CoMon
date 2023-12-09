@@ -1,5 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
-import { DashboardDto, DashboardServiceProxy } from '@shared/service-proxies/service-proxies';
+import { DashboardDto, DashboardPreviewDto, DashboardServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -14,7 +14,7 @@ import { RoutingHelper } from '@shared/helpers/RoutingHelper';
 export class DashboardOverviewComponent {
   editMode = false;
   isLoading = false;
-  dashboards: DashboardDto[] = [];
+  dashboards: DashboardPreviewDto[] = [];
   dashboardIdToDelete: number;
 
   confirmDeletionModal: BsModalRef;

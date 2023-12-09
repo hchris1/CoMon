@@ -120,6 +120,7 @@
 		<text name="Sidebar.Overview">Overview</text>
 		<text name="Sidebar.Assets">Assets</text>
 		<text name="Sidebar.StatusTable">Status Table</text>
+		<text name="Sidebar.Dashboard">Dashboards</text>
 		<text name="Overview.RootTitle">Root</text>
 		<text name="Overview.RootInfo">The 🌱 contains all groups and assets that don't belong to another group.</text>
 		<text name="Overview.GroupsTitle">Groups</text>
@@ -175,5 +176,17 @@
 		<text name="Edit.PackageCycleSeconds">Cycle (seconds)</text>
 		<text name="Edit.PackageCycleSecondsPlaceholder">60</text>
 		<text name="Edit.PackageAssignedAsset">Asset</text>
+		<text name="Edit.DashboardTileType">Type</text>
+		<text name="Edit.CreateDashboardTileTitle">Create Dashboard Tile</text>
+		<text name="Edit.TileTypeGroup">Group</text>
+		<text name="Edit.TileTypeAsset">Asset</text>
+		<text name="Edit.TileTypePackage">Package</text>
+		<text name="Dashboard.Overview">Dashboards</text>
+		<text name="Dashboard.OverviewDescription">You can create dashboards 🚀 using your groups, assets and packages.</text>
+		<text name="Edit.CreateDashboardTitle">Create Dashboard</text>
+		<text name="Edit.CreateDashboardName">Dashboard name</text>
+		<text name="Edit.CreateDashboardNamePlaceholder">Dashboard name</text>
+		<text name="Dashboard.NoTiles">There are no tiles in this dashboard yet.</text>
+		<text name="Dashboard.NoDashboards">There are no dashboards yet.</text>
 	</texts>
 </localizationDictionary>

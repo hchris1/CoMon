@@ -9,8 +9,6 @@ using CoMon.Groups;
 using CoMon.Groups.Dtos;
 using CoMon.Packages;
 using CoMon.Packages.Dtos;
-using CoMon.Statuses;
-using CoMon.Statuses.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,28 +23,33 @@ namespace CoMon.Dashboards
         private readonly IRepository<Dashboard, long> _dashboardRepository;
         private readonly IRepository<Group, long> _groupRepository;
         private readonly IRepository<Package, long> _packageRepository;
-        private readonly IRepository<Status, long> _statusRepository;
 
         public DashboardAppService(IObjectMapper mapper, IRepository<Asset, long> assetRepository,
             IRepository<Dashboard, long> dashboardRepository, IRepository<Group, long> groupRepository,
-            IRepository<Package, long> packageRepository, IRepository<Status, long> statusRepository)
+            IRepository<Package, long> packageRepository)
         {
             _mapper = mapper;
             _assetRepository = assetRepository;
             _dashboardRepository = dashboardRepository;
             _groupRepository = groupRepository;
             _packageRepository = packageRepository;
-            _statusRepository = statusRepository;
         }
 
-        public async Task<List<DashboardDto>> GetAll()
+        public async Task<List<DashboardPreviewDto>> GetAll()
         {
             var dashboards = await _dashboardRepository
                 .GetAll()
                 .Include(d => d.Tiles)
                 .ToListAsync();
 
-            return _mapper.Map<List<DashboardDto>>(dashboards);
+            return dashboards.Select(d => new DashboardPreviewDto()
+            {
+                Id = d.Id,
+                Name = d.Name,
+                GroupCount = d.Tiles.Where(t => t.ItemType == DashboardTileType.Group).Count(),
+                AssetCount = d.Tiles.Where(t => t.ItemType == DashboardTileType.Asset).Count(),
+                PackageCount = d.Tiles.Where(t => t.ItemType == DashboardTileType.Package).Count(),
+            }).ToList();
         }
 
         public async Task<DashboardDto> Get(long id)

@@ -18,13 +18,8 @@
       </select>
     </div>
 
-    <!-- Groups -->
     <div class="form-group" *ngIf="currentType === groupTileType">
-      <h5>{{ "Edit.DashboardTileTypeGroup" | localize }}</h5>
-    </div>
-
-    <div class="form-group" *ngIf="currentType === groupTileType">
-      <label for="type">{{ "Edit.DashboardTileGroup" | localize }}</label>
+      <label for="type">{{ "Edit.TileTypeGroup" | localize }}</label>
       <select
         class="form-control"
         id="groupId"
@@ -37,13 +32,8 @@
       </select>
     </div>
 
-    <!-- Assets -->
     <div class="form-group" *ngIf="currentType === assetTileType">
-      <h5>{{ "Edit.DashboardTileTypeAsset" | localize }}</h5>
-    </div>
-
-    <div class="form-group" *ngIf="currentType === assetTileType">
-      <label for="type">{{ "Edit.DashboardTileAsset" | localize }}</label>
+      <label for="type">{{ "Edit.TileTypeAsset" | localize }}</label>
       <select
         class="form-control"
         id="assetId"
@@ -56,13 +46,8 @@
       </select>
     </div>
 
-    <!-- Packages -->
     <div class="form-group" *ngIf="currentType === packageTileType">
-      <h5>{{ "Edit.DashboardTileTypePackage" | localize }}</h5>
-    </div>
-
-    <div class="form-group" *ngIf="currentType === packageTileType">
-      <label for="type">{{ "Edit.DashboardTilePackage" | localize }}</label>
+      <label for="type">{{ "Edit.TileTypePackage" | localize }}</label>
       <select
         class="form-control"
         id="packageId"

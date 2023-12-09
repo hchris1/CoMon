@@ -1,77 +1,111 @@
 <div [@routerTransition]>
-  <div>
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-auto">
-            <h1>Dashboards</h1>
-          </div>
-          <button
-            class="col-auto btn btn-primary btn-circle btn-xl"
-            (click)="onCreateDashboardModal()"
-            *ngIf="editMode"
-          >
-            <i class="fa fa-plus"></i>
-          </button>
-          <button
-            type="button"
-            class="col btn btn-circle btn-link text-right"
-            (click)="activateEditMode()"
-            *ngIf="!editMode"
-          >
-            <i class="fa-solid fa-pencil"></i>
-          </button>
-          <button
-            type="button"
-            class="col btn btn-circle btn-link text-right"
-            (click)="deactivateEditMode()"
-            *ngIf="editMode"
-          >
-            <i class="fa-solid fa-check"></i>
-          </button>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-auto">
+          <h1>
+            {{ "Dashboard.Overview" | localize }}
+          </h1>
         </div>
-        <p>Help text t.b.d.</p>
+        <button
+          type="button"
+          class="col btn btn-circle btn-link text-right"
+          (click)="activateEditMode()"
+          *ngIf="!editMode"
+        >
+          <i class="fa-solid fa-pencil"></i>
+        </button>
+        <button
+          type="button"
+          class="col btn btn-circle btn-link text-right"
+          (click)="deactivateEditMode()"
+          *ngIf="editMode"
+        >
+          <i class="fa-solid fa-check"></i>
+        </button>
       </div>
-    </section>
+      <div class="row pl-2" style="justify-content: space-between">
+        <p>
+          {{ "Dashboard.OverviewDescription" | localize }}
+        </p>
+        <button
+          class="col-auto btn btn-primary btn-circle btn-xl text-right"
+          (click)="onCreateDashboardModal()"
+          *ngIf="editMode"
+        >
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </section>
 
-    <section class="content" *ngIf="dashboards && !isLoading">
-      <div class="container-fluid">
-        <div class="row">
-          <div
-            class="col-auto card"
-            *ngFor="let dashboard of dashboards"
-            (click)="routeToDashboard(dashboard)"
-          >
-            <div class="card-header">
-              <div class="row">
-                <h4 class="col card-title">{{ dashboard.name }}</h4>
-                <button
-                  class="col-1 btn btn-circle btn-link text"
-                  style="padding: 0 !important"
-                  (click)="openDeletionModal(deletionTemplate, dashboard)"
-                  *ngIf="editMode"
-                >
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </div>
+  <section class="content" *ngIf="dashboards && !isLoading">
+    <div class="container-fluid">
+      <div class="row">
+        <p *ngIf="dashboards.length === 0" class="ml-3">
+          {{ "Dashboard.NoDashboards" | localize }}
+        </p>
+        <div
+          class="col-auto card ml-3"
+          style="min-width: 12rem"
+          *ngFor="let dashboard of dashboards"
+          (click)="routeToDashboard(dashboard)"
+        >
+          <div class="card-header">
+            <div class="row">
+              <h3 class="col card-title">{{ dashboard.name }}</h3>
+              <button
+                class="col-1 btn btn-circle btn-link text"
+                style="padding: 0 !important"
+                (click)="openDeletionModal(deletionTemplate, dashboard)"
+                *ngIf="editMode"
+              >
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <p style="margin-bottom: 0.15rem">
+                📁 Groups
+                <span class="badge badge-secondary">{{
+                  dashboard.groupCount
+                }}</span>
+              </p>
+            </div>
+            <div class="row">
+              <p style="margin-bottom: 0.15rem">
+                📇 Assets
+                <span class="badge badge-secondary">{{
+                  dashboard.assetCount
+                }}</span>
+              </p>
+            </div>
+            <div class="row">
+              <p style="margin-bottom: 0.1rem">
+                📦 Packages
+                <span class="badge badge-secondary">{{
+                  dashboard.packageCount
+                }}</span>
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="content" *ngIf="isLoading">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col">
-            <div class="spinner-border text-primary" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
+  <section class="content" *ngIf="isLoading">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
           </div>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </div>
 
 <ng-template #deletionTemplate>

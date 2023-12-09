@@ -741,7 +741,7 @@ export class DashboardServiceProxy {
     /**
      * @return Success
      */
-    getAll(): Observable<DashboardDto[]> {
+    getAll(): Observable<DashboardPreviewDto[]> {
         let url_ = this.baseUrl + "/api/services/app/Dashboard/GetAll";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -760,14 +760,14 @@ export class DashboardServiceProxy {
                 try {
                     return this.processGetAll(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<DashboardDto[]>;
+                    return _observableThrow(e) as any as Observable<DashboardPreviewDto[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<DashboardDto[]>;
+                return _observableThrow(response_) as any as Observable<DashboardPreviewDto[]>;
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<DashboardDto[]> {
+    protected processGetAll(response: HttpResponseBase): Observable<DashboardPreviewDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -781,7 +781,7 @@ export class DashboardServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(DashboardDto.fromJS(item));
+                    result200.push(DashboardPreviewDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -5794,6 +5794,65 @@ export interface IDashboardDto {
     id: number;
     name: string | undefined;
     tiles: DashboardTileDto[] | undefined;
+}
+
+export class DashboardPreviewDto implements IDashboardPreviewDto {
+    id: number;
+    name: string | undefined;
+    groupCount: number;
+    assetCount: number;
+    packageCount: number;
+
+    constructor(data?: IDashboardPreviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.groupCount = _data["groupCount"];
+            this.assetCount = _data["assetCount"];
+            this.packageCount = _data["packageCount"];
+        }
+    }
+
+    static fromJS(data: any): DashboardPreviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DashboardPreviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["groupCount"] = this.groupCount;
+        data["assetCount"] = this.assetCount;
+        data["packageCount"] = this.packageCount;
+        return data;
+    }
+
+    clone(): DashboardPreviewDto {
+        const json = this.toJSON();
+        let result = new DashboardPreviewDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDashboardPreviewDto {
+    id: number;
+    name: string | undefined;
+    groupCount: number;
+    assetCount: number;
+    packageCount: number;
 }
 
 export class DashboardTileDto implements IDashboardTileDto {

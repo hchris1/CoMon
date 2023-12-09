@@ -91,6 +91,10 @@ export class DashboardComponent {
     return tile.sortIndex === Math.max(...this.dashboard.tiles.map(x => x.sortIndex));
   }
 
+  routeToDashboards() {
+    this._router.navigate(['/app/dashboard']);
+  }
+
   onCreateDashboardModal() {
     this.createDashboardTileModal = this._modalService.show(CreateDashboardTileModalComponent,
       {

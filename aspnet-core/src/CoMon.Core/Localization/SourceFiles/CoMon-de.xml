@@ -120,6 +120,7 @@
 		<text name="Sidebar.Overview">Übersicht</text>
 		<text name="Sidebar.Assets">Assets</text>
 		<text name="Sidebar.StatusTable">Statustabelle</text>
+		<text name="Sidebar.Dashboard">Dashboards</text>
 		<text name="Overview.RootTitle">Root</text>
 		<text name="Overview.RootInfo">Die 🌱 beinhaltet alle Gruppen und Assets, die zu keiner anderen Gruppe gehören.</text>
 		<text name="Overview.GroupsTitle">Gruppen</text>
@@ -175,5 +176,17 @@
 		<text name="Edit.PackageCycleSeconds">Zyklus (seconds)</text>
 		<text name="Edit.PackageCycleSecondsPlaceholder">60</text>
 		<text name="Edit.PackageAssignedAsset">Asset</text>
+		<text name="Edit.DashboardTileType">Typ</text>
+		<text name="Edit.CreateDashboardTileTitle">Dashboard Kachel erstellen</text>
+		<text name="Edit.TileTypeGroup">Gruppe</text>
+		<text name="Edit.TileTypeAsset">Asset</text>
+		<text name="Edit.TileTypePackage">Paket</text>
+		<text name="Dashboard.Overview">Dashboards</text>
+		<text name="Dashboard.OverviewDescription">Dashboards 🚀 können Gruppen, Assets und Pakete als Kachel anzeigen.</text>
+		<text name="Edit.CreateDashboardTitle">Dashboard erstellen</text>
+		<text name="Edit.CreateDashboardName">Dashboard Name</text>
+		<text name="Edit.CreateDashboardNamePlaceholder">Dashboard Name</text>
+		<text name="Dashboard.NoTiles">In diesem Dashboard gibt es bisher keine Kacheln.</text>
+		<text name="Dashboard.NoDashboards">Es gibt bisher keine Dashboards.</text>
 	</texts>
 </localizationDictionary>

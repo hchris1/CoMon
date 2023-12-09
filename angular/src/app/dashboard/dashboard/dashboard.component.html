@@ -3,6 +3,12 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row">
+          <button
+            class="col-auto btn btn-link btn-sm"
+            (click)="routeToDashboards()"
+          >
+            <i class="fas fa-arrow-left pt-2"></i>
+          </button>
           <div class="col-auto" *ngIf="!editName">
             <h1>{{ dashboard.name }}</h1>
           </div>
@@ -10,15 +16,6 @@
             <form [formGroup]="editFormGroup">
               <input type="text" class="form-control" formControlName="name" />
             </form>
-          </div>
-          <div class="col-auto" *ngIf="editMode && !editName">
-            <button
-              class="col-auto btn btn-primary btn-circle btn-xl"
-              (click)="onCreateDashboardModal()"
-              *ngIf="editMode"
-            >
-              <i class="fa fa-plus"></i>
-            </button>
           </div>
           <div class="col-auto" *ngIf="editMode && !editName">
             <button
@@ -57,11 +54,25 @@
           </button>
         </div>
       </div>
+      <div class="row" style="justify-content: right">
+        <div class="col-auto" *ngIf="editMode && !editName">
+          <button
+            class="col-auto btn btn-primary btn-circle btn-xl"
+            (click)="onCreateDashboardModal()"
+            *ngIf="editMode"
+          >
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+      </div>
     </section>
 
     <section class="content">
       <div class="container-fluid">
         <div class="row">
+          <p *ngIf="dashboard.tiles.length === 0" class="ml-3">
+            {{ "Dashboard.NoTiles" | localize }}
+          </p>
           <app-dashboard-tile
             class="col-auto"
             *ngFor="let tile of dashboard.tiles"
