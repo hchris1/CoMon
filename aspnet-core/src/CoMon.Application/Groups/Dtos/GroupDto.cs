@@ -1,5 +1,4 @@
 ﻿using Abp.AutoMapper;
-using CoMon.Assets.Dtos;
 using System.Collections.Generic;
 
 namespace CoMon.Groups.Dtos

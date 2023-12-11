@@ -4,6 +4,7 @@ using Abp.ObjectMapping;
 using CoMon.Assets;
 using CoMon.Assets.Dtos;
 using CoMon.Groups.Dtos;
+using CoMon.Statuses.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace CoMon.Groups
         /// <returns>Root group</returns>
         public async Task<GroupDto> GetRoot()
         {
-            return new GroupDto
+            var group = new GroupDto
             {
                 Id = 0,
                 Name = "Root",
@@ -40,6 +41,11 @@ namespace CoMon.Groups
                     .Where(g => g.Parent == null)
                     .ToListAsync())
             };
+
+            foreach (var subGroup in group.SubGroups)
+                subGroup.WorstStatus = (await GetLatestStatusesFromGroup(subGroup.Id)).OrderByDescending(s => s.Criticality).ThenByDescending(s => s.Time).FirstOrDefault();
+
+            return group;
         }
 
         public async Task<long> Create(CreateGroupDto input)
@@ -98,14 +104,38 @@ namespace CoMon.Groups
             await _groupRepository.UpdateAsync(group);
         }
 
-        public async Task<List<GroupDto>> GetAll()
+        public async Task<List<GroupPreviewDto>> GetAll()
         {
             var groups = await _groupRepository
                 .GetAll()
                 .Include(g => g.Parent.Parent)
                 .ToListAsync();
 
-            return _objectMapper.Map<List<GroupDto>>(groups);
+            return _objectMapper.Map<List<GroupPreviewDto>>(groups);
+        }
+
+        private async Task<List<StatusPreviewDto>> GetLatestStatusesFromGroup(long groupId)
+        {
+            var group = await _groupRepository
+                .GetAll()
+                .Where(g => g.Id == groupId)
+                .Include(g => g.SubGroups)
+                .Include(g => g.Assets)
+                .ThenInclude(a => a.Packages)
+                .ThenInclude(p => p.Statuses
+                    .OrderByDescending(s => s.Time)
+                    .Take(1))
+                .SingleOrDefaultAsync() ?? throw new EntityNotFoundException("Group not found");
+
+
+            var statuses = _objectMapper.Map<List<StatusPreviewDto>>(group.Assets.Select(a => a.Packages).SelectMany(x => x).Select(p => p.Statuses).SelectMany(x => x));
+
+            foreach (var subGroup in group.SubGroups)
+            {
+                statuses.AddRange(await GetLatestStatusesFromGroup(subGroup.Id));
+            }
+
+            return statuses;
         }
 
         public async Task<GroupDto> Get(long id)
@@ -115,15 +145,22 @@ namespace CoMon.Groups
                 .Where(g => g.Id == id)
                 .Include(g => g.Parent.Parent)
                 .Include(g => g.SubGroups)
-                .Include(g => g.Assets.OrderBy(a => a.Name))
-                .ThenInclude(a => a.Packages.OrderBy(p => p.Name))
-                .ThenInclude(p => p.Statuses
-                    .OrderByDescending(s => s.Time)
-                    .Take(1))
                 .Include(g => g.Assets)
                 .FirstOrDefaultAsync();
 
-            return _objectMapper.Map<GroupDto>(group);
+            var groupDto = new GroupDto
+            {
+                Id = group.Id,
+                Name = group.Name,
+                Parent = _objectMapper.Map<GroupPreviewDto>(group.Parent),
+                AssetIds = group.Assets.Select(a => a.Id).ToList(),
+                SubGroups = _objectMapper.Map<List<GroupPreviewDto>>(group.SubGroups)
+            };
+
+            foreach (var subGroup in groupDto.SubGroups)
+                subGroup.WorstStatus = (await GetLatestStatusesFromGroup(subGroup.Id)).OrderByDescending(s => s.Criticality).ThenByDescending(s => s.Time).FirstOrDefault();
+
+            return groupDto;
         }
 
         public async Task<GroupPreviewDto> GetPreview(long id)

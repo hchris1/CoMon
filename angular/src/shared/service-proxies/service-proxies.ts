@@ -1660,7 +1660,7 @@ export class GroupServiceProxy {
     /**
      * @return Success
      */
-    getAll(): Observable<GroupDto[]> {
+    getAll(): Observable<GroupPreviewDto[]> {
         let url_ = this.baseUrl + "/api/services/app/Group/GetAll";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1679,14 +1679,14 @@ export class GroupServiceProxy {
                 try {
                     return this.processGetAll(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GroupDto[]>;
+                    return _observableThrow(e) as any as Observable<GroupPreviewDto[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GroupDto[]>;
+                return _observableThrow(response_) as any as Observable<GroupPreviewDto[]>;
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<GroupDto[]> {
+    protected processGetAll(response: HttpResponseBase): Observable<GroupPreviewDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1700,7 +1700,7 @@ export class GroupServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(GroupDto.fromJS(item));
+                    result200.push(GroupPreviewDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -6302,6 +6302,7 @@ export class GroupPreviewDto implements IGroupPreviewDto {
     id: number;
     name: string | undefined;
     parent: GroupPreviewDto;
+    worstStatus: StatusPreviewDto;
 
     constructor(data?: IGroupPreviewDto) {
         if (data) {
@@ -6317,6 +6318,7 @@ export class GroupPreviewDto implements IGroupPreviewDto {
             this.id = _data["id"];
             this.name = _data["name"];
             this.parent = _data["parent"] ? GroupPreviewDto.fromJS(_data["parent"]) : <any>undefined;
+            this.worstStatus = _data["worstStatus"] ? StatusPreviewDto.fromJS(_data["worstStatus"]) : <any>undefined;
         }
     }
 
@@ -6332,6 +6334,7 @@ export class GroupPreviewDto implements IGroupPreviewDto {
         data["id"] = this.id;
         data["name"] = this.name;
         data["parent"] = this.parent ? this.parent.toJSON() : <any>undefined;
+        data["worstStatus"] = this.worstStatus ? this.worstStatus.toJSON() : <any>undefined;
         return data;
     }
 
@@ -6347,6 +6350,7 @@ export interface IGroupPreviewDto {
     id: number;
     name: string | undefined;
     parent: GroupPreviewDto;
+    worstStatus: StatusPreviewDto;
 }
 
 export class ImageDto implements IImageDto {

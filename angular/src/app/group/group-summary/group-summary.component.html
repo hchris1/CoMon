@@ -1,7 +1,7 @@
 <div class="card" style="cursor: pointer" (click)="onGroupClick(group)">
   <div class="card-header">
     <div class="row">
-      <h3 class="col card-title">📁 {{ group.name }}</h3>
+      <h3 class="col card-title">📁 {{ getEmoji() }} {{ group.name }}</h3>
       <button
         class="col-1 btn btn-circle btn-link text"
         style="padding: 0 !important"
