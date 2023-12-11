@@ -71,11 +71,11 @@ export class GroupSummaryComponent implements OnInit, OnDestroy {
   }
 
   getCardOutlineClass() {
-    return DynamicStylesHelper.getCardOutlineClass(this.group.worstStatus.criticality);
+    return DynamicStylesHelper.getCardOutlineClass(this.group.worstStatus?.criticality);
   }
 
   getEmoji() {
-    return DynamicStylesHelper.getEmoji(this.group.worstStatus.criticality);
+    return DynamicStylesHelper.getEmoji(this.group.worstStatus?.criticality);
   }
 
   ngOnDestroy(): void {
