@@ -1,13 +1,10 @@
-import { ChangeDetectorRef, Component, Injector, OnDestroy } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import { AssetDto, AssetServiceProxy, FileParameter, GroupPreviewDto, GroupServiceProxy, ImageDto, ImageServiceProxy, StatusPreviewDto, StatusServiceProxy } from '@shared/service-proxies/service-proxies';
-import { CoMonHubService } from '../comon-hub.service';
-import { DynamicStylesHelper } from '@shared/helpers/DynamicStylesHelper';
 import { RoutingHelper } from '@shared/helpers/RoutingHelper';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CreatePackageModalComponent } from '@app/edit/create-package-modal/create-package-modal.component';
 
@@ -16,13 +13,10 @@ import { CreatePackageModalComponent } from '@app/edit/create-package-modal/crea
   templateUrl: './asset.component.html',
   animations: [appModuleAnimation()],
 })
-export class AssetComponent extends AppComponentBase implements OnDestroy {
+export class AssetComponent extends AppComponentBase {
 
   assetId: number;
   asset: AssetDto;
-  statusPreviews: StatusPreviewDto[];
-  statusChangeSubscription: Subscription;
-  connectionEstablishedSubscription: Subscription;
 
   editMode: boolean = false;
   editTitle: boolean = false;
@@ -34,14 +28,11 @@ export class AssetComponent extends AppComponentBase implements OnDestroy {
 
   constructor(
     injector: Injector,
-    changeDetector: ChangeDetectorRef,
     formBuilder: FormBuilder,
-    private _statusService: StatusServiceProxy,
     private _route: ActivatedRoute,
     private _assetService: AssetServiceProxy,
     private _imageService: ImageServiceProxy,
     private _groupService: GroupServiceProxy,
-    private _coMonHubService: CoMonHubService,
     private _router: Router,
     private _modalService: BsModalService
   ) {
@@ -57,39 +48,15 @@ export class AssetComponent extends AppComponentBase implements OnDestroy {
       group: ['', []]
     });
 
-    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((update) => {
-      if (parseInt(this.assetId.toString(), 10) === update.assetId) {
-        this.loadStatusPreviews();
-        changeDetector.detectChanges();
-      }
-    });
-
     this._route.params.subscribe(params => {
       this.assetId = params['id'];
       this.loadAsset();
-      this.loadStatusPreviews();
     });
-
-    this.connectionEstablishedSubscription = this._coMonHubService.connectionEstablished.subscribe((established) => {
-      if (established)
-        this.loadStatusPreviews();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.statusChangeSubscription.unsubscribe();
-    this.connectionEstablishedSubscription.unsubscribe();
   }
 
   loadAsset() {
     this._assetService.get(this.assetId).subscribe((result) => {
       this.asset = result;
-    });
-  }
-
-  loadStatusPreviews() {
-    this._statusService.getLatestStatusPreviews(this.assetId).subscribe((result) => {
-      this.statusPreviews = result;
     });
   }
 
@@ -103,11 +70,6 @@ export class AssetComponent extends AppComponentBase implements OnDestroy {
 
   tableLinkClicked() {
     this._router.navigate(['app', 'table'], { queryParams: { assetId: this.assetId } });
-  }
-
-  getEmoji() {
-    const worstCriticality = Math.max(...this.statusPreviews.map((x) => x.criticality));
-    return DynamicStylesHelper.getEmoji(worstCriticality);
   }
 
   editTitleClicked() {
@@ -199,7 +161,7 @@ export class AssetComponent extends AppComponentBase implements OnDestroy {
     this.createPackageModalRef.content.closeBtnName = 'Close';
 
     this.createPackageModalRef.content.onCreated.subscribe(() => {
-      this.loadStatusPreviews();
+      this.loadAsset();
       this.createPackageModalRef.hide();
     });
 

@@ -1,0 +1,7 @@
+<app-status-preview
+  [statusPreview]="status"
+  [showPath]="showPath"
+  [editMode]="editMode"
+  (packageDeleted)="packageDeleted.emit()"
+  (packageEdited)="loadStatus()"
+></app-status-preview>

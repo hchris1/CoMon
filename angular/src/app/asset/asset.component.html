@@ -1,10 +1,10 @@
 <div [@routerTransition]>
-  <div *ngIf="asset && statusPreviews">
+  <div *ngIf="asset">
     <section class="content-header">
       <div class="container-fluid">
         <div class="row">
           <div class="col-auto" *ngIf="!editTitle">
-            <h1>{{ getEmoji() }} {{ asset.name }}</h1>
+            <h1>{{ asset.name }}</h1>
           </div>
           <div class="col-auto" *ngIf="editTitle">
             <form [formGroup]="editFormGroup">
@@ -168,22 +168,21 @@
           </button>
         </div>
 
-        <div class="row pt-3" *ngIf="statusPreviews">
+        <div class="row pt-3">
           <div
             class="col-xl-4 col-md-6 col-12"
-            *ngFor="let statusPreview of statusPreviews"
+            *ngFor="let package of asset.packages"
           >
-            <app-status-preview
-              [statusPreview]="statusPreview"
+            <app-package-preview
+              [packageId]="package.id"
               [showPath]="false"
               [editMode]="editMode"
-              (packageDeleted)="loadStatusPreviews()"
-              (packageEdited)="loadStatusPreviews()"
-            ></app-status-preview>
+              (packageDeleted)="loadAsset()"
+            ></app-package-preview>
           </div>
         </div>
 
-        <div class="row pt-3 pl-1" *ngIf="statusPreviews.length === 0">
+        <div class="row pt-3 pl-1" *ngIf="asset.packages.length === 0">
           <div class="col">
             <p>{{ "Assets.NoPackages" | localize }}</p>
           </div>
