@@ -46,7 +46,7 @@
           {{ "Dashboard.NoDashboards" | localize }}
         </p>
         <div
-          class="col-auto card ml-3"
+          class="col-auto card ml-3 card-outline"
           style="min-width: 12rem"
           *ngFor="let dashboard of dashboards"
           (click)="routeToDashboard(dashboard)"

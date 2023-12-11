@@ -74,7 +74,7 @@
             {{ "Dashboard.NoTiles" | localize }}
           </p>
           <app-dashboard-tile
-            class="col-12 col-sm-6 col-md-4"
+            class="col-auto"
             *ngFor="let tile of dashboard.tiles"
             [dashboardId]="dashboard.id"
             [tile]="tile"
