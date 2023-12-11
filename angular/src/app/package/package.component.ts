@@ -28,8 +28,8 @@ export class PackageComponent {
       this.loadPackage();
     });
 
-    comonHubService.statusUpdate.subscribe((status) => {
-      if (status.package.id == this.packageId) {
+    comonHubService.statusUpdate.subscribe((update) => {
+      if (update.packageId == this.packageId) {
         this.statusChanged = true;
       }
     });

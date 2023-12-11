@@ -57,8 +57,8 @@ export class AssetComponent extends AppComponentBase implements OnDestroy {
       group: ['', []]
     });
 
-    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((status) => {
-      if (parseInt(this.assetId.toString(), 10) === status.package.asset.id) {
+    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((update) => {
+      if (parseInt(this.assetId.toString(), 10) === update.assetId) {
         this.loadStatusPreviews();
         changeDetector.detectChanges();
       }

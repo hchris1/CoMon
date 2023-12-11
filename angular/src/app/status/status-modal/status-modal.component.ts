@@ -27,8 +27,8 @@ export class StatusModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadStatus();
-    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((status) => {
-      if (this.status.package.id === status.package.id) {
+    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((update) => {
+      if (this.status.package.id === update.packageId) {
         this.loadStatus();
         this.reloadHistory.emit(this.status);
       }

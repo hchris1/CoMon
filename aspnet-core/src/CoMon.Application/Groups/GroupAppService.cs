@@ -35,15 +35,13 @@ namespace CoMon.Groups
                     .OrderBy(a => a.Name)
                     .Select(a => a.Id)
                     .ToListAsync(),
-                SubGroups = _objectMapper.Map<List<GroupPreviewDto>>(await _groupRepository
+                SubGroupIds = await _groupRepository
                     .GetAll()
                     .OrderBy(g => g.Name)
                     .Where(g => g.Parent == null)
-                    .ToListAsync())
+                    .Select(g => g.Id)
+                    .ToListAsync()
             };
-
-            foreach (var subGroup in group.SubGroups)
-                subGroup.WorstStatus = (await GetLatestStatusesFromGroup(subGroup.Id)).OrderByDescending(s => s.Criticality).ThenByDescending(s => s.Time).FirstOrDefault();
 
             return group;
         }
@@ -154,11 +152,8 @@ namespace CoMon.Groups
                 Name = group.Name,
                 Parent = _objectMapper.Map<GroupPreviewDto>(group.Parent),
                 AssetIds = group.Assets.Select(a => a.Id).ToList(),
-                SubGroups = _objectMapper.Map<List<GroupPreviewDto>>(group.SubGroups)
+                SubGroupIds = group.SubGroups.Select(g => g.Id).ToList()
             };
-
-            foreach (var subGroup in groupDto.SubGroups)
-                subGroup.WorstStatus = (await GetLatestStatusesFromGroup(subGroup.Id)).OrderByDescending(s => s.Criticality).ThenByDescending(s => s.Time).FirstOrDefault();
 
             return groupDto;
         }
@@ -171,7 +166,11 @@ namespace CoMon.Groups
                     .SingleOrDefaultAsync()
                     ?? throw new EntityNotFoundException("Group not found.");
 
-            return _objectMapper.Map<GroupPreviewDto>(group);
+            var groupDto = _objectMapper.Map<GroupPreviewDto>(group);
+
+            groupDto.WorstStatus = (await GetLatestStatusesFromGroup(id)).OrderByDescending(s => s.Criticality).ThenByDescending(s => s.Time).FirstOrDefault();
+
+            return groupDto;
         }
     }
 }

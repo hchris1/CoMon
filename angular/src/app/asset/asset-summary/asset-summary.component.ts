@@ -29,8 +29,8 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.statusChangeSubscription = this._comonHubService.statusUpdate.subscribe((status) => {
-      if (this.assetId === status.package.asset.id) {
+    this.statusChangeSubscription = this._comonHubService.statusUpdate.subscribe((update) => {
+      if (this.assetId === update.assetId) {
         this.loadAsset();
       }
     });

@@ -21,8 +21,6 @@ export class DashboardTileComponent implements OnInit {
 
   // Tile content
   statusPreview: StatusPreviewDto;
-  asset: AssetPreviewDto;
-  group: GroupPreviewDto;
 
   confirmDeletionModal: BsModalRef;
 
@@ -43,9 +41,9 @@ export class DashboardTileComponent implements OnInit {
   ngOnInit() {
     this.loadContent();
 
-    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((status) => {
+    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((update) => {
       // Only required for package tiles
-      if (this.isPackageTile() && status.package.id === this.tile.itemId) {
+      if (this.isPackageTile() && update.packageId === this.tile.itemId) {
         this.loadContent();
         this._changeDetector.detectChanges();
       }
@@ -90,14 +88,6 @@ export class DashboardTileComponent implements OnInit {
     if (this.isPackageTile()) {
       this._statusService.getLatestStatusPreview(this.tile.itemId).subscribe((result) => {
         this.statusPreview = result;
-      });
-    } else if (this.isAssetTile()) {
-      this._assetService.getPreview(this.tile.itemId).subscribe((result) => {
-        this.asset = result;
-      });
-    } else if (this.isGroupTile()) {
-      this._groupService.getPreview(this.tile.itemId).subscribe((result) => {
-        this.group = result;
       });
     }
   }

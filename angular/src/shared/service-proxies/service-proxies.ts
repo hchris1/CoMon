@@ -6228,7 +6228,7 @@ export class GroupDto implements IGroupDto {
     name: string | undefined;
     assetIds: number[] | undefined;
     parent: GroupPreviewDto;
-    subGroups: GroupPreviewDto[] | undefined;
+    subGroupIds: number[] | undefined;
 
     constructor(data?: IGroupDto) {
         if (data) {
@@ -6249,10 +6249,10 @@ export class GroupDto implements IGroupDto {
                     this.assetIds.push(item);
             }
             this.parent = _data["parent"] ? GroupPreviewDto.fromJS(_data["parent"]) : <any>undefined;
-            if (Array.isArray(_data["subGroups"])) {
-                this.subGroups = [] as any;
-                for (let item of _data["subGroups"])
-                    this.subGroups.push(GroupPreviewDto.fromJS(item));
+            if (Array.isArray(_data["subGroupIds"])) {
+                this.subGroupIds = [] as any;
+                for (let item of _data["subGroupIds"])
+                    this.subGroupIds.push(item);
             }
         }
     }
@@ -6274,10 +6274,10 @@ export class GroupDto implements IGroupDto {
                 data["assetIds"].push(item);
         }
         data["parent"] = this.parent ? this.parent.toJSON() : <any>undefined;
-        if (Array.isArray(this.subGroups)) {
-            data["subGroups"] = [];
-            for (let item of this.subGroups)
-                data["subGroups"].push(item.toJSON());
+        if (Array.isArray(this.subGroupIds)) {
+            data["subGroupIds"] = [];
+            for (let item of this.subGroupIds)
+                data["subGroupIds"].push(item);
         }
         return data;
     }
@@ -6295,7 +6295,7 @@ export interface IGroupDto {
     name: string | undefined;
     assetIds: number[] | undefined;
     parent: GroupPreviewDto;
-    subGroups: GroupPreviewDto[] | undefined;
+    subGroupIds: number[] | undefined;
 }
 
 export class GroupPreviewDto implements IGroupPreviewDto {

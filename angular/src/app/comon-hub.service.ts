@@ -10,6 +10,18 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { StatusModalComponent } from './status/status-modal/status-modal.component';
 import { BehaviorSubject } from 'rxjs';
 
+export interface StatusUpdateDto {
+  id: number;
+  time: Date;
+  previousCriticality: Criticality;
+  criticality: Criticality;
+  packageId: number;
+  packageName: string;
+  assetId: number;
+  assetName: string;
+  groupIds: number[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +30,7 @@ export class CoMonHubService {
 
   statusModalRef: BsModalRef;
 
-  @Output() statusUpdate: EventEmitter<StatusDto> = new EventEmitter<StatusDto>();
+  @Output() statusUpdate: EventEmitter<StatusUpdateDto> = new EventEmitter<StatusUpdateDto>();
   @Output() connectionEstablished: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -42,11 +54,9 @@ export class CoMonHubService {
     this.hubConnection.on('CoMon.Status.Update', (json: string) => {
       const status = JSON.parse(json);
       this.statusUpdate.emit(status);
-    });
 
-    this.hubConnection.on('CoMon.Status.Change', (json: string) => {
-      const update = JSON.parse(json);
-      this.createStatusChangeToast(update);
+      if (status.criticality !== status.previousCriticality)
+        this.createStatusChangeToast(status);
     });
   }
 
@@ -66,7 +76,7 @@ export class CoMonHubService {
       });
   }
 
-  createStatusChangeToast(update) {
+  createStatusChangeToast(update: StatusUpdateDto) {
     const criticality: Criticality = update.criticality;
     const previousCriticality: Criticality = update.previousCriticality;
     const time: Moment = moment(update.time);

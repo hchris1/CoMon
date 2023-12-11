@@ -126,15 +126,15 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <p *ngIf="group.subGroups.length === 0" class="col pl-4">
+          <p *ngIf="group.subGroupIds.length === 0" class="col pl-4">
             {{ "Overview.NoGroups" | localize }}
           </p>
           <div
             class="col-12 col-sm-6 col-md-4"
-            *ngFor="let subGroup of group.subGroups"
+            *ngFor="let subGroupId of group.subGroupIds"
           >
             <app-group-summary
-              [group]="subGroup"
+              [groupId]="subGroupId"
               [editMode]="editMode"
               (groupClicked)="routeToGroup($event)"
               (groupDeleted)="loadGroup()"

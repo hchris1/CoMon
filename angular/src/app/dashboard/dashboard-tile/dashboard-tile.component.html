@@ -36,13 +36,13 @@
     [showPath]="true"
   ></app-status-preview>
   <app-asset-summary
-    *ngIf="asset"
-    [assetId]="asset.id"
+    *ngIf="isAssetTile()"
+    [assetId]="tile.itemId"
     (assetClicked)="routeToAsset()"
   ></app-asset-summary>
   <app-group-summary
-    *ngIf="group"
-    [group]="group"
+    *ngIf="isGroupTile()"
+    [groupId]="tile.itemId"
     (groupClicked)="routeToGroup()"
   ></app-group-summary>
 </div>

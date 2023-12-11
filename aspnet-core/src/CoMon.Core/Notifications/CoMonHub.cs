@@ -1,10 +1,8 @@
 ﻿using Abp.Dependency;
 using Abp.Runtime.Session;
 using Castle.Core.Logging;
-using CoMon.Statuses;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -24,28 +22,10 @@ namespace CoMon.Notifications
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         };
 
-        public async Task SendStatusUpdate(Status status)
+        public async Task SendStatusUpdate(StatusUpdateDto update)
         {
-            var jsonString = JsonSerializer.Serialize(status, _jsonSerializerOptions);
+            var jsonString = JsonSerializer.Serialize(update, _jsonSerializerOptions);
             await HubContext.Clients.All.SendAsync("CoMon.Status.Update", jsonString);
-        }
-
-        public async Task SendStatusChange(Status status, Criticality? previousCriticality)
-        {
-            var data = new Dictionary<string, object>
-            {
-                ["id"] = status.Id,
-                ["time"] = status.Time,
-                ["previousCriticality"] = previousCriticality,
-                ["criticality"] = status.Criticality,
-                ["packageId"] = status.Package.Id,
-                ["packageName"] = status.Package.Name,
-                ["assetId"] = status.Package.Asset.Id,
-                ["assetName"] = status.Package.Asset.Name
-            };
-
-            var jsonString = JsonSerializer.Serialize(data, _jsonSerializerOptions);
-            await HubContext.Clients.All.SendAsync("CoMon.Status.Change", jsonString);
         }
 
         public override async Task OnConnectedAsync()

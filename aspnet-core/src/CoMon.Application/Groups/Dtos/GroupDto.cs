@@ -10,6 +10,6 @@ namespace CoMon.Groups.Dtos
         public string Name { get; set; }
         public List<long> AssetIds { get; set; }
         public GroupPreviewDto Parent { get; set; }
-        public List<GroupPreviewDto> SubGroups { get; set; }
+        public List<long> SubGroupIds { get; set; }
     }
 }

@@ -78,10 +78,10 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   }
 
   subscribeToStatusChanges() {
-    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((status) => {
+    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((update) => {
       this.statusChanged = true;
       this.statusPreviews.items
-        .filter((statusPreview) => statusPreview.package.id === status.package.id)
+        .filter((statusPreview) => statusPreview.package.id === update.packageId)
         .forEach((statusPreview) => {
           statusPreview.isLatest = false;
         });
