@@ -6,7 +6,7 @@
 >
   <div class="card-header">
     <div class="row">
-      <h3 class="col card-title">{{ getEmoji() }} {{ asset.name }}</h3>
+      <p class="col card-title">{{ getEmoji() }} {{ asset.name }}</p>
       <button
         class="col-1 btn btn-circle btn-link text"
         style="padding: 0 !important"
@@ -16,15 +16,22 @@
         <i class="fa-solid fa-trash"></i>
       </button>
     </div>
+    <div class="row" *ngIf="showPath">
+      <app-path
+        [group]="asset.group"
+        [asset]="asset"
+        class="pl-2 pt-2"
+      ></app-path>
+    </div>
   </div>
-  <div class="card-body">
+  <div class="card-body" *ngIf="showImage">
     <app-asset-image-carousel
       [assetId]="asset.id"
       [titleImageOnly]="true"
       style="max-height: 10rem; min-height: 10rem"
     ></app-asset-image-carousel>
   </div>
-  <div class="card-footer">
+  <div class="card-footer" *ngIf="showPackages">
     <div class="row">
       <div
         class="col-auto"

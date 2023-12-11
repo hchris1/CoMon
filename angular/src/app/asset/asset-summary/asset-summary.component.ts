@@ -12,6 +12,9 @@ import { Subscription } from 'rxjs';
 export class AssetSummaryComponent implements OnInit, OnDestroy {
   @Input() assetId: number;
   @Input() editMode: boolean = false;
+  @Input() showPath: boolean = false;
+  @Input() showImage: boolean = true;
+  @Input() showPackages: boolean = true;
   @Output() assetClicked = new EventEmitter<AssetDto>();
   @Output() assetDeleted = new EventEmitter<null>();
 

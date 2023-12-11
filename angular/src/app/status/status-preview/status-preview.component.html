@@ -14,7 +14,7 @@
       </p>
       <p
         class="col text-right card-subtitle text-muted pt-2"
-        *ngIf="!editMode && statusPreview.time"
+        *ngIf="!editMode && statusPreview.time && showDate"
       >
         {{ statusPreview.time.fromNow() }}
       </p>
@@ -49,6 +49,7 @@
         *ngIf="showPath"
         [group]="statusPreview.package.asset?.group"
         [asset]="statusPreview.package.asset"
+        [package]="statusPreview.package"
         class="pl-2 pt-2"
       ></app-path>
     </div>

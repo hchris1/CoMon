@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 export class GroupSummaryComponent implements OnInit, OnDestroy {
   @Input() groupId: number;
   @Input() editMode: boolean = false;
+  @Input() showPath: boolean = false;
   @Output() groupClicked = new EventEmitter<GroupPreviewDto>();
   @Output() groupDeleted = new EventEmitter<null>();
 

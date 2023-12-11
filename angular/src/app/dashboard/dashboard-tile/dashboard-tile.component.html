@@ -31,16 +31,21 @@
   <app-package-preview
     *ngIf="isPackageTile()"
     [packageId]="tile.itemId"
+    [showDate]="false"
     [showPath]="true"
   ></app-package-preview>
   <app-asset-summary
     *ngIf="isAssetTile()"
     [assetId]="tile.itemId"
+    [showImage]="false"
+    [showPackages]="false"
+    [showPath]="true"
     (assetClicked)="routeToAsset()"
   ></app-asset-summary>
   <app-group-summary
     *ngIf="isGroupTile()"
     [groupId]="tile.itemId"
+    [showPath]="true"
     (groupClicked)="routeToGroup()"
   ></app-group-summary>
 </div>

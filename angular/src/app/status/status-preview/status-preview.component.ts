@@ -16,6 +16,7 @@ export class StatusPreviewComponent {
   @Input() statusPreview: StatusPreviewDto;
   @Input() showPath: boolean = true;
   @Input() editMode: boolean = false;
+  @Input() showDate: boolean = true;
   @Output() packageDeleted = new EventEmitter<null>();
   @Output() packageEdited = new EventEmitter<null>();
 

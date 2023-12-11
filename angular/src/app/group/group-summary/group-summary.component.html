@@ -6,7 +6,7 @@
 >
   <div class="card-header">
     <div class="row">
-      <h3 class="col card-title">{{ getEmoji() }} {{ group.name }}</h3>
+      <p class="col card-title">{{ getEmoji() }} {{ group.name }}</p>
       <button
         class="col-1 btn btn-circle btn-link text"
         style="padding: 0 !important"
@@ -15,6 +15,9 @@
       >
         <i class="fa-solid fa-trash"></i>
       </button>
+    </div>
+    <div class="row" *ngIf="showPath">
+      <app-path [group]="group" class="pl-2 pt-2"></app-path>
     </div>
   </div>
 </div>
