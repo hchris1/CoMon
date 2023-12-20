@@ -1,10 +1,14 @@
-import { Component, TemplateRef } from '@angular/core';
-import { DashboardDto, DashboardPreviewDto, DashboardServiceProxy } from '@shared/service-proxies/service-proxies';
-import { ActivatedRoute, Router } from '@angular/router';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { CreateDashboardModalComponent } from '@app/edit/create-dashboard-modal/create-dashboard-modal.component';
-import { RoutingHelper } from '@shared/helpers/RoutingHelper';
+import {Component, TemplateRef} from '@angular/core';
+import {
+  DashboardDto,
+  DashboardPreviewDto,
+  DashboardServiceProxy,
+} from '@shared/service-proxies/service-proxies';
+import {ActivatedRoute, Router} from '@angular/router';
+import {appModuleAnimation} from '@shared/animations/routerTransition';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {CreateDashboardModalComponent} from '@app/edit/create-dashboard-modal/create-dashboard-modal.component';
+import {RoutingHelper} from '@shared/helpers/RoutingHelper';
 
 @Component({
   selector: 'app-dashboard-overview',
@@ -30,14 +34,13 @@ export class DashboardOverviewComponent {
   }
 
   routeToDashboard(dashboard: DashboardDto) {
-    if (this.editMode)
-      return;
+    if (this.editMode) return;
     this._router.navigate(['/app/dashboard', dashboard.id]);
   }
 
   loadDashboards() {
     this.isLoading = true;
-    this._dashboardService.getAll().subscribe((result) => {
+    this._dashboardService.getAll().subscribe(result => {
       this.dashboards = result.sort((a, b) => a.name.localeCompare(b.name));
       this.isLoading = false;
     });
@@ -47,7 +50,7 @@ export class DashboardOverviewComponent {
     this._router.navigate([], {
       relativeTo: this._route,
       queryParams: RoutingHelper.buildEditModeQueryParams(true),
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.editMode = true;
   }
@@ -56,14 +59,17 @@ export class DashboardOverviewComponent {
     this._router.navigate([], {
       relativeTo: this._route,
       queryParams: RoutingHelper.buildEditModeQueryParams(false),
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.editMode = false;
   }
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   openDeletionModal(template: TemplateRef<any>, dashboard: DashboardDto) {
     this.dashboardIdToDelete = dashboard.id;
-    this.confirmDeletionModal = this._modalService.show(template, { class: 'modal-sm' });
+    this.confirmDeletionModal = this._modalService.show(template, {
+      class: 'modal-sm',
+    });
   }
 
   confirmDeletion() {
@@ -78,10 +84,12 @@ export class DashboardOverviewComponent {
   }
 
   onCreateDashboardModal() {
-    this.createDashboardModal = this._modalService.show(CreateDashboardModalComponent,
+    this.createDashboardModal = this._modalService.show(
+      CreateDashboardModalComponent,
       {
-        class: 'modal-lg'
-      });
+        class: 'modal-lg',
+      }
+    );
     this.createDashboardModal.content.closeBtnName = 'Close';
 
     this.createDashboardModal.content.onClose.subscribe(() => {

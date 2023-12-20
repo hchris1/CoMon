@@ -1,10 +1,16 @@
-import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { FileParameter, ImageDto } from '@shared/service-proxies/service-proxies';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+} from '@angular/core';
+import {FileParameter, ImageDto} from '@shared/service-proxies/service-proxies';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-carousel',
-  templateUrl: './carousel.component.html'
+  templateUrl: './carousel.component.html',
 })
 export class CarouselComponent {
   @Input() images: ImageDto[];
@@ -18,13 +24,12 @@ export class CarouselComponent {
   imageToDelete?: ImageDto;
   imageToAdd?: FileParameter;
 
-  constructor(
-    private _modalService: BsModalService
-  ) { }
+  constructor(private _modalService: BsModalService) {}
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   deleteImageClicked(template: TemplateRef<any>, image: ImageDto) {
     this.imageToDelete = image;
-    this.modalRef = this._modalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this._modalService.show(template, {class: 'modal-sm'});
   }
 
   confirmDeletion() {
@@ -36,8 +41,9 @@ export class CarouselComponent {
     this.modalRef?.hide();
   }
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   addImageClicked(template: TemplateRef<any>) {
-    this.modalRef = this._modalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this._modalService.show(template, {class: 'modal-sm'});
   }
 
   onFileSelected(event) {
@@ -45,10 +51,10 @@ export class CarouselComponent {
 
     // Load the image
     const reader = new FileReader();
-    reader.onload = (e: any) => {
+    reader.onload = e => {
       this.imageToAdd = {
         fileName: file.name,
-        data: new Blob([e.target.result], { type: file.type })
+        data: new Blob([e.target.result], {type: file.type}),
       };
     };
     reader.readAsArrayBuffer(file);

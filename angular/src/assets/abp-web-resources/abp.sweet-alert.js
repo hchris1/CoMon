@@ -1,3 +1,4 @@
+/* eslint-disable */
 var abp = abp || {};
 
 (function () {
@@ -6,7 +7,7 @@ var abp = abp || {};
   }
   /* MESSAGE **************************************************/
 
-  var showMessage = function showMessage(
+  const showMessage = function showMessage(
     type,
     message,
     title,
@@ -22,7 +23,7 @@ var abp = abp || {};
     options.title = title;
     options.icon = type;
     options.confirmButtonText =
-      options.confirmButtonText || abp.localization.abpWeb("Ok");
+      options.confirmButtonText || abp.localization.abpWeb('Ok');
 
     if (isHtml) {
       options.html = message;
@@ -34,19 +35,19 @@ var abp = abp || {};
   };
 
   abp.message.info = function (message, title, isHtml, options) {
-    return showMessage("info", message, title, isHtml, options);
+    return showMessage('info', message, title, isHtml, options);
   };
 
   abp.message.success = function (message, title, isHtml, options) {
-    return showMessage("success", message, title, isHtml, options);
+    return showMessage('success', message, title, isHtml, options);
   };
 
   abp.message.warn = function (message, title, isHtml, options) {
-    return showMessage("warning", message, title, isHtml, options);
+    return showMessage('warning', message, title, isHtml, options);
   };
 
   abp.message.error = function (message, title, isHtml, options) {
-    return showMessage("error", message, title, isHtml, options);
+    return showMessage('error', message, title, isHtml, options);
   };
 
   abp.message.confirm = function (
@@ -56,21 +57,21 @@ var abp = abp || {};
     isHtml,
     options
   ) {
-    var title = undefined;
+    let title = undefined;
 
-    if (typeof titleOrCallback === "function") {
+    if (typeof titleOrCallback === 'function') {
       callback = titleOrCallback;
     } else if (titleOrCallback) {
       title = titleOrCallback;
     }
 
     options = options || {};
-    options.title = title ? title : abp.localization.abpWeb("AreYouSure");
-    options.icon = "warning";
+    options.title = title ? title : abp.localization.abpWeb('AreYouSure');
+    options.icon = 'warning';
     options.confirmButtonText =
-      options.confirmButtonText || abp.localization.abpWeb("Yes");
+      options.confirmButtonText || abp.localization.abpWeb('Yes');
     options.cancelButtonText =
-      options.cancelButtonText || abp.localization.abpWeb("Cancel");
+      options.cancelButtonText || abp.localization.abpWeb('Cancel');
     options.showCancelButton = true;
 
     if (isHtml) {
@@ -79,51 +80,51 @@ var abp = abp || {};
       options.text = message;
     }
 
-    return Swal.fire(options).then(function (result) {
+    return Swal.fire(options).then(result => {
       callback && callback(result.value);
     });
   };
   /* NOTIFICATION *********************************************/
 
-  var Toast = Swal.mixin({
+  const Toast = Swal.mixin({
     toast: true,
-    position: "bottom-end",
+    position: 'bottom-end',
     showConfirmButton: false,
     timer: 3000,
   });
 
-  var showNotification = function showNotification(
+  const showNotification = function showNotification(
     type,
     message,
     title,
     options
   ) {
-    var icon = options.customClass.icon
+    const icon = options.customClass.icon
       ? '<i class="mr-2 text-light '.concat(options.customClass.icon, '"></i>')
-      : "";
+      : '';
 
     if (title) {
-      options.title = ""
+      options.title = ''
         .concat(icon, '<span class="text-light">')
-        .concat(title, "</span>");
+        .concat(title, '</span>');
     }
 
-    options.html = ""
-      .concat(title ? "" : icon, '\n    <span class="text-light">')
-      .concat(message, "</span>");
+    options.html = ''
+      .concat(title ? '' : icon, '\n    <span class="text-light">')
+      .concat(message, '</span>');
     Toast.fire(options);
   };
 
   abp.notify.success = function (message, title, options) {
     showNotification(
-      "success",
+      'success',
       message,
       title,
       Object.assign(
         {
-          background: "#34bfa3",
+          background: '#34bfa3',
           customClass: {
-            icon: "fas fa-check-circle",
+            icon: 'fas fa-check-circle',
           },
         },
         options
@@ -133,14 +134,14 @@ var abp = abp || {};
 
   abp.notify.info = function (message, title, options) {
     showNotification(
-      "info",
+      'info',
       message,
       title,
       Object.assign(
         {
-          background: "#36a3f7",
+          background: '#36a3f7',
           customClass: {
-            icon: "fas fa-info-circle",
+            icon: 'fas fa-info-circle',
           },
         },
         options
@@ -150,14 +151,14 @@ var abp = abp || {};
 
   abp.notify.warn = function (message, title, options) {
     showNotification(
-      "warning",
+      'warning',
       message,
       title,
       Object.assign(
         {
-          background: "#ffb822",
+          background: '#ffb822',
           customClass: {
-            icon: "fas fa-exclamation-triangle",
+            icon: 'fas fa-exclamation-triangle',
           },
         },
         options
@@ -167,14 +168,14 @@ var abp = abp || {};
 
   abp.notify.error = function (message, title, options) {
     showNotification(
-      "error",
+      'error',
       message,
       title,
       Object.assign(
         {
-          background: "#f4516c",
+          background: '#f4516c',
           customClass: {
-            icon: "fas fa-exclamation-circle",
+            icon: 'fas fa-exclamation-circle',
           },
         },
         options

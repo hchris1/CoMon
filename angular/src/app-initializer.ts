@@ -1,13 +1,18 @@
-import { Injectable, Injector } from '@angular/core';
-import { PlatformLocation, registerLocaleData } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import {Injectable, Injector} from '@angular/core';
+import {PlatformLocation, registerLocaleData} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
 import * as moment from 'moment-timezone';
-import { filter as _filter, merge as _merge } from 'lodash-es';
-import { AppConsts } from '@shared/AppConsts';
-import { AppSessionService } from '@shared/session/app-session.service';
-import { environment } from './environments/environment';
-import { AccountServiceProxy, IsTenantAvailableInput, IsTenantAvailableOutput, TenantAvailabilityState } from '@shared/service-proxies/service-proxies';
-import { SubdomainTenantResolver } from '@shared/multi-tenancy/tenant-resolvers/subdomain-tenant-resolver';
+import {filter as _filter, merge as _merge} from 'lodash-es';
+import {AppConsts} from '@shared/AppConsts';
+import {AppSessionService} from '@shared/session/app-session.service';
+import {environment} from './environments/environment';
+import {
+  AccountServiceProxy,
+  IsTenantAvailableInput,
+  IsTenantAvailableOutput,
+  TenantAvailabilityState,
+} from '@shared/service-proxies/service-proxies';
+import {SubdomainTenantResolver} from '@shared/multi-tenancy/tenant-resolvers/subdomain-tenant-resolver';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +22,7 @@ export class AppInitializer {
     private _injector: Injector,
     private _platformLocation: PlatformLocation,
     private _httpClient: HttpClient
-  ) { }
+  ) {}
 
   init(): () => Promise<boolean> {
     return () => {
@@ -31,24 +36,23 @@ export class AppInitializer {
             // do not use constructor injection for AppSessionService
             const appSessionService = this._injector.get(AppSessionService);
             appSessionService.init().then(
-              (result) => {
+              result => {
                 abp.ui.clearBusy();
                 if (this.shouldLoadLocale()) {
                   const angularLocale = this.convertAbpLocaleToAngularLocale(
                     abp.localization.currentLanguage.name
                   );
-                  import(`/node_modules/@angular/common/locales/${angularLocale}.mjs`).then(
-                    (module) => {
-                      registerLocaleData(module.default);
-                      resolve(result);
-                    },
-                    reject
-                  );
+                  import(
+                    `/node_modules/@angular/common/locales/${angularLocale}.mjs`
+                  ).then(module => {
+                    registerLocaleData(module.default);
+                    resolve(result);
+                  }, reject);
                 } else {
                   resolve(result);
                 }
               },
-              (err) => {
+              err => {
                 abp.ui.clearBusy();
                 reject(err);
               }
@@ -91,7 +95,7 @@ export class AppInitializer {
       return locale;
     }
 
-    const localeMapings = _filter(AppConsts.localeMappings, { from: locale });
+    const localeMapings = _filter(AppConsts.localeMappings, {from: locale});
     if (localeMapings && localeMapings.length) {
       return localeMapings[0]['to'];
     }
@@ -129,13 +133,14 @@ export class AppInitializer {
     }
 
     this._httpClient
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .get<any>(
         `${AppConsts.remoteServiceBaseUrl}/AbpUserConfiguration/GetAll`,
         {
           headers: requestHeaders,
         }
       )
-      .subscribe((response) => {
+      .subscribe(response => {
         const result = response.result;
 
         _merge(abp, result);
@@ -156,20 +161,21 @@ export class AppInitializer {
 
   private getApplicationConfig(appRootUrl: string, callback: () => void) {
     this._httpClient
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .get<any>(`${appRootUrl}assets/${environment.appConfig}`, {
         headers: {
           'Abp.TenantId': `${abp.multiTenancy.getTenantIdCookie()}`,
         },
       })
-      .subscribe((response) => {
+      .subscribe(response => {
         AppConsts.appBaseUrl = response.appBaseUrl;
         AppConsts.remoteServiceBaseUrl = response.remoteServiceBaseUrl;
         AppConsts.localeMappings = response.localeMappings;
 
         // Find tenant from subdomain
-        var tenancyName = this.resolveTenancyName(response.appBaseUrl);
+        const tenancyName = this.resolveTenancyName(response.appBaseUrl);
 
-        if (tenancyName == null) {
+        if (tenancyName === null) {
           callback();
         } else {
           this.ConfigureTenantIdCookie(tenancyName, callback);
@@ -178,22 +184,26 @@ export class AppInitializer {
   }
 
   private ConfigureTenantIdCookie(tenancyName: string, callback: () => void) {
-    let accountServiceProxy: AccountServiceProxy = this._injector.get(AccountServiceProxy);
-    let input = new IsTenantAvailableInput();
+    const accountServiceProxy: AccountServiceProxy =
+      this._injector.get(AccountServiceProxy);
+    const input = new IsTenantAvailableInput();
     input.tenancyName = tenancyName;
 
-    accountServiceProxy.isTenantAvailable(input).subscribe((result: IsTenantAvailableOutput) => {
-      if (result.state === TenantAvailabilityState._1) { // Available
-        abp.multiTenancy.setTenantIdCookie(result.tenantId);
-      }
+    accountServiceProxy
+      .isTenantAvailable(input)
+      .subscribe((result: IsTenantAvailableOutput) => {
+        if (result.state === TenantAvailabilityState._1) {
+          // Available
+          abp.multiTenancy.setTenantIdCookie(result.tenantId);
+        }
 
-      callback();
-    });
+        callback();
+      });
   }
 
   private resolveTenancyName(appBaseUrl): string | null {
-    var subdomainTenantResolver = new SubdomainTenantResolver();
-    var tenancyName = subdomainTenantResolver.resolve(appBaseUrl);
+    const subdomainTenantResolver = new SubdomainTenantResolver();
+    const tenancyName = subdomainTenantResolver.resolve(appBaseUrl);
     if (tenancyName) {
       return tenancyName;
     }

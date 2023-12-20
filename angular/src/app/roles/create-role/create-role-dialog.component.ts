@@ -1,33 +1,29 @@
-import {
-  Component,
-  Injector,
-  OnInit,
-  EventEmitter,
-  Output,
-} from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { AppComponentBase } from '@shared/app-component-base';
+import {Component, Injector, OnInit, EventEmitter, Output} from '@angular/core';
+import {BsModalRef} from 'ngx-bootstrap/modal';
+import {AppComponentBase} from '@shared/app-component-base';
 import {
   RoleServiceProxy,
   RoleDto,
   PermissionDto,
   CreateRoleDto,
-  PermissionDtoListResultDto
+  PermissionDtoListResultDto,
 } from '@shared/service-proxies/service-proxies';
-import { forEach as _forEach, map as _map } from 'lodash-es';
+import {forEach as _forEach, map as _map} from 'lodash-es';
 
 @Component({
-  templateUrl: 'create-role-dialog.component.html'
+  templateUrl: 'create-role-dialog.component.html',
 })
-export class CreateRoleDialogComponent extends AppComponentBase
-  implements OnInit {
+export class CreateRoleDialogComponent
+  extends AppComponentBase
+  implements OnInit
+{
   saving = false;
   role = new RoleDto();
   permissions: PermissionDto[] = [];
-  checkedPermissionsMap: { [key: string]: boolean } = {};
+  checkedPermissionsMap: {[key: string]: boolean} = {};
   defaultPermissionCheckedStatus = true;
 
-  @Output() onSave = new EventEmitter<any>();
+  @Output() onSave = new EventEmitter();
 
   constructor(
     injector: Injector,
@@ -47,13 +43,14 @@ export class CreateRoleDialogComponent extends AppComponentBase
   }
 
   setInitialPermissionsStatus(): void {
-    _map(this.permissions, (item) => {
+    _map(this.permissions, item => {
       this.checkedPermissionsMap[item.name] = this.isPermissionChecked(
         item.name
       );
     });
   }
 
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   isPermissionChecked(permissionName: string): boolean {
     // just return default permission checked status
     // it's better to use a setting
@@ -66,7 +63,7 @@ export class CreateRoleDialogComponent extends AppComponentBase
 
   getCheckedPermissions(): string[] {
     const permissions: string[] = [];
-    _forEach(this.checkedPermissionsMap, function (value, key) {
+    _forEach(this.checkedPermissionsMap, (value, key) => {
       if (value) {
         permissions.push(key);
       }
@@ -81,17 +78,15 @@ export class CreateRoleDialogComponent extends AppComponentBase
     role.init(this.role);
     role.grantedPermissions = this.getCheckedPermissions();
 
-    this._roleService
-      .create(role)
-      .subscribe(
-        () => {
-          this.notify.info(this.l('SavedSuccessfully'));
-          this.bsModalRef.hide();
-          this.onSave.emit();
-        },
-        () => {
-          this.saving = false;
-        }
-      );
+    this._roleService.create(role).subscribe(
+      () => {
+        this.notify.info(this.l('SavedSuccessfully'));
+        this.bsModalRef.hide();
+        this.onSave.emit();
+      },
+      () => {
+        this.saving = false;
+      }
+    );
   }
 }

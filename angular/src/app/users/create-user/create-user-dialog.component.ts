@@ -1,29 +1,25 @@
-import {
-  Component,
-  Injector,
-  OnInit,
-  EventEmitter,
-  Output
-} from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { forEach as _forEach, map as _map } from 'lodash-es';
-import { AppComponentBase } from '@shared/app-component-base';
+import {Component, Injector, OnInit, EventEmitter, Output} from '@angular/core';
+import {BsModalRef} from 'ngx-bootstrap/modal';
+import {forEach as _forEach, map as _map} from 'lodash-es';
+import {AppComponentBase} from '@shared/app-component-base';
 import {
   UserServiceProxy,
   CreateUserDto,
-  RoleDto
+  RoleDto,
 } from '@shared/service-proxies/service-proxies';
-import { AbpValidationError } from '@shared/components/validation/abp-validation.api';
+import {AbpValidationError} from '@shared/components/validation/abp-validation.api';
 
 @Component({
-  templateUrl: './create-user-dialog.component.html'
+  templateUrl: './create-user-dialog.component.html',
 })
-export class CreateUserDialogComponent extends AppComponentBase
-  implements OnInit {
+export class CreateUserDialogComponent
+  extends AppComponentBase
+  implements OnInit
+{
   saving = false;
   user = new CreateUserDto();
   roles: RoleDto[] = [];
-  checkedRolesMap: { [key: string]: boolean } = {};
+  checkedRolesMap: {[key: string]: boolean} = {};
   defaultRoleCheckedStatus = false;
   passwordValidationErrors: Partial<AbpValidationError>[] = [
     {
@@ -39,7 +35,7 @@ export class CreateUserDialogComponent extends AppComponentBase
     },
   ];
 
-  @Output() onSave = new EventEmitter<any>();
+  @Output() onSave = new EventEmitter();
 
   constructor(
     injector: Injector,
@@ -52,20 +48,21 @@ export class CreateUserDialogComponent extends AppComponentBase
   ngOnInit(): void {
     this.user.isActive = true;
 
-    this._userService.getRoles().subscribe((result) => {
+    this._userService.getRoles().subscribe(result => {
       this.roles = result.items;
       this.setInitialRolesStatus();
     });
   }
 
   setInitialRolesStatus(): void {
-    _map(this.roles, (item) => {
+    _map(this.roles, item => {
       this.checkedRolesMap[item.normalizedName] = this.isRoleChecked(
         item.normalizedName
       );
     });
   }
 
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   isRoleChecked(normalizedName: string): boolean {
     // just return default role checked status
     // it's better to use a setting
@@ -78,7 +75,7 @@ export class CreateUserDialogComponent extends AppComponentBase
 
   getCheckedRoles(): string[] {
     const roles: string[] = [];
-    _forEach(this.checkedRolesMap, function (value, key) {
+    _forEach(this.checkedRolesMap, (value, key) => {
       if (value) {
         roles.push(key);
       }

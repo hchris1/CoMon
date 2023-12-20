@@ -1,12 +1,20 @@
-import { Component, Injector } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { AppComponentBase } from '@shared/app-component-base';
-import { AssetDto, AssetServiceProxy, FileParameter, GroupPreviewDto, GroupServiceProxy, ImageDto, ImageServiceProxy, StatusPreviewDto, StatusServiceProxy } from '@shared/service-proxies/service-proxies';
-import { RoutingHelper } from '@shared/helpers/RoutingHelper';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { CreatePackageModalComponent } from '@app/edit/create-package-modal/create-package-modal.component';
+import {Component, Injector} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {appModuleAnimation} from '@shared/animations/routerTransition';
+import {AppComponentBase} from '@shared/app-component-base';
+import {
+  AssetDto,
+  AssetServiceProxy,
+  FileParameter,
+  GroupPreviewDto,
+  GroupServiceProxy,
+  ImageDto,
+  ImageServiceProxy,
+} from '@shared/service-proxies/service-proxies';
+import {RoutingHelper} from '@shared/helpers/RoutingHelper';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {CreatePackageModalComponent} from '@app/edit/create-package-modal/create-package-modal.component';
 
 @Component({
   selector: 'app-asset',
@@ -14,7 +22,6 @@ import { CreatePackageModalComponent } from '@app/edit/create-package-modal/crea
   animations: [appModuleAnimation()],
 })
 export class AssetComponent extends AppComponentBase {
-
   assetId: number;
   asset: AssetDto;
 
@@ -45,7 +52,7 @@ export class AssetComponent extends AppComponentBase {
     this.editFormGroup = formBuilder.group({
       title: ['', [Validators.required]],
       description: ['', []],
-      group: ['', []]
+      group: ['', []],
     });
 
     this._route.params.subscribe(params => {
@@ -55,21 +62,29 @@ export class AssetComponent extends AppComponentBase {
   }
 
   loadAsset() {
-    this._assetService.get(this.assetId).subscribe((result) => {
+    this._assetService.get(this.assetId).subscribe(result => {
       this.asset = result;
     });
   }
 
   onGroupClick(group: GroupPreviewDto) {
-    this._router.navigate(['app', 'overview', group.id], RoutingHelper.buildEditModeQueryParams(this.editMode));
+    this._router.navigate(
+      ['app', 'overview', group.id],
+      RoutingHelper.buildEditModeQueryParams(this.editMode)
+    );
   }
 
   onRootClick() {
-    this._router.navigate(['app', 'overview'], RoutingHelper.buildEditModeQueryParams(this.editMode));
+    this._router.navigate(
+      ['app', 'overview'],
+      RoutingHelper.buildEditModeQueryParams(this.editMode)
+    );
   }
 
   tableLinkClicked() {
-    this._router.navigate(['app', 'table'], { queryParams: { assetId: this.assetId } });
+    this._router.navigate(['app', 'table'], {
+      queryParams: {assetId: this.assetId},
+    });
   }
 
   editTitleClicked() {
@@ -79,7 +94,8 @@ export class AssetComponent extends AppComponentBase {
 
   saveTitleClicked() {
     this.editTitle = false;
-    this._assetService.updateName(this.assetId, this.editFormGroup.controls.title.value)
+    this._assetService
+      .updateName(this.assetId, this.editFormGroup.controls.title.value)
       .subscribe(() => {
         this.loadAsset();
       });
@@ -92,16 +108,22 @@ export class AssetComponent extends AppComponentBase {
 
   saveDescription() {
     this.editDescription = false;
-    this._assetService.updateDescription(this.assetId, this.editFormGroup.controls.description.value)
+    this._assetService
+      .updateDescription(
+        this.assetId,
+        this.editFormGroup.controls.description.value
+      )
       .subscribe(() => {
         this.loadAsset();
       });
   }
 
   uploadImage(fileParameter: FileParameter) {
-    this._assetService.uploadImage(this.assetId, fileParameter).subscribe(() => {
-      this.loadAsset();
-    });
+    this._assetService
+      .uploadImage(this.assetId, fileParameter)
+      .subscribe(() => {
+        this.loadAsset();
+      });
   }
 
   deleteImage(image: ImageDto) {
@@ -111,13 +133,13 @@ export class AssetComponent extends AppComponentBase {
   }
 
   editGroupClick() {
-    this._groupService.getAll().subscribe((result) => {
+    this._groupService.getAll().subscribe(result => {
       this.groups = result;
 
       // Add undefined for root group
       this.groups.unshift(undefined);
       this.editFormGroup.controls.group.setValue(
-        this.groups.find((x) => x?.id === this.asset.group?.id)
+        this.groups.find(x => x?.id === this.asset.group?.id)
       );
 
       this.editGroup = true;
@@ -125,7 +147,8 @@ export class AssetComponent extends AppComponentBase {
   }
 
   saveGroup() {
-    this._assetService.updateGroup(this.assetId, this.editFormGroup.controls.group.value?.id)
+    this._assetService
+      .updateGroup(this.assetId, this.editFormGroup.controls.group.value?.id)
       .subscribe(() => {
         this.editGroup = false;
         this.loadAsset();
@@ -136,7 +159,7 @@ export class AssetComponent extends AppComponentBase {
     this._router.navigate([], {
       relativeTo: this._route,
       queryParams: RoutingHelper.buildEditModeQueryParams(true),
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.editMode = true;
   }
@@ -145,19 +168,21 @@ export class AssetComponent extends AppComponentBase {
     this._router.navigate([], {
       relativeTo: this._route,
       queryParams: RoutingHelper.buildEditModeQueryParams(false),
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.editMode = false;
   }
 
   openCreatePackageModal() {
-    this.createPackageModalRef = this._modalService.show(CreatePackageModalComponent,
+    this.createPackageModalRef = this._modalService.show(
+      CreatePackageModalComponent,
       {
         class: 'modal-lg',
         initialState: {
-          assetId: this.assetId
-        }
-      });
+          assetId: this.assetId,
+        },
+      }
+    );
     this.createPackageModalRef.content.closeBtnName = 'Close';
 
     this.createPackageModalRef.content.onCreated.subscribe(() => {

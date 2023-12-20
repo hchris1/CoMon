@@ -1,18 +1,18 @@
-import { Component, Injector } from '@angular/core';
-import { finalize } from 'rxjs/operators';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
+import {Component, Injector} from '@angular/core';
+import {finalize} from 'rxjs/operators';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {appModuleAnimation} from '@shared/animations/routerTransition';
 import {
   PagedListingComponentBase,
-  PagedRequestDto
+  PagedRequestDto,
 } from '@shared/paged-listing-component-base';
 import {
   RoleServiceProxy,
   RoleDto,
-  RoleDtoPagedResultDto
+  RoleDtoPagedResultDto,
 } from '@shared/service-proxies/service-proxies';
-import { CreateRoleDialogComponent } from './create-role/create-role-dialog.component';
-import { EditRoleDialogComponent } from './edit-role/edit-role-dialog.component';
+import {CreateRoleDialogComponent} from './create-role/create-role-dialog.component';
+import {EditRoleDialogComponent} from './edit-role/edit-role-dialog.component';
 
 class PagedRolesRequestDto extends PagedRequestDto {
   keyword: string;
@@ -20,7 +20,7 @@ class PagedRolesRequestDto extends PagedRequestDto {
 
 @Component({
   templateUrl: './roles.component.html',
-  animations: [appModuleAnimation()]
+  animations: [appModuleAnimation()],
 })
 export class RolesComponent extends PagedListingComponentBase<RoleDto> {
   roles: RoleDto[] = [];

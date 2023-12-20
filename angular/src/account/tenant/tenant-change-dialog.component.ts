@@ -1,15 +1,15 @@
-import { Component, Injector } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { AppComponentBase } from '@shared/app-component-base';
-import { AccountServiceProxy } from '@shared/service-proxies/service-proxies';
-import { AppTenantAvailabilityState } from '@shared/AppEnums';
+import {Component, Injector} from '@angular/core';
+import {BsModalRef} from 'ngx-bootstrap/modal';
+import {AppComponentBase} from '@shared/app-component-base';
+import {AccountServiceProxy} from '@shared/service-proxies/service-proxies';
+import {AppTenantAvailabilityState} from '@shared/AppEnums';
 import {
   IsTenantAvailableInput,
-  IsTenantAvailableOutput
+  IsTenantAvailableOutput,
 } from '@shared/service-proxies/service-proxies';
 
 @Component({
-  templateUrl: './tenant-change-dialog.component.html'
+  templateUrl: './tenant-change-dialog.component.html',
 })
 export class TenantChangeDialogComponent extends AppComponentBase {
   saving = false;

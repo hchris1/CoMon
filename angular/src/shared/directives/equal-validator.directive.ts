@@ -1,5 +1,5 @@
-import { Directive, forwardRef, Attribute } from '@angular/core';
-import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
+import {Directive, forwardRef, Attribute} from '@angular/core';
+import {Validator, AbstractControl, NG_VALIDATORS} from '@angular/forms';
 
 @Directive({
   selector:
@@ -9,9 +9,9 @@ import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => EqualValidator),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class EqualValidator implements Validator {
   constructor(
@@ -26,7 +26,8 @@ export class EqualValidator implements Validator {
     return this.reverse === 'true' ? true : false;
   }
 
-  validate(control: AbstractControl): { [key: string]: any } {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  validate(control: AbstractControl): {[key: string]: any} {
     // self value
     const value = control.value;
 
@@ -36,7 +37,7 @@ export class EqualValidator implements Validator {
     // value not equal
     if (control2 && value !== control2.value && !this.isReverse) {
       return {
-        validateEqual: true
+        validateEqual: true,
       };
     }
 
@@ -50,7 +51,7 @@ export class EqualValidator implements Validator {
 
     // value not equal and reverse
     if (control2 && value !== control2.value && this.isReverse) {
-      control2.setErrors({ validateEqual: true });
+      control2.setErrors({validateEqual: true});
     }
 
     return null;

@@ -1,7 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { KPIDto, PackageServiceProxy } from '@shared/service-proxies/service-proxies';
-import { BehaviorSubject } from 'rxjs';
+import {Component, Input, OnInit} from '@angular/core';
+import {appModuleAnimation} from '@shared/animations/routerTransition';
+import {
+  KPIDto,
+  PackageServiceProxy,
+} from '@shared/service-proxies/service-proxies';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-package-chart-wrapper',
@@ -17,19 +20,17 @@ export class PackageChartWrapperComponent implements OnInit {
   kpisUpdate: KPIDto[];
   kpisChange: KPIDto[];
 
-  constructor(
-    private _packageService: PackageServiceProxy
-  ) { }
+  constructor(private _packageService: PackageServiceProxy) {}
 
   ngOnInit(): void {
     this.loadKpis();
 
     if (this.triggerReload) {
-      this.triggerReload.subscribe((val) => {
+      this.triggerReload.subscribe(val => {
         if (val) {
           this.loadKpis();
         }
-      })
+      });
     }
   }
 
@@ -61,14 +62,18 @@ export class PackageChartWrapperComponent implements OnInit {
   }
 
   loadUpdateKpis() {
-    this._packageService.getStatusUpdateKPIs(this.packageId, this.numHours).subscribe((data: KPIDto[]) => {
-      this.addKpis(data);
-    });
+    this._packageService
+      .getStatusUpdateKPIs(this.packageId, this.numHours)
+      .subscribe((data: KPIDto[]) => {
+        this.addKpis(data);
+      });
   }
 
   loadChangeKpis() {
-    this._packageService.getStatusChangeKPIs(this.packageId, this.numHours).subscribe((data: KPIDto[]) => {
-      this.addKpis(data, true);
-    });
+    this._packageService
+      .getStatusChangeKPIs(this.packageId, this.numHours)
+      .subscribe((data: KPIDto[]) => {
+        this.addKpis(data, true);
+      });
   }
 }

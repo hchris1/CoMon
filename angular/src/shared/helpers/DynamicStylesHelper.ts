@@ -1,10 +1,8 @@
-import { AssetDto, Criticality } from '../service-proxies/service-proxies';
+import {AssetDto, Criticality} from '../service-proxies/service-proxies';
 
 export class DynamicStylesHelper {
-
   static getHistoricBackgroundClass(isLatest: boolean) {
-    if (isLatest)
-      return '';
+    if (isLatest) return '';
     return 'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.03) 10px, rgba(0, 0, 0, 0.07) 10px, rgba(0, 0, 0, 0.07) 20px)';
   }
 
@@ -26,16 +24,17 @@ export class DynamicStylesHelper {
   }
 
   static getWorstCriticality(asset: AssetDto) {
-    if (!asset.packages || asset.packages.length == 0)
-      return null;
+    if (!asset.packages || asset.packages.length === 0) return null;
 
-    const filteredPackages = asset.packages.filter(p => p.lastCriticality != null);
+    const filteredPackages = asset.packages.filter(
+      p => p.lastCriticality !== null
+    );
 
-    if (filteredPackages.length === 0)
-      return null;
+    if (filteredPackages.length === 0) return null;
 
-    const worstPackage = filteredPackages
-      .reduce((prev, current) => (prev.lastCriticality > current.lastCriticality) ? prev : current);
+    const worstPackage = filteredPackages.reduce((prev, current) =>
+      prev.lastCriticality > current.lastCriticality ? prev : current
+    );
 
     return worstPackage?.lastCriticality;
   }

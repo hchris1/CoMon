@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, distinctUntilChanged} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DarkModeService {
   isDarkMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -11,7 +11,8 @@ export class DarkModeService {
     const darkMode = localStorage.getItem('darkMode');
     this.isDarkMode.next(JSON.parse(darkMode));
 
-    this.isDarkMode.pipe(distinctUntilChanged())
+    this.isDarkMode
+      .pipe(distinctUntilChanged())
       .subscribe((isDarkMode: boolean) => {
         this.setDarkMode(isDarkMode);
       });

@@ -15,5 +15,4 @@ import 'core-js/es/set';
 import 'core-js/es/string';
 import 'core-js/es/symbol';
 import 'core-js/es/reflect';
-import { finalize } from 'rxjs/operators';
 import 'zone.js';

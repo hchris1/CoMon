@@ -1,5 +1,16 @@
-import { ChartDto, Criticality, VizType } from '@shared/service-proxies/service-proxies';
-import { ApexAxisChartSeries, ApexChart, ApexNonAxisChartSeries, ApexXAxis, ApexYAxis, ChartType } from 'ng-apexcharts';
+import {
+  ChartDto,
+  Criticality,
+  VizType,
+} from '@shared/service-proxies/service-proxies';
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexNonAxisChartSeries,
+  ApexXAxis,
+  ApexYAxis,
+  ChartType,
+} from 'ng-apexcharts';
 
 export class ChartHelper {
   static createLabelsForHeatMapChart(chart: ChartDto): string[] {
@@ -12,7 +23,7 @@ export class ChartHelper {
       apexSeries.push({
         name: series.name,
         data: series.dataPoints.length > 0 ? series.dataPoints[0].y : [],
-        color: ChartHelper.getColorForVizType(series.vizType)
+        color: ChartHelper.getColorForVizType(series.vizType),
       });
     }
     return apexSeries;
@@ -36,15 +47,15 @@ export class ChartHelper {
         enabled: false,
       },
       toolbar: {
-        show: false
+        show: false,
       },
-      background: 'none'
+      background: 'none',
     };
   }
 
   static createXAxisForTimeBasedChart(): ApexXAxis {
     return {
-      type: 'datetime'
+      type: 'datetime',
     };
   }
 
@@ -56,10 +67,10 @@ export class ChartHelper {
         data: series.dataPoints.map(x => {
           return {
             x: x.tag,
-            y: x.y[0]
-          }
+            y: x.y[0],
+          };
         }),
-        color: ChartHelper.getColorForVizType(series.vizType)
+        color: ChartHelper.getColorForVizType(series.vizType),
       });
     }
     return apexSeries;
@@ -69,16 +80,16 @@ export class ChartHelper {
     return {
       type: 'numeric',
       title: {
-        text: xUnit || ''
-      }
+        text: xUnit || '',
+      },
     };
   }
 
   static createYAxisForNumericChart(yUnit: string): ApexYAxis {
     return {
       title: {
-        text: yUnit || ''
-      }
+        text: yUnit || '',
+      },
     };
   }
 
@@ -92,7 +103,7 @@ export class ChartHelper {
           .map(x => {
             return [x.time.valueOf(), x.y[0]];
           }),
-        color: ChartHelper.getColorForVizType(series.vizType)
+        color: ChartHelper.getColorForVizType(series.vizType),
       });
     }
     return apexSeries;
@@ -108,13 +119,15 @@ export class ChartHelper {
           .map(x => {
             return [x.x, x.y[0]];
           }),
-        color: ChartHelper.getColorForVizType(series.vizType)
+        color: ChartHelper.getColorForVizType(series.vizType),
       });
     }
     return apexSeries;
   }
 
-  static createSeriesForTimeBasedRangedChart(chart: ChartDto): ApexAxisChartSeries {
+  static createSeriesForTimeBasedRangedChart(
+    chart: ChartDto
+  ): ApexAxisChartSeries {
     const apexSeries: ApexAxisChartSeries = [];
     for (const series of chart.series) {
       apexSeries.push({
@@ -124,10 +137,10 @@ export class ChartHelper {
           .map(x => {
             return {
               x: x.time.valueOf(),
-              y: x.y
-            }
+              y: x.y,
+            };
           }),
-        color: ChartHelper.getColorForVizType(series.vizType)
+        color: ChartHelper.getColorForVizType(series.vizType),
       });
     }
     return apexSeries;
@@ -143,10 +156,10 @@ export class ChartHelper {
           .map(x => {
             return {
               x: x.x,
-              y: x.y
-            }
+              y: x.y,
+            };
           }),
-        color: ChartHelper.getColorForVizType(series.vizType)
+        color: ChartHelper.getColorForVizType(series.vizType),
       });
     }
     return apexSeries;
@@ -155,7 +168,7 @@ export class ChartHelper {
   static isTimeBasedChart(chart: ChartDto): boolean {
     if (chart.series.length > 0) {
       if (chart.series[0].dataPoints.length > 0) {
-        return chart.series[0].dataPoints[0].time != null;
+        return chart.series[0].dataPoints[0].time !== null;
       }
     }
     return false;
@@ -170,7 +183,6 @@ export class ChartHelper {
     }
     return apexSeries;
   }
-
 
   static createLabelsForCircularChart(chart: ChartDto): string[] {
     return chart.labels;

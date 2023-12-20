@@ -1,27 +1,23 @@
-import {
-  Component,
-  Injector,
-  OnInit,
-  Output,
-  EventEmitter
-} from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { AppComponentBase } from '@shared/app-component-base';
+import {Component, Injector, OnInit, Output, EventEmitter} from '@angular/core';
+import {BsModalRef} from 'ngx-bootstrap/modal';
+import {AppComponentBase} from '@shared/app-component-base';
 import {
   TenantServiceProxy,
-  TenantDto
+  TenantDto,
 } from '@shared/service-proxies/service-proxies';
 
 @Component({
-  templateUrl: 'edit-tenant-dialog.component.html'
+  templateUrl: 'edit-tenant-dialog.component.html',
 })
-export class EditTenantDialogComponent extends AppComponentBase
-  implements OnInit {
+export class EditTenantDialogComponent
+  extends AppComponentBase
+  implements OnInit
+{
   saving = false;
   tenant: TenantDto = new TenantDto();
   id: number;
 
-  @Output() onSave = new EventEmitter<any>();
+  @Output() onSave = new EventEmitter();
 
   constructor(
     injector: Injector,

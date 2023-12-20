@@ -1,21 +1,26 @@
-import { Component, Input } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CreateAssetModalComponent } from '@app/edit/create-asset-modal/create-asset-modal.component';
-import { CreateGroupModalComponent } from '@app/edit/create-group-modal/create-group-modal.component';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { DynamicStylesHelper } from '@shared/helpers/DynamicStylesHelper';
-import { RoutingHelper } from '@shared/helpers/RoutingHelper';
-import { AssetDto, GroupDto, GroupPreviewDto, GroupServiceProxy, StatusDto } from '@shared/service-proxies/service-proxies';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import {Component, Input} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CreateAssetModalComponent} from '@app/edit/create-asset-modal/create-asset-modal.component';
+import {CreateGroupModalComponent} from '@app/edit/create-group-modal/create-group-modal.component';
+import {appModuleAnimation} from '@shared/animations/routerTransition';
+import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
+import {RoutingHelper} from '@shared/helpers/RoutingHelper';
+import {
+  AssetDto,
+  GroupDto,
+  GroupPreviewDto,
+  GroupServiceProxy,
+  StatusDto,
+} from '@shared/service-proxies/service-proxies';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
-  animations: [appModuleAnimation()]
+  animations: [appModuleAnimation()],
 })
 export class GroupComponent {
-
   @Input() editMode: boolean = false;
 
   groupId: number;
@@ -42,7 +47,7 @@ export class GroupComponent {
 
     this.editFormGroup = this._formBuilder.group({
       name: ['', []],
-      group: ['', []]
+      group: ['', []],
     });
 
     _route.params.subscribe(params => {
@@ -53,13 +58,12 @@ export class GroupComponent {
 
   loadGroup() {
     if (this.groupId) {
-      this._groupService.get(this.groupId).subscribe((result) => {
+      this._groupService.get(this.groupId).subscribe(result => {
         this.group = result;
         this.isRoot = false;
       });
-    }
-    else {
-      this._groupService.getRoot().subscribe((result) => {
+    } else {
+      this._groupService.getRoot().subscribe(result => {
         this.group = result;
         this.isRoot = true;
       });
@@ -86,9 +90,9 @@ export class GroupComponent {
   routeToTable() {
     this._router.navigate(['app', 'table'], {
       queryParams: {
-        groupId: this.groupId
+        groupId: this.groupId,
       },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
   }
 
@@ -98,12 +102,12 @@ export class GroupComponent {
     if (this.group.parent) {
       this._router.navigate(['app', 'overview', this.group.parent.id], {
         queryParams: RoutingHelper.buildEditModeQueryParams(this.editMode),
-        queryParamsHandling: 'merge'
+        queryParamsHandling: 'merge',
       });
     } else {
       this._router.navigate(['app', 'overview'], {
         queryParams: RoutingHelper.buildEditModeQueryParams(this.editMode),
-        queryParamsHandling: 'merge'
+        queryParamsHandling: 'merge',
       });
     }
   }
@@ -115,23 +119,22 @@ export class GroupComponent {
 
   saveName() {
     this.editName = false;
-    this._groupService.updateName(this.groupId, this.editFormGroup.controls.name.value)
+    this._groupService
+      .updateName(this.groupId, this.editFormGroup.controls.name.value)
       .subscribe(() => {
         this.loadGroup();
       });
   }
 
   activateEditGroup() {
-    this._groupService.getAll().subscribe((result) => {
+    this._groupService.getAll().subscribe(result => {
       this.groups = result
-        .filter((x) => x.id !== this.group.id)
-        .filter((x) => !this.hasParentWithId(x, this.group.id));
+        .filter(x => x.id !== this.group.id)
+        .filter(x => !this.hasParentWithId(x, this.group.id));
 
       // Add undefined for root group
       this.groups.unshift(undefined);
-      this.editFormGroup.controls.group.setValue(
-        undefined
-      );
+      this.editFormGroup.controls.group.setValue(undefined);
 
       this.editGroup = true;
     });
@@ -150,7 +153,8 @@ export class GroupComponent {
   }
 
   saveGroup() {
-    this._groupService.updateParent(this.groupId, this.editFormGroup.controls.group.value?.id)
+    this._groupService
+      .updateParent(this.groupId, this.editFormGroup.controls.group.value?.id)
       .subscribe(() => {
         this.editGroup = false;
         this.loadGroup();
@@ -158,13 +162,15 @@ export class GroupComponent {
   }
 
   openCreateGroupModal() {
-    this.createGroupModalRef = this._modalService.show(CreateGroupModalComponent,
+    this.createGroupModalRef = this._modalService.show(
+      CreateGroupModalComponent,
       {
         class: 'modal-lg',
         initialState: {
-          parentGroupId: this.groupId
-        }
-      });
+          parentGroupId: this.groupId,
+        },
+      }
+    );
     this.createGroupModalRef.content.closeBtnName = 'Close';
 
     this.createGroupModalRef.content.onClose.subscribe(() => {
@@ -173,13 +179,15 @@ export class GroupComponent {
   }
 
   openCreateAssetModal() {
-    this.createAssetModalRef = this._modalService.show(CreateAssetModalComponent,
+    this.createAssetModalRef = this._modalService.show(
+      CreateAssetModalComponent,
       {
         class: 'modal-lg',
         initialState: {
-          groupId: this.groupId
-        }
-      });
+          groupId: this.groupId,
+        },
+      }
+    );
     this.createAssetModalRef.content.closeBtnName = 'Close';
 
     this.createAssetModalRef.content.onClose.subscribe(() => {
@@ -191,7 +199,7 @@ export class GroupComponent {
     this._router.navigate([], {
       relativeTo: this._route,
       queryParams: RoutingHelper.buildEditModeQueryParams(true),
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.editMode = true;
   }
@@ -200,7 +208,7 @@ export class GroupComponent {
     this._router.navigate([], {
       relativeTo: this._route,
       queryParams: RoutingHelper.buildEditModeQueryParams(false),
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.editMode = false;
   }

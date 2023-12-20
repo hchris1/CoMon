@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DashboardDto, DashboardServiceProxy, DashboardTileDto } from '@shared/service-proxies/service-proxies';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RoutingHelper } from '@shared/helpers/RoutingHelper';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { CreateDashboardTileModalComponent } from '@app/edit/create-dashboard-tile-modal/create-dashboard-tile-modal.component';
+import {Component} from '@angular/core';
+import {
+  DashboardDto,
+  DashboardServiceProxy,
+  DashboardTileDto,
+} from '@shared/service-proxies/service-proxies';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {RoutingHelper} from '@shared/helpers/RoutingHelper';
+import {appModuleAnimation} from '@shared/animations/routerTransition';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {CreateDashboardTileModalComponent} from '@app/edit/create-dashboard-tile-modal/create-dashboard-tile-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -44,12 +47,13 @@ export class DashboardComponent {
   }
 
   loadDashboard() {
-    this._dashboardService.get(this.id)
-      .subscribe((result) => {
-        this.dashboard = result;
-        this.dashboard.tiles = this.dashboard.tiles.sort((a, b) => a.sortIndex - b.sortIndex);
-        this.editFormGroup.controls.name.setValue(this.dashboard.name);
-      });
+    this._dashboardService.get(this.id).subscribe(result => {
+      this.dashboard = result;
+      this.dashboard.tiles = this.dashboard.tiles.sort(
+        (a, b) => a.sortIndex - b.sortIndex
+      );
+      this.editFormGroup.controls.name.setValue(this.dashboard.name);
+    });
   }
 
   editNameClicked() {
@@ -59,7 +63,8 @@ export class DashboardComponent {
 
   saveNameClicked() {
     this.editName = false;
-    this._dashboardService.updateName(this.dashboard.id, this.editFormGroup.controls.name.value)
+    this._dashboardService
+      .updateName(this.dashboard.id, this.editFormGroup.controls.name.value)
       .subscribe(() => {
         this.loadDashboard();
       });
@@ -69,7 +74,7 @@ export class DashboardComponent {
     this._router.navigate([], {
       relativeTo: this._route,
       queryParams: RoutingHelper.buildEditModeQueryParams(true),
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.editMode = true;
   }
@@ -78,17 +83,21 @@ export class DashboardComponent {
     this._router.navigate([], {
       relativeTo: this._route,
       queryParams: RoutingHelper.buildEditModeQueryParams(false),
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.editMode = false;
   }
 
   isFirst(tile: DashboardTileDto) {
-    return tile.sortIndex === Math.min(...this.dashboard.tiles.map(x => x.sortIndex));
+    return (
+      tile.sortIndex === Math.min(...this.dashboard.tiles.map(x => x.sortIndex))
+    );
   }
 
   isLast(tile: DashboardTileDto) {
-    return tile.sortIndex === Math.max(...this.dashboard.tiles.map(x => x.sortIndex));
+    return (
+      tile.sortIndex === Math.max(...this.dashboard.tiles.map(x => x.sortIndex))
+    );
   }
 
   routeToDashboards() {
@@ -96,13 +105,15 @@ export class DashboardComponent {
   }
 
   onCreateDashboardModal() {
-    this.createDashboardTileModal = this._modalService.show(CreateDashboardTileModalComponent,
+    this.createDashboardTileModal = this._modalService.show(
+      CreateDashboardTileModalComponent,
       {
         class: 'modal-lg',
         initialState: {
-          dashboardId: this.dashboard.id
-        }
-      });
+          dashboardId: this.dashboard.id,
+        },
+      }
+    );
     this.createDashboardTileModal.content.closeBtnName = 'Close';
 
     this.createDashboardTileModal.content.onClose.subscribe(() => {

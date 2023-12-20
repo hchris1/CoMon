@@ -1,18 +1,18 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { enableProdMode } from '@angular/core';
-import { environment } from './environments/environment';
-import { RootModule } from './root.module';
-import { hmrBootstrap } from './hmr';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {enableProdMode} from '@angular/core';
+import {environment} from './environments/environment';
+import {RootModule} from './root.module';
+import {hmrBootstrap} from './hmr';
 
 import 'moment/min/locales.min';
 import 'moment-timezone';
 
 if (environment.production) {
-    enableProdMode();
+  enableProdMode();
 }
 
 const bootstrap = () => {
-    return platformBrowserDynamic().bootstrapModule(RootModule);
+  return platformBrowserDynamic().bootstrapModule(RootModule);
 };
 
 /* "Hot Module Replacement" is enabled as described on
@@ -20,12 +20,12 @@ const bootstrap = () => {
  */
 
 if (environment.hmr) {
-    if (module['hot']) {
-        hmrBootstrap(module, bootstrap); // HMR enabled bootstrap
-    } else {
-        console.error('HMR is not enabled for webpack-dev-server!');
-        console.log('Are you using the --hmr flag for ng serve?');
-    }
+  if (module['hot']) {
+    hmrBootstrap(module, bootstrap); // HMR enabled bootstrap
+  } else {
+    console.error('HMR is not enabled for webpack-dev-server!');
+    console.log('Are you using the --hmr flag for ng serve?');
+  }
 } else {
-    bootstrap(); // Regular bootstrap
+  bootstrap(); // Regular bootstrap
 }

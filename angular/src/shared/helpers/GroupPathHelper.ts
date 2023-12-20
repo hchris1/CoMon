@@ -1,4 +1,4 @@
-import { GroupPreviewDto } from '../service-proxies/service-proxies';
+import {GroupPreviewDto} from '../service-proxies/service-proxies';
 
 export class GroupPathHelper {
   /**
@@ -8,7 +8,7 @@ export class GroupPathHelper {
   static buildGroupHierarchy(group: GroupPreviewDto): GroupPreviewDto[] {
     const groupHierarchy: GroupPreviewDto[] = [];
     let currentGroup = group;
-    while (currentGroup != null) {
+    while (currentGroup !== undefined) {
       groupHierarchy.push(currentGroup);
       currentGroup = currentGroup.parent;
     }

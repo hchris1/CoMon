@@ -1,10 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreatePackageDto, PackageServiceProxy, PackageType, PingPackageSettingsDto } from '@shared/service-proxies/service-proxies';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {
+  CreatePackageDto,
+  PackageServiceProxy,
+  PackageType,
+  PingPackageSettingsDto,
+} from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-create-package-modal',
-  templateUrl: './create-package-modal.component.html'
+  templateUrl: './create-package-modal.component.html',
 })
 export class CreatePackageModalComponent {
   @Input() assetId: number;
@@ -14,29 +19,32 @@ export class CreatePackageModalComponent {
   form: FormGroup;
   pingPackageType = PackageType._0;
   externalPackageType = PackageType._10;
-  types: { value: PackageType, name: string }[];
+  types: {value: PackageType; name: string}[];
   currentType: PackageType;
 
   constructor(
     formBuilder: FormBuilder,
     private packageService: PackageServiceProxy
   ) {
-    this.types = [{
-      value: PackageType._0,
-      name: 'Edit.PackageTypePing'
-    }, {
-      value: PackageType._10,
-      name: 'Edit.PackageTypeExternal'
-    }];
+    this.types = [
+      {
+        value: PackageType._0,
+        name: 'Edit.PackageTypePing',
+      },
+      {
+        value: PackageType._10,
+        name: 'Edit.PackageTypeExternal',
+      },
+    ];
 
     this.form = formBuilder.group({
       name: ['', Validators.required],
       type: [0, Validators.required],
       host: [''],
-      cycleSeconds: ['']
+      cycleSeconds: [''],
     });
 
-    this.form.controls.type.valueChanges.subscribe((value) => {
+    this.form.controls.type.valueChanges.subscribe(value => {
       this.currentType = parseInt(value, 10) as PackageType;
 
       this.form.controls.host.clearValidators();
@@ -71,11 +79,13 @@ export class CreatePackageModalComponent {
       // Ping package settings
       if (this.currentType === PackageType._0) {
         createPackageDto.pingPackageSettings = new PingPackageSettingsDto();
-        createPackageDto.pingPackageSettings.host = this.form.controls.host.value;
-        createPackageDto.pingPackageSettings.cycleSeconds = this.form.controls.cycleSeconds.value;
+        createPackageDto.pingPackageSettings.host =
+          this.form.controls.host.value;
+        createPackageDto.pingPackageSettings.cycleSeconds =
+          this.form.controls.cycleSeconds.value;
       }
 
-      this.packageService.create(createPackageDto).subscribe((id) => {
+      this.packageService.create(createPackageDto).subscribe(id => {
         this.onCreated.emit(id);
         this.onClose.emit();
       });

@@ -1,12 +1,23 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { GroupPathHelper } from '@shared/helpers/GroupPathHelper';
-import { RoutingHelper } from '@shared/helpers/RoutingHelper';
-import { AssetDto, GroupPreviewDto, PackagePreviewDto } from '@shared/service-proxies/service-proxies';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {GroupPathHelper} from '@shared/helpers/GroupPathHelper';
+import {RoutingHelper} from '@shared/helpers/RoutingHelper';
+import {
+  AssetDto,
+  GroupPreviewDto,
+  PackagePreviewDto,
+} from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-path',
-  templateUrl: './path.component.html'
+  templateUrl: './path.component.html',
 })
 export class PathComponent implements OnInit, OnChanges {
   @Input() group: GroupPreviewDto;
@@ -21,9 +32,7 @@ export class PathComponent implements OnInit, OnChanges {
 
   groups: GroupPreviewDto[];
 
-  constructor(
-    private _router: Router
-  ) { }
+  constructor(private _router: Router) {}
 
   ngOnInit() {
     this.updateGroupHierarchy();
@@ -38,25 +47,37 @@ export class PathComponent implements OnInit, OnChanges {
   }
 
   onGroupClick(group: GroupPreviewDto) {
-    this._router.navigate(['app', 'overview', group.id], RoutingHelper.buildEditModeQueryParams(this.editMode));
+    this._router.navigate(
+      ['app', 'overview', group.id],
+      RoutingHelper.buildEditModeQueryParams(this.editMode)
+    );
     this.groupClicked.emit(group);
     this.pathClicked.emit();
   }
 
   onRootClick() {
-    this._router.navigate(['app', 'overview'], RoutingHelper.buildEditModeQueryParams(this.editMode));
+    this._router.navigate(
+      ['app', 'overview'],
+      RoutingHelper.buildEditModeQueryParams(this.editMode)
+    );
     this.rootClicked.emit();
     this.pathClicked.emit();
   }
 
   onAssetClick(asset: AssetDto) {
-    this._router.navigate(['app', 'overview', 'assets', asset.id], RoutingHelper.buildEditModeQueryParams(this.editMode));
+    this._router.navigate(
+      ['app', 'overview', 'assets', asset.id],
+      RoutingHelper.buildEditModeQueryParams(this.editMode)
+    );
     this.assetClicked.emit(asset);
     this.pathClicked.emit();
   }
 
   onPackageClick(packagePreview: PackagePreviewDto) {
-    this._router.navigate(['app', 'overview', 'assets', packagePreview.asset.id], RoutingHelper.buildEditModeQueryParams(this.editMode));
+    this._router.navigate(
+      ['app', 'overview', 'assets', packagePreview.asset.id],
+      RoutingHelper.buildEditModeQueryParams(this.editMode)
+    );
     this.packageClicked.emit(packagePreview);
     this.pathClicked.emit();
   }

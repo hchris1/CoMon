@@ -1,35 +1,35 @@
+import {Component, Injector, OnInit, EventEmitter, Output} from '@angular/core';
+import {BsModalRef} from 'ngx-bootstrap/modal';
 import {
-  Component,
-  Injector,
-  OnInit,
-  EventEmitter,
-  Output,
-} from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { forEach as _forEach, includes as _includes, map as _map } from 'lodash-es';
-import { AppComponentBase } from '@shared/app-component-base';
+  forEach as _forEach,
+  includes as _includes,
+  map as _map,
+} from 'lodash-es';
+import {AppComponentBase} from '@shared/app-component-base';
 import {
   RoleServiceProxy,
   GetRoleForEditOutput,
   RoleDto,
   PermissionDto,
   RoleEditDto,
-  FlatPermissionDto
+  FlatPermissionDto,
 } from '@shared/service-proxies/service-proxies';
 
 @Component({
-  templateUrl: 'edit-role-dialog.component.html'
+  templateUrl: 'edit-role-dialog.component.html',
 })
-export class EditRoleDialogComponent extends AppComponentBase
-  implements OnInit {
+export class EditRoleDialogComponent
+  extends AppComponentBase
+  implements OnInit
+{
   saving = false;
   id: number;
   role = new RoleEditDto();
   permissions: FlatPermissionDto[];
   grantedPermissionNames: string[];
-  checkedPermissionsMap: { [key: string]: boolean } = {};
+  checkedPermissionsMap: {[key: string]: boolean} = {};
 
-  @Output() onSave = new EventEmitter<any>();
+  @Output() onSave = new EventEmitter();
 
   constructor(
     injector: Injector,
@@ -51,7 +51,7 @@ export class EditRoleDialogComponent extends AppComponentBase
   }
 
   setInitialPermissionsStatus(): void {
-    _map(this.permissions, (item) => {
+    _map(this.permissions, item => {
       this.checkedPermissionsMap[item.name] = this.isPermissionChecked(
         item.name
       );
@@ -68,7 +68,7 @@ export class EditRoleDialogComponent extends AppComponentBase
 
   getCheckedPermissions(): string[] {
     const permissions: string[] = [];
-    _forEach(this.checkedPermissionsMap, function (value, key) {
+    _forEach(this.checkedPermissionsMap, (value, key) => {
       if (value) {
         permissions.push(key);
       }

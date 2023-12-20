@@ -1,11 +1,14 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AssetServiceProxy, CreateAssetDto } from '@shared/service-proxies/service-proxies';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {
+  AssetServiceProxy,
+  CreateAssetDto,
+} from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-create-asset-modal',
-  templateUrl: './create-asset-modal.component.html'
+  templateUrl: './create-asset-modal.component.html',
 })
 export class CreateAssetModalComponent {
   @Input() groupId: number;
@@ -20,7 +23,7 @@ export class CreateAssetModalComponent {
   ) {
     this.form = formBuilder.group({
       name: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
     });
   }
 
@@ -34,7 +37,7 @@ export class CreateAssetModalComponent {
       createAssetDto.name = this.form.controls.name.value;
       createAssetDto.description = this.form.controls.description.value;
       createAssetDto.groupId = this.groupId;
-      this._assetService.create(createAssetDto).subscribe((id) => {
+      this._assetService.create(createAssetDto).subscribe(id => {
         this.onClose.emit();
         this._router.navigate(['app', 'overview', 'assets', id]);
       });

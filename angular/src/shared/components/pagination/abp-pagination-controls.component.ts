@@ -1,18 +1,18 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+/* eslint-disable */
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'abp-pagination-controls',
-  templateUrl: './abp-pagination-controls.component.html'
+  templateUrl: './abp-pagination-controls.component.html',
 })
 export class AbpPaginationControlsComponent {
-
   @Input() id: string;
   @Input() maxSize = 7;
   @Input() previousLabel = 'Previous';
   @Input() nextLabel = 'Next';
   @Input() screenReaderPaginationLabel = 'Pagination';
   @Input() screenReaderPageLabel = 'page';
-  @Input() screenReaderCurrentLabel = `You're on page`;
+  @Input() screenReaderCurrentLabel = "You're on page";
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
   private _directionLinks = true;

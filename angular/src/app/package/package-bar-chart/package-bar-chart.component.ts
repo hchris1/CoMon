@@ -1,8 +1,20 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { DarkModeService } from '@app/dark-mode.service';
-import { PackageServiceProxy, PackageStatusCountDto } from '@shared/service-proxies/service-proxies';
-import { ApexAxisChartSeries, ApexChart, ApexGrid, ApexPlotOptions, ApexTheme, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
-import { BehaviorSubject } from 'rxjs';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {DarkModeService} from '@app/dark-mode.service';
+import {
+  PackageServiceProxy,
+  PackageStatusCountDto,
+} from '@shared/service-proxies/service-proxies';
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexGrid,
+  ApexPlotOptions,
+  ApexTheme,
+  ApexXAxis,
+  ApexYAxis,
+  ChartComponent,
+} from 'ng-apexcharts';
+import {BehaviorSubject} from 'rxjs';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -16,7 +28,7 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-package-bar-chart',
-  templateUrl: './package-bar-chart.component.html'
+  templateUrl: './package-bar-chart.component.html',
 })
 export class PackageBarChartComponent implements OnInit {
   @Input() packageId: number;
@@ -46,33 +58,43 @@ export class PackageBarChartComponent implements OnInit {
     this.loadData();
 
     if (this.triggerRender) {
-      this.triggerRender.subscribe((val) => {
-        if (this.chart && val)
-          this.chart.updateOptions(this.chartOptions);
-      })
+      this.triggerRender.subscribe(val => {
+        if (this.chart && val) this.chart.updateOptions(this.chartOptions);
+      });
     }
 
     if (this.triggerReload) {
-      this.triggerReload.subscribe((val) => {
-        if (val)
-          this.loadData();
-      })
+      this.triggerReload.subscribe(val => {
+        if (val) this.loadData();
+      });
     }
   }
 
   loadData() {
     if (!this.useChanges)
-      this._packageService.getPackageStatusUpdateBuckets(this.packageId, this.numHours, this.useHourBuckets).subscribe((data: PackageStatusCountDto[]) => {
-        this.data = data;
-        this.transformData();
-        this.createChartOptions();
-      });
+      this._packageService
+        .getPackageStatusUpdateBuckets(
+          this.packageId,
+          this.numHours,
+          this.useHourBuckets
+        )
+        .subscribe((data: PackageStatusCountDto[]) => {
+          this.data = data;
+          this.transformData();
+          this.createChartOptions();
+        });
     else
-      this._packageService.getPackageStatusChangeBuckets(this.packageId, this.numHours, this.useHourBuckets).subscribe((data: PackageStatusCountDto[]) => {
-        this.data = data;
-        this.transformData();
-        this.createChartOptions();
-      });
+      this._packageService
+        .getPackageStatusChangeBuckets(
+          this.packageId,
+          this.numHours,
+          this.useHourBuckets
+        )
+        .subscribe((data: PackageStatusCountDto[]) => {
+          this.data = data;
+          this.transformData();
+          this.createChartOptions();
+        });
   }
 
   transformData() {
@@ -82,31 +104,31 @@ export class PackageBarChartComponent implements OnInit {
         data: this.data.map(e => {
           return {
             x: e.date.valueOf(),
-            y: e.healthyCount
-          }
+            y: e.healthyCount,
+          };
         }),
-        color: '#28a745'
+        color: '#28a745',
       },
       {
         name: 'Warning',
         data: this.data.map(e => {
           return {
             x: e.date.valueOf(),
-            y: e.warningCount
-          }
+            y: e.warningCount,
+          };
         }),
-        color: '#ffc107'
+        color: '#ffc107',
       },
       {
         name: 'Alert',
         data: this.data.map(e => {
           return {
             x: e.date.valueOf(),
-            y: e.alertCount
-          }
+            y: e.alertCount,
+          };
         }),
-        color: '#dc3545'
-      }
+        color: '#dc3545',
+      },
     ];
   }
 
@@ -116,18 +138,18 @@ export class PackageBarChartComponent implements OnInit {
         type: 'bar',
         height: 250,
         toolbar: {
-          show: true
+          show: true,
         },
         stacked: true,
-        background: 'none'
+        background: 'none',
       },
       series: this.series,
       xaxis: {
-        type: 'datetime'
+        type: 'datetime',
       },
       theme: {
-        mode: this._darkModeService.isDarkMode.value ? 'dark' : 'light'
+        mode: this._darkModeService.isDarkMode.value ? 'dark' : 'light',
       },
-    }
+    };
   }
 }

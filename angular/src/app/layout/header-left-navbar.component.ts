@@ -1,10 +1,10 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { LayoutStoreService } from '@shared/layout/layout-store.service';
+import {Component, ChangeDetectionStrategy, OnInit} from '@angular/core';
+import {LayoutStoreService} from '@shared/layout/layout-store.service';
 
 @Component({
   selector: 'header-left-navbar',
   templateUrl: './header-left-navbar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderLeftNavbarComponent implements OnInit {
   sidebarExpanded: boolean;
@@ -12,7 +12,7 @@ export class HeaderLeftNavbarComponent implements OnInit {
   constructor(private _layoutStore: LayoutStoreService) {}
 
   ngOnInit(): void {
-    this._layoutStore.sidebarExpanded.subscribe((value) => {
+    this._layoutStore.sidebarExpanded.subscribe(value => {
       this.sidebarExpanded = value;
     });
   }

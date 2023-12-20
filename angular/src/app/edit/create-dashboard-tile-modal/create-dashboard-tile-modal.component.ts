@@ -1,10 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateDashboardTileDto, DashboardServiceProxy, DashboardTileOptionDto, DashboardTileType } from '@shared/service-proxies/service-proxies';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {
+  CreateDashboardTileDto,
+  DashboardServiceProxy,
+  DashboardTileOptionDto,
+  DashboardTileType,
+} from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-create-dashboard-tile-modal',
-  templateUrl: './create-dashboard-tile-modal.component.html'
+  templateUrl: './create-dashboard-tile-modal.component.html',
 })
 export class CreateDashboardTileModalComponent {
   @Input() dashboardId: number;
@@ -15,7 +20,7 @@ export class CreateDashboardTileModalComponent {
   groupTileType = DashboardTileType._0;
   assetTileType = DashboardTileType._1;
   packageTileType = DashboardTileType._2;
-  types: { value: DashboardTileType, name: string }[];
+  types: {value: DashboardTileType; name: string}[];
   currentType: DashboardTileType;
 
   options: DashboardTileOptionDto;
@@ -26,16 +31,20 @@ export class CreateDashboardTileModalComponent {
   ) {
     this.loadOptions();
 
-    this.types = [{
-      value: DashboardTileType._0,
-      name: 'Edit.TileTypeGroup'
-    }, {
-      value: DashboardTileType._1,
-      name: 'Edit.TileTypeAsset'
-    }, {
-      value: DashboardTileType._2,
-      name: 'Edit.TileTypePackage'
-    }];
+    this.types = [
+      {
+        value: DashboardTileType._0,
+        name: 'Edit.TileTypeGroup',
+      },
+      {
+        value: DashboardTileType._1,
+        name: 'Edit.TileTypeAsset',
+      },
+      {
+        value: DashboardTileType._2,
+        name: 'Edit.TileTypePackage',
+      },
+    ];
 
     this.form = formBuilder.group({
       type: [0],
@@ -44,7 +53,7 @@ export class CreateDashboardTileModalComponent {
       packageId: [''],
     });
 
-    this.form.controls.type.valueChanges.subscribe((value) => {
+    this.form.controls.type.valueChanges.subscribe(value => {
       this.currentType = parseInt(value, 10) as DashboardTileType;
 
       this.form.controls.groupId.clearValidators();
@@ -87,7 +96,10 @@ export class CreateDashboardTileModalComponent {
   onSubmit() {
     if (this.form.valid) {
       const createDto = new CreateDashboardTileDto();
-      createDto.itemType = parseInt(this.form.controls.type.value, 10) as DashboardTileType;
+      createDto.itemType = parseInt(
+        this.form.controls.type.value,
+        10
+      ) as DashboardTileType;
 
       if (createDto.itemType === DashboardTileType._0)
         createDto.itemId = this.form.controls.groupId.value;
@@ -95,13 +107,14 @@ export class CreateDashboardTileModalComponent {
         createDto.itemId = this.form.controls.assetId.value;
       else if (createDto.itemType === DashboardTileType._2)
         createDto.itemId = this.form.controls.packageId.value;
-      else
-        throw new Error('Invalid tile type');
+      else throw new Error('Invalid tile type');
 
-      this._dashboardService.addTile(this.dashboardId, createDto).subscribe(() => {
-        this.onCreated.emit();
-        this.onClose.emit();
-      });
+      this._dashboardService
+        .addTile(this.dashboardId, createDto)
+        .subscribe(() => {
+          this.onCreated.emit();
+          this.onClose.emit();
+        });
     } else {
       this.form.markAllAsTouched();
     }

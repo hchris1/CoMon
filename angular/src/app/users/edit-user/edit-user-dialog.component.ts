@@ -1,31 +1,31 @@
+import {Component, Injector, OnInit, EventEmitter, Output} from '@angular/core';
+import {BsModalRef} from 'ngx-bootstrap/modal';
 import {
-  Component,
-  Injector,
-  OnInit,
-  EventEmitter,
-  Output
-} from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { forEach as _forEach, includes as _includes, map as _map } from 'lodash-es';
-import { AppComponentBase } from '@shared/app-component-base';
+  forEach as _forEach,
+  includes as _includes,
+  map as _map,
+} from 'lodash-es';
+import {AppComponentBase} from '@shared/app-component-base';
 import {
   UserServiceProxy,
   UserDto,
-  RoleDto
+  RoleDto,
 } from '@shared/service-proxies/service-proxies';
 
 @Component({
-  templateUrl: './edit-user-dialog.component.html'
+  templateUrl: './edit-user-dialog.component.html',
 })
-export class EditUserDialogComponent extends AppComponentBase
-  implements OnInit {
+export class EditUserDialogComponent
+  extends AppComponentBase
+  implements OnInit
+{
   saving = false;
   user = new UserDto();
   roles: RoleDto[] = [];
-  checkedRolesMap: { [key: string]: boolean } = {};
+  checkedRolesMap: {[key: string]: boolean} = {};
   id: number;
 
-  @Output() onSave = new EventEmitter<any>();
+  @Output() onSave = new EventEmitter();
 
   constructor(
     injector: Injector,
@@ -36,10 +36,10 @@ export class EditUserDialogComponent extends AppComponentBase
   }
 
   ngOnInit(): void {
-    this._userService.get(this.id).subscribe((result) => {
+    this._userService.get(this.id).subscribe(result => {
       this.user = result;
 
-      this._userService.getRoles().subscribe((result2) => {
+      this._userService.getRoles().subscribe(result2 => {
         this.roles = result2.items;
         this.setInitialRolesStatus();
       });
@@ -47,7 +47,7 @@ export class EditUserDialogComponent extends AppComponentBase
   }
 
   setInitialRolesStatus(): void {
-    _map(this.roles, (item) => {
+    _map(this.roles, item => {
       this.checkedRolesMap[item.normalizedName] = this.isRoleChecked(
         item.normalizedName
       );
@@ -64,7 +64,7 @@ export class EditUserDialogComponent extends AppComponentBase
 
   getCheckedRoles(): string[] {
     const roles: string[] = [];
-    _forEach(this.checkedRolesMap, function (value, key) {
+    _forEach(this.checkedRolesMap, (value, key) => {
       if (value) {
         roles.push(key);
       }

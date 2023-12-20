@@ -1,21 +1,22 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ChartDto } from '@shared/service-proxies/service-proxies';
-import { ChartHelper } from '@shared/helpers/ChartHelper';
-import { DarkModeService } from '@app/dark-mode.service';
-import { BaseChartComponent } from '../base-chart/base-chart.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {ChartDto} from '@shared/service-proxies/service-proxies';
+import {ChartHelper} from '@shared/helpers/ChartHelper';
+import {DarkModeService} from '@app/dark-mode.service';
+import {BaseChartComponent} from '../base-chart/base-chart.component';
 
 @Component({
   selector: 'app-scatter-chart',
   templateUrl: '../base-chart/base-chart.component.html',
 })
-export class ScatterChartComponent extends BaseChartComponent implements OnInit {
+export class ScatterChartComponent
+  extends BaseChartComponent
+  implements OnInit
+{
   @Input() chart: ChartDto;
 
   isTimeBased: boolean;
 
-  constructor(
-    private _service: DarkModeService
-  ) {
+  constructor(private _service: DarkModeService) {
     super('scatter', _service);
   }
 
@@ -29,22 +30,26 @@ export class ScatterChartComponent extends BaseChartComponent implements OnInit 
     this.buildYAxis();
 
     this.apexTitle = {
-      text: this.chart.title
-    }
+      text: this.chart.title,
+    };
     this.apexSubTitle = {
-      text: this.chart.subTitle
-    }
+      text: this.chart.subTitle,
+    };
   }
 
   buildXAxis() {
     if (this.isTimeBased)
       this.apexXAxis = ChartHelper.createXAxisForTimeBasedChart();
     else {
-      this.apexXAxis = ChartHelper.createXAxisForNumericChart(this.chart.series.length > 0 ? this.chart.series[0].xUnit : '');
+      this.apexXAxis = ChartHelper.createXAxisForNumericChart(
+        this.chart.series.length > 0 ? this.chart.series[0].xUnit : ''
+      );
     }
   }
 
   buildYAxis() {
-    this.apexYAxis = ChartHelper.createYAxisForNumericChart(this.chart.series.length > 0 ? this.chart.series[0].yUnit : '');
+    this.apexYAxis = ChartHelper.createYAxisForNumericChart(
+      this.chart.series.length > 0 ? this.chart.series[0].yUnit : ''
+    );
   }
 }

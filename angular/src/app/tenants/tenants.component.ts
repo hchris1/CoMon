@@ -1,7 +1,7 @@
-import { Component, Injector } from '@angular/core';
-import { finalize } from 'rxjs/operators';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
+import {Component, Injector} from '@angular/core';
+import {finalize} from 'rxjs/operators';
+import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
+import {appModuleAnimation} from '@shared/animations/routerTransition';
 import {
   PagedListingComponentBase,
   PagedRequestDto,
@@ -11,8 +11,8 @@ import {
   TenantDto,
   TenantDtoPagedResultDto,
 } from '@shared/service-proxies/service-proxies';
-import { CreateTenantDialogComponent } from './create-tenant/create-tenant-dialog.component';
-import { EditTenantDialogComponent } from './edit-tenant/edit-tenant-dialog.component';
+import {CreateTenantDialogComponent} from './create-tenant/create-tenant-dialog.component';
+import {EditTenantDialogComponent} from './edit-tenant/edit-tenant-dialog.component';
 
 class PagedTenantsRequestDto extends PagedRequestDto {
   keyword: string;
@@ -21,7 +21,7 @@ class PagedTenantsRequestDto extends PagedRequestDto {
 
 @Component({
   templateUrl: './tenants.component.html',
-  animations: [appModuleAnimation()]
+  animations: [appModuleAnimation()],
 })
 export class TenantsComponent extends PagedListingComponentBase<TenantDto> {
   tenants: TenantDto[] = [];

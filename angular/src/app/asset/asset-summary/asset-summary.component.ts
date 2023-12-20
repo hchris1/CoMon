@@ -1,9 +1,22 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef } from '@angular/core';
-import { CoMonHubService } from '@app/comon-hub.service';
-import { DynamicStylesHelper } from '@shared/helpers/DynamicStylesHelper';
-import { AssetDto, AssetServiceProxy, PackageDto } from '@shared/service-proxies/service-proxies';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription } from 'rxjs';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+} from '@angular/core';
+import {CoMonHubService} from '@app/comon-hub.service';
+import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
+import {
+  AssetDto,
+  AssetServiceProxy,
+  PackageDto,
+} from '@shared/service-proxies/service-proxies';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-asset-summary',
@@ -29,23 +42,24 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
     private _assetService: AssetServiceProxy,
     private _changeDetector: ChangeDetectorRef,
     private _modalService: BsModalService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.statusChangeSubscription = this._comonHubService.statusUpdate.subscribe((update) => {
-      if (this.assetId === update.assetId) {
-        this.loadAsset();
-      }
-    });
+    this.statusChangeSubscription =
+      this._comonHubService.statusUpdate.subscribe(update => {
+        if (this.assetId === update.assetId) {
+          this.loadAsset();
+        }
+      });
 
-    this.connectionEstablishedSubscription = this._comonHubService.connectionEstablished.subscribe((established) => {
-      if (established)
-        this.loadAsset();
-    });
+    this.connectionEstablishedSubscription =
+      this._comonHubService.connectionEstablished.subscribe(established => {
+        if (established) this.loadAsset();
+      });
   }
 
   loadAsset() {
-    this._assetService.get(this.assetId).subscribe((asset) => {
+    this._assetService.get(this.assetId).subscribe(asset => {
       this.asset = asset;
       this._changeDetector.detectChanges();
     });
@@ -71,18 +85,22 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
   }
 
   onAssetClick(asset: AssetDto) {
-    if (this.editMode)
-      return;
+    if (this.editMode) return;
     this.assetClicked.emit(asset);
   }
 
   getEmoji() {
-    const worstCriticality = DynamicStylesHelper.getWorstCriticality(this.asset);
+    const worstCriticality = DynamicStylesHelper.getWorstCriticality(
+      this.asset
+    );
     return DynamicStylesHelper.getEmoji(worstCriticality);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   openDeletionModal(template: TemplateRef<any>) {
-    this.confirmDeletionModal = this._modalService.show(template, { class: 'modal-sm' });
+    this.confirmDeletionModal = this._modalService.show(template, {
+      class: 'modal-sm',
+    });
   }
 
   confirmDeletion() {

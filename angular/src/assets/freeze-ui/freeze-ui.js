@@ -1,33 +1,34 @@
-"use strict";
+/* eslint-disable */
+'use strict';
 
 // taken from https://raw.githubusercontent.com/alexradulescu/FreezeUI, modified and converted to ES5
 (function () {
-  var freezeHtml = document.createElement("div");
-  freezeHtml.classList.add("freeze-ui");
-  var freezedItems = [];
+  const freezeHtml = document.createElement('div');
+  freezeHtml.classList.add('freeze-ui');
+  const freezedItems = [];
 
-  var getSelector = function getSelector(selector) {
-    return selector ? selector : "body";
+  const getSelector = function getSelector(selector) {
+    return selector ? selector : 'body';
   };
 
-  var normalizeFreezeDelay = function normalizeFreezeDelay(delay) {
+  const normalizeFreezeDelay = function normalizeFreezeDelay(delay) {
     return delay ? delay : 250;
   };
 
-  var shouldFreezeItem = function shouldFreezeItem(selector) {
-    var itemSelector = getSelector(selector);
+  const shouldFreezeItem = function shouldFreezeItem(selector) {
+    const itemSelector = getSelector(selector);
     return freezedItems.indexOf(itemSelector) >= 0;
   };
 
-  var addFreezedItem = function addFreezedItem(selector) {
-    var itemSelector = getSelector(selector);
+  const addFreezedItem = function addFreezedItem(selector) {
+    const itemSelector = getSelector(selector);
     freezedItems.push(itemSelector);
   };
 
-  var removeFreezedItem = function removeFreezedItem(selector) {
-    var itemSelector = getSelector(selector);
+  const removeFreezedItem = function removeFreezedItem(selector) {
+    const itemSelector = getSelector(selector);
 
-    for (var i = 0; i < freezedItems.length; i++) {
+    for (let i = 0; i < freezedItems.length; i++) {
       if (freezedItems[i] === itemSelector) {
         freezedItems.splice(i, 1);
       }
@@ -35,15 +36,16 @@
   };
 
   window.FreezeUI = function () {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    const options =
+      arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     addFreezedItem(options.selector);
-    var delay = normalizeFreezeDelay(options.delay);
-    setTimeout(function () {
+    const delay = normalizeFreezeDelay(options.delay);
+    setTimeout(() => {
       if (!shouldFreezeItem(options.selector)) {
         return;
       }
 
-      var parent;
+      let parent;
 
       if (options.element) {
         parent = options.element;
@@ -51,10 +53,10 @@
         parent = document.querySelector(options.selector) || document.body;
       }
 
-      freezeHtml.setAttribute("data-text", options.text || "Loading");
+      freezeHtml.setAttribute('data-text', options.text || 'Loading');
 
       if (document.querySelector(options.selector) || options.element) {
-        freezeHtml.style.position = "absolute";
+        freezeHtml.style.position = 'absolute';
       }
 
       parent.appendChild(freezeHtml);
@@ -62,20 +64,21 @@
   };
 
   window.UnFreezeUI = function () {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    const options =
+      arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     removeFreezedItem(options.selector);
-    var delay = normalizeFreezeDelay(options.delay) + 250;
-    setTimeout(function () {
-      var freezeHtml;
+    const delay = normalizeFreezeDelay(options.delay) + 250;
+    setTimeout(() => {
+      let freezeHtml;
 
       if (options.element) {
-        freezeHtml = options.element.querySelector(".freeze-ui");
+        freezeHtml = options.element.querySelector('.freeze-ui');
       } else {
-        freezeHtml = document.querySelector(".freeze-ui");
+        freezeHtml = document.querySelector('.freeze-ui');
       }
 
       if (freezeHtml) {
-        freezeHtml.classList.remove("is-unfreezing");
+        freezeHtml.classList.remove('is-unfreezing');
 
         if (freezeHtml.parentElement) {
           freezeHtml.parentElement.removeChild(freezeHtml);

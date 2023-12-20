@@ -1,19 +1,17 @@
-import { Component, Input } from '@angular/core';
-import { ChartHelper } from '@shared/helpers/ChartHelper';
-import { ChartDto } from '@shared/service-proxies/service-proxies';
-import { BaseChartComponent } from '../base-chart/base-chart.component';
-import { DarkModeService } from '@app/dark-mode.service';
+import {Component, Input} from '@angular/core';
+import {ChartHelper} from '@shared/helpers/ChartHelper';
+import {ChartDto} from '@shared/service-proxies/service-proxies';
+import {BaseChartComponent} from '../base-chart/base-chart.component';
+import {DarkModeService} from '@app/dark-mode.service';
 
 @Component({
   selector: 'app-radial-bar-chart',
-  templateUrl: '../base-chart/base-chart.component.html'
+  templateUrl: '../base-chart/base-chart.component.html',
 })
 export class RadialBarChartComponent extends BaseChartComponent {
   @Input() chart: ChartDto;
 
-  constructor(
-    private _service: DarkModeService
-  ) {
+  constructor(private _service: DarkModeService) {
     super('radialBar', _service);
   }
 
@@ -23,10 +21,10 @@ export class RadialBarChartComponent extends BaseChartComponent {
     this.apexSeries = ChartHelper.createSeriesForCircularChart(this.chart);
 
     this.apexTitle = {
-      text: this.chart.title
-    }
+      text: this.chart.title,
+    };
     this.apexSubTitle = {
-      text: this.chart.subTitle
-    }
+      text: this.chart.subTitle,
+    };
   }
 }

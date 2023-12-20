@@ -1,13 +1,27 @@
-import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { AppComponentBase } from '@shared/app-component-base';
-import { DynamicStylesHelper } from '@shared/helpers/DynamicStylesHelper';
-import { Criticality, StatusPreviewDto } from '@shared/service-proxies/service-proxies';
+import {
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {AppComponentBase} from '@shared/app-component-base';
+import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
+import {
+  Criticality,
+  StatusPreviewDto,
+} from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-status-timeline-button',
-  templateUrl: './status-timeline-button.component.html'
+  templateUrl: './status-timeline-button.component.html',
 })
-export class StatusTimelineButtonComponent extends AppComponentBase implements OnInit, OnChanges {
+export class StatusTimelineButtonComponent
+  extends AppComponentBase
+  implements OnInit, OnChanges
+{
   @Input() type: ButtonType;
   @Input() statusPreview: StatusPreviewDto;
 
@@ -19,9 +33,7 @@ export class StatusTimelineButtonComponent extends AppComponentBase implements O
   infoText: string;
   tooltipText: string;
 
-  constructor(
-    injector: Injector
-  ) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
@@ -68,13 +80,22 @@ export class StatusTimelineButtonComponent extends AppComponentBase implements O
   getInfoText() {
     switch (this.type) {
       case ButtonType.Previous:
-        this.infoText = this.localization.localize("Status.NoPreviousStatus", this.localizationSourceName);
+        this.infoText = this.localization.localize(
+          'Status.NoPreviousStatus',
+          this.localizationSourceName
+        );
         break;
       case ButtonType.Next:
-        this.infoText = this.localization.localize("Status.NoNextStatus", this.localizationSourceName);
+        this.infoText = this.localization.localize(
+          'Status.NoNextStatus',
+          this.localizationSourceName
+        );
         break;
       case ButtonType.Latest:
-        this.infoText = this.localization.localize("Status.NoLatestStatus", this.localizationSourceName);
+        this.infoText = this.localization.localize(
+          'Status.NoLatestStatus',
+          this.localizationSourceName
+        );
         break;
     }
   }
@@ -82,13 +103,22 @@ export class StatusTimelineButtonComponent extends AppComponentBase implements O
   getTooltipText() {
     switch (this.type) {
       case ButtonType.Previous:
-        this.tooltipText = this.localization.localize("Status.PreviousStatusTooltip", this.localizationSourceName)
+        this.tooltipText = this.localization.localize(
+          'Status.PreviousStatusTooltip',
+          this.localizationSourceName
+        );
         break;
       case ButtonType.Next:
-        this.tooltipText = this.localization.localize("Status.NextStatusTooltip", this.localizationSourceName)
+        this.tooltipText = this.localization.localize(
+          'Status.NextStatusTooltip',
+          this.localizationSourceName
+        );
         break;
       case ButtonType.Latest:
-        this.tooltipText = this.localization.localize("Status.LatestStatusTooltip", this.localizationSourceName)
+        this.tooltipText = this.localization.localize(
+          'Status.LatestStatusTooltip',
+          this.localizationSourceName
+        );
         break;
     }
   }
@@ -97,5 +127,5 @@ export class StatusTimelineButtonComponent extends AppComponentBase implements O
 enum ButtonType {
   Previous = 0,
   Next = 1,
-  Latest = 2
+  Latest = 2,
 }

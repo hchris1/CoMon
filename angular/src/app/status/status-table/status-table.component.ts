@@ -1,16 +1,27 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CoMonHubService } from '@app/comon-hub.service';
-import { StatusServiceProxy, StatusPreviewDtoPagedResultDto, AssetPreviewDto, GroupPreviewDto, Criticality } from '@shared/service-proxies/service-proxies';
-import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CoMonHubService} from '@app/comon-hub.service';
+import {
+  StatusServiceProxy,
+  StatusPreviewDtoPagedResultDto,
+  AssetPreviewDto,
+  GroupPreviewDto,
+  Criticality,
+} from '@shared/service-proxies/service-proxies';
+import {PageChangedEvent} from 'ngx-bootstrap/pagination';
+import {BehaviorSubject, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-status-table',
-  templateUrl: './status-table.component.html'
+  templateUrl: './status-table.component.html',
 })
 export class StatusTableComponent implements OnInit, OnDestroy {
-
   @Input() showAssetGroupFilter = true;
   @Input() showCriticalityFilter = true;
   @Input() showLatestOnlyFilter = true;
@@ -24,7 +35,12 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   options: AssetGroupOption[];
   option: AssetGroupOption;
   latestOnly: boolean = true;
-  criticalities: Criticality[] = [undefined, Criticality._1, Criticality._3, Criticality._5];
+  criticalities: Criticality[] = [
+    undefined,
+    Criticality._1,
+    Criticality._3,
+    Criticality._5,
+  ];
   criticality: Criticality = undefined;
 
   // Pagination
@@ -45,8 +61,8 @@ export class StatusTableComponent implements OnInit, OnDestroy {
     private _coMonHubService: CoMonHubService,
     private _changeDetector: ChangeDetectorRef,
     private _route: ActivatedRoute,
-    private _router: Router,
-  ) { }
+    private _router: Router
+  ) {}
 
   ngOnInit(): void {
     this.latestOnly = this.showLatestOnlyFilter;
@@ -58,17 +74,17 @@ export class StatusTableComponent implements OnInit, OnDestroy {
       this.subscribeToStatusChanges();
     });
 
-    this.connectionEstablishedSubscription = this._coMonHubService.connectionEstablished.subscribe((established) => {
-      if (established)
-        this.loadStatuses();
-    });
+    this.connectionEstablishedSubscription =
+      this._coMonHubService.connectionEstablished.subscribe(established => {
+        if (established) this.loadStatuses();
+      });
 
     if (this.triggerReload) {
-      this.triggerReload.subscribe((val) => {
+      this.triggerReload.subscribe(val => {
         if (val) {
           this.loadStatuses();
         }
-      })
+      });
     }
   }
 
@@ -78,58 +94,63 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   }
 
   subscribeToStatusChanges() {
-    this.statusChangeSubscription = this._coMonHubService.statusUpdate.subscribe((update) => {
-      this.statusChanged = true;
-      this.statusPreviews.items
-        .filter((statusPreview) => statusPreview.package.id === update.packageId)
-        .forEach((statusPreview) => {
-          statusPreview.isLatest = false;
-        });
-      this._changeDetector.detectChanges();
-    });
+    this.statusChangeSubscription =
+      this._coMonHubService.statusUpdate.subscribe(update => {
+        this.statusChanged = true;
+        this.statusPreviews.items
+          .filter(
+            statusPreview => statusPreview.package.id === update.packageId
+          )
+          .forEach(statusPreview => {
+            statusPreview.isLatest = false;
+          });
+        this._changeDetector.detectChanges();
+      });
   }
 
   loadOptions() {
-    this._statusService
-      .getStatusTableOptions()
-      .subscribe((result) => {
-        this.options = [{
+    this._statusService.getStatusTableOptions().subscribe(result => {
+      this.options = [
+        {
           isGroup: true,
           isRoot: true,
-          dto: undefined
-        }];
-        this.options = this.options
-          .concat(result.groups.map((group) => {
+          dto: undefined,
+        },
+      ];
+      this.options = this.options
+        .concat(
+          result.groups.map(group => {
             return {
               isGroup: true,
               isRoot: false,
-              dto: group
+              dto: group,
             };
-          }))
-          .concat(result.assets.map((asset) => {
+          })
+        )
+        .concat(
+          result.assets.map(asset => {
             return {
               isGroup: false,
               isRoot: false,
-              dto: asset
+              dto: asset,
             };
-          }));
+          })
+        );
 
-        if (this.assetId) {
-          this.option = this.options
-            .filter(o => !o.isGroup && !o.isRoot)
-            .find((option) => option.dto.id == this.assetId);
-        }
-        else if (this.groupId) {
-          this.option = this.options
-            .filter(o => o.isGroup && !o.isRoot)
-            .find((option) => option.dto.id == this.groupId);
-        }
-        else {
-          this.option = this.options[0];
-        }
+      if (this.assetId) {
+        this.option = this.options
+          .filter(o => !o.isGroup && !o.isRoot)
+          .find(option => option.dto.id === this.assetId);
+      } else if (this.groupId) {
+        this.option = this.options
+          .filter(o => o.isGroup && !o.isRoot)
+          .find(option => option.dto.id === this.groupId);
+      } else {
+        this.option = this.options[0];
+      }
 
-        this.loadStatuses();
-      });
+      this.loadStatuses();
+    });
   }
 
   loadStatuses() {
@@ -137,8 +158,16 @@ export class StatusTableComponent implements OnInit, OnDestroy {
     const groupId = this.option?.isGroup ? this.option?.dto?.id : undefined;
 
     this._statusService
-      .getStatusTable(this.skipCount, this.maxResultCount, assetId, groupId, this.packageId, this.criticality, this.latestOnly)
-      .subscribe((result) => {
+      .getStatusTable(
+        this.skipCount,
+        this.maxResultCount,
+        assetId,
+        groupId,
+        this.packageId,
+        this.criticality,
+        this.latestOnly
+      )
+      .subscribe(result => {
         this.statusPreviews = result;
         this.statusChanged = false;
       });
@@ -168,9 +197,9 @@ export class StatusTableComponent implements OnInit, OnDestroy {
       relativeTo: this._route,
       queryParams: {
         assetId: this.assetId,
-        groupId: this.groupId
+        groupId: this.groupId,
       },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
   }
 

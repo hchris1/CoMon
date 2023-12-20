@@ -1,11 +1,15 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { ChartDto, ChartType, StatusServiceProxy } from '@shared/service-proxies/service-proxies';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
+import {appModuleAnimation} from '@shared/animations/routerTransition';
+import {
+  ChartDto,
+  ChartType,
+  StatusServiceProxy,
+} from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-chart-wrapper',
   templateUrl: './chart-wrapper.component.html',
-  animations: [appModuleAnimation()]
+  animations: [appModuleAnimation()],
 })
 export class ChartWrapperComponent {
   @Input() chart: ChartDto;
@@ -14,7 +18,7 @@ export class ChartWrapperComponent {
   constructor(
     private _changeDetection: ChangeDetectorRef,
     private _statusService: StatusServiceProxy
-  ) { }
+  ) {}
 
   isLineChart(chart: ChartDto): boolean {
     return chart.type === ChartType._1;

@@ -4,20 +4,22 @@ import {
   Injector,
   Renderer2,
   ElementRef,
-  OnInit
+  OnInit,
 } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
-import { AppComponentBase } from '@shared/app-component-base';
-import { AbpValidationError } from './abp-validation.api';
+import {AbstractControl} from '@angular/forms';
+import {AppComponentBase} from '@shared/app-component-base';
+import {AbpValidationError} from './abp-validation.api';
 
 @Component({
   selector: 'abp-validation-summary',
-  templateUrl: './abp-validation.summary.component.html'
+  templateUrl: './abp-validation.summary.component.html',
 })
-export class AbpValidationSummaryComponent extends AppComponentBase implements OnInit {
-
+export class AbpValidationSummaryComponent
+  extends AppComponentBase
+  implements OnInit
+{
   defaultValidationErrors: Partial<AbpValidationError>[] = [
-    { name: 'required', localizationKey: 'ThisFieldIsRequired' },
+    {name: 'required', localizationKey: 'ThisFieldIsRequired'},
     {
       name: 'minlength',
       localizationKey: 'PleaseEnterAtLeastNCharacter',
@@ -47,16 +49,19 @@ export class AbpValidationSummaryComponent extends AppComponentBase implements O
   @Input() control: AbstractControl;
   @Input() controlEl: ElementRef;
 
-  constructor(injector: Injector, public _renderer: Renderer2) {
+  constructor(
+    injector: Injector,
+    public _renderer: Renderer2
+  ) {
     super(injector);
   }
 
   @Input() set customValidationErrors(val: AbpValidationError[]) {
     if (val && val.length > 0) {
       const defaults = this.defaultValidationErrors.filter(
-        (defaultValidationError) =>
+        defaultValidationError =>
           !val.find(
-            (customValidationError) =>
+            customValidationError =>
               customValidationError.name === defaultValidationError.name
           )
       );
@@ -83,7 +88,7 @@ export class AbpValidationSummaryComponent extends AppComponentBase implements O
     }
 
     const propertyValue = this.control.errors[error.name][error.propertyKey];
-    return !!propertyValue
+    return propertyValue
       ? this.l(error.localizationKey, propertyValue)
       : this.l(error.localizationKey);
   }

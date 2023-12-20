@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { DashboardServiceProxy } from '@shared/service-proxies/service-proxies';
+import {Component, EventEmitter, Output} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
+import {DashboardServiceProxy} from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-create-dashboard-modal',
-  templateUrl: './create-dashboard-modal.component.html'
+  templateUrl: './create-dashboard-modal.component.html',
 })
 export class CreateDashboardModalComponent {
   @Output() onClose = new EventEmitter();
@@ -18,7 +18,7 @@ export class CreateDashboardModalComponent {
     private _router: Router
   ) {
     this.form = formBuilder.group({
-      name: ['']
+      name: [''],
     });
   }
 
@@ -28,10 +28,12 @@ export class CreateDashboardModalComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      this._dashboardService.create(this.form.controls.name.value).subscribe((id) => {
-        this.onClose.emit();
-        this._router.navigate(['app', 'dashboard', id]);
-      });
+      this._dashboardService
+        .create(this.form.controls.name.value)
+        .subscribe(id => {
+          this.onClose.emit();
+          this._router.navigate(['app', 'dashboard', id]);
+        });
     } else {
       this.form.markAllAsTouched();
     }

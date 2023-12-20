@@ -1,10 +1,22 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { StatusHistoryDto, StatusPreviewDto, StatusServiceProxy } from '@shared/service-proxies/service-proxies';
-import { BehaviorSubject } from 'rxjs';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  StatusHistoryDto,
+  StatusPreviewDto,
+  StatusServiceProxy,
+} from '@shared/service-proxies/service-proxies';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-status-timeline',
-  templateUrl: './status-timeline.component.html'
+  templateUrl: './status-timeline.component.html',
 })
 export class StatusTimelineComponent implements OnInit, OnDestroy {
   @Input() status: StatusPreviewDto;
@@ -16,7 +28,7 @@ export class StatusTimelineComponent implements OnInit, OnDestroy {
   constructor(
     private _statusService: StatusServiceProxy,
     private _changeDetector: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loadHistory(this.status.id);
@@ -27,7 +39,7 @@ export class StatusTimelineComponent implements OnInit, OnDestroy {
   }
 
   loadHistory(id: number) {
-    this._statusService.getHistory(id).subscribe((result) => {
+    this._statusService.getHistory(id).subscribe(result => {
       this.statusHistory = result;
       this._changeDetector.detectChanges();
     });

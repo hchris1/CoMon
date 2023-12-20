@@ -1,10 +1,10 @@
-import { Component, Injector, OnInit, Renderer2 } from '@angular/core';
-import { AppComponentBase } from '@shared/app-component-base';
-import { SignalRAspNetCoreHelper } from '@shared/helpers/SignalRAspNetCoreHelper';
-import { LayoutStoreService } from '@shared/layout/layout-store.service';
+import {Component, Injector, OnInit, Renderer2} from '@angular/core';
+import {AppComponentBase} from '@shared/app-component-base';
+import {SignalRAspNetCoreHelper} from '@shared/helpers/SignalRAspNetCoreHelper';
+import {LayoutStoreService} from '@shared/layout/layout-store.service';
 
 @Component({
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
 })
 export class AppComponent extends AppComponentBase implements OnInit {
   sidebarExpanded: boolean;
@@ -22,8 +22,7 @@ export class AppComponent extends AppComponentBase implements OnInit {
 
     SignalRAspNetCoreHelper.initSignalR();
 
-    abp.event.on('abp.notifications.received', (userNotification) => {
-
+    abp.event.on('abp.notifications.received', userNotification => {
       abp.notifications.showUiNotifyForUserNotification(userNotification);
 
       // Desktop notification
@@ -34,11 +33,11 @@ export class AppComponent extends AppComponentBase implements OnInit {
         onClick: function () {
           window.focus();
           this.close();
-        }
+        },
       });
     });
 
-    this._layoutStore.sidebarExpanded.subscribe((value) => {
+    this._layoutStore.sidebarExpanded.subscribe(value => {
       this.sidebarExpanded = value;
     });
   }

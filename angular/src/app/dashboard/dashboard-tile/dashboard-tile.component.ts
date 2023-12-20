@@ -1,12 +1,21 @@
-import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { DashboardServiceProxy, DashboardTileDto } from '@shared/service-proxies/service-proxies';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription } from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {
+  DashboardServiceProxy,
+  DashboardTileDto,
+} from '@shared/service-proxies/service-proxies';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-tile',
-  templateUrl: './dashboard-tile.component.html'
+  templateUrl: './dashboard-tile.component.html',
 })
 export class DashboardTileComponent {
   @Input() dashboardId: number;
@@ -27,31 +36,38 @@ export class DashboardTileComponent {
     private _dashboardService: DashboardServiceProxy,
     private _modalService: BsModalService,
     private _router: Router
-  ) { }
+  ) {}
 
   moveUp() {
-    this._dashboardService.moveTileUp(this.dashboardId, this.tile.id)
+    this._dashboardService
+      .moveTileUp(this.dashboardId, this.tile.id)
       .subscribe(() => {
         this.tileMoved.emit(this.tile);
       });
   }
 
   moveDown() {
-    this._dashboardService.moveTileDown(this.dashboardId, this.tile.id)
+    this._dashboardService
+      .moveTileDown(this.dashboardId, this.tile.id)
       .subscribe(() => {
         this.tileMoved.emit(this.tile);
       });
   }
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   openDeletionModal(template: TemplateRef<any>) {
-    this.confirmDeletionModal = this._modalService.show(template, { class: 'modal-sm' });
+    this.confirmDeletionModal = this._modalService.show(template, {
+      class: 'modal-sm',
+    });
   }
 
   confirmDeletion() {
-    this._dashboardService.deleteTile(this.dashboardId, this.tile.id).subscribe(() => {
-      this.confirmDeletionModal.hide();
-      this.tileDeleted.emit(this.tile);
-    });
+    this._dashboardService
+      .deleteTile(this.dashboardId, this.tile.id)
+      .subscribe(() => {
+        this.confirmDeletionModal.hide();
+        this.tileDeleted.emit(this.tile);
+      });
   }
 
   cancelDeletion() {
