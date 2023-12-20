@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable, Output} from '@angular/core';
-import {HubConnection, HubConnectionBuilder} from '@aspnet/signalr';
+import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {AppConsts} from '@shared/AppConsts';
 import {Criticality} from '@shared/service-proxies/service-proxies';
 import * as moment from 'moment';
