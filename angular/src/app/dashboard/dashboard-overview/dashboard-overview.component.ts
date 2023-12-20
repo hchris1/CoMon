@@ -8,7 +8,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {appModuleAnimation} from '@shared/animations/routerTransition';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {CreateDashboardModalComponent} from '@app/edit/create-dashboard-modal/create-dashboard-modal.component';
-import {RoutingHelper} from '@shared/helpers/RoutingHelper';
 
 @Component({
   selector: 'app-dashboard-overview',
@@ -47,20 +46,10 @@ export class DashboardOverviewComponent {
   }
 
   activateEditMode() {
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: RoutingHelper.buildEditModeQueryParams(true),
-      queryParamsHandling: 'merge',
-    });
     this.editMode = true;
   }
 
   deactivateEditMode() {
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: RoutingHelper.buildEditModeQueryParams(false),
-      queryParamsHandling: 'merge',
-    });
     this.editMode = false;
   }
 

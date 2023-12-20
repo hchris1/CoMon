@@ -35,22 +35,18 @@ export class GroupComponent {
   createAssetModalRef: BsModalRef;
 
   constructor(
-    private _route: ActivatedRoute,
+    route: ActivatedRoute,
     private _router: Router,
     private _groupService: GroupServiceProxy,
     private _formBuilder: FormBuilder,
     private _modalService: BsModalService
   ) {
-    _route.queryParams.subscribe(params => {
-      this.editMode = params['editMode'] === 'true';
-    });
-
     this.editFormGroup = this._formBuilder.group({
       name: ['', []],
       group: ['', []],
     });
 
-    _route.params.subscribe(params => {
+    route.params.subscribe(params => {
       this.groupId = params['id'];
       this.loadGroup();
     });
@@ -196,20 +192,10 @@ export class GroupComponent {
   }
 
   activateEditMode() {
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: RoutingHelper.buildEditModeQueryParams(true),
-      queryParamsHandling: 'merge',
-    });
     this.editMode = true;
   }
 
   deactivateEditMode() {
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: RoutingHelper.buildEditModeQueryParams(false),
-      queryParamsHandling: 'merge',
-    });
     this.editMode = false;
   }
 }

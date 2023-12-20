@@ -6,7 +6,6 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {RoutingHelper} from '@shared/helpers/RoutingHelper';
 import {appModuleAnimation} from '@shared/animations/routerTransition';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {CreateDashboardTileModalComponent} from '@app/edit/create-dashboard-tile-modal/create-dashboard-tile-modal.component';
@@ -34,10 +33,6 @@ export class DashboardComponent {
   ) {
     this.editFormGroup = formBuilder.group({
       name: ['', [Validators.required]],
-    });
-
-    _route.queryParams.subscribe(params => {
-      this.editMode = params['editMode'] === 'true';
     });
 
     this._route.params.subscribe(params => {
@@ -71,20 +66,10 @@ export class DashboardComponent {
   }
 
   activateEditMode() {
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: RoutingHelper.buildEditModeQueryParams(true),
-      queryParamsHandling: 'merge',
-    });
     this.editMode = true;
   }
 
   deactivateEditMode() {
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: RoutingHelper.buildEditModeQueryParams(false),
-      queryParamsHandling: 'merge',
-    });
     this.editMode = false;
   }
 

@@ -45,10 +45,6 @@ export class AssetComponent extends AppComponentBase {
   ) {
     super(injector);
 
-    this._route.queryParams.subscribe(params => {
-      this.editMode = params['editMode'] === 'true';
-    });
-
     this.editFormGroup = formBuilder.group({
       title: ['', [Validators.required]],
       description: ['', []],
@@ -156,20 +152,10 @@ export class AssetComponent extends AppComponentBase {
   }
 
   activateEditMode() {
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: RoutingHelper.buildEditModeQueryParams(true),
-      queryParamsHandling: 'merge',
-    });
     this.editMode = true;
   }
 
   deactivateEditMode() {
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: RoutingHelper.buildEditModeQueryParams(false),
-      queryParamsHandling: 'merge',
-    });
     this.editMode = false;
   }
 
