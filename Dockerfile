@@ -4,10 +4,9 @@ FROM node:20-alpine AS frontend
 WORKDIR /app
 COPY ./angular /app/
 
-RUN npm install --legacy-peer-deps
-RUN npm install -g @angular/cli
-
-RUN npm run build
+RUN npm install -g pnpm
+RUN pnpm install
+RUN pnpm run build
 
 # Build ASP.NET Core
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
