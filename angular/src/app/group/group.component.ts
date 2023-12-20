@@ -5,7 +5,6 @@ import {CreateAssetModalComponent} from '@app/edit/create-asset-modal/create-ass
 import {CreateGroupModalComponent} from '@app/edit/create-group-modal/create-group-modal.component';
 import {appModuleAnimation} from '@shared/animations/routerTransition';
 import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
-import {RoutingHelper} from '@shared/helpers/RoutingHelper';
 import {
   AssetDto,
   GroupDto,
@@ -96,15 +95,9 @@ export class GroupComponent {
     this.editName = false;
     this.editGroup = false;
     if (this.group.parent) {
-      this._router.navigate(['app', 'overview', this.group.parent.id], {
-        queryParams: RoutingHelper.buildEditModeQueryParams(this.editMode),
-        queryParamsHandling: 'merge',
-      });
+      this._router.navigate(['app', 'overview', this.group.parent.id]);
     } else {
-      this._router.navigate(['app', 'overview'], {
-        queryParams: RoutingHelper.buildEditModeQueryParams(this.editMode),
-        queryParamsHandling: 'merge',
-      });
+      this._router.navigate(['app', 'overview']);
     }
   }
 

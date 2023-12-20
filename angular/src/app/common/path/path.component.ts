@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import {Router} from '@angular/router';
 import {GroupPathHelper} from '@shared/helpers/GroupPathHelper';
-import {RoutingHelper} from '@shared/helpers/RoutingHelper';
 import {
   AssetDto,
   GroupPreviewDto,
@@ -47,37 +46,30 @@ export class PathComponent implements OnInit, OnChanges {
   }
 
   onGroupClick(group: GroupPreviewDto) {
-    this._router.navigate(
-      ['app', 'overview', group.id],
-      RoutingHelper.buildEditModeQueryParams(this.editMode)
-    );
+    this._router.navigate(['app', 'overview', group.id]);
     this.groupClicked.emit(group);
     this.pathClicked.emit();
   }
 
   onRootClick() {
-    this._router.navigate(
-      ['app', 'overview'],
-      RoutingHelper.buildEditModeQueryParams(this.editMode)
-    );
+    this._router.navigate(['app', 'overview']);
     this.rootClicked.emit();
     this.pathClicked.emit();
   }
 
   onAssetClick(asset: AssetDto) {
-    this._router.navigate(
-      ['app', 'overview', 'assets', asset.id],
-      RoutingHelper.buildEditModeQueryParams(this.editMode)
-    );
+    this._router.navigate(['app', 'overview', 'assets', asset.id]);
     this.assetClicked.emit(asset);
     this.pathClicked.emit();
   }
 
   onPackageClick(packagePreview: PackagePreviewDto) {
-    this._router.navigate(
-      ['app', 'overview', 'assets', packagePreview.asset.id],
-      RoutingHelper.buildEditModeQueryParams(this.editMode)
-    );
+    this._router.navigate([
+      'app',
+      'overview',
+      'assets',
+      packagePreview.asset.id,
+    ]);
     this.packageClicked.emit(packagePreview);
     this.pathClicked.emit();
   }

@@ -11,7 +11,6 @@ import {
   ImageDto,
   ImageServiceProxy,
 } from '@shared/service-proxies/service-proxies';
-import {RoutingHelper} from '@shared/helpers/RoutingHelper';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {CreatePackageModalComponent} from '@app/edit/create-package-modal/create-package-modal.component';
@@ -64,17 +63,11 @@ export class AssetComponent extends AppComponentBase {
   }
 
   onGroupClick(group: GroupPreviewDto) {
-    this._router.navigate(
-      ['app', 'overview', group.id],
-      RoutingHelper.buildEditModeQueryParams(this.editMode)
-    );
+    this._router.navigate(['app', 'overview', group.id]);
   }
 
   onRootClick() {
-    this._router.navigate(
-      ['app', 'overview'],
-      RoutingHelper.buildEditModeQueryParams(this.editMode)
-    );
+    this._router.navigate(['app', 'overview']);
   }
 
   tableLinkClicked() {
