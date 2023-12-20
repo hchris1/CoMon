@@ -168,7 +168,7 @@ export class ChartHelper {
   static isTimeBasedChart(chart: ChartDto): boolean {
     if (chart.series.length > 0) {
       if (chart.series[0].dataPoints.length > 0) {
-        return chart.series[0].dataPoints[0].time !== null;
+        return chart.series[0].dataPoints[0].time !== undefined;
       }
     }
     return false;
