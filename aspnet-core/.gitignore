@@ -254,3 +254,6 @@ paket-files/
 src/CoMon.Web.Mvc/secrets.json
 src/CoMon.Web.Host/secrets.json
 src/CoMon.Migrator/secrets.json
+
+# Include Packages folder in src
+!src/**/packages/*
