@@ -34,16 +34,16 @@
           [ngValue]="criticality"
         >
           <div *ngIf="criticality === undefined">
-            <p>🌈 {{ "Criticality.All" | localize }}</p>
+            <p>🌈 {{ 'Criticality.All' | localize }}</p>
           </div>
           <div *ngIf="criticality === 1">
-            <p>🟢 {{ "Criticality.Healthy" | localize }}</p>
+            <p>🟢 {{ 'Criticality.Healthy' | localize }}</p>
           </div>
           <div *ngIf="criticality === 3">
-            <p>🟡 {{ "Criticality.Warning" | localize }}</p>
+            <p>🟡 {{ 'Criticality.Warning' | localize }}</p>
           </div>
           <div *ngIf="criticality === 5">
-            <p>🔴 {{ "Criticality.Alert" | localize }}</p>
+            <p>🔴 {{ 'Criticality.Alert' | localize }}</p>
           </div>
         </option>
       </select>
@@ -62,7 +62,7 @@
           (ngModelChange)="setLatestOnly($event)"
         />
         <label class="form-check-label" for="latestOnly"
-          ><p>{{ "StatusTable.LatestOnlyOption" | localize }}</p></label
+          ><p>{{ 'StatusTable.LatestOnlyOption' | localize }}</p></label
         >
       </div>
     </div>
@@ -72,7 +72,7 @@
     <div class="row" *ngIf="statusChanged && showRefreshBanner">
       <button class="btn col-12" (click)="loadStatuses()">
         <alert type="info">
-          {{ "StatusTable.RefreshAvailable" | localize }}
+          {{ 'StatusTable.RefreshAvailable' | localize }}
         </alert>
       </button>
     </div>
@@ -124,7 +124,7 @@
   let-currentPage="currentPage"
 >
   <ng-container>
-    {{ "Pagination.Next" | localize }}
+    {{ 'Pagination.Next' | localize }}
   </ng-container>
 </ng-template>
 
@@ -134,6 +134,6 @@
   let-currentPage="currentPage"
 >
   <ng-container>
-    {{ "Pagination.Previous" | localize }}
+    {{ 'Pagination.Previous' | localize }}
   </ng-container>
 </ng-template>

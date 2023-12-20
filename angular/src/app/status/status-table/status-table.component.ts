@@ -67,12 +67,11 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.latestOnly = this.showLatestOnlyFilter;
 
-    this._route.queryParams.subscribe(params => {
-      this.assetId = params['assetId'];
-      this.groupId = params['groupId'];
-      this.loadOptions();
-      this.subscribeToStatusChanges();
-    });
+    this.assetId = parseInt(this._route.snapshot.queryParams['assetId'], 10);
+    this.groupId = parseInt(this._route.snapshot.queryParams['groupId'], 10);
+    this.loadOptions();
+
+    this.subscribeToStatusChanges();
 
     this.connectionEstablishedSubscription =
       this._coMonHubService.connectionEstablished.subscribe(established => {
@@ -137,6 +136,9 @@ export class StatusTableComponent implements OnInit, OnDestroy {
           })
         );
 
+      console.log(this.assetId);
+      console.log(this.options);
+
       if (this.assetId) {
         this.option = this.options
           .filter(o => !o.isGroup && !o.isRoot)
@@ -148,6 +150,9 @@ export class StatusTableComponent implements OnInit, OnDestroy {
       } else {
         this.option = this.options[0];
       }
+
+      console.log('Current options: ', this.option);
+      this._changeDetector.detectChanges();
 
       this.loadStatuses();
     });

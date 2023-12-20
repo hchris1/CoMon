@@ -175,7 +175,8 @@ export class AppInitializer {
         // Find tenant from subdomain
         const tenancyName = this.resolveTenancyName(response.appBaseUrl);
 
-        if (tenancyName === null) {
+        /* eslint-disable eqeqeq */
+        if (tenancyName == null) {
           callback();
         } else {
           this.ConfigureTenantIdCookie(tenancyName, callback);

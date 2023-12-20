@@ -27,7 +27,7 @@ export class GroupSummaryComponent implements OnInit, OnDestroy {
   @Input() editMode: boolean = false;
   @Input() showPath: boolean = false;
   @Output() groupClicked = new EventEmitter<GroupPreviewDto>();
-  @Output() groupDeleted = new EventEmitter<null>();
+  @Output() groupDeleted = new EventEmitter();
 
   statusChangeSubscription: Subscription;
   connectionEstablishedSubscription: Subscription;

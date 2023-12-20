@@ -26,8 +26,8 @@ export class StatusPreviewComponent {
   @Input() showPath: boolean = true;
   @Input() editMode: boolean = false;
   @Input() showDate: boolean = true;
-  @Output() packageDeleted = new EventEmitter<null>();
-  @Output() packageEdited = new EventEmitter<null>();
+  @Output() packageDeleted = new EventEmitter();
+  @Output() packageEdited = new EventEmitter();
 
   statusModalRef: BsModalRef;
   confirmDeletionModal: BsModalRef;

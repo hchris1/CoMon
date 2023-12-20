@@ -17,7 +17,7 @@ export class PackagePreviewComponent implements OnInit {
   @Input() editMode: boolean = false;
   @Input() showPath: boolean = false;
   @Input() showDate: boolean = true;
-  @Output() packageDeleted = new EventEmitter<null>();
+  @Output() packageDeleted = new EventEmitter();
 
   status: StatusPreviewDto;
   statusChangeSubscription: Subscription;

@@ -29,7 +29,7 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
   @Input() showImage: boolean = true;
   @Input() showPackages: boolean = true;
   @Output() assetClicked = new EventEmitter<AssetDto>();
-  @Output() assetDeleted = new EventEmitter<null>();
+  @Output() assetDeleted = new EventEmitter();
 
   asset: AssetDto;
 
