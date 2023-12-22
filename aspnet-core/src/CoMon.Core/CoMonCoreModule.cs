@@ -51,7 +51,8 @@ namespace CoMon
         {
             IocManager.Resolve<AppTimes>().StartupTime = Clock.Now;
             var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
-            workManager.Add(IocManager.Resolve<PingCheckWorker>());
+            workManager.Add(IocManager.Resolve<PingWorker>());
+            workManager.Add(IocManager.Resolve<HttpWorker>());
         } 
     }
 }

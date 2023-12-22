@@ -1,22 +1,26 @@
 <div class="modal-header">
-  <h4>{{ "Edit.EditPackageTitle" | localize }}</h4>
+  <h4>{{ 'Edit.EditPackageTitle' | localize }}</h4>
 </div>
 
 <div class="modal-body">
   <form [formGroup]="form">
     <div class="form-group">
-      <label for="name">{{ "Edit.PackageName" | localize }}</label>
+      <label for="name">{{ 'Edit.PackageName' | localize }}</label>
       <input
         type="text"
         class="form-control"
         id="name"
         formControlName="name"
         placeholder="{{ 'Edit.PackageNamePlaceholder' | localize }}"
+        [class.is-invalid]="
+          form.get('name').invalid &&
+          (form.get('name').dirty || form.get('name').touched)
+        "
       />
     </div>
 
     <div class="form-group">
-      <label for="asset">{{ "Edit.PackageAssignedAsset" | localize }}</label>
+      <label for="asset">{{ 'Edit.PackageAssignedAsset' | localize }}</label>
       <select id="asset" formControlName="asset" class="form-control">
         <option *ngFor="let asset of assets" [ngValue]="asset">
           <app-path [group]="asset.group" [asset]="asset"></app-path>
@@ -24,26 +28,28 @@
       </select>
     </div>
 
-    <!-- Small subheader for pingPackageType section -->
     <div class="form-group" *ngIf="currentType === pingPackageType">
-      <h5>{{ "Edit.PackageTypePing" | localize }}</h5>
+      <h5>{{ 'Edit.PackageTypePing' | localize }}</h5>
     </div>
 
-    <!-- If type is pingPackageType, show input field for host and cycleSeconds -->
     <div class="form-group" *ngIf="currentType === pingPackageType">
-      <label for="host">{{ "Edit.PackageHost" | localize }}</label>
+      <label for="host">{{ 'Edit.PackageHost' | localize }}</label>
       <input
         type="text"
         class="form-control"
         id="host"
         formControlName="host"
         placeholder="{{ 'Edit.PackageHostPlaceholder' | localize }}"
+        [class.is-invalid]="
+          form.get('host').invalid &&
+          (form.get('host').dirty || form.get('host').touched)
+        "
       />
     </div>
 
     <div class="form-group" *ngIf="currentType === pingPackageType">
       <label for="cycleSeconds">{{
-        "Edit.PackageCycleSeconds" | localize
+        'Edit.PackageCycleSeconds' | localize
       }}</label>
       <input
         type="number"
@@ -51,17 +57,121 @@
         id="cycleSeconds"
         formControlName="cycleSeconds"
         min="30"
-        placeholder="{{ 'Edit.PackageCycleSecondsPlaceholder' | localize }}"
+        [class.is-invalid]="
+          form.get('cycleSeconds').invalid &&
+          (form.get('cycleSeconds').dirty || form.get('cycleSeconds').touched)
+        "
+      />
+    </div>
+
+    <div class="form-group" *ngIf="currentType === httpPackageType">
+      <h5>{{ 'Edit.PackageTypeHttp' | localize }}</h5>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === httpPackageType">
+      <label for="url">{{ 'Edit.PackageUrl' | localize }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="url"
+        formControlName="url"
+        placeholder="{{ 'Edit.PackageUrlPlaceholder' | localize }}"
+        required="true"
+        [class.is-invalid]="
+          form.get('url').invalid &&
+          (form.get('url').dirty || form.get('url').touched)
+        "
+      />
+    </div>
+
+    <div class="form-group" *ngIf="currentType === httpPackageType">
+      <label for="method">{{ 'Edit.PackageMethod' | localize }}</label>
+      <select
+        class="form-control"
+        id="method"
+        formControlName="method"
+        class="form-control"
+      >
+        <option *ngFor="let method of httpMethods" [value]="method.value">
+          {{ method.name | localize }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === httpPackageType">
+      <label for="headers">{{ 'Edit.PackageHeaders' | localize }}</label>
+      <textarea
+        class="form-control"
+        formControlName="headers"
+        placeholder="{{ 'Edit.PackageHeadersPlaceholder' | localize }}"
+      ></textarea>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === httpPackageType">
+      <label for="body">{{ 'Edit.PackageBody' | localize }}</label>
+      <textarea
+        class="form-control"
+        formControlName="body"
+        placeholder="{{ 'Edit.PackageBodyPlaceholder' | localize }}"
+      ></textarea>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === httpPackageType">
+      <label for="encoding">{{ 'Edit.PackageEncoding' | localize }}</label>
+      <select
+        class="form-control"
+        id="encoding"
+        formControlName="encoding"
+        class="form-control"
+      >
+        <option *ngFor="let encoding of encodingTypes" [value]="encoding.value">
+          {{ encoding.name | localize }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === httpPackageType">
+      <label for="ignoreSslErrors">{{
+        'Edit.PackageIgnoreSslErrors' | localize
+      }}</label>
+      <input
+        type="checkbox"
+        class="form-check-input"
+        id="ignoreSslErrors"
+        formControlName="ignoreSslErrors"
+      />
+    </div>
+
+    <div class="form-group" *ngIf="currentType === httpPackageType">
+      <label for="httpCycleSeconds">{{
+        'Edit.PackageCycleSeconds' | localize
+      }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="httpCycleSeconds"
+        formControlName="httpCycleSeconds"
+        min="30"
+        [class.is-invalid]="
+          form.get('httpCycleSeconds').invalid &&
+          (form.get('httpCycleSeconds').dirty ||
+            form.get('httpCycleSeconds').touched)
+        "
       />
     </div>
   </form>
 </div>
 
 <div class="modal-footer">
-  <button type="submit" class="btn btn-primary" (click)="onSubmit()">
-    {{ "Save" | localize }}
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="form.invalid"
+    (click)="onSubmit()"
+  >
+    {{ 'Save' | localize }}
   </button>
   <button type="button" class="btn btn-secondary" (click)="onCancel()">
-    {{ "Cancel" | localize }}
+    {{ 'Cancel' | localize }}
   </button>
 </div>

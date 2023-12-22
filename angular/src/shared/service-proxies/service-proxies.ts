@@ -5334,6 +5334,7 @@ export class CreatePackageDto implements ICreatePackageDto {
     type: PackageType;
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
+    httpPackageSettings: HttpPackageSettingsDto;
 
     constructor(data?: ICreatePackageDto) {
         if (data) {
@@ -5350,6 +5351,7 @@ export class CreatePackageDto implements ICreatePackageDto {
             this.type = _data["type"];
             this.assetId = _data["assetId"];
             this.pingPackageSettings = _data["pingPackageSettings"] ? PingPackageSettingsDto.fromJS(_data["pingPackageSettings"]) : <any>undefined;
+            this.httpPackageSettings = _data["httpPackageSettings"] ? HttpPackageSettingsDto.fromJS(_data["httpPackageSettings"]) : <any>undefined;
         }
     }
 
@@ -5366,6 +5368,7 @@ export class CreatePackageDto implements ICreatePackageDto {
         data["type"] = this.type;
         data["assetId"] = this.assetId;
         data["pingPackageSettings"] = this.pingPackageSettings ? this.pingPackageSettings.toJSON() : <any>undefined;
+        data["httpPackageSettings"] = this.httpPackageSettings ? this.httpPackageSettings.toJSON() : <any>undefined;
         return data;
     }
 
@@ -5382,6 +5385,7 @@ export interface ICreatePackageDto {
     type: PackageType;
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
+    httpPackageSettings: HttpPackageSettingsDto;
 }
 
 export class CreateRoleDto implements ICreateRoleDto {
@@ -6353,6 +6357,86 @@ export interface IGroupPreviewDto {
     worstStatus: StatusPreviewDto;
 }
 
+export enum HttpPackageBodyEncoding {
+    _0 = 0,
+    _1 = 1,
+}
+
+export enum HttpPackageMethod {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+}
+
+export class HttpPackageSettingsDto implements IHttpPackageSettingsDto {
+    url: string | undefined;
+    cycleSeconds: number;
+    method: HttpPackageMethod;
+    headers: string | undefined;
+    body: string | undefined;
+    encoding: HttpPackageBodyEncoding;
+    ignoreSslErrors: boolean;
+
+    constructor(data?: IHttpPackageSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.url = _data["url"];
+            this.cycleSeconds = _data["cycleSeconds"];
+            this.method = _data["method"];
+            this.headers = _data["headers"];
+            this.body = _data["body"];
+            this.encoding = _data["encoding"];
+            this.ignoreSslErrors = _data["ignoreSslErrors"];
+        }
+    }
+
+    static fromJS(data: any): HttpPackageSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new HttpPackageSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["url"] = this.url;
+        data["cycleSeconds"] = this.cycleSeconds;
+        data["method"] = this.method;
+        data["headers"] = this.headers;
+        data["body"] = this.body;
+        data["encoding"] = this.encoding;
+        data["ignoreSslErrors"] = this.ignoreSslErrors;
+        return data;
+    }
+
+    clone(): HttpPackageSettingsDto {
+        const json = this.toJSON();
+        let result = new HttpPackageSettingsDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHttpPackageSettingsDto {
+    url: string | undefined;
+    cycleSeconds: number;
+    method: HttpPackageMethod;
+    headers: string | undefined;
+    body: string | undefined;
+    encoding: HttpPackageBodyEncoding;
+    ignoreSslErrors: boolean;
+}
+
 export class ImageDto implements IImageDto {
     id: number;
     mimeType: string | undefined;
@@ -6595,6 +6679,7 @@ export class PackageDto implements IPackageDto {
     type: PackageType;
     guid: string;
     pingPackageSettings: PingPackageSettingsDto;
+    httpPackageSettings: HttpPackageSettingsDto;
     lastCriticality: Criticality;
 
     constructor(data?: IPackageDto) {
@@ -6614,6 +6699,7 @@ export class PackageDto implements IPackageDto {
             this.type = _data["type"];
             this.guid = _data["guid"];
             this.pingPackageSettings = _data["pingPackageSettings"] ? PingPackageSettingsDto.fromJS(_data["pingPackageSettings"]) : <any>undefined;
+            this.httpPackageSettings = _data["httpPackageSettings"] ? HttpPackageSettingsDto.fromJS(_data["httpPackageSettings"]) : <any>undefined;
             this.lastCriticality = _data["lastCriticality"];
         }
     }
@@ -6633,6 +6719,7 @@ export class PackageDto implements IPackageDto {
         data["type"] = this.type;
         data["guid"] = this.guid;
         data["pingPackageSettings"] = this.pingPackageSettings ? this.pingPackageSettings.toJSON() : <any>undefined;
+        data["httpPackageSettings"] = this.httpPackageSettings ? this.httpPackageSettings.toJSON() : <any>undefined;
         data["lastCriticality"] = this.lastCriticality;
         return data;
     }
@@ -6652,6 +6739,7 @@ export interface IPackageDto {
     type: PackageType;
     guid: string;
     pingPackageSettings: PingPackageSettingsDto;
+    httpPackageSettings: HttpPackageSettingsDto;
     lastCriticality: Criticality;
 }
 
@@ -6771,6 +6859,7 @@ export interface IPackageStatusCountDto {
 
 export enum PackageType {
     _0 = 0,
+    _1 = 1,
     _10 = 10,
 }
 
@@ -8012,6 +8101,7 @@ export class UpdatePackageDto implements IUpdatePackageDto {
     type: PackageType;
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
+    httpPackageSettings: HttpPackageSettingsDto;
     id: number;
 
     constructor(data?: IUpdatePackageDto) {
@@ -8029,6 +8119,7 @@ export class UpdatePackageDto implements IUpdatePackageDto {
             this.type = _data["type"];
             this.assetId = _data["assetId"];
             this.pingPackageSettings = _data["pingPackageSettings"] ? PingPackageSettingsDto.fromJS(_data["pingPackageSettings"]) : <any>undefined;
+            this.httpPackageSettings = _data["httpPackageSettings"] ? HttpPackageSettingsDto.fromJS(_data["httpPackageSettings"]) : <any>undefined;
             this.id = _data["id"];
         }
     }
@@ -8046,6 +8137,7 @@ export class UpdatePackageDto implements IUpdatePackageDto {
         data["type"] = this.type;
         data["assetId"] = this.assetId;
         data["pingPackageSettings"] = this.pingPackageSettings ? this.pingPackageSettings.toJSON() : <any>undefined;
+        data["httpPackageSettings"] = this.httpPackageSettings ? this.httpPackageSettings.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data;
     }
@@ -8063,6 +8155,7 @@ export interface IUpdatePackageDto {
     type: PackageType;
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
+    httpPackageSettings: HttpPackageSettingsDto;
     id: number;
 }
 

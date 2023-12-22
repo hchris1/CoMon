@@ -20,6 +20,7 @@ namespace CoMon.Packages
         public PackageType Type { get; set; }
         public List<Status> Statuses { get; set; } = [];
         public PingPackageSettings PingPackageSettings { get; set; }
+        public HttpPackageSettings HttpPackageSettings { get; set; }
         public Guid Guid { get; set; } = Guid.NewGuid();
 
         [ForeignKey(nameof(Asset))]
@@ -48,6 +49,7 @@ namespace CoMon.Packages
     public enum PackageType
     {
         Ping = 0,
+        Http = 1,
         External = 10
     }
 }

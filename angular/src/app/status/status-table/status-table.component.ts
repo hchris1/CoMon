@@ -136,9 +136,6 @@ export class StatusTableComponent implements OnInit, OnDestroy {
           })
         );
 
-      console.log(this.assetId);
-      console.log(this.options);
-
       if (this.assetId) {
         this.option = this.options
           .filter(o => !o.isGroup && !o.isRoot)
@@ -151,7 +148,6 @@ export class StatusTableComponent implements OnInit, OnDestroy {
         this.option = this.options[0];
       }
 
-      console.log('Current options: ', this.option);
       this._changeDetector.detectChanges();
 
       this.loadStatuses();

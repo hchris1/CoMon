@@ -7,10 +7,13 @@ using CoMon.Packages.Dtos;
 using CoMon.Statuses;
 using CoMon.Statuses.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace CoMon.Packages
 {
@@ -30,13 +33,13 @@ namespace CoMon.Packages
                 .GetAll()
                 .Include(p => p.Asset)
                 .Include(p => p.PingPackageSettings)
+                .Include(p => p.HttpPackageSettings)
                 .Include(p => p.Statuses
                     .OrderByDescending(s => s.Time)
                     .Take(1))
                 .Where(p => p.Id == id)
                 .FirstOrDefaultAsync()
-                ?? throw new EntityNotFoundException("Package not found")
-                );
+                ?? throw new EntityNotFoundException("Package not found"));
         }
 
         public async Task<PackagePreviewDto> GetPreview(long id)
@@ -47,6 +50,7 @@ namespace CoMon.Packages
                 .Include(p => p.Asset)
                 .ThenInclude(a => a.Group.Parent.Parent)
                 .Include(p => p.PingPackageSettings)
+                .Include(p => p.HttpPackageSettings)
                 .Where(p => p.Id == id)
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Package not found")
@@ -55,8 +59,7 @@ namespace CoMon.Packages
 
         public async Task<long> Create(CreatePackageDto input)
         {
-            if (input.Type == PackageType.Ping && input.PingPackageSettings == null)
-                throw new AbpValidationException("PingPackageSettings may not be null.");
+            ValidateSettings(input);
 
             var asset = _assetRepository
                 .GetAll()
@@ -81,8 +84,60 @@ namespace CoMon.Packages
             return await _packageRepository.InsertAndGetIdAsync(package);
         }
 
+        private static void ValidateSettings(CreatePackageDto input)
+        {
+            if (input.Type == PackageType.Ping)
+            {
+                if (input.PingPackageSettings == null)
+                    throw new AbpValidationException("PingPackageSettings may not be null.");
+            }
+
+            if (input.Type == PackageType.Http)
+            {
+                if (input.HttpPackageSettings == null)
+                    throw new AbpValidationException("HttpPackageSettings may not be null.");
+
+                // Validate Body
+                try
+                {
+                    switch (input.HttpPackageSettings.Encoding)
+                    {
+                        case HttpPackageBodyEncoding.Json:
+                            if (!string.IsNullOrWhiteSpace(input.HttpPackageSettings.Body))
+                                JToken.Parse(input.HttpPackageSettings.Body); // Using Newtonsoft.Json.Linq;
+                            break;
+
+                        case HttpPackageBodyEncoding.Xml:
+                            if (!string.IsNullOrWhiteSpace(input.HttpPackageSettings.Body))
+                                new XmlDocument().LoadXml(input.HttpPackageSettings.Body);
+                            break;
+
+                        default:
+                            throw new AbpValidationException("Invalid body encoding.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new AbpValidationException("Invalid body content: " + ex.Message);
+                }
+
+                // Validate Headers JSON
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(input.HttpPackageSettings.Headers))
+                        JsonConvert.DeserializeObject<Dictionary<string, string>>(input.HttpPackageSettings.Headers);
+                }
+                catch (Exception ex)
+                {
+                    throw new AbpValidationException("Invalid headers format: " + ex.Message);
+                }
+            }
+        }
+
         public async Task Update(UpdatePackageDto input)
         {
+            ValidateSettings(input);
+
             var package = _mapper.Map<Package>(input);
 
             await _packageRepository.UpdateAsync(package);

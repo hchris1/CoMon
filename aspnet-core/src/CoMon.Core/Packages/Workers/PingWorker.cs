@@ -3,26 +3,24 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Threading.BackgroundWorkers;
 using Abp.Threading.Timers;
-using CoMon.Notifications;
 using CoMon.Statuses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace CoMon.Packages.Workers
 {
-    public class PingCheckWorker : AsyncPeriodicBackgroundWorkerBase, ISingletonDependency
+    public class PingWorker : AsyncPeriodicBackgroundWorkerBase, ISingletonDependency
     {
         private readonly IRepository<Package, long> _packageRepository;
         private readonly IRepository<Status, long> _statusRepository;
-        private readonly ILogger<PingCheckWorker> _logger;
+        private readonly ILogger<PingWorker> _logger;
 
-        public PingCheckWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository,
-            ILogger<PingCheckWorker> logger, IRepository<Status, long> statusRepository) : base(timer)
+        public PingWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository,
+            ILogger<PingWorker> logger, IRepository<Status, long> statusRepository) : base(timer)
         {
             Timer.Period = 5 * 1000;
             _packageRepository = packageRepository;
@@ -48,10 +46,10 @@ namespace CoMon.Packages.Workers
             {
                 try
                 {
-                    if (!ShouldRunPingCheck(package))
+                    if (!ShouldPerformCheck(package))
                         continue;
 
-                    var status = await PerformPingCheck(package);
+                    var status = await PerformCheck(package);
                     status.PackageId = package.Id;
                     await _statusRepository.InsertAsync(status);
                 }
@@ -62,7 +60,7 @@ namespace CoMon.Packages.Workers
             }
         }
 
-        private static async Task<Status> PerformPingCheck(Package package)
+        private static async Task<Status> PerformCheck(Package package)
         {
             var pingSender = new Ping();
 
@@ -74,7 +72,7 @@ namespace CoMon.Packages.Workers
             return CreateFailedPingStatus(package.PingPackageSettings.Host);
         }
 
-        private bool ShouldRunPingCheck(Package package)
+        private bool ShouldPerformCheck(Package package)
         {
             var lastStatus = package.Statuses.FirstOrDefault();
             if (lastStatus == null)

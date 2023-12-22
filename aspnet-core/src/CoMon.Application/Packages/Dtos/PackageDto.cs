@@ -13,6 +13,7 @@ namespace CoMon.Packages.Dtos
         public PackageType Type { get; set; }
         public Guid Guid { get; set; }
         public PingPackageSettingsDto PingPackageSettings { get; set; }
+        public HttpPackageSettingsDto HttpPackageSettings { get; set; }
         public Criticality? LastCriticality { get; set; }
     }
 }
