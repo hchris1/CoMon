@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CreateAssetModalComponent} from '@app/edit/create-asset-modal/create-asset-modal.component';
 import {CreateGroupModalComponent} from '@app/edit/create-group-modal/create-group-modal.component';
@@ -41,7 +41,7 @@ export class GroupComponent {
     private _modalService: BsModalService
   ) {
     this.editFormGroup = this._formBuilder.group({
-      name: ['', []],
+      name: ['', [Validators.required, Validators.maxLength(256)]],
       group: ['', []],
     });
 

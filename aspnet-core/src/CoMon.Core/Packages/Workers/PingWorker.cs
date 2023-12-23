@@ -19,10 +19,12 @@ namespace CoMon.Packages.Workers
         private readonly IRepository<Status, long> _statusRepository;
         private readonly ILogger<PingWorker> _logger;
 
+        private const int WorkerCycleSeconds = 5;
+
         public PingWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository,
             ILogger<PingWorker> logger, IRepository<Status, long> statusRepository) : base(timer)
         {
-            Timer.Period = 5 * 1000;
+            Timer.Period = WorkerCycleSeconds * 1000;
             _packageRepository = packageRepository;
             _logger = logger;
             _statusRepository = statusRepository;
@@ -60,16 +62,24 @@ namespace CoMon.Packages.Workers
             }
         }
 
-        private static async Task<Status> PerformCheck(Package package)
+        private async Task<Status> PerformCheck(Package package)
         {
-            var pingSender = new Ping();
-
-            var reply = await pingSender.SendPingAsync(package.PingPackageSettings.Host);
-
-            if (reply.Status == IPStatus.Success)
-                return CreateSuccessfulPingStatus(package.PingPackageSettings.Host, reply);
-
-            return CreateFailedPingStatus(package.PingPackageSettings.Host);
+            try
+            {
+                var pingSender = new Ping();
+                var reply = await pingSender.SendPingAsync(package.PingPackageSettings.Host);
+                return CreateStatus(package.PingPackageSettings.Host, reply);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error while performing ping check for package with id {packageId}: {message}", package.Id, ex.Message);
+                return new Status
+                {
+                    Time = DateTime.UtcNow,
+                    Criticality = Criticality.Alert,
+                    Messages = ["An error occurred when running the ping check. Check the log for details."]
+                };
+            }
         }
 
         private bool ShouldPerformCheck(Package package)
@@ -89,14 +99,16 @@ namespace CoMon.Packages.Workers
             return timeSinceLastRun.TotalSeconds > package.PingPackageSettings.CycleSeconds;
         }
 
-        private static Status CreateSuccessfulPingStatus(string host, PingReply reply)
+        private static Status CreateStatus(string host, PingReply reply)
         {
+            var pingable = reply.Status == IPStatus.Success;
+
             return new Status
             {
                 Time = DateTime.UtcNow,
-                Criticality = Criticality.Healthy,
-                Messages = [$"Successfully pinged {host}."],
-                KPIs =
+                Criticality = pingable ? Criticality.Healthy : Criticality.Alert,
+                Messages = pingable ? [$"Successfully pinged {host}."] : [$"Unable to ping {host}."],
+                KPIs = pingable ?
                     [
                         new KPI()
                         {
@@ -105,16 +117,7 @@ namespace CoMon.Packages.Workers
                             Value = reply.RoundtripTime
                         }
                     ]
-            };
-        }
-
-        private static Status CreateFailedPingStatus(string host)
-        {
-            return new Status
-            {
-                Time = DateTime.UtcNow,
-                Criticality = Criticality.Alert,
-                Messages = [$"Unable to ping {host}."]
+                    : []
             };
         }
     }

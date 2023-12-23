@@ -1,4 +1,5 @@
-﻿using Abp.Domain.Repositories;
+﻿using Abp.Authorization;
+using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using CoMon.Images;
 using CoMon.Images.Dtos;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace CoMon.Assets
 {
+    [AbpAuthorize]
     public class ImageAppService(IRepository<Image, long> imageRepository, IObjectMapper mapper) 
         : CoMonAppServiceBase, IImageAppService
     {

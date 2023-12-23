@@ -45,7 +45,7 @@ export class AssetComponent extends AppComponentBase {
     super(injector);
 
     this.editFormGroup = formBuilder.group({
-      title: ['', [Validators.required]],
+      title: ['', [Validators.required, Validators.maxLength(256)]],
       description: ['', []],
       group: ['', []],
     });

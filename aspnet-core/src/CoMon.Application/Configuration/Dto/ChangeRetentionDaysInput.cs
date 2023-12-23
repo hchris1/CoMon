@@ -2,10 +2,10 @@
 
 namespace CoMon.Configuration.Dto
 {
-    public class ChangeUiThemeInput
+    public class ChangeRetentionDaysInput
     {
         [Required]
-        [StringLength(32)]
-        public string Theme { get; set; }
+        [Range(-1, int.MaxValue)]
+        public int Days { get; set; }
     }
 }

@@ -678,8 +678,8 @@ export class ConfigurationServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    changeUiTheme(body: ChangeUiThemeInput | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Configuration/ChangeUiTheme";
+    changeRetentionDays(body: ChangeRetentionDaysInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Configuration/ChangeRetentionDays";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -694,11 +694,11 @@ export class ConfigurationServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processChangeUiTheme(response_);
+            return this.processChangeRetentionDays(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processChangeUiTheme(response_ as any);
+                    return this.processChangeRetentionDays(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -707,7 +707,7 @@ export class ConfigurationServiceProxy {
         }));
     }
 
-    protected processChangeUiTheme(response: HttpResponseBase): Observable<void> {
+    protected processChangeRetentionDays(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -717,6 +717,58 @@ export class ConfigurationServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getRetentionDays(): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/Configuration/GetRetentionDays";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRetentionDays(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRetentionDays(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processGetRetentionDays(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -4815,10 +4867,10 @@ export interface IChangePasswordDto {
     newPassword: string;
 }
 
-export class ChangeUiThemeInput implements IChangeUiThemeInput {
-    theme: string;
+export class ChangeRetentionDaysInput implements IChangeRetentionDaysInput {
+    days: number;
 
-    constructor(data?: IChangeUiThemeInput) {
+    constructor(data?: IChangeRetentionDaysInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4829,33 +4881,33 @@ export class ChangeUiThemeInput implements IChangeUiThemeInput {
 
     init(_data?: any) {
         if (_data) {
-            this.theme = _data["theme"];
+            this.days = _data["days"];
         }
     }
 
-    static fromJS(data: any): ChangeUiThemeInput {
+    static fromJS(data: any): ChangeRetentionDaysInput {
         data = typeof data === 'object' ? data : {};
-        let result = new ChangeUiThemeInput();
+        let result = new ChangeRetentionDaysInput();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["theme"] = this.theme;
+        data["days"] = this.days;
         return data;
     }
 
-    clone(): ChangeUiThemeInput {
+    clone(): ChangeRetentionDaysInput {
         const json = this.toJSON();
-        let result = new ChangeUiThemeInput();
+        let result = new ChangeRetentionDaysInput();
         result.init(json);
         return result;
     }
 }
 
-export interface IChangeUiThemeInput {
-    theme: string;
+export interface IChangeRetentionDaysInput {
+    days: number;
 }
 
 export class ChangeUserLanguageDto implements IChangeUserLanguageDto {
@@ -4996,7 +5048,7 @@ export enum ChartType {
 }
 
 export class CreateAssetDto implements ICreateAssetDto {
-    name: string | undefined;
+    name: string;
     description: string | undefined;
     groupId: number | undefined;
 
@@ -5041,7 +5093,7 @@ export class CreateAssetDto implements ICreateAssetDto {
 }
 
 export interface ICreateAssetDto {
-    name: string | undefined;
+    name: string;
     description: string | undefined;
     groupId: number | undefined;
 }
@@ -5232,7 +5284,7 @@ export interface ICreateDataPointDto {
 }
 
 export class CreateGroupDto implements ICreateGroupDto {
-    name: string | undefined;
+    name: string;
     parentId: number | undefined;
 
     constructor(data?: ICreateGroupDto) {
@@ -5274,7 +5326,7 @@ export class CreateGroupDto implements ICreateGroupDto {
 }
 
 export interface ICreateGroupDto {
-    name: string | undefined;
+    name: string;
     parentId: number | undefined;
 }
 

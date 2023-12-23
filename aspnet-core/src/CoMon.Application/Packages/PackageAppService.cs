@@ -1,4 +1,5 @@
-﻿using Abp.Domain.Entities;
+﻿using Abp.Authorization;
+using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using Abp.Runtime.Validation;
@@ -17,6 +18,7 @@ using System.Xml;
 
 namespace CoMon.Packages
 {
+    [AbpAuthorize]
     public class PackageAppService(IRepository<Asset, long> assetRepository,
         IRepository<Package, long> packageRepository, IObjectMapper mapper, IRepository<Status, long> statusRepository)
         : CoMonAppServiceBase, IPackageAppService

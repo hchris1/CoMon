@@ -5,6 +5,8 @@ namespace CoMon.Configuration
 {
     public interface IConfigurationAppService
     {
-        Task ChangeUiTheme(ChangeUiThemeInput input);
+        Task ChangeRetentionDays(ChangeRetentionDaysInput input);
+
+        Task<int> GetRetentionDays();
     }
 }

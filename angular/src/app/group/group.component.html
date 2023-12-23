@@ -15,7 +15,16 @@
 
           <div class="col-auto" *ngIf="editName">
             <form [formGroup]="editFormGroup">
-              <input type="text" class="form-control" formControlName="name" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                [class.is-invalid]="
+                  editFormGroup.get('name').invalid &&
+                  (editFormGroup.get('name').dirty ||
+                    editFormGroup.get('name').touched)
+                "
+              />
             </form>
           </div>
           <div class="col-auto" *ngIf="editMode && !editName && !isRoot">
@@ -33,6 +42,7 @@
               type="button"
               class="btn btn-circle btn-link"
               (click)="saveName()"
+              [disabled]="editFormGroup.get('name').invalid"
             >
               <i class="fa-solid fa-save"></i>
             </button>
@@ -65,7 +75,7 @@
           </div>
         </div>
         <p *ngIf="isRoot">
-          {{ "Overview.RootInfo" | localize }}
+          {{ 'Overview.RootInfo' | localize }}
         </p>
 
         <div class="row" *ngIf="!isRoot">
@@ -111,7 +121,7 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row" style="justify-content: space-between">
-        <h3 class="col">{{ "Overview.GroupsTitle" | localize }}</h3>
+        <h3 class="col">{{ 'Overview.GroupsTitle' | localize }}</h3>
         <button
           class="col-auto btn btn-primary btn-circle btn-xl"
           (click)="openCreateGroupModal()"
@@ -127,7 +137,7 @@
       <div class="container-fluid">
         <div class="row">
           <p *ngIf="group.subGroupIds.length === 0" class="col pl-4">
-            {{ "Overview.NoGroups" | localize }}
+            {{ 'Overview.NoGroups' | localize }}
           </p>
           <div
             class="col-12 col-sm-6 col-md-4"
@@ -147,7 +157,7 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row" style="justify-content: space-between">
-        <h1 class="col">{{ "Overview.AssetsTitle" | localize }}</h1>
+        <h1 class="col">{{ 'Overview.AssetsTitle' | localize }}</h1>
         <button
           class="col-auto btn btn-primary btn-circle btn-xl"
           (click)="openCreateAssetModal()"
@@ -167,7 +177,7 @@
             *ngIf="!group.assetIds || group.assetIds.length === 0"
             class="col pl-4"
           >
-            {{ "Overview.NoAssets" | localize }}
+            {{ 'Overview.NoAssets' | localize }}
           </p>
           <div
             class="col-12 col-sm-6 col-md-4"

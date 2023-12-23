@@ -1,8 +1,8 @@
-﻿using Abp.Domain.Entities;
+﻿using Abp.Authorization;
+using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using CoMon.Assets;
-using CoMon.Assets.Dtos;
 using CoMon.Groups.Dtos;
 using CoMon.Statuses.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace CoMon.Groups
 {
+    [AbpAuthorize]
     public class GroupAppService(IRepository<Group, long> groupRepository, IRepository<Asset, long> assetRepository, IObjectMapper objectMapper)
         : CoMonAppServiceBase, IGroupAppService
     {

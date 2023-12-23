@@ -8,7 +8,16 @@
           </div>
           <div class="col-auto" *ngIf="editTitle">
             <form [formGroup]="editFormGroup">
-              <input type="text" class="form-control" formControlName="title" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="title"
+                [class.is-invalid]="
+                  editFormGroup.get('title').invalid &&
+                  (editFormGroup.get('title').dirty ||
+                    editFormGroup.get('title').touched)
+                "
+              />
             </form>
           </div>
           <div class="col-auto" *ngIf="editMode && !editTitle">
@@ -26,6 +35,7 @@
               type="button"
               class="btn btn-circle btn-link"
               (click)="saveTitleClicked()"
+              [disabled]="editFormGroup.get('title').invalid"
             >
               <i class="fa-solid fa-save"></i>
             </button>
@@ -121,7 +131,9 @@
                   </div>
                 </div>
 
-                <p *ngIf="!editDescription">{{ asset.description }}</p>
+                <p *ngIf="!editDescription" style="white-space: pre-wrap">
+                  {{ asset.description }}
+                </p>
                 <form [formGroup]="editFormGroup">
                   <textarea
                     class="form-control"

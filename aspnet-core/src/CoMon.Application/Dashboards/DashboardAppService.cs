@@ -1,4 +1,5 @@
-﻿using Abp.Domain.Entities;
+﻿using Abp.Authorization;
+using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using Abp.Runtime.Validation;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace CoMon.Dashboards
 {
+    [AbpAuthorize]
     public class DashboardAppService : CoMonAppServiceBase
     {
         private readonly IObjectMapper _mapper;
@@ -84,7 +86,10 @@ namespace CoMon.Dashboards
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 
-            dashboard.Name = name.Trim();
+            dashboard.Name = name?.Trim();
+
+            if (string.IsNullOrWhiteSpace(dashboard.Name))
+                throw new AbpValidationException("Asset name may not be empty.");
 
             await _dashboardRepository.UpdateAsync(dashboard);
         }

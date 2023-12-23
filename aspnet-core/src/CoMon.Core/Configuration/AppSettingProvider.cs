@@ -9,7 +9,10 @@ namespace CoMon.Configuration
         {
             return new[]
             {
-                new SettingDefinition(AppSettingNames.UiTheme, "red", scopes: SettingScopes.Application | SettingScopes.Tenant | SettingScopes.User, clientVisibilityProvider: new VisibleSettingClientVisibilityProvider())
+                new SettingDefinition(AppSettingNames.RetentionDays,
+                    "30",
+                    scopes: SettingScopes.Application
+                )
             };
         }
     }

@@ -1,5 +1,6 @@
 ﻿
 using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace CoMon.Statuses
 {
+    [AbpAuthorize]
     public class StatusAppService(IRepository<Asset, long> assetRepository, IRepository<Group, long> groupRepository,
         IRepository<Status, long> statusRepository, IObjectMapper objectMapper) : CoMonAppServiceBase, IStatusAppService
     {

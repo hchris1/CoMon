@@ -1,4 +1,5 @@
-﻿using Abp.Domain.Entities;
+﻿using Abp.Authorization;
+using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using Abp.Runtime.Validation;
@@ -8,12 +9,12 @@ using CoMon.Images;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoMon.Assets
 {
+    [AbpAuthorize]
     public class AssetAppService(IObjectMapper objectMapper, IRepository<Asset, long> assetRepository,
         IRepository<Group, long> groupRepository) : CoMonAppServiceBase, IAssetAppService
     {
@@ -44,7 +45,7 @@ namespace CoMon.Assets
                     .Include(a => a.Group.Parent.Parent)
                     .ToListAsync();
 
-            return _objectMapper.Map<List<AssetPreviewDto>>(assets);    
+            return _objectMapper.Map<List<AssetPreviewDto>>(assets);
         }
 
         public async Task<AssetPreviewDto> GetPreview(long id)
@@ -82,7 +83,11 @@ namespace CoMon.Assets
             var asset = await _assetRepository.GetAsync(id)
                 ?? throw new EntityNotFoundException("Asset not found.");
 
-            asset.Name = name.Trim();
+            asset.Name = name?.Trim();
+
+            if (string.IsNullOrWhiteSpace(asset.Name))
+                throw new AbpValidationException("Asset name may not be empty.");
+
             await _assetRepository.UpdateAsync(asset);
         }
 
@@ -91,7 +96,7 @@ namespace CoMon.Assets
             var asset = await _assetRepository.GetAsync(id)
                 ?? throw new EntityNotFoundException("Asset not found.");
 
-            asset.Description = description.Trim();
+            asset.Description = description?.Trim();
             await _assetRepository.UpdateAsync(asset);
         }
 
