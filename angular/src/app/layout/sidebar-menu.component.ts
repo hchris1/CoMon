@@ -71,6 +71,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         'fas fa-users',
         'Pages.Users'
       ),
+      new MenuItem(this.l('Sidebar.Settings'), '/app/settings', 'fas fa-cog'),
     ];
   }
 

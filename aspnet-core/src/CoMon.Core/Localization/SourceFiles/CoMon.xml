@@ -121,6 +121,7 @@
 		<text name="Sidebar.Assets">Assets</text>
 		<text name="Sidebar.StatusTable">Status Table</text>
 		<text name="Sidebar.Dashboard">Dashboards</text>
+		<text name="Sidebar.Settings">Settings</text>
 		<text name="Overview.RootTitle">Root</text>
 		<text name="Overview.RootInfo">The 🌱 contains all groups and assets that don't belong to another group.</text>
 		<text name="Overview.GroupsTitle">Groups</text>
@@ -202,6 +203,11 @@
 		<text name="Edit.CreateDashboardNamePlaceholder">Dashboard name</text>
 		<text name="Dashboard.NoTiles">There are no tiles in this dashboard yet.</text>
 		<text name="Dashboard.NoDashboards">There are no dashboards yet.</text>
-		<text name="Edit.PackageCycleTime"></text>
+		<text name="Settings.Title">Settings</text>
+		<text name="Settings.Description">The settings ⚙️ contain options to adjust the behavior of CoMon.</text>
+		<text name="Settings.RetentionDaysTitle">Data Retention</text>
+		<text name="Settings.RetentionDaysDescription">Days (-1 disables deletion)</text>
+		<text name="Settings.RetentionDaysSavedTitle">Data Retention</text>
+		<text name="Settings.RetentionDaysSavedDescription">The data retention days have been changed.</text>
 	</texts>
 </localizationDictionary>

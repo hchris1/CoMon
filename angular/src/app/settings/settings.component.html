@@ -1,0 +1,54 @@
+<div [@routerTransition]>
+  <section class="content-header">
+    <div class="container-fluid">
+      <h1>{{ 'Settings.Title' | localize }}</h1>
+      <p>{{ 'Settings.Description' | localize }}</p>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                {{ 'Settings.RetentionDaysTitle' | localize }}
+              </h3>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="retentionFormGroup">
+                <div class="form-group">
+                  <label for="retentionDays">{{
+                    'Settings.RetentionDaysDescription' | localize
+                  }}</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="retentionDays"
+                    formControlName="retentionDays"
+                    [class.is-invalid]="
+                      retentionFormGroup.get('retentionDays').invalid &&
+                      (retentionFormGroup.get('retentionDays').dirty ||
+                        retentionFormGroup.get('retentionDays').touched)
+                    "
+                  />
+                </div>
+              </form>
+            </div>
+            <div class="card-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="saveRetentionPolicyClicked()"
+                [disabled]="retentionFormGroup.get('retentionDays').invalid"
+              >
+                {{ 'Save' | localize }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

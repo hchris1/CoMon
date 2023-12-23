@@ -121,6 +121,7 @@
 		<text name="Sidebar.Assets">Assets</text>
 		<text name="Sidebar.StatusTable">Statustabelle</text>
 		<text name="Sidebar.Dashboard">Dashboards</text>
+		<text name="Sidebar.Settings">Einstellungen</text>
 		<text name="Overview.RootTitle">Root</text>
 		<text name="Overview.RootInfo">Die 🌱 beinhaltet alle Gruppen und Assets, die zu keiner anderen Gruppe gehören.</text>
 		<text name="Overview.GroupsTitle">Gruppen</text>
@@ -203,5 +204,11 @@
 		<text name="Edit.CreateDashboardNamePlaceholder">Dashboard Name</text>
 		<text name="Dashboard.NoTiles">In diesem Dashboard gibt es bisher keine Kacheln.</text>
 		<text name="Dashboard.NoDashboards">Es gibt bisher keine Dashboards.</text>
+		<text name="Settings.Title">Einstellungen</text>
+		<text name="Settings.Description">Die Einstellungen ⚙️ beinhalten wichtige Optionen, um das Verhalten von CoMon zu verändern.</text>
+		<text name="Settings.RetentionDaysTitle">Datenhaltung</text>
+		<text name="Settings.RetentionDaysDescription">Tage (-1 deaktiviert Löschen)</text>
+		<text name="Settings.RetentionDaysSavedTitle">Datenhaltung</text>
+		<text name="Settings.RetentionDaysSavedDescription">Die Anzahl der Tage wurde angepasst.</text>
 	</texts>
 </localizationDictionary>

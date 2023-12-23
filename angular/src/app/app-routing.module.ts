@@ -12,6 +12,7 @@ import {StatusTableComponent} from './status/status-table/status-table.component
 import {PackageComponent} from './package/package.component';
 import {DashboardOverviewComponent} from './dashboard/dashboard-overview/dashboard-overview.component';
 import {DashboardComponent} from './dashboard/dashboard/dashboard.component';
+import {SettingsComponent} from './settings/settings.component';
 
 @NgModule({
   imports: [
@@ -53,6 +54,11 @@ import {DashboardComponent} from './dashboard/dashboard/dashboard.component';
           {
             path: 'dashboard/:id',
             component: DashboardComponent,
+            canActivate: [AppRouteGuard],
+          },
+          {
+            path: 'settings',
+            component: SettingsComponent,
             canActivate: [AppRouteGuard],
           },
           {
