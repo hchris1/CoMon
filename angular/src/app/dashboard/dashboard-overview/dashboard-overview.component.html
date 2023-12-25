@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-auto">
           <h1>
-            {{ "Dashboard.Overview" | localize }}
+            {{ 'Dashboard.Overview' | localize }}
           </h1>
         </div>
         <button
@@ -26,7 +26,7 @@
       </div>
       <div class="row pl-2" style="justify-content: space-between">
         <p>
-          {{ "Dashboard.OverviewDescription" | localize }}
+          {{ 'Dashboard.OverviewDescription' | localize }}
         </p>
         <button
           class="col-auto btn btn-primary btn-circle btn-xl text-right"
@@ -43,7 +43,7 @@
     <div class="container-fluid">
       <div class="row">
         <p *ngIf="dashboards.length === 0" class="ml-3">
-          {{ "Dashboard.NoDashboards" | localize }}
+          {{ 'Dashboard.NoDashboards' | localize }}
         </p>
         <div
           class="col-auto card ml-3 card-outline"
@@ -57,7 +57,7 @@
               <button
                 class="col-1 btn btn-circle btn-link text"
                 style="padding: 0 !important"
-                (click)="openDeletionModal(deletionTemplate, dashboard)"
+                (click)="deleteDashboardClicked(dashboard)"
                 *ngIf="editMode"
               >
                 <i class="fa-solid fa-trash"></i>
@@ -107,17 +107,3 @@
     </div>
   </section>
 </div>
-
-<ng-template #deletionTemplate>
-  <div class="modal-body">
-    <p>{{ "Edit.ConfirmDeletion" | localize }}</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="confirmDeletion()">
-      {{ "Yes" | localize }}
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="cancelDeletion()">
-      {{ "No" | localize }}
-    </button>
-  </div>
-</ng-template>

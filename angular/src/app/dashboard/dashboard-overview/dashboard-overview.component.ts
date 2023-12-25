@@ -1,20 +1,21 @@
-import {Component, TemplateRef} from '@angular/core';
+import {Component, Injector} from '@angular/core';
 import {
   DashboardDto,
   DashboardPreviewDto,
   DashboardServiceProxy,
 } from '@shared/service-proxies/service-proxies';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {appModuleAnimation} from '@shared/animations/routerTransition';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {CreateDashboardModalComponent} from '@app/edit/create-dashboard-modal/create-dashboard-modal.component';
+import {AppComponentBase} from '@shared/app-component-base';
 
 @Component({
   selector: 'app-dashboard-overview',
   templateUrl: './dashboard-overview.component.html',
   animations: [appModuleAnimation()],
 })
-export class DashboardOverviewComponent {
+export class DashboardOverviewComponent extends AppComponentBase {
   editMode = false;
   isLoading = false;
   dashboards: DashboardPreviewDto[] = [];
@@ -27,8 +28,9 @@ export class DashboardOverviewComponent {
     private _dashboardService: DashboardServiceProxy,
     private _modalService: BsModalService,
     private _router: Router,
-    private _route: ActivatedRoute
+    injector: Injector
   ) {
+    super(injector);
     this.loadDashboards();
   }
 
@@ -53,23 +55,22 @@ export class DashboardOverviewComponent {
     this.editMode = false;
   }
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  openDeletionModal(template: TemplateRef<any>, dashboard: DashboardDto) {
-    this.dashboardIdToDelete = dashboard.id;
-    this.confirmDeletionModal = this._modalService.show(template, {
-      class: 'modal-sm',
-    });
-  }
-
-  confirmDeletion() {
-    this._dashboardService.delete(this.dashboardIdToDelete).subscribe(() => {
-      this.confirmDeletionModal.hide();
-      this.loadDashboards();
-    });
-  }
-
-  cancelDeletion() {
-    this.confirmDeletionModal.hide();
+  deleteDashboardClicked(dashboard: DashboardDto) {
+    this.message.confirm(
+      this.l('Dashboard.DeleteConfirmationMessage'),
+      this.l('Dashboard.DeleteConfirmationTitle'),
+      isConfirmed => {
+        if (isConfirmed) {
+          this._dashboardService.delete(dashboard.id).subscribe(() => {
+            this.loadDashboards();
+            this.notify.success(
+              this.l('Dashboard.DeleteSuccessMessage'),
+              dashboard.name
+            );
+          });
+        }
+      }
+    );
   }
 
   onCreateDashboardModal() {
