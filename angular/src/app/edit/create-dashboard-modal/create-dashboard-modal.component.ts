@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {DashboardServiceProxy} from '@shared/service-proxies/service-proxies';
 
@@ -18,8 +18,10 @@ export class CreateDashboardModalComponent {
     private _router: Router
   ) {
     this.form = formBuilder.group({
-      name: [''],
+      name: ['', Validators.required],
     });
+
+    this.form.markAllAsTouched();
   }
 
   closeClicked() {

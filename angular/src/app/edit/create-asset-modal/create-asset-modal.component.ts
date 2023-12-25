@@ -23,8 +23,10 @@ export class CreateAssetModalComponent {
   ) {
     this.form = formBuilder.group({
       name: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
     });
+
+    this.form.markAllAsTouched();
   }
 
   closeClicked() {

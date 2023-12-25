@@ -1,26 +1,35 @@
 <div class="modal-header">
-  <h4>{{ "Edit.CreateGroupTitle" | localize }}</h4>
+  <h4>{{ 'Edit.CreateGroupTitle' | localize }}</h4>
 </div>
 
 <div class="modal-body">
   <form [formGroup]="form">
     <div class="form-group">
-      <label for="name">{{ "Edit.CreateGroupName" | localize }}</label>
+      <label for="name">{{ 'Edit.CreateGroupName' | localize }}</label>
       <input
         type="text"
         class="form-control"
         id="name"
         formControlName="name"
         placeholder="{{ 'Edit.CreateGroupNamePlaceholder' | localize }}"
+        [class.is-invalid]="
+          form.get('name').invalid &&
+          (form.get('name').dirty || form.get('name').touched)
+        "
       />
     </div>
   </form>
 </div>
 <div class="modal-footer">
-  <button type="submit" class="btn btn-primary" (click)="onSubmit()">
-    {{ "Save" | localize }}
+  <button
+    type="submit"
+    class="btn btn-primary"
+    (click)="onSubmit()"
+    [disabled]="form.invalid"
+  >
+    {{ 'Save' | localize }}
   </button>
   <button type="button" class="btn btn-secondary" (click)="onCancel()">
-    {{ "Cancel" | localize }}
+    {{ 'Cancel' | localize }}
   </button>
 </div>

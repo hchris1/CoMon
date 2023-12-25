@@ -24,6 +24,8 @@ export class CreateGroupModalComponent {
     this.form = formBuilder.group({
       name: ['', Validators.required],
     });
+
+    this.form.markAllAsTouched();
   }
 
   closeClicked() {
