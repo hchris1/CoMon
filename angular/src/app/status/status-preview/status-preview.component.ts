@@ -1,9 +1,9 @@
 import {
   Component,
   EventEmitter,
+  Injector,
   Input,
   Output,
-  TemplateRef,
   ViewEncapsulation,
 } from '@angular/core';
 import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
@@ -15,13 +15,14 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {StatusModalComponent} from '../status-modal/status-modal.component';
 import {EditPackageModalComponent} from '@app/edit/edit-package-modal/edit-package-modal.component';
 import {Clipboard} from '@angular/cdk/clipboard';
+import {AppComponentBase} from '@shared/app-component-base';
 
 @Component({
   selector: 'app-status-preview',
   templateUrl: './status-preview.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class StatusPreviewComponent {
+export class StatusPreviewComponent extends AppComponentBase {
   @Input() statusPreview: StatusPreviewDto;
   @Input() showPath: boolean = true;
   @Input() editMode: boolean = false;
@@ -30,14 +31,16 @@ export class StatusPreviewComponent {
   @Output() packageEdited = new EventEmitter();
 
   statusModalRef: BsModalRef;
-  confirmDeletionModal: BsModalRef;
   editModalRef: BsModalRef;
 
   constructor(
     private _modalService: BsModalService,
     private _packageService: PackageServiceProxy,
-    private _clipboard: Clipboard
-  ) {}
+    private _clipboard: Clipboard,
+    injector: Injector
+  ) {
+    super(injector);
+  }
 
   getEmoji() {
     return DynamicStylesHelper.getEmoji(this.statusPreview.criticality);
@@ -69,11 +72,24 @@ export class StatusPreviewComponent {
     });
   }
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  deleteClicked(template: TemplateRef<any>) {
-    this.confirmDeletionModal = this._modalService.show(template, {
-      class: 'modal-sm',
-    });
+  deletePackageClicked() {
+    this.message.confirm(
+      this.l('Package.DeleteConfirmationMessage'),
+      this.l('Package.DeleteConfirmationTitle'),
+      isConfirmed => {
+        if (isConfirmed) {
+          this._packageService
+            .delete(this.statusPreview.package.id)
+            .subscribe(() => {
+              this.packageDeleted.emit();
+              this.notify.success(
+                this.l('Package.DeleteSuccessMessage'),
+                this.statusPreview.package.name
+              );
+            });
+        }
+      }
+    );
   }
 
   editClicked() {
@@ -90,17 +106,6 @@ export class StatusPreviewComponent {
     this.editModalRef.content.onClose.subscribe(() => {
       this.editModalRef.hide();
     });
-  }
-
-  confirmDeletion() {
-    this._packageService.delete(this.statusPreview.package.id).subscribe(() => {
-      this.confirmDeletionModal.hide();
-      this.packageDeleted.emit();
-    });
-  }
-
-  declineDeletion() {
-    this.confirmDeletionModal.hide();
   }
 
   copyClicked() {
