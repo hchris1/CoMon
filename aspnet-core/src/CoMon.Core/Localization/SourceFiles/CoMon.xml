@@ -228,6 +228,7 @@
 		<text name="Dashboard.TileDeleteConfirmationMessage">The dashboard tile will be permanently deleted. Do you want to proceed?</text>
 		<text name="Dashboard.TileDeleteConfirmationTitle">Delete Dashboard Tile</text>
 		<text name="Dashboard.TileDeleteSuccessMessage">Dashboard tile deleted successfully.</text>
+		<text name="Dashboard.TileDeleteSuccessTitle">Dashboard Tile</text>
 		<text name="Package.DeleteConfirmationMessage">The package will be permanently deleted. Do you want to proceed?</text>
 		<text name="Package.DeleteConfirmationTitle">Delete Package</text>
 		<text name="Package.DeleteSuccessMessage">Package deleted successfully.</text>

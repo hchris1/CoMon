@@ -229,6 +229,7 @@
 		<text name="Dashboard.TileDeleteConfirmationMessage">Die Kachel wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
 		<text name="Dashboard.TileDeleteConfirmationTitle">Kachel Löschen</text>
 		<text name="Dashboard.TileDeleteSuccessMessage">Kachel erfolgreich gelöscht.</text>
+		<text name="Dashboard.TileDeleteSuccessTitle">Dashboard Kachel</text>
 		<text name="Package.DeleteConfirmationMessage">Das Paket wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
 		<text name="Package.DeleteConfirmationTitle">Paket Löschen</text>
 		<text name="Package.DeleteSuccessMessage">Paket erfolgreich gelöscht.</text>
