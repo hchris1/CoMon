@@ -1,5 +1,12 @@
 import {appModuleAnimation} from '@shared/animations/routerTransition';
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   StatusPreviewDto,
   StatusServiceProxy,
@@ -12,7 +19,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './package-preview.component.html',
   animations: [appModuleAnimation()],
 })
-export class PackagePreviewComponent implements OnInit {
+export class PackagePreviewComponent implements OnInit, OnDestroy {
   @Input() packageId: number;
   @Input() editMode: boolean = false;
   @Input() showPath: boolean = false;
@@ -49,5 +56,10 @@ export class PackagePreviewComponent implements OnInit {
       .subscribe(status => {
         this.status = status;
       });
+  }
+
+  ngOnDestroy() {
+    this.statusChangeSubscription.unsubscribe();
+    this.connectionEstablishedSubscription.unsubscribe();
   }
 }
