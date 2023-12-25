@@ -2,27 +2,30 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Injector,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  TemplateRef,
 } from '@angular/core';
 import {CoMonHubService} from '@app/comon-hub.service';
+import {AppComponentBase} from '@shared/app-component-base';
 import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
 import {
   AssetDto,
   AssetServiceProxy,
   PackageDto,
 } from '@shared/service-proxies/service-proxies';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-asset-summary',
   templateUrl: './asset-summary.component.html',
 })
-export class AssetSummaryComponent implements OnInit, OnDestroy {
+export class AssetSummaryComponent
+  extends AppComponentBase
+  implements OnInit, OnDestroy
+{
   @Input() assetId: number;
   @Input() editMode: boolean = false;
   @Input() showPath: boolean = false;
@@ -33,7 +36,6 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
 
   asset: AssetDto;
 
-  confirmDeletionModal: BsModalRef;
   statusChangeSubscription: Subscription;
   connectionEstablishedSubscription: Subscription;
 
@@ -41,8 +43,10 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
     private _comonHubService: CoMonHubService,
     private _assetService: AssetServiceProxy,
     private _changeDetector: ChangeDetectorRef,
-    private _modalService: BsModalService
-  ) {}
+    injector: Injector
+  ) {
+    super(injector);
+  }
 
   ngOnInit(): void {
     this.statusChangeSubscription =
@@ -96,21 +100,21 @@ export class AssetSummaryComponent implements OnInit, OnDestroy {
     return DynamicStylesHelper.getEmoji(worstCriticality);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  openDeletionModal(template: TemplateRef<any>) {
-    this.confirmDeletionModal = this._modalService.show(template, {
-      class: 'modal-sm',
-    });
-  }
-
-  confirmDeletion() {
-    this._assetService.delete(this.asset.id).subscribe(() => {
-      this.assetDeleted.emit();
-      this.confirmDeletionModal.hide();
-    });
-  }
-
-  cancelDeletion() {
-    this.confirmDeletionModal.hide();
+  deleteAssetClicked() {
+    this.message.confirm(
+      this.l('Assets.DeleteConfirmationMessage', this.asset.name),
+      this.l('Assets.DeleteConfirmationTitle'),
+      isConfirmed => {
+        if (isConfirmed) {
+          this._assetService.delete(this.asset.id).subscribe(() => {
+            this.assetDeleted.emit();
+            this.notify.success(
+              this.l('Assets.DeleteSuccessMessage'),
+              this.asset.name
+            );
+          });
+        }
+      }
+    );
   }
 }

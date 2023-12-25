@@ -10,7 +10,7 @@
       <button
         class="col-1 btn btn-circle btn-link text"
         style="padding: 0 !important"
-        (click)="openDeletionModal(deletionTemplate)"
+        (click)="deleteAssetClicked()"
         *ngIf="editMode"
       >
         <i class="fa-solid fa-trash"></i>
@@ -47,17 +47,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #deletionTemplate>
-  <div class="modal-body">
-    <p>{{ "Edit.ConfirmDeletion" | localize }}</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="confirmDeletion()">
-      {{ "Yes" | localize }}
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="cancelDeletion()">
-      {{ "No" | localize }}
-    </button>
-  </div>
-</ng-template>

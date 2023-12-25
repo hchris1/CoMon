@@ -135,6 +135,9 @@
 		<text name="Assets.AllAssetsTitle">Assets</text>
 		<text name="Assets.AllAssetsDescription">This page shows all assets in the system. Click on an asset to see more details.</text>
 		<text name="Assets.NoPackages">There are no packages yet.</text>
+		<text name="Assets.DeleteConfirmationMessage">The asset will be permanently deleted. Do you want to proceed?</text>
+		<text name="Assets.DeleteConfirmationTitle">Delete Asset</text>
+		<text name="Assets.DeleteSuccessMessage">Asset deleted successfully.</text>
 		<text name="Status.PreviousStatusTooltip">Go to previous status</text>
 		<text name="Status.NextStatusTooltip">Go to next status</text>
 		<text name="Status.LatestStatusTooltip">Go to latest status</text>
