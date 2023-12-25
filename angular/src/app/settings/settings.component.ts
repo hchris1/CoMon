@@ -5,6 +5,7 @@ import {AppComponentBase} from '@shared/app-component-base';
 import {
   ChangeRetentionDaysInput,
   ConfigurationServiceProxy,
+  StatusServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 
 @Component({
@@ -18,7 +19,8 @@ export class SettingsComponent extends AppComponentBase {
   constructor(
     injector: Injector,
     formBuilder: FormBuilder,
-    private _configurationService: ConfigurationServiceProxy
+    private _configurationService: ConfigurationServiceProxy,
+    private _statusService: StatusServiceProxy
   ) {
     super(injector);
     this.retentionFormGroup = formBuilder.group({
@@ -45,5 +47,22 @@ export class SettingsComponent extends AppComponentBase {
           this.l('Settings.RetentionDaysSavedTitle')
         );
       });
+  }
+
+  deleteAllStatusesClicked() {
+    this.message.confirm(
+      this.l('Settings.DeleteAllStatusesConfirmationMessage'),
+      this.l('Settings.DeleteAllStatuses'),
+      isConfirmed => {
+        if (isConfirmed) {
+          this._statusService.deleteAll().subscribe(() => {
+            abp.notify.success(
+              this.l('Settings.AllStatusesDeletedDescription'),
+              this.l('Settings.DeleteAllStatuses')
+            );
+          });
+        }
+      }
+    );
   }
 }

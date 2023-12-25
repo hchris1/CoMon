@@ -37,14 +37,24 @@
               </form>
             </div>
             <div class="card-footer">
-              <button
-                type="button"
-                class="btn btn-primary"
-                (click)="saveRetentionPolicyClicked()"
-                [disabled]="retentionFormGroup.get('retentionDays').invalid"
-              >
-                {{ 'Save' | localize }}
-              </button>
+              <div class="row">
+                <button
+                  type="button"
+                  class="col-auto btn btn-primary"
+                  (click)="saveRetentionPolicyClicked()"
+                  [disabled]="retentionFormGroup.get('retentionDays').invalid"
+                >
+                  {{ 'Save' | localize }}
+                </button>
+                <!-- Button to delete all statuses in system -->
+                <button
+                  type="button"
+                  class="col-auto btn btn-danger ml-1"
+                  (click)="deleteAllStatusesClicked()"
+                >
+                  {{ 'Settings.DeleteAllStatuses' | localize }}
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -210,5 +210,8 @@
 		<text name="Settings.RetentionDaysDescription">Tage (-1 deaktiviert Löschen)</text>
 		<text name="Settings.RetentionDaysSavedTitle">Datenhaltung</text>
 		<text name="Settings.RetentionDaysSavedDescription">Die Anzahl der Tage wurde angepasst.</text>
+		<text name="Settings.DeleteAllStatuses">Status zurücksetzen</text>
+		<text name="Settings.DeleteAllStatusesConfirmationMessage">Es werden alle Ergebnisse von Paketen gelöscht. Wollen Sie fortfahren?</text>
+		<text name="Settings.AllStatusesDeletedDescription">Ergebnisse wurden gelöscht.</text>
 	</texts>
 </localizationDictionary>

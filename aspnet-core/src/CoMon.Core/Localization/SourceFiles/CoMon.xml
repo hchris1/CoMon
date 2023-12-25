@@ -209,5 +209,9 @@
 		<text name="Settings.RetentionDaysDescription">Days (-1 disables deletion)</text>
 		<text name="Settings.RetentionDaysSavedTitle">Data Retention</text>
 		<text name="Settings.RetentionDaysSavedDescription">The data retention days have been changed.</text>
+		<text name="Settings.DeleteAllStatuses">Reset Statuses</text>
+		<text name="Settings.DeleteAllStatusesConfirmationMessage">This will delete all statuses of packages in the system. Do you want to proceed?</text>
+		<text name="Settings.AllStatusesDeletedDescription">Statuses have been deleted.</text>
+		
 	</texts>
 </localizationDictionary>

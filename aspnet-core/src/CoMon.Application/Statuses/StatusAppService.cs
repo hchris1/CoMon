@@ -3,6 +3,7 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
+using Abp.EntityFrameworkCore.Repositories;
 using Abp.ObjectMapping;
 using CoMon.Assets;
 using CoMon.Assets.Dtos;
@@ -209,10 +210,15 @@ namespace CoMon.Statuses
                 .GroupBy(s => s.Package)
                 .OrderBy(p => p.Key.Name)
                 .Select(g => g.OrderByDescending(s => s.Time).FirstOrDefault())
-                .SingleOrDefaultAsync()
-                ?? throw new EntityNotFoundException("No latest status found.");
+                .SingleOrDefaultAsync();
 
             return _objectMapper.Map<StatusPreviewDto>(status);
+        }
+
+        public void DeleteAll()
+        {
+            var query = _statusRepository.GetAll().Where(s => s.Criticality != null);
+            _statusRepository.RemoveRange(query);
         }
     }
 }

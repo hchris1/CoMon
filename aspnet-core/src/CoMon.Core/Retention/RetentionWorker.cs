@@ -49,6 +49,7 @@ namespace CoMon.Retention
 
                 var itemsToDelete = _statusRepository
                     .GetAll()
+                    .Where(s => s.Criticality != null)
                     .Where(s => s.Time < cutOffDate);
 
                 _statusRepository.RemoveRange(itemsToDelete);
