@@ -1,10 +1,12 @@
 import {
   Component,
   EventEmitter,
+  Injector,
   Input,
   Output,
   TemplateRef,
 } from '@angular/core';
+import {AppComponentBase} from '@shared/app-component-base';
 import {FileParameter, ImageDto} from '@shared/service-proxies/service-proxies';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 
@@ -12,7 +14,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
 })
-export class CarouselComponent {
+export class CarouselComponent extends AppComponentBase {
   @Input() images: ImageDto[];
   @Input() hideIndicators: boolean = false;
   @Input() editMode: boolean = false;
@@ -21,24 +23,25 @@ export class CarouselComponent {
   @Output() imageDeleted = new EventEmitter<ImageDto>();
 
   modalRef?: BsModalRef;
-  imageToDelete?: ImageDto;
   imageToAdd?: FileParameter;
 
-  constructor(private _modalService: BsModalService) {}
-
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  deleteImageClicked(template: TemplateRef<any>, image: ImageDto) {
-    this.imageToDelete = image;
-    this.modalRef = this._modalService.show(template, {class: 'modal-sm'});
+  constructor(
+    private _modalService: BsModalService,
+    injector: Injector
+  ) {
+    super(injector);
   }
 
-  confirmDeletion() {
-    this.imageDeleted.emit(this.imageToDelete);
-    this.modalRef?.hide();
-  }
-
-  declineDeletion() {
-    this.modalRef?.hide();
+  deleteImageClicked(image: ImageDto) {
+    this.message.confirm(
+      this.l('Image.DeleteConfirmationMessage'),
+      this.l('Image.DeleteConfirmationTitle'),
+      isConfirmed => {
+        if (isConfirmed) {
+          this.imageDeleted.emit(image);
+        }
+      }
+    );
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */

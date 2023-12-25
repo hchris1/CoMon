@@ -218,5 +218,19 @@
 		<text name="Group.DeleteConfirmationMessage">The group will be permanently deleted. Do you want to proceed?</text>
 		<text name="Group.DeleteConfirmationTitle">Delete Group</text>
 		<text name="Group.DeleteSuccessMessage">Group deleted successfully.</text>
+		<text name="Image.DeleteConfirmationMessage">The image will be permanently deleted. Do you want to proceed?</text>
+		<text name="Image.DeleteConfirmationTitle">Delete Image</text>
+		<text name="Image.DeleteSuccessMessage">Image deleted successfully.</text>
+		<text name="Image.DeleteSuccessTitle">Delete Image</text>
+		<text name="Dashboard.DeleteConfirmationMessage">The dashboard will be permanently deleted. Do you want to proceed?</text>
+		<text name="Dashboard.DeleteConfirmationTitle">Delete Dashboard</text>
+		<text name="Dashboard.DeleteSuccessMessage">Dashboard deleted successfully.</text>
+		<text name="Dashboard.TileDeleteConfirmationMessage">The dashboard tile will be permanently deleted. Do you want to proceed?</text>
+		<text name="Dashboard.TileDeleteConfirmationTitle">Delete Dashboard Tile</text>
+		<text name="Dashboard.TileDeleteSuccessMessage">Dashboard tile deleted successfully.</text>
+		<text name="Package.DeleteConfirmationMessage">The package will be permanently deleted. Do you want to proceed?</text>
+		<text name="Package.DeleteConfirmationTitle">Delete Package</text>
+		<text name="Package.DeleteSuccessMessage">Package deleted successfully.</text>
+
 	</texts>
 </localizationDictionary>

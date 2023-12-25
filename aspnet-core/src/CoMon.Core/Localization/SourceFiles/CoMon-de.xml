@@ -219,5 +219,19 @@
 		<text name="Group.DeleteConfirmationMessage">Die Gruppe wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
 		<text name="Group.DeleteConfirmationTitle">Gruppe Löschen</text>
 		<text name="Group.DeleteSuccessMessage">Gruppe erfolgreich gelöscht.</text>
+		<text name="Image.DeleteConfirmationMessage">Das Bild wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
+		<text name="Image.DeleteConfirmationTitle">Bild Löschen</text>
+		<text name="Image.DeleteSuccessMessage">Bild erfolgreich gelöscht.</text>
+		<text name="Image.DeleteSuccessTitle">Bild Löschen</text>
+		<text name="Dashboard.DeleteConfirmationMessage">Das Dashboard wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
+		<text name="Dashboard.DeleteConfirmationTitle">Dashboard Löschen</text>
+		<text name="Dashboard.DeleteSuccessMessage">Dashboard erfolgreich gelöscht.</text>
+		<text name="Dashboard.TileDeleteConfirmationMessage">Die Kachel wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
+		<text name="Dashboard.TileDeleteConfirmationTitle">Kachel Löschen</text>
+		<text name="Dashboard.TileDeleteSuccessMessage">Kachel erfolgreich gelöscht.</text>
+		<text name="Package.DeleteConfirmationMessage">Das Paket wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
+		<text name="Package.DeleteConfirmationTitle">Paket Löschen</text>
+		<text name="Package.DeleteSuccessMessage">Paket erfolgreich gelöscht.</text>
+
 	</texts>
 </localizationDictionary>

@@ -14,7 +14,7 @@
           type="button"
           class="col btn btn-circle btn-link"
           style="padding: 0"
-          (click)="deleteImageClicked(deletionTemplate, image)"
+          (click)="deleteImageClicked(image)"
         >
           <i class="fa-solid fa-trash"></i>
         </button>
@@ -47,23 +47,9 @@
   </slide>
 </carousel>
 
-<ng-template #deletionTemplate>
-  <div class="modal-body">
-    <p>{{ "Edit.ConfirmDeletion" | localize }}</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="confirmDeletion()">
-      {{ "Yes" | localize }}
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="declineDeletion()">
-      {{ "No" | localize }}
-    </button>
-  </div>
-</ng-template>
-
 <ng-template #addImageTemplate>
   <div class="modal-body">
-    <label for="image">{{ "Edit.AddImage" | localize }}</label>
+    <label for="image">{{ 'Edit.AddImage' | localize }}</label>
     <input
       accept=".jpeg, .png, .svg, .gif"
       type="file"
@@ -73,10 +59,10 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="confirmAddImage()">
-      {{ "Save" | localize }}
+      {{ 'Save' | localize }}
     </button>
     <button type="button" class="btn btn-default" (click)="declineAddImage()">
-      {{ "Cancel" | localize }}
+      {{ 'Cancel' | localize }}
     </button>
   </div>
 </ng-template>
