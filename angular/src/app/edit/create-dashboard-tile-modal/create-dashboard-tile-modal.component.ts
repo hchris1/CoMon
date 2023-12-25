@@ -72,10 +72,16 @@ export class CreateDashboardTileModalComponent {
       else if (this.currentType === DashboardTileType._2) {
         this.form.controls.packageId.setValidators([Validators.required]);
       }
+
+      this.form.controls.groupId.updateValueAndValidity();
+      this.form.controls.assetId.updateValueAndValidity();
+      this.form.controls.packageId.updateValueAndValidity();
     });
 
     // Set default values
     this.form.controls.type.setValue(this.groupTileType);
+
+    this.form.markAllAsTouched();
   }
 
   loadOptions() {
