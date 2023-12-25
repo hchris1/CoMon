@@ -102,7 +102,7 @@ export class AssetSummaryComponent
 
   deleteAssetClicked() {
     this.message.confirm(
-      this.l('Assets.DeleteConfirmationMessage', this.asset.name),
+      this.l('Assets.DeleteConfirmationMessage'),
       this.l('Assets.DeleteConfirmationTitle'),
       isConfirmed => {
         if (isConfirmed) {

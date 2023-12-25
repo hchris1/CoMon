@@ -216,5 +216,8 @@
 		<text name="Settings.DeleteAllStatuses">Status zurücksetzen</text>
 		<text name="Settings.DeleteAllStatusesConfirmationMessage">Es werden alle Ergebnisse von Paketen gelöscht. Wollen Sie fortfahren?</text>
 		<text name="Settings.AllStatusesDeletedDescription">Ergebnisse wurden gelöscht.</text>
+		<text name="Group.DeleteConfirmationMessage">Die Gruppe wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
+		<text name="Group.DeleteConfirmationTitle">Gruppe Löschen</text>
+		<text name="Group.DeleteSuccessMessage">Gruppe erfolgreich gelöscht.</text>
 	</texts>
 </localizationDictionary>

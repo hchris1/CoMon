@@ -1,20 +1,20 @@
 import {
   Component,
   EventEmitter,
+  Injector,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  TemplateRef,
 } from '@angular/core';
 import {CoMonHubService} from '@app/comon-hub.service';
 import {appModuleAnimation} from '@shared/animations/routerTransition';
+import {AppComponentBase} from '@shared/app-component-base';
 import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
 import {
   GroupPreviewDto,
   GroupServiceProxy,
 } from '@shared/service-proxies/service-proxies';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -22,7 +22,10 @@ import {Subscription} from 'rxjs';
   templateUrl: './group-summary.component.html',
   animations: [appModuleAnimation()],
 })
-export class GroupSummaryComponent implements OnInit, OnDestroy {
+export class GroupSummaryComponent
+  extends AppComponentBase
+  implements OnInit, OnDestroy
+{
   @Input() groupId: number;
   @Input() editMode: boolean = false;
   @Input() showPath: boolean = false;
@@ -33,13 +36,13 @@ export class GroupSummaryComponent implements OnInit, OnDestroy {
   connectionEstablishedSubscription: Subscription;
   group: GroupPreviewDto;
 
-  confirmDeletionModal: BsModalRef;
-
   constructor(
     private _groupService: GroupServiceProxy,
-    private _modalService: BsModalService,
-    private _comonHubService: CoMonHubService
-  ) {}
+    private _comonHubService: CoMonHubService,
+    injector: Injector
+  ) {
+    super(injector);
+  }
 
   ngOnInit(): void {
     this.statusChangeSubscription =
@@ -66,22 +69,22 @@ export class GroupSummaryComponent implements OnInit, OnDestroy {
     this.groupClicked.emit(group);
   }
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  onDeleteClicked(template: TemplateRef<any>) {
-    this.confirmDeletionModal = this._modalService.show(template, {
-      class: 'modal-sm',
-    });
-  }
-
-  confirmDeletion() {
-    this._groupService.delete(this.group.id).subscribe(() => {
-      this.groupDeleted.emit();
-      this.confirmDeletionModal.hide();
-    });
-  }
-
-  declineDeletion() {
-    this.confirmDeletionModal.hide();
+  deleteGroupClicked() {
+    this.message.confirm(
+      this.l('Group.DeleteConfirmationMessage'),
+      this.l('Group.DeleteConfirmationTitle'),
+      isConfirmed => {
+        if (isConfirmed) {
+          this._groupService.delete(this.group.id).subscribe(() => {
+            this.groupDeleted.emit();
+            this.notify.success(
+              this.l('Group.DeleteSuccessMessage'),
+              this.group.name
+            );
+          });
+        }
+      }
+    );
   }
 
   getCardOutlineClass() {

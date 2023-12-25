@@ -215,6 +215,8 @@
 		<text name="Settings.DeleteAllStatuses">Reset Statuses</text>
 		<text name="Settings.DeleteAllStatusesConfirmationMessage">This will delete all statuses of packages in the system. Do you want to proceed?</text>
 		<text name="Settings.AllStatusesDeletedDescription">Statuses have been deleted.</text>
-		
+		<text name="Group.DeleteConfirmationMessage">The group will be permanently deleted. Do you want to proceed?</text>
+		<text name="Group.DeleteConfirmationTitle">Delete Group</text>
+		<text name="Group.DeleteSuccessMessage">Group deleted successfully.</text>
 	</texts>
 </localizationDictionary>
