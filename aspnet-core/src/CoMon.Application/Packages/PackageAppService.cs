@@ -86,6 +86,76 @@ namespace CoMon.Packages
             return await _packageRepository.InsertAndGetIdAsync(package);
         }
 
+        public async Task<List<PackageStatisticDto>> GetStatistics(int hours)
+        {
+            var utcNow = DateTime.UtcNow;
+            var analyzingDuration = TimeSpan.FromHours(hours);
+            var cutoffTime = utcNow - analyzingDuration;
+
+            var result = new List<PackageStatisticDto>();
+            var packageIds = _packageRepository.GetAll().Select(p => p.Id).ToList();
+
+            foreach (var packageId in packageIds)
+            {
+
+                var entries = await _statusRepository
+                    .GetAll()
+                    .Where(s => s.PackageId == packageId && s.Time >= cutoffTime)
+                    .Select(s => new { s.Time, s.Criticality })
+                    .ToListAsync();
+
+                var entryBeforeCutOff = await _statusRepository
+                    .GetAll()
+                    .Where(s => s.PackageId == packageId && s.Time < cutoffTime)
+                    .OrderByDescending(s => s.Time)
+                    .Select(s => new { Time = cutoffTime, s.Criticality })
+                    .FirstOrDefaultAsync();
+
+                if (entryBeforeCutOff != null)
+                    entries.Add(entryBeforeCutOff);
+
+                entries = entries.OrderBy(s => s.Time).ToList();
+
+                if (entries.Any())
+                    entries.Add(new { Time = utcNow, entries.Last().Criticality });
+
+
+                var durationByCriticality = new Dictionary<Criticality?, TimeSpan>()
+                {
+                    [Criticality.Healthy] = TimeSpan.Zero,
+                    [Criticality.Warning] = TimeSpan.Zero,
+                    [Criticality.Alert] = TimeSpan.Zero
+                };
+                var nullDuration = TimeSpan.Zero;
+
+                for (int i = 1; i < entries.Count; i++)
+                {
+                    if (entries[i].Criticality == null)
+                    {
+                        nullDuration += entries[i].Time - entries[i - 1].Time;
+                        continue;
+                    }
+
+                    durationByCriticality[entries[i].Criticality] += entries[i].Time - entries[i - 1].Time;
+                }
+
+                result.Add(new PackageStatisticDto()
+                {
+                    PackageId = packageId,
+                    HealthyDuration = durationByCriticality[Criticality.Healthy],
+                    HealthyPercent = (double)durationByCriticality[Criticality.Healthy].Ticks / (double)analyzingDuration.Ticks,
+                    WarningDuration = durationByCriticality[Criticality.Warning],
+                    WarningPercent = (double)durationByCriticality[Criticality.Warning].Ticks / (double)analyzingDuration.Ticks,
+                    AlertDuration = durationByCriticality[Criticality.Alert],
+                    AlertPercent = (double)durationByCriticality[Criticality.Alert].Ticks / (double)analyzingDuration.Ticks,
+                    UnknownDuration = nullDuration,
+                    UnknownPercent = (double)nullDuration.Ticks / (double)analyzingDuration.Ticks,
+                });
+            }
+
+            return result;
+        }
+
         private static void ValidateSettings(CreatePackageDto input)
         {
             if (input.Type == PackageType.Ping)
