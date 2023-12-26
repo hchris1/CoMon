@@ -51,8 +51,6 @@ namespace CoMon.Packages
                 .GetAll()
                 .Include(p => p.Asset)
                 .ThenInclude(a => a.Group.Parent.Parent)
-                .Include(p => p.PingPackageSettings)
-                .Include(p => p.HttpPackageSettings)
                 .Where(p => p.Id == id)
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Package not found")
@@ -93,20 +91,25 @@ namespace CoMon.Packages
             var cutoffTime = utcNow - analyzingDuration;
 
             var result = new List<PackageStatisticDto>();
-            var packageIds = _packageRepository.GetAll().Select(p => p.Id).ToList();
 
-            foreach (var packageId in packageIds)
+            var packages = await _packageRepository
+                .GetAll()
+                .Include(p => p.Asset)
+                .ThenInclude(a => a.Group.Parent.Parent)
+                .ToListAsync();
+
+            foreach (var package in packages)
             {
 
                 var entries = await _statusRepository
                     .GetAll()
-                    .Where(s => s.PackageId == packageId && s.Time >= cutoffTime)
+                    .Where(s => s.PackageId == package.Id && s.Time >= cutoffTime)
                     .Select(s => new { s.Time, s.Criticality })
                     .ToListAsync();
 
                 var entryBeforeCutOff = await _statusRepository
                     .GetAll()
-                    .Where(s => s.PackageId == packageId && s.Time < cutoffTime)
+                    .Where(s => s.PackageId == package.Id && s.Time < cutoffTime)
                     .OrderByDescending(s => s.Time)
                     .Select(s => new { Time = cutoffTime, s.Criticality })
                     .FirstOrDefaultAsync();
@@ -141,7 +144,7 @@ namespace CoMon.Packages
 
                 result.Add(new PackageStatisticDto()
                 {
-                    PackageId = packageId,
+                    Package = _mapper.Map<PackagePreviewDto>(package),
                     HealthyDuration = durationByCriticality[Criticality.Healthy],
                     HealthyPercent = (double)durationByCriticality[Criticality.Healthy].Ticks / (double)analyzingDuration.Ticks,
                     WarningDuration = durationByCriticality[Criticality.Warning],

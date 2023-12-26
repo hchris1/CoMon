@@ -4,7 +4,7 @@ namespace CoMon.Packages.Dtos
 {
     public class PackageStatisticDto
     {
-        public long PackageId { get; set; }
+        public PackagePreviewDto Package { get; set; }
         public TimeSpan UnknownDuration { get; set; }
         public double UnknownPercent { get; set; }
         public TimeSpan HealthyDuration { get; set; }

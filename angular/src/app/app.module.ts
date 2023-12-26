@@ -16,6 +16,7 @@ import {CarouselModule} from 'ngx-bootstrap/carousel';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {AlertModule} from 'ngx-bootstrap/alert';
+import {ProgressbarModule} from 'ngx-bootstrap/progressbar';
 
 // tenants
 import {TenantsComponent} from '@app/tenants/tenants.component';
@@ -86,6 +87,7 @@ import {CreateDashboardTileModalComponent} from './edit/create-dashboard-tile-mo
 import {PackagePreviewComponent} from './package/package-preview/package-preview.component';
 import {PackageModalBase} from './edit/package-modal/package-modal-base.component';
 import {SettingsComponent} from './settings/settings.component';
+import {StatisticsDashboardComponent} from './dashboard/statistics-dashboard/statistics-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -158,6 +160,7 @@ import {SettingsComponent} from './settings/settings.component';
     PackagePreviewComponent,
     PackageModalBase,
     SettingsComponent,
+    StatisticsDashboardComponent,
   ],
   imports: [
     CommonModule,
@@ -179,6 +182,7 @@ import {SettingsComponent} from './settings/settings.component';
     PaginationModule,
     TooltipModule,
     AlertModule.forRoot(),
+    ProgressbarModule.forRoot(),
   ],
   providers: [],
 })

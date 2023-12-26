@@ -1,0 +1,72 @@
+<div [@routerTransition]>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-auto">
+          <h1>{{ 'Dashboard.StatisticsTitle' | localize }}</h1>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-auto">
+          {{ 'Dashboard.StatisticsDescription' | localize }}
+        </p>
+      </div>
+      <div class="row" style="justify-content: space-between">
+        <div class="col-auto">
+          <select
+            class="form-control"
+            [(ngModel)]="selectedTime"
+            (change)="onTimeChange()"
+          >
+            <option *ngFor="let time of times" [ngValue]="time">
+              {{ time.name | localize }}
+            </option>
+          </select>
+        </div>
+        <!-- center vertically -->
+        <p class="col-auto text-muted small" style="margin-top: 0.5rem">
+          {{ 'Dashboard.StatisticsNextRefresh' | localize }}:
+          {{ nextRefresh.fromNow() }}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div
+          class="card col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 ml-3"
+          *ngFor="let pair of statisticWithStacks; index as i"
+        >
+          <div class="card-header">
+            <div class="row">
+              <h3 class="card-title">
+                {{ i + 1 }}. {{ pair[0].package.name }}
+              </h3>
+            </div>
+            <div class="row">
+              <app-path
+                [group]="pair[0].package.asset.group"
+                [asset]="pair[0].package.asset"
+                [package]="pair[0].package"
+                class="pt-2"
+              ></app-path>
+            </div>
+            <div class="row">
+              <progressbar
+                class="progress"
+                [value]="pair[1]"
+                [max]="1"
+                [striped]="true"
+                class="ml-2 mr-2 mb-2"
+                style="border-radius: 12px"
+              ></progressbar>
+            </div>
+          </div>
+          <div class="card-content"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

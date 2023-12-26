@@ -13,6 +13,7 @@ import {PackageComponent} from './package/package.component';
 import {DashboardOverviewComponent} from './dashboard/dashboard-overview/dashboard-overview.component';
 import {DashboardComponent} from './dashboard/dashboard/dashboard.component';
 import {SettingsComponent} from './settings/settings.component';
+import {StatisticsDashboardComponent} from './dashboard/statistics-dashboard/statistics-dashboard.component';
 
 @NgModule({
   imports: [
@@ -49,6 +50,11 @@ import {SettingsComponent} from './settings/settings.component';
           {
             path: 'dashboard',
             component: DashboardOverviewComponent,
+            canActivate: [AppRouteGuard],
+          },
+          {
+            path: 'dashboard/statistics',
+            component: StatisticsDashboardComponent,
             canActivate: [AppRouteGuard],
           },
           {

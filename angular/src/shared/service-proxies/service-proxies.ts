@@ -2244,6 +2244,69 @@ export class PackageServiceProxy {
     }
 
     /**
+     * @param hours (optional) 
+     * @return Success
+     */
+    getStatistics(hours: number | undefined): Observable<PackageStatisticDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Package/GetStatistics?";
+        if (hours === null)
+            throw new Error("The parameter 'hours' cannot be null.");
+        else if (hours !== undefined)
+            url_ += "hours=" + encodeURIComponent("" + hours) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStatistics(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStatistics(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PackageStatisticDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PackageStatisticDto[]>;
+        }));
+    }
+
+    protected processGetStatistics(response: HttpResponseBase): Observable<PackageStatisticDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PackageStatisticDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -6901,6 +6964,81 @@ export interface IPackagePreviewDto {
     asset: AssetPreviewDto;
 }
 
+export class PackageStatisticDto implements IPackageStatisticDto {
+    package: PackagePreviewDto;
+    unknownDuration: TimeSpan;
+    unknownPercent: number;
+    healthyDuration: TimeSpan;
+    healthyPercent: number;
+    warningDuration: TimeSpan;
+    warningPercent: number;
+    alertDuration: TimeSpan;
+    alertPercent: number;
+
+    constructor(data?: IPackageStatisticDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.package = _data["package"] ? PackagePreviewDto.fromJS(_data["package"]) : <any>undefined;
+            this.unknownDuration = _data["unknownDuration"] ? TimeSpan.fromJS(_data["unknownDuration"]) : <any>undefined;
+            this.unknownPercent = _data["unknownPercent"];
+            this.healthyDuration = _data["healthyDuration"] ? TimeSpan.fromJS(_data["healthyDuration"]) : <any>undefined;
+            this.healthyPercent = _data["healthyPercent"];
+            this.warningDuration = _data["warningDuration"] ? TimeSpan.fromJS(_data["warningDuration"]) : <any>undefined;
+            this.warningPercent = _data["warningPercent"];
+            this.alertDuration = _data["alertDuration"] ? TimeSpan.fromJS(_data["alertDuration"]) : <any>undefined;
+            this.alertPercent = _data["alertPercent"];
+        }
+    }
+
+    static fromJS(data: any): PackageStatisticDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PackageStatisticDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["package"] = this.package ? this.package.toJSON() : <any>undefined;
+        data["unknownDuration"] = this.unknownDuration ? this.unknownDuration.toJSON() : <any>undefined;
+        data["unknownPercent"] = this.unknownPercent;
+        data["healthyDuration"] = this.healthyDuration ? this.healthyDuration.toJSON() : <any>undefined;
+        data["healthyPercent"] = this.healthyPercent;
+        data["warningDuration"] = this.warningDuration ? this.warningDuration.toJSON() : <any>undefined;
+        data["warningPercent"] = this.warningPercent;
+        data["alertDuration"] = this.alertDuration ? this.alertDuration.toJSON() : <any>undefined;
+        data["alertPercent"] = this.alertPercent;
+        return data;
+    }
+
+    clone(): PackageStatisticDto {
+        const json = this.toJSON();
+        let result = new PackageStatisticDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPackageStatisticDto {
+    package: PackagePreviewDto;
+    unknownDuration: TimeSpan;
+    unknownPercent: number;
+    healthyDuration: TimeSpan;
+    healthyPercent: number;
+    warningDuration: TimeSpan;
+    warningPercent: number;
+    alertDuration: TimeSpan;
+    alertPercent: number;
+}
+
 export class PackageStatusCountDto implements IPackageStatusCountDto {
     date: moment.Moment;
     healthyCount: number;
@@ -8193,6 +8331,105 @@ export interface ITenantLoginInfoDto {
     id: number;
     tenancyName: string | undefined;
     name: string | undefined;
+}
+
+export class TimeSpan implements ITimeSpan {
+    ticks: number;
+    readonly days: number;
+    readonly hours: number;
+    readonly milliseconds: number;
+    readonly microseconds: number;
+    readonly nanoseconds: number;
+    readonly minutes: number;
+    readonly seconds: number;
+    readonly totalDays: number;
+    readonly totalHours: number;
+    readonly totalMilliseconds: number;
+    readonly totalMicroseconds: number;
+    readonly totalNanoseconds: number;
+    readonly totalMinutes: number;
+    readonly totalSeconds: number;
+
+    constructor(data?: ITimeSpan) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.ticks = _data["ticks"];
+            (<any>this).days = _data["days"];
+            (<any>this).hours = _data["hours"];
+            (<any>this).milliseconds = _data["milliseconds"];
+            (<any>this).microseconds = _data["microseconds"];
+            (<any>this).nanoseconds = _data["nanoseconds"];
+            (<any>this).minutes = _data["minutes"];
+            (<any>this).seconds = _data["seconds"];
+            (<any>this).totalDays = _data["totalDays"];
+            (<any>this).totalHours = _data["totalHours"];
+            (<any>this).totalMilliseconds = _data["totalMilliseconds"];
+            (<any>this).totalMicroseconds = _data["totalMicroseconds"];
+            (<any>this).totalNanoseconds = _data["totalNanoseconds"];
+            (<any>this).totalMinutes = _data["totalMinutes"];
+            (<any>this).totalSeconds = _data["totalSeconds"];
+        }
+    }
+
+    static fromJS(data: any): TimeSpan {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeSpan();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["ticks"] = this.ticks;
+        data["days"] = this.days;
+        data["hours"] = this.hours;
+        data["milliseconds"] = this.milliseconds;
+        data["microseconds"] = this.microseconds;
+        data["nanoseconds"] = this.nanoseconds;
+        data["minutes"] = this.minutes;
+        data["seconds"] = this.seconds;
+        data["totalDays"] = this.totalDays;
+        data["totalHours"] = this.totalHours;
+        data["totalMilliseconds"] = this.totalMilliseconds;
+        data["totalMicroseconds"] = this.totalMicroseconds;
+        data["totalNanoseconds"] = this.totalNanoseconds;
+        data["totalMinutes"] = this.totalMinutes;
+        data["totalSeconds"] = this.totalSeconds;
+        return data;
+    }
+
+    clone(): TimeSpan {
+        const json = this.toJSON();
+        let result = new TimeSpan();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITimeSpan {
+    ticks: number;
+    days: number;
+    hours: number;
+    milliseconds: number;
+    microseconds: number;
+    nanoseconds: number;
+    minutes: number;
+    seconds: number;
+    totalDays: number;
+    totalHours: number;
+    totalMilliseconds: number;
+    totalMicroseconds: number;
+    totalNanoseconds: number;
+    totalMinutes: number;
+    totalSeconds: number;
 }
 
 export class UpdatePackageDto implements IUpdatePackageDto {
