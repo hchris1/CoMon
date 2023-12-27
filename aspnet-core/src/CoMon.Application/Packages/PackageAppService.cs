@@ -159,6 +159,70 @@ namespace CoMon.Packages
             return result;
         }
 
+        public async Task<List<PackageHistoryDto>> GetTimeline(long packageId, int hours)
+        {
+            var utcNow = DateTime.UtcNow;
+            var analyzingDuration = TimeSpan.FromHours(hours);
+            var cutoffTime = utcNow - analyzingDuration;
+
+            var entries = await _statusRepository
+                .GetAll()
+                .Where(s => s.PackageId == packageId && s.Time >= cutoffTime)
+                .Select(s => new { s.Time, s.Criticality })
+                .ToListAsync();
+
+            var entryBeforeCutOff = await _statusRepository
+                .GetAll()
+                .Where(s => s.PackageId == packageId && s.Time < cutoffTime)
+                .OrderByDescending(s => s.Time)
+                .Select(s => new { Time = cutoffTime, s.Criticality })
+                .FirstOrDefaultAsync();
+
+            if (entryBeforeCutOff != null)
+                entries.Add(entryBeforeCutOff);
+
+            entries = entries.OrderBy(s => s.Time).ToList();
+
+            if (entries.Any())
+                entries.Add(new { Time = utcNow, entries.Last().Criticality });
+
+            var result = new List<PackageHistoryDto>();
+            for (int i = 1; i < entries.Count; i++)
+            {
+                result.Add(new PackageHistoryDto()
+                {
+                    Criticality = entries[i].Criticality,
+                    From = entries[i - 1].Time,
+                    To = entries[i].Time,
+                    Percentage = 0
+                });
+            }
+
+            for (int i = result.Count - 1; i > 0; i--)
+            {
+                if (result[i].Criticality == result[i - 1].Criticality)
+                {
+                    result[i - 1].To = result[i].To;
+                    result.RemoveAt(i);
+                }
+            }
+
+            result.ForEach(r => r.Percentage = (double)(r.To - r.From).Ticks / (double)analyzingDuration.Ticks);
+
+            var fullPercentage = result.Sum(r => r.Percentage);
+
+            if (fullPercentage < 1)
+                result.Insert(0, new PackageHistoryDto()
+                {
+                    From = cutoffTime,
+                    To = result.FirstOrDefault()?.From ?? utcNow,
+                    Percentage = 1 - fullPercentage,
+                    Criticality = null
+                });
+
+            return result;
+        }
+
         private static void ValidateSettings(CreatePackageDto input)
         {
             if (input.Type == PackageType.Ping)
@@ -225,45 +289,43 @@ namespace CoMon.Packages
 
         private static DateTime FloorToPreviousHour(DateTime dateTime)
         {
-            // Floor the original DateTime
-            DateTime flooredDateTime = new(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
-
-            return flooredDateTime;
+            return new(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
         }
 
         private static DateTime FloorToPreviousDay(DateTime dateTime)
         {
-            // Floor the original DateTime
-            DateTime flooredDateTime = new(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
-
-            return flooredDateTime;
+            return new(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
         }
 
         public async Task<List<PackageStatusCountDto>> GetPackageStatusUpdateBuckets(long packageId, int numOfHours = 24, bool useHourBuckets = true)
         {
-            DateTime endDate = FloorToPreviousHour(DateTime.UtcNow);
-            DateTime startDate = DateTime.UtcNow.AddHours(-numOfHours);
+            var (startDate, endDate) = GetDateRange(numOfHours);
 
+            var allDates = GenerateTimeBuckets(startDate, endDate, useHourBuckets);
 
-            // Generate a list of all dates within the range with 1-hour buckets
-            List<DateTime> allDates;
-            if (useHourBuckets)
-                allDates = Enumerable.Range(0, Convert.ToInt32((endDate - startDate).TotalHours) + 3)
-                .Select(offset => FloorToPreviousHour(startDate).AddHours(offset))
-                .ToList();
-            else
-                allDates = Enumerable.Range(0, (endDate - startDate).Days + 2)
-                .Select(offset => startDate.AddDays(offset).Date)
-                .ToList();
-
-            var statusCounts = await _statusRepository
+            var query = _statusRepository
                 .GetAll()
                 .Where(s => s.Time >= startDate)
-                .Where(s => s.Package.Id == packageId)
+                .Where(s => s.Package.Id == packageId);
+
+            List<PackageStatusCountDto> statusCounts;
+            if (useHourBuckets)
+                statusCounts = await query
                 .GroupBy(s => new { s.Time.Date, s.Time.Hour })
                 .Select(g => new PackageStatusCountDto
                 {
-                    Date = useHourBuckets ? g.Key.Date.AddHours(g.Key.Hour + 1) : g.Key.Date,
+                    Date = g.Key.Date.AddHours(g.Key.Hour + 1),
+                    HealthyCount = g.Count(s => s.Criticality == Criticality.Healthy),
+                    WarningCount = g.Count(s => s.Criticality == Criticality.Warning),
+                    AlertCount = g.Count(s => s.Criticality == Criticality.Alert)
+                })
+                .ToListAsync();
+            else
+                statusCounts = await query
+                .GroupBy(s => new { s.Time.Date })
+                .Select(g => new PackageStatusCountDto
+                {
+                    Date = g.Key.Date,
                     HealthyCount = g.Count(s => s.Criticality == Criticality.Healthy),
                     WarningCount = g.Count(s => s.Criticality == Criticality.Warning),
                     AlertCount = g.Count(s => s.Criticality == Criticality.Alert)
@@ -284,24 +346,32 @@ namespace CoMon.Packages
             ];
         }
 
-        public async Task<List<PackageStatusCountDto>> GetPackageStatusChangeBuckets(long packageId, int numOfHours = 24, bool useHourBuckets = true)
+        private (DateTime startDate, DateTime endDate) GetDateRange(int numOfHours)
         {
-            DateTime endDate = FloorToPreviousHour(DateTime.UtcNow);
-            DateTime startDate = DateTime.UtcNow.AddHours(-numOfHours);
+            return (DateTime.UtcNow.AddHours(-numOfHours), FloorToPreviousHour(DateTime.UtcNow).AddHours(1));
+        }
 
-
-            // Generate a list of all dates within the range with 1-hour buckets
-            List<DateTime> allDates;
+        private List<DateTime> GenerateTimeBuckets(DateTime startDate, DateTime endDate, bool useHourBuckets)
+        {
             if (useHourBuckets)
-                allDates = Enumerable.Range(0, Convert.ToInt32((endDate - startDate).TotalHours) + 3)
+                return Enumerable.Range(0, Convert.ToInt32((endDate - startDate).TotalHours) + 3)
                 .Select(offset => FloorToPreviousHour(startDate).AddHours(offset))
                 .ToList();
-            else
-                allDates = Enumerable.Range(0, (endDate - startDate).Days + 2)
-                .Select(offset => startDate.AddDays(offset).Date)
-                .ToList();
 
-            var statusCounts = await _statusRepository
+            return Enumerable.Range(0, (endDate - startDate).Days + 2)
+            .Select(offset => startDate.AddDays(offset).Date)
+            .ToList();
+        }
+
+        public async Task<List<PackageStatusCountDto>> GetPackageStatusChangeBuckets(long packageId, int numOfHours = 24, bool useHourBuckets = true)
+        {
+            var (startDate, endDate) = GetDateRange(numOfHours);
+
+            var timeBuckets = GenerateTimeBuckets(startDate, endDate, useHourBuckets);
+
+            List<PackageStatusCountDto> statusCounts;
+
+            var query = _statusRepository
                 .GetAll()
                 .Where(s => s.Time >= startDate)
                 .Where(s => s.Package.Id == packageId)
@@ -316,11 +386,25 @@ namespace CoMon.Packages
                                 .FirstOrDefault()
                 })
                 .Where(g => g.Next != null)
-                .Where(g => g.Previous.Criticality != g.Next.Criticality)
+                .Where(g => g.Previous.Criticality != g.Next.Criticality);
+
+            if (useHourBuckets)
+                statusCounts = await query
                 .GroupBy(s => new { s.Next.Time.Date, s.Next.Time.Hour })
                 .Select(g => new PackageStatusCountDto
                 {
-                    Date = useHourBuckets ? g.Key.Date.AddHours(g.Key.Hour + 1) : g.Key.Date,
+                    Date = g.Key.Date.AddHours(g.Key.Hour + 1),
+                    HealthyCount = g.Count(s => s.Next.Criticality == Criticality.Healthy),
+                    WarningCount = g.Count(s => s.Next.Criticality == Criticality.Warning),
+                    AlertCount = g.Count(s => s.Next.Criticality == Criticality.Alert)
+                })
+                .ToListAsync();
+            else
+                statusCounts = await query
+                .GroupBy(s => new { s.Next.Time.Date })
+                .Select(g => new PackageStatusCountDto
+                {
+                    Date = g.Key.Date,
                     HealthyCount = g.Count(s => s.Next.Criticality == Criticality.Healthy),
                     WarningCount = g.Count(s => s.Next.Criticality == Criticality.Warning),
                     AlertCount = g.Count(s => s.Next.Criticality == Criticality.Alert)
@@ -330,7 +414,7 @@ namespace CoMon.Packages
             // Left join to include dates with no statuses
             return
             [
-                .. allDates
+                .. timeBuckets
                 .GroupJoin(statusCounts, d => d, sc => sc.Date, (date, counts) => new
                 {
                     Date = date,

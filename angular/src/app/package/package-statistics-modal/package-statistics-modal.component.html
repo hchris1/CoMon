@@ -1,0 +1,14 @@
+<div class="modal-header" style="border-bottom: none; display: block">
+  <h4 *ngIf="package" class="modal-title pull-left">
+    {{ package.name }}
+  </h4>
+</div>
+
+<div class="modal-content pl-3 pt-2" style="border-top: none; box-shadow: none">
+  <div class="container-fluid" *ngIf="package">
+    <app-package-chart-wrapper
+      [packageId]="package.id"
+      [numHours]="hours"
+    ></app-package-chart-wrapper>
+  </div>
+</div>

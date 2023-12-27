@@ -2307,6 +2307,74 @@ export class PackageServiceProxy {
     }
 
     /**
+     * @param packageId (optional) 
+     * @param hours (optional) 
+     * @return Success
+     */
+    getTimeline(packageId: number | undefined, hours: number | undefined): Observable<PackageHistoryDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Package/GetTimeline?";
+        if (packageId === null)
+            throw new Error("The parameter 'packageId' cannot be null.");
+        else if (packageId !== undefined)
+            url_ += "packageId=" + encodeURIComponent("" + packageId) + "&";
+        if (hours === null)
+            throw new Error("The parameter 'hours' cannot be null.");
+        else if (hours !== undefined)
+            url_ += "hours=" + encodeURIComponent("" + hours) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeline(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeline(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PackageHistoryDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PackageHistoryDto[]>;
+        }));
+    }
+
+    protected processGetTimeline(response: HttpResponseBase): Observable<PackageHistoryDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PackageHistoryDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -6903,6 +6971,61 @@ export interface IPackageDto {
     pingPackageSettings: PingPackageSettingsDto;
     httpPackageSettings: HttpPackageSettingsDto;
     lastCriticality: Criticality;
+}
+
+export class PackageHistoryDto implements IPackageHistoryDto {
+    criticality: Criticality;
+    from: moment.Moment;
+    to: moment.Moment;
+    percentage: number;
+
+    constructor(data?: IPackageHistoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.criticality = _data["criticality"];
+            this.from = _data["from"] ? moment(_data["from"].toString()) : <any>undefined;
+            this.to = _data["to"] ? moment(_data["to"].toString()) : <any>undefined;
+            this.percentage = _data["percentage"];
+        }
+    }
+
+    static fromJS(data: any): PackageHistoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PackageHistoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["criticality"] = this.criticality;
+        data["from"] = this.from ? this.from.toISOString() : <any>undefined;
+        data["to"] = this.to ? this.to.toISOString() : <any>undefined;
+        data["percentage"] = this.percentage;
+        return data;
+    }
+
+    clone(): PackageHistoryDto {
+        const json = this.toJSON();
+        let result = new PackageHistoryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPackageHistoryDto {
+    criticality: Criticality;
+    from: moment.Moment;
+    to: moment.Moment;
+    percentage: number;
 }
 
 export class PackagePreviewDto implements IPackagePreviewDto {

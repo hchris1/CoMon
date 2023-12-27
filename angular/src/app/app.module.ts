@@ -88,6 +88,7 @@ import {PackagePreviewComponent} from './package/package-preview/package-preview
 import {PackageModalBase} from './edit/package-modal/package-modal-base.component';
 import {SettingsComponent} from './settings/settings.component';
 import {StatisticsDashboardComponent} from './dashboard/statistics-dashboard/statistics-dashboard.component';
+import {PackageStatisticsModalComponent} from './package/package-statistics-modal/package-statistics-modal.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +162,7 @@ import {StatisticsDashboardComponent} from './dashboard/statistics-dashboard/sta
     PackageModalBase,
     SettingsComponent,
     StatisticsDashboardComponent,
+    PackageStatisticsModalComponent,
   ],
   imports: [
     CommonModule,

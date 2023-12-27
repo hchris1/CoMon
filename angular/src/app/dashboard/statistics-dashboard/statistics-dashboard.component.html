@@ -2,6 +2,12 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
+        <button
+          class="col-auto btn btn-link btn-sm"
+          (click)="routeToDashboards()"
+        >
+          <i class="fas fa-arrow-left pt-2"></i>
+        </button>
         <div class="col-auto">
           <h1>{{ 'Dashboard.StatisticsTitle' | localize }}</h1>
         </div>
@@ -23,7 +29,6 @@
             </option>
           </select>
         </div>
-        <!-- center vertically -->
         <p class="col-auto text-muted small" style="margin-top: 0.5rem">
           {{ 'Dashboard.StatisticsNextRefresh' | localize }}:
           {{ nextRefresh.fromNow() }}
@@ -38,6 +43,7 @@
         <div
           class="card col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 ml-3"
           *ngFor="let pair of statisticWithStacks; index as i"
+          (click)="openPackageStatisticsModal(pair[0].package)"
         >
           <div class="card-header">
             <div class="row">
@@ -56,9 +62,8 @@
             <div class="row">
               <progressbar
                 class="progress"
-                [value]="pair[1]"
+                [value]="testStacks"
                 [max]="1"
-                [striped]="true"
                 class="ml-2 mr-2 mb-2"
                 style="border-radius: 12px"
               ></progressbar>

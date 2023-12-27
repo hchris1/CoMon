@@ -39,6 +39,10 @@ export class DashboardOverviewComponent extends AppComponentBase {
     this._router.navigate(['/app/dashboard', dashboard.id]);
   }
 
+  routeToStatisticsDashboard() {
+    this._router.navigate(['/app/dashboard/statistics']);
+  }
+
   loadDashboards() {
     this.isLoading = true;
     this._dashboardService.getAll().subscribe(result => {

@@ -2,11 +2,17 @@ import {ChangeDetectorRef, Component, Injector} from '@angular/core';
 import {appModuleAnimation} from '@shared/animations/routerTransition';
 import {AppComponentBase} from '@shared/app-component-base';
 import {
+  Criticality,
+  PackageHistoryDto,
+  PackagePreviewDto,
   PackageServiceProxy,
   PackageStatisticDto,
 } from '@shared/service-proxies/service-proxies';
 import {ProgressbarType} from 'ngx-bootstrap/progressbar';
 import * as moment from 'moment';
+import {Router} from '@angular/router';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {PackageStatisticsModalComponent} from '@app/package/package-statistics-modal/package-statistics-modal.component';
 
 interface IStack {
   type: ProgressbarType;
@@ -25,12 +31,12 @@ export class StatisticsDashboardComponent extends AppComponentBase {
   refreshIntervalSeconds = 5 * 60;
   nextRefresh: moment.Moment;
   refreshInterval: NodeJS.Timeout;
+  packageStatisticsModalRef: BsModalRef;
+  timeline: PackageHistoryDto[];
+
+  testStacks: IStack[];
 
   times = [
-    {
-      hours: 1,
-      name: 'Last Hour',
-    },
     {
       hours: 24,
       name: 'Last 24 Hours',
@@ -49,11 +55,14 @@ export class StatisticsDashboardComponent extends AppComponentBase {
   constructor(
     injector: Injector,
     private _changeDetector: ChangeDetectorRef,
-    private _packageService: PackageServiceProxy
+    private _packageService: PackageServiceProxy,
+    private _router: Router,
+    private _modalService: BsModalService
   ) {
     super(injector);
 
     this.loadStatistics();
+    this.loadTimeline();
     this.createRefreshInterval();
   }
 
@@ -65,10 +74,57 @@ export class StatisticsDashboardComponent extends AppComponentBase {
     }, this.refreshIntervalSeconds * 1000);
   }
 
+  buildTestStacks() {
+    this.testStacks = [];
+    for (const entry of this.timeline) {
+      switch (entry.criticality) {
+        case Criticality._5:
+          this.testStacks.push({
+            type: 'danger',
+            value: entry.percentage,
+            max: 1,
+          });
+          break;
+        case Criticality._3:
+          this.testStacks.push({
+            type: 'warning',
+            value: entry.percentage,
+            max: 1,
+          });
+          break;
+        case Criticality._1:
+          this.testStacks.push({
+            type: 'success',
+            value: entry.percentage,
+            max: 1,
+          });
+          break;
+        default:
+          this.testStacks.push({
+            type: 'secondary' as ProgressbarType,
+            value: entry.percentage,
+            max: 1,
+          });
+          break;
+      }
+    }
+  }
+
   onTimeChange() {
     clearInterval(this.refreshInterval);
     this.loadStatistics();
+    this.loadTimeline();
     this.createRefreshInterval();
+  }
+
+  loadTimeline() {
+    this._packageService
+      .getTimeline(6, this.selectedTime.hours)
+      .subscribe(result => {
+        this.timeline = result;
+        this.buildTestStacks();
+        this._changeDetector.detectChanges();
+      });
   }
 
   loadStatistics() {
@@ -138,6 +194,25 @@ export class StatisticsDashboardComponent extends AppComponentBase {
       } else {
         return 0;
       }
+    });
+  }
+
+  routeToDashboards() {
+    this._router.navigate(['/app/dashboard']);
+  }
+
+  openPackageStatisticsModal(pack: PackagePreviewDto) {
+    this.packageStatisticsModalRef = this._modalService.show(
+      PackageStatisticsModalComponent,
+      {
+        class: 'status-modal',
+        initialState: {package: pack, hours: this.selectedTime.hours},
+      }
+    );
+    this.packageStatisticsModalRef.content.closeBtnName = 'Close';
+
+    this.packageStatisticsModalRef.content.onClose.subscribe(() => {
+      this.packageStatisticsModalRef.hide();
     });
   }
 }

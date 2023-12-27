@@ -27,6 +27,11 @@
       <div class="row pl-2" style="justify-content: space-between">
         <p>
           {{ 'Dashboard.OverviewDescription' | localize }}
+          <br />
+          -
+          <a (click)="routeToStatisticsDashboard()">{{
+            'Dashboard.StatisticsTitle' | localize
+          }}</a>
         </p>
         <button
           class="col-auto btn btn-primary btn-circle btn-xl text-right"
