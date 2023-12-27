@@ -2616,142 +2616,6 @@ export class PackageServiceProxy {
         }
         return _observableOf(null as any);
     }
-
-    /**
-     * @param packageId (optional) 
-     * @param numOfHours (optional) 
-     * @return Success
-     */
-    getStatusUpdateKPIs(packageId: number | undefined, numOfHours: number | undefined): Observable<KPIDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/Package/GetStatusUpdateKPIs?";
-        if (packageId === null)
-            throw new Error("The parameter 'packageId' cannot be null.");
-        else if (packageId !== undefined)
-            url_ += "packageId=" + encodeURIComponent("" + packageId) + "&";
-        if (numOfHours === null)
-            throw new Error("The parameter 'numOfHours' cannot be null.");
-        else if (numOfHours !== undefined)
-            url_ += "numOfHours=" + encodeURIComponent("" + numOfHours) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetStatusUpdateKPIs(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetStatusUpdateKPIs(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<KPIDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<KPIDto[]>;
-        }));
-    }
-
-    protected processGetStatusUpdateKPIs(response: HttpResponseBase): Observable<KPIDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200.push(KPIDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param packageId (optional) 
-     * @param numOfHours (optional) 
-     * @return Success
-     */
-    getStatusChangeKPIs(packageId: number | undefined, numOfHours: number | undefined): Observable<KPIDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/Package/GetStatusChangeKPIs?";
-        if (packageId === null)
-            throw new Error("The parameter 'packageId' cannot be null.");
-        else if (packageId !== undefined)
-            url_ += "packageId=" + encodeURIComponent("" + packageId) + "&";
-        if (numOfHours === null)
-            throw new Error("The parameter 'numOfHours' cannot be null.");
-        else if (numOfHours !== undefined)
-            url_ += "numOfHours=" + encodeURIComponent("" + numOfHours) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetStatusChangeKPIs(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetStatusChangeKPIs(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<KPIDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<KPIDto[]>;
-        }));
-    }
-
-    protected processGetStatusChangeKPIs(response: HttpResponseBase): Observable<KPIDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200.push(KPIDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
 }
 
 @Injectable()
@@ -7082,8 +6946,6 @@ export interface IPackagePreviewDto {
 
 export class PackageStatisticDto implements IPackageStatisticDto {
     package: PackagePreviewDto;
-    unknownDuration: TimeSpan;
-    unknownPercent: number;
     healthyDuration: TimeSpan;
     healthyPercent: number;
     warningDuration: TimeSpan;
@@ -7104,8 +6966,6 @@ export class PackageStatisticDto implements IPackageStatisticDto {
     init(_data?: any) {
         if (_data) {
             this.package = _data["package"] ? PackagePreviewDto.fromJS(_data["package"]) : <any>undefined;
-            this.unknownDuration = _data["unknownDuration"] ? TimeSpan.fromJS(_data["unknownDuration"]) : <any>undefined;
-            this.unknownPercent = _data["unknownPercent"];
             this.healthyDuration = _data["healthyDuration"] ? TimeSpan.fromJS(_data["healthyDuration"]) : <any>undefined;
             this.healthyPercent = _data["healthyPercent"];
             this.warningDuration = _data["warningDuration"] ? TimeSpan.fromJS(_data["warningDuration"]) : <any>undefined;
@@ -7130,8 +6990,6 @@ export class PackageStatisticDto implements IPackageStatisticDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["package"] = this.package ? this.package.toJSON() : <any>undefined;
-        data["unknownDuration"] = this.unknownDuration ? this.unknownDuration.toJSON() : <any>undefined;
-        data["unknownPercent"] = this.unknownPercent;
         data["healthyDuration"] = this.healthyDuration ? this.healthyDuration.toJSON() : <any>undefined;
         data["healthyPercent"] = this.healthyPercent;
         data["warningDuration"] = this.warningDuration ? this.warningDuration.toJSON() : <any>undefined;
@@ -7156,8 +7014,6 @@ export class PackageStatisticDto implements IPackageStatisticDto {
 
 export interface IPackageStatisticDto {
     package: PackagePreviewDto;
-    unknownDuration: TimeSpan;
-    unknownPercent: number;
     healthyDuration: TimeSpan;
     healthyPercent: number;
     warningDuration: TimeSpan;
