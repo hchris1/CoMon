@@ -30,8 +30,8 @@
           </select>
         </div>
         <p class="col-auto text-muted small" style="margin-top: 0.5rem">
-          {{ 'Dashboard.StatisticsNextRefresh' | localize }}:
-          {{ nextRefresh.fromNow() }}
+          {{ 'Dashboard.StatisticsNextRefresh' | localize }}
+          {{ nextRefresh.fromNow() }}.
         </p>
       </div>
     </div>
@@ -45,7 +45,7 @@
           [statistic]="statistic"
           [index]="i"
           [hours]="selectedTime.hours"
-          class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 ml-2"
+          class="col-12 col-xl-3 ml-2"
         ></app-statistics-dashboard-tile>
       </div>
     </div>

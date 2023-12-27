@@ -35,13 +35,10 @@
     </div>
 
     <div class="row">
-      <progressbar
-        class="progress"
-        [value]="timelineStacks"
-        [max]="1"
-        class="ml-2 mr-2 mb-2"
-        style="border-radius: 12px"
-      ></progressbar>
+      <app-statistics-dashboard-timeline
+        [timeline]="statistic.timeline"
+        class="col-12 mb-1"
+      ></app-statistics-dashboard-timeline>
     </div>
   </div>
   <div class="card-content"></div>

@@ -86,80 +86,87 @@ namespace CoMon.Packages
 
         private record TimeCriticality(DateTime Time, Criticality? Criticality);
 
-        public async Task<List<PackageStatisticDto>> GetStatistics(int hours)
+        public async Task<PackageStatisticDto> GetStatistic(long packageId, int hours)
         {
             var utcNow = DateTime.UtcNow;
             var analyzingDuration = TimeSpan.FromHours(hours);
             var cutoffTime = utcNow - analyzingDuration;
 
-            var result = new List<PackageStatisticDto>();
-
-            var packages = await _packageRepository
+            var package = await _packageRepository
                 .GetAll()
+                .Where(p => p.Id == packageId)
                 .Include(p => p.Asset)
                 .ThenInclude(a => a.Group.Parent.Parent)
-                .ToListAsync();
+                .FirstOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Package not found.");
 
-            foreach (var package in packages)
-            {
-
-                var entries = await _statusRepository
+            var entries = await _statusRepository
                     .GetAll()
-                    .Where(s => s.PackageId == package.Id && s.Time >= cutoffTime)
+                    .Where(s => s.PackageId == packageId && s.Time >= cutoffTime)
                     .Select(s => new TimeCriticality(s.Time, s.Criticality))
                     .ToListAsync();
 
-                var entryBeforeCutOff = await _statusRepository
-                    .GetAll()
-                    .Where(s => s.PackageId == package.Id && s.Time < cutoffTime)
-                    .OrderByDescending(s => s.Time)
-                    .Select(s => new TimeCriticality(cutoffTime, s.Criticality))
-                    .FirstOrDefaultAsync();
+            var entryBeforeCutOff = await _statusRepository
+                .GetAll()
+                .Where(s => s.PackageId == packageId && s.Time < cutoffTime)
+                .OrderByDescending(s => s.Time)
+                .Select(s => new TimeCriticality(cutoffTime, s.Criticality))
+                .FirstOrDefaultAsync();
 
-                if (entryBeforeCutOff != null)
-                    entries.Add(entryBeforeCutOff);
+            if (entryBeforeCutOff != null)
+                entries.Add(entryBeforeCutOff);
 
-                entries = entries.OrderBy(s => s.Time).ToList();
+            entries = entries.OrderBy(s => s.Time).ToList();
 
-                if (entries.Count != 0)
-                    entries.Add(new TimeCriticality(utcNow, entries.Last().Criticality));
+            if (entries.Count != 0)
+                entries.Add(new TimeCriticality(utcNow, entries.Last().Criticality));
 
 
-                var durationByCriticality = new Dictionary<Criticality?, TimeSpan>()
+            var durationByCriticality = new Dictionary<Criticality?, TimeSpan>()
+            {
+                [Criticality.Healthy] = TimeSpan.Zero,
+                [Criticality.Warning] = TimeSpan.Zero,
+                [Criticality.Alert] = TimeSpan.Zero
+            };
+            var nullDuration = TimeSpan.Zero;
+
+            for (int i = 1; i < entries.Count; i++)
+            {
+                if (entries[i].Criticality == null)
                 {
-                    [Criticality.Healthy] = TimeSpan.Zero,
-                    [Criticality.Warning] = TimeSpan.Zero,
-                    [Criticality.Alert] = TimeSpan.Zero
-                };
-                var nullDuration = TimeSpan.Zero;
-
-                for (int i = 1; i < entries.Count; i++)
-                {
-                    if (entries[i].Criticality == null)
-                    {
-                        nullDuration += entries[i].Time - entries[i - 1].Time;
-                        continue;
-                    }
-
-                    durationByCriticality[entries[i].Criticality] += entries[i].Time - entries[i - 1].Time;
+                    nullDuration += entries[i].Time - entries[i - 1].Time;
+                    continue;
                 }
 
-                result.Add(new PackageStatisticDto()
-                {
-                    Package = _mapper.Map<PackagePreviewDto>(package),
-                    HealthyDuration = durationByCriticality[Criticality.Healthy],
-                    HealthyPercent = (double)durationByCriticality[Criticality.Healthy].Ticks / (double)analyzingDuration.Ticks,
-                    WarningDuration = durationByCriticality[Criticality.Warning],
-                    WarningPercent = (double)durationByCriticality[Criticality.Warning].Ticks / (double)analyzingDuration.Ticks,
-                    AlertDuration = durationByCriticality[Criticality.Alert],
-                    AlertPercent = (double)durationByCriticality[Criticality.Alert].Ticks / (double)analyzingDuration.Ticks,
-                    UnknownDuration = nullDuration,
-                    UnknownPercent = (double)nullDuration.Ticks / (double)analyzingDuration.Ticks,
-                    Timeline = BuildTimeline(entries, cutoffTime, analyzingDuration)
-                });
+                durationByCriticality[entries[i].Criticality] += entries[i].Time - entries[i - 1].Time;
             }
 
-            return result;
+            return new PackageStatisticDto()
+            {
+                Package = _mapper.Map<PackagePreviewDto>(package),
+                HealthyDuration = durationByCriticality[Criticality.Healthy],
+                HealthyPercent = (double)durationByCriticality[Criticality.Healthy].Ticks / (double)analyzingDuration.Ticks,
+                WarningDuration = durationByCriticality[Criticality.Warning],
+                WarningPercent = (double)durationByCriticality[Criticality.Warning].Ticks / (double)analyzingDuration.Ticks,
+                AlertDuration = durationByCriticality[Criticality.Alert],
+                AlertPercent = (double)durationByCriticality[Criticality.Alert].Ticks / (double)analyzingDuration.Ticks,
+                UnknownDuration = nullDuration,
+                UnknownPercent = (double)nullDuration.Ticks / (double)analyzingDuration.Ticks,
+                Timeline = BuildTimeline(entries, cutoffTime, analyzingDuration)
+            };
+        }
+
+        public async Task<List<PackageStatisticDto>> GetStatistics(int hours)
+        {
+            var packageIds = await _packageRepository
+                .GetAll()
+                .Select(p => p.Id)
+                .ToListAsync();
+
+            return packageIds
+                .Select(async id => await GetStatistic(id, hours))
+                .Select(t => t.Result)
+                .ToList();
         }
 
         private List<PackageHistoryDto> BuildTimeline(List<TimeCriticality> entries, DateTime cutOffTime, TimeSpan analyzingDuration)

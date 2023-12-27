@@ -24,6 +24,7 @@ export class PackagePreviewComponent implements OnInit, OnDestroy {
   @Input() editMode: boolean = false;
   @Input() showPath: boolean = false;
   @Input() showDate: boolean = true;
+  @Input() showTimeline: boolean = false;
   @Output() packageDeleted = new EventEmitter();
   @Output() packageEdited = new EventEmitter();
 

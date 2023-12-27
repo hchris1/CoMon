@@ -9,6 +9,7 @@ import {
 import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
 import {
   PackageServiceProxy,
+  PackageStatisticDto,
   StatusPreviewDto,
 } from '@shared/service-proxies/service-proxies';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
@@ -27,11 +28,13 @@ export class StatusPreviewComponent extends AppComponentBase {
   @Input() showPath: boolean = true;
   @Input() editMode: boolean = false;
   @Input() showDate: boolean = true;
+  @Input() showTimeline: boolean = false;
   @Output() packageDeleted = new EventEmitter();
   @Output() packageEdited = new EventEmitter();
 
   statusModalRef: BsModalRef;
   editModalRef: BsModalRef;
+  statistic: PackageStatisticDto;
 
   constructor(
     private _modalService: BsModalService,
@@ -40,6 +43,16 @@ export class StatusPreviewComponent extends AppComponentBase {
     injector: Injector
   ) {
     super(injector);
+  }
+
+  ngOnChanges() {
+    if (this.showTimeline && this.statusPreview) {
+      this._packageService
+        .getStatistic(this.statusPreview.package.id, 24)
+        .subscribe(result => {
+          this.statistic = result;
+        });
+    }
   }
 
   getEmoji() {

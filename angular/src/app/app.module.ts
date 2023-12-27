@@ -90,6 +90,7 @@ import {SettingsComponent} from './settings/settings.component';
 import {StatisticsDashboardComponent} from './dashboard/statistics-dashboards/statistics-dashboard/statistics-dashboard.component';
 import {PackageStatisticsModalComponent} from './package/package-statistics-modal/package-statistics-modal.component';
 import {StatisticsDashboardTileComponent} from './dashboard/statistics-dashboards/statistics-dashboard-tile/statistics-dashboard-tile.component';
+import {StatisticsDashboardTimelineComponent} from './dashboard/statistics-dashboards/statistics-dashboard-timeline/statistics-dashboard-timeline.component';
 
 @NgModule({
   declarations: [
@@ -165,6 +166,7 @@ import {StatisticsDashboardTileComponent} from './dashboard/statistics-dashboard
     StatisticsDashboardComponent,
     PackageStatisticsModalComponent,
     StatisticsDashboardTileComponent,
+    StatisticsDashboardTimelineComponent,
   ],
   imports: [
     CommonModule,

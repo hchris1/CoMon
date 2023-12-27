@@ -232,6 +232,11 @@
 		<text name="Package.DeleteConfirmationMessage">The package will be permanently deleted. Do you want to proceed?</text>
 		<text name="Package.DeleteConfirmationTitle">Delete Package</text>
 		<text name="Package.DeleteSuccessMessage">Package deleted successfully.</text>
+		<text name="Dashboard.StatisticsTitle">Package Statistics</text>
+		<text name="Dashboard.StatisticsDescription">This dashboard shows you which packages caused the most trouble in the selected timerange 😢.</text>
+		<text name="Dashboard.StatisticsNextRefresh">Next refresh</text>
+		<text name="Dashboard.StatisticsNoPackages">No packages to display.</text>
+
 
 	</texts>
 </localizationDictionary>
