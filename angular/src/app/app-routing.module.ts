@@ -11,9 +11,9 @@ import {GroupComponent} from './group/group.component';
 import {StatusTableComponent} from './status/status-table/status-table.component';
 import {PackageComponent} from './package/package.component';
 import {DashboardOverviewComponent} from './dashboard/dashboard-overview/dashboard-overview.component';
-import {DashboardComponent} from './dashboard/dashboard/dashboard.component';
+import {DashboardComponent} from './dashboard/custom-dashboard/dashboard/dashboard.component';
 import {SettingsComponent} from './settings/settings.component';
-import {StatisticsDashboardComponent} from './dashboard/statistics-dashboard/statistics-dashboard.component';
+import {StatisticsDashboardComponent} from './dashboard/statistics-dashboards/statistics-dashboard/statistics-dashboard.component';
 
 @NgModule({
   imports: [

@@ -24,8 +24,8 @@
             [(ngModel)]="selectedTime"
             (change)="onTimeChange()"
           >
-            <option *ngFor="let time of times" [ngValue]="time">
-              {{ time.name | localize }}
+            <option *ngFor="let option of timespanOptions" [ngValue]="option">
+              {{ option.name | localize }}
             </option>
           </select>
         </div>
@@ -40,37 +40,13 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <div
-          class="card col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 ml-3"
-          *ngFor="let pair of statisticWithStacks; index as i"
-          (click)="openPackageStatisticsModal(pair[0].package)"
-        >
-          <div class="card-header">
-            <div class="row">
-              <h3 class="card-title">
-                {{ i + 1 }}. {{ pair[0].package.name }}
-              </h3>
-            </div>
-            <div class="row">
-              <app-path
-                [group]="pair[0].package.asset.group"
-                [asset]="pair[0].package.asset"
-                [package]="pair[0].package"
-                class="pt-2"
-              ></app-path>
-            </div>
-            <div class="row">
-              <progressbar
-                class="progress"
-                [value]="testStacks"
-                [max]="1"
-                class="ml-2 mr-2 mb-2"
-                style="border-radius: 12px"
-              ></progressbar>
-            </div>
-          </div>
-          <div class="card-content"></div>
-        </div>
+        <app-statistics-dashboard-tile
+          *ngFor="let statistic of statistics; index as i"
+          [statistic]="statistic"
+          [index]="i"
+          [hours]="selectedTime.hours"
+          class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 ml-2"
+        ></app-statistics-dashboard-tile>
       </div>
     </div>
   </section>

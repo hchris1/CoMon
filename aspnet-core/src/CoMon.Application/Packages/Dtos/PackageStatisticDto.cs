@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CoMon.Packages.Dtos
 {
@@ -13,5 +14,6 @@ namespace CoMon.Packages.Dtos
         public double WarningPercent { get; set; }
         public TimeSpan AlertDuration { get; set; }
         public double AlertPercent { get; set; }
+        public List<PackageHistoryDto> Timeline { get; set; }
     }
 }

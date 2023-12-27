@@ -84,6 +84,8 @@ namespace CoMon.Packages
             return await _packageRepository.InsertAndGetIdAsync(package);
         }
 
+        private record TimeCriticality(DateTime Time, Criticality? Criticality);
+
         public async Task<List<PackageStatisticDto>> GetStatistics(int hours)
         {
             var utcNow = DateTime.UtcNow;
@@ -104,14 +106,14 @@ namespace CoMon.Packages
                 var entries = await _statusRepository
                     .GetAll()
                     .Where(s => s.PackageId == package.Id && s.Time >= cutoffTime)
-                    .Select(s => new { s.Time, s.Criticality })
+                    .Select(s => new TimeCriticality(s.Time, s.Criticality))
                     .ToListAsync();
 
                 var entryBeforeCutOff = await _statusRepository
                     .GetAll()
                     .Where(s => s.PackageId == package.Id && s.Time < cutoffTime)
                     .OrderByDescending(s => s.Time)
-                    .Select(s => new { Time = cutoffTime, s.Criticality })
+                    .Select(s => new TimeCriticality(cutoffTime, s.Criticality))
                     .FirstOrDefaultAsync();
 
                 if (entryBeforeCutOff != null)
@@ -119,8 +121,8 @@ namespace CoMon.Packages
 
                 entries = entries.OrderBy(s => s.Time).ToList();
 
-                if (entries.Any())
-                    entries.Add(new { Time = utcNow, entries.Last().Criticality });
+                if (entries.Count != 0)
+                    entries.Add(new TimeCriticality(utcNow, entries.Last().Criticality));
 
 
                 var durationByCriticality = new Dictionary<Criticality?, TimeSpan>()
@@ -153,39 +155,15 @@ namespace CoMon.Packages
                     AlertPercent = (double)durationByCriticality[Criticality.Alert].Ticks / (double)analyzingDuration.Ticks,
                     UnknownDuration = nullDuration,
                     UnknownPercent = (double)nullDuration.Ticks / (double)analyzingDuration.Ticks,
+                    Timeline = BuildTimeline(entries, cutoffTime, analyzingDuration)
                 });
             }
 
             return result;
         }
 
-        public async Task<List<PackageHistoryDto>> GetTimeline(long packageId, int hours)
+        private List<PackageHistoryDto> BuildTimeline(List<TimeCriticality> entries, DateTime cutOffTime, TimeSpan analyzingDuration)
         {
-            var utcNow = DateTime.UtcNow;
-            var analyzingDuration = TimeSpan.FromHours(hours);
-            var cutoffTime = utcNow - analyzingDuration;
-
-            var entries = await _statusRepository
-                .GetAll()
-                .Where(s => s.PackageId == packageId && s.Time >= cutoffTime)
-                .Select(s => new { s.Time, s.Criticality })
-                .ToListAsync();
-
-            var entryBeforeCutOff = await _statusRepository
-                .GetAll()
-                .Where(s => s.PackageId == packageId && s.Time < cutoffTime)
-                .OrderByDescending(s => s.Time)
-                .Select(s => new { Time = cutoffTime, s.Criticality })
-                .FirstOrDefaultAsync();
-
-            if (entryBeforeCutOff != null)
-                entries.Add(entryBeforeCutOff);
-
-            entries = entries.OrderBy(s => s.Time).ToList();
-
-            if (entries.Any())
-                entries.Add(new { Time = utcNow, entries.Last().Criticality });
-
             var result = new List<PackageHistoryDto>();
             for (int i = 1; i < entries.Count; i++)
             {
@@ -214,8 +192,8 @@ namespace CoMon.Packages
             if (fullPercentage < 1)
                 result.Insert(0, new PackageHistoryDto()
                 {
-                    From = cutoffTime,
-                    To = result.FirstOrDefault()?.From ?? utcNow,
+                    From = cutOffTime,
+                    To = result.FirstOrDefault()?.From ?? cutOffTime + analyzingDuration,
                     Percentage = 1 - fullPercentage,
                     Criticality = null
                 });

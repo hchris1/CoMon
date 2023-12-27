@@ -79,16 +79,17 @@ import {AssetImageCarouselComponent} from './asset/asset-image-carousel/asset-im
 import {PackageComponent} from './package/package.component';
 import {PackageBarChartComponent} from './package/package-bar-chart/package-bar-chart.component';
 import {PackageChartWrapperComponent} from './package/package-chart-wrapper/package-chart-wrapper.component';
-import {DashboardComponent} from './dashboard/dashboard/dashboard.component';
+import {DashboardComponent} from './dashboard/custom-dashboard/dashboard/dashboard.component';
 import {DashboardOverviewComponent} from './dashboard/dashboard-overview/dashboard-overview.component';
 import {CreateDashboardModalComponent} from './edit/create-dashboard-modal/create-dashboard-modal.component';
-import {DashboardTileComponent} from './dashboard/dashboard-tile/dashboard-tile.component';
+import {DashboardTileComponent} from './dashboard/custom-dashboard/dashboard-tile/dashboard-tile.component';
 import {CreateDashboardTileModalComponent} from './edit/create-dashboard-tile-modal/create-dashboard-tile-modal.component';
 import {PackagePreviewComponent} from './package/package-preview/package-preview.component';
 import {PackageModalBase} from './edit/package-modal/package-modal-base.component';
 import {SettingsComponent} from './settings/settings.component';
-import {StatisticsDashboardComponent} from './dashboard/statistics-dashboard/statistics-dashboard.component';
+import {StatisticsDashboardComponent} from './dashboard/statistics-dashboards/statistics-dashboard/statistics-dashboard.component';
 import {PackageStatisticsModalComponent} from './package/package-statistics-modal/package-statistics-modal.component';
+import {StatisticsDashboardTileComponent} from './dashboard/statistics-dashboards/statistics-dashboard-tile/statistics-dashboard-tile.component';
 
 @NgModule({
   declarations: [
@@ -163,6 +164,7 @@ import {PackageStatisticsModalComponent} from './package/package-statistics-moda
     SettingsComponent,
     StatisticsDashboardComponent,
     PackageStatisticsModalComponent,
+    StatisticsDashboardTileComponent,
   ],
   imports: [
     CommonModule,
