@@ -11,7 +11,12 @@
             <i class="fas fa-arrow-left pt-2"></i>
           </button>
 
-          <h1 class="col-auto" *ngIf="!editName">{{ group.name }}</h1>
+          <h1 class="col-auto" *ngIf="!editName && group.name === 'Root'">
+            🌱 {{ group.name }}
+          </h1>
+          <h1 class="col-auto" *ngIf="!editName && group.name !== 'Root'">
+            📁 {{ group.name }}
+          </h1>
 
           <div class="col-auto" *ngIf="editName">
             <form [formGroup]="editFormGroup">
@@ -121,7 +126,7 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row" style="justify-content: space-between">
-        <h3 class="col">{{ 'Overview.GroupsTitle' | localize }}</h3>
+        <h3 class="col">📁 {{ 'Overview.GroupsTitle' | localize }}</h3>
         <button
           class="col-auto btn btn-primary btn-circle btn-xl"
           (click)="openCreateGroupModal()"
@@ -157,7 +162,7 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row" style="justify-content: space-between">
-        <h1 class="col">{{ 'Overview.AssetsTitle' | localize }}</h1>
+        <h1 class="col">📇 {{ 'Overview.AssetsTitle' | localize }}</h1>
         <button
           class="col-auto btn btn-primary btn-circle btn-xl"
           (click)="openCreateAssetModal()"

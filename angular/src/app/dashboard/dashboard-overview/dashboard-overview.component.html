@@ -3,9 +3,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-auto">
-          <h1>
-            {{ 'Dashboard.Overview' | localize }}
-          </h1>
+          <h1>📊 {{ 'Dashboard.Overview' | localize }}</h1>
         </div>
         <button
           type="button"
@@ -27,11 +25,11 @@
       <div class="row pl-2" style="justify-content: space-between">
         <p>
           {{ 'Dashboard.OverviewDescription' | localize }}
-          <br />
+          <!-- <br />
           -
           <a (click)="routeToStatisticsDashboard()">{{
             'Dashboard.StatisticsTitle' | localize
-          }}</a>
+          }}</a> -->
         </p>
         <button
           class="col-auto btn btn-primary btn-circle btn-xl text-right"
@@ -47,9 +45,20 @@
   <section class="content" *ngIf="dashboards && !isLoading">
     <div class="container-fluid">
       <div class="row">
-        <p *ngIf="dashboards.length === 0" class="ml-3">
-          {{ 'Dashboard.NoDashboards' | localize }}
-        </p>
+        <div
+          class="col-auto card ml-3 card-outline col-12 col-sm-6 col-md-4 col-lg-3"
+          style="cursor: pointer"
+          (click)="routeToStatisticsDashboard()"
+        >
+          <div class="card-header">
+            <h3 class="card-title">
+              {{ 'Dashboard.StatisticsTitle' | localize }}
+            </h3>
+          </div>
+          <div class="card-body">
+            {{ 'Dashboard.StatisticsDescription' | localize }}
+          </div>
+        </div>
         <div
           class="col-auto card ml-3 card-outline"
           style="min-width: 12rem"
@@ -70,29 +79,17 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="row">
-              <p style="margin-bottom: 0.15rem">
-                📁 Groups
-                <span class="badge badge-secondary">{{
-                  dashboard.groupCount
-                }}</span>
-              </p>
+            <div class="row" style="justify-content: space-between">
+              <p class="col-auto">📁 Groups</p>
+              <p class="col-auto">{{ dashboard.groupCount }}</p>
             </div>
-            <div class="row">
-              <p style="margin-bottom: 0.15rem">
-                📇 Assets
-                <span class="badge badge-secondary">{{
-                  dashboard.assetCount
-                }}</span>
-              </p>
+            <div class="row" style="justify-content: space-between">
+              <p class="col-auto">📇 Assets</p>
+              <p class="col-auto">{{ dashboard.assetCount }}</p>
             </div>
-            <div class="row">
-              <p style="margin-bottom: 0.1rem">
-                📦 Packages
-                <span class="badge badge-secondary">{{
-                  dashboard.packageCount
-                }}</span>
-              </p>
+            <div class="row" style="justify-content: space-between">
+              <p class="col-auto">📦 Packages</p>
+              <p class="col-auto">{{ dashboard.packageCount }}</p>
             </div>
           </div>
         </div>

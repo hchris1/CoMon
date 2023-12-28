@@ -201,14 +201,14 @@
 		<text name="Edit.TileTypeAsset">Asset</text>
 		<text name="Edit.TileTypePackage">Paket</text>
 		<text name="Dashboard.Overview">Dashboards</text>
-		<text name="Dashboard.OverviewDescription">Dashboards 🚀 können Gruppen, Assets und Pakete als Kachel anzeigen.</text>
+		<text name="Dashboard.OverviewDescription">Dashboards können Gruppen, Assets und Pakete als Kachel anzeigen.</text>
 		<text name="Edit.CreateDashboardTitle">Dashboard erstellen</text>
 		<text name="Edit.CreateDashboardName">Dashboard Name</text>
 		<text name="Edit.CreateDashboardNamePlaceholder">Dashboard Name</text>
 		<text name="Dashboard.NoTiles">In diesem Dashboard gibt es bisher keine Kacheln.</text>
 		<text name="Dashboard.NoDashboards">Es gibt bisher keine Dashboards.</text>
 		<text name="Settings.Title">Einstellungen</text>
-		<text name="Settings.Description">Die Einstellungen ⚙️ beinhalten wichtige Optionen, um das Verhalten von CoMon zu verändern.</text>
+		<text name="Settings.Description">Die Einstellungen beinhalten wichtige Optionen, um das Verhalten von CoMon zu verändern.</text>
 		<text name="Settings.RetentionDaysTitle">Datenhaltung</text>
 		<text name="Settings.RetentionDaysDescription">Tage (-1 deaktiviert Löschen)</text>
 		<text name="Settings.RetentionDaysSavedTitle">Datenhaltung</text>

@@ -200,14 +200,14 @@
 		<text name="Edit.TileTypeAsset">Asset</text>
 		<text name="Edit.TileTypePackage">Package</text>
 		<text name="Dashboard.Overview">Dashboards</text>
-		<text name="Dashboard.OverviewDescription">You can create dashboards 🚀 using your groups, assets and packages.</text>
+		<text name="Dashboard.OverviewDescription">You can create dashboards using your groups, assets and packages.</text>
 		<text name="Edit.CreateDashboardTitle">Create Dashboard</text>
 		<text name="Edit.CreateDashboardName">Dashboard name</text>
 		<text name="Edit.CreateDashboardNamePlaceholder">Dashboard name</text>
 		<text name="Dashboard.NoTiles">There are no tiles in this dashboard yet.</text>
 		<text name="Dashboard.NoDashboards">There are no dashboards yet.</text>
 		<text name="Settings.Title">Settings</text>
-		<text name="Settings.Description">The settings ⚙️ contain options to adjust the behavior of CoMon.</text>
+		<text name="Settings.Description">The settings contain options to adjust the behavior of CoMon.</text>
 		<text name="Settings.RetentionDaysTitle">Data Retention</text>
 		<text name="Settings.RetentionDaysDescription">Days (-1 disables deletion)</text>
 		<text name="Settings.RetentionDaysSavedTitle">Data Retention</text>
