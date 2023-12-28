@@ -1,67 +1,67 @@
 <div [@routerTransition] *ngIf="dashboard">
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row">
-        <button
-          class="col-auto btn btn-link btn-sm"
-          (click)="routeToDashboards()"
-        >
-          <i class="fas fa-arrow-left pt-2"></i>
-        </button>
-        <div class="col-auto" *ngIf="!editName">
-          <h1>📊 {{ dashboard.name }}</h1>
+      <div class="row" style="justify-content: space-between">
+        <div class="row">
+          <button
+            class="col-auto btn btn-link btn-sm"
+            (click)="routeToDashboards()"
+          >
+            <i class="fas fa-arrow-left pt-2"></i>
+          </button>
+          <div class="col-auto" *ngIf="!editName">
+            <h1>📊 {{ dashboard.name }}</h1>
+          </div>
+          <div class="col-auto" *ngIf="editName">
+            <form [formGroup]="editFormGroup">
+              <input type="text" class="form-control" formControlName="name" />
+            </form>
+          </div>
+          <div class="col-auto" *ngIf="editMode && !editName">
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              style="padding-left: 0 !important"
+              (click)="editNameClicked()"
+            >
+              <i class="fa-solid fa-edit"></i>
+            </button>
+          </div>
+          <div class="col-auto" *ngIf="editMode && editName">
+            <button
+              type="button"
+              class="btn btn-circle btn-link"
+              (click)="saveNameClicked()"
+            >
+              <i class="fa-solid fa-save"></i>
+            </button>
+          </div>
         </div>
-        <div class="col-auto" *ngIf="editName">
-          <form [formGroup]="editFormGroup">
-            <input type="text" class="form-control" formControlName="name" />
-          </form>
-        </div>
-        <div class="col-auto" *ngIf="editMode && !editName">
+        <div class="row">
+          <button
+            class="col-auto text-right btn btn-circle btn-link"
+            (click)="onCreateDashboardModal()"
+            *ngIf="editMode"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
           <button
             type="button"
-            class="btn btn-circle btn-link"
-            style="padding-left: 0 !important"
-            (click)="editNameClicked()"
+            class="col btn btn-circle btn-link text-right"
+            (click)="activateEditMode()"
+            *ngIf="!editMode"
           >
-            <i class="fa-solid fa-edit"></i>
+            <i class="fa-solid fa-pencil"></i>
           </button>
-        </div>
-        <div class="col-auto" *ngIf="editMode && editName">
           <button
             type="button"
-            class="btn btn-circle btn-link"
-            (click)="saveNameClicked()"
+            class="col btn btn-circle btn-link text-right"
+            (click)="deactivateEditMode()"
+            *ngIf="editMode"
           >
-            <i class="fa-solid fa-save"></i>
+            <i class="fa-solid fa-check"></i>
           </button>
         </div>
-        <button
-          type="button"
-          class="col btn btn-circle btn-link text-right"
-          (click)="activateEditMode()"
-          *ngIf="!editMode"
-        >
-          <i class="fa-solid fa-pencil"></i>
-        </button>
-        <button
-          type="button"
-          class="col btn btn-circle btn-link text-right"
-          (click)="deactivateEditMode()"
-          *ngIf="editMode"
-        >
-          <i class="fa-solid fa-check"></i>
-        </button>
-      </div>
-    </div>
-    <div class="row" style="justify-content: right">
-      <div class="col-auto" *ngIf="editMode && !editName">
-        <button
-          class="col-auto btn btn-primary btn-circle btn-xl"
-          (click)="onCreateDashboardModal()"
-          *ngIf="editMode"
-        >
-          <i class="fa fa-plus"></i>
-        </button>
       </div>
     </div>
   </section>

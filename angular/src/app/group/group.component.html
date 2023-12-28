@@ -128,11 +128,11 @@
       <div class="row" style="justify-content: space-between">
         <h3 class="col">📁 {{ 'Overview.GroupsTitle' | localize }}</h3>
         <button
-          class="col-auto btn btn-primary btn-circle btn-xl"
+          class="col-auto text-right btn btn-circle btn-link"
           (click)="openCreateGroupModal()"
           *ngIf="editMode"
         >
-          <i class="fa fa-plus"></i>
+          <i class="fa-solid fa-plus"></i>
         </button>
       </div>
     </div>
@@ -164,11 +164,11 @@
       <div class="row" style="justify-content: space-between">
         <h1 class="col">📇 {{ 'Overview.AssetsTitle' | localize }}</h1>
         <button
-          class="col-auto btn btn-primary btn-circle btn-xl"
+          class="col-auto text-right btn btn-circle btn-link"
           (click)="openCreateAssetModal()"
           *ngIf="editMode"
         >
-          <i class="fa fa-plus"></i>
+          <i class="fa-solid fa-plus"></i>
         </button>
       </div>
     </div>
