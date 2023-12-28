@@ -35,6 +35,7 @@
     <div class="container-fluid">
       <app-status-timeline
         [statusId]="status.id"
+        [reloadHistory]="reloadHistory"
         (statusClicked)="switchModal($event)"
       ></app-status-timeline>
 

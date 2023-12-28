@@ -18,6 +18,7 @@ import {
 })
 export class StatusTimelineComponent implements OnChanges {
   @Input() statusId: number;
+  @Input() reloadHistory: EventEmitter<boolean>;
   @Output() statusClicked = new EventEmitter<StatusPreviewDto>();
 
   statusHistory: StatusHistoryDto;
@@ -26,6 +27,12 @@ export class StatusTimelineComponent implements OnChanges {
     private _statusService: StatusServiceProxy,
     private _changeDetector: ChangeDetectorRef
   ) {}
+
+  ngOnInit(): void {
+    this.reloadHistory.subscribe(() => {
+      this.loadHistory(this.statusId);
+    });
+  }
 
   ngOnChanges() {
     this.loadHistory(this.statusId);

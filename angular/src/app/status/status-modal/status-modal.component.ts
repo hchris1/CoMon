@@ -24,8 +24,7 @@ export class StatusModalComponent implements OnInit, OnDestroy {
   @Output() onClose = new EventEmitter();
 
   status: StatusDto;
-  reloadHistory: EventEmitter<StatusPreviewDto> =
-    new EventEmitter<StatusPreviewDto>();
+  reloadHistory: EventEmitter<boolean> = new EventEmitter<boolean>();
   statusChangeSubscription: Subscription;
   connectionEstablishedSubscription: Subscription;
 
@@ -36,12 +35,11 @@ export class StatusModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadStatus();
-    // Ignore first status update because it is the same as the one we already have
     this.statusChangeSubscription =
       this._coMonHubService.statusUpdate.subscribe(update => {
         if (this.status.package.id === update.packageId) {
           this.loadStatus();
-          this.reloadHistory.emit(this.status);
+          this.reloadHistory.emit(true);
         }
       });
 
@@ -49,7 +47,10 @@ export class StatusModalComponent implements OnInit, OnDestroy {
       this._coMonHubService.connectionEstablished
         .pipe(skip(1))
         .subscribe(established => {
-          if (established) this.loadStatus();
+          if (established) {
+            this.loadStatus();
+            this.reloadHistory.emit(true);
+          }
         });
   }
 
