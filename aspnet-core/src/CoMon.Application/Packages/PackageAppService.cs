@@ -92,7 +92,7 @@ namespace CoMon.Packages
             var packagePreview = await GetPreview(packageId);
             var timeline = PackageAppServiceHelper.BuildTimeline(entries, from, analyzingDuration);
 
-            return new PackageStatisticDto(packagePreview, durationByCriticality, timeline);
+            return new PackageStatisticDto(packagePreview, durationByCriticality, timeline, analyzingDuration);
         }
 
         public async Task<List<PackageStatisticDto>> GetStatistics(int hours)

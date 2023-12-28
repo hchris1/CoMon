@@ -236,7 +236,14 @@
 		<text name="Dashboard.StatisticsDescription">This dashboard shows you which packages caused the most trouble in the selected timerange 😢.</text>
 		<text name="Dashboard.StatisticsNextRefresh">Next refresh</text>
 		<text name="Dashboard.StatisticsNoPackages">No packages to display.</text>
-
-
+		<text name="Image.UploadSuccessMessage">Image uploaded successfully.</text>
+		<text name="Image.UploadSuccessTitle">Upload Image</text>
+		<text name="LastDay">Last day (24h)</text>
+		<text name="LastWeek">Last week (7d)</text>
+		<text name="LastMonth">Last month (30d)</text>
+		<text name="Dashboard.ChangesChartTitle">Changes</text>
+		<text name="Dashboard.UpdatesChartTitle">Updates</text>
+		<text name="Dashboard.ChangesChartDescription">A Change is any status that has a different criticality from the previous one.</text>
+		<text name="Dashboard.UpdatesChartDescription">An Update is any status pushed to CoMon.</text>
 	</texts>
 </localizationDictionary>

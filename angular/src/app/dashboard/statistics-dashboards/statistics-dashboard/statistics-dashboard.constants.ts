@@ -3,14 +3,14 @@ export const REFRESHINTERVALSECONDS = 5 * 60;
 export const TIMESPANOPTIONS: {hours: number; name: string}[] = [
   {
     hours: 24,
-    name: 'Last 24 Hours',
+    name: 'LastDay',
   },
   {
     hours: 168,
-    name: 'Last Week',
+    name: 'LastWeek',
   },
   {
     hours: 720,
-    name: 'Last Month',
+    name: 'LastMonth',
   },
 ];

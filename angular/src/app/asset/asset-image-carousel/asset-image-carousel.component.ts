@@ -53,6 +53,10 @@ export class AssetImageCarouselComponent
 
   addImage(image: FileParameter) {
     this._assetService.uploadImage(this.assetId, image).subscribe(() => {
+      this.notify.success(
+        this.l('Image.UploadSuccessMessage'),
+        this.l('Image.UploadSuccessTitle')
+      );
       this.loadImages();
     });
   }

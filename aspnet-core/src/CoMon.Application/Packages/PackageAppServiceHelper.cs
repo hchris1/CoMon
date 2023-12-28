@@ -145,7 +145,7 @@ namespace CoMon.Packages
 
         public static (DateTime startDate, DateTime endDate) GetDateRange(int numOfHours)
         {
-            return (DateTime.UtcNow.AddHours(-numOfHours), PackageAppServiceHelper.FloorToPreviousHour(DateTime.UtcNow).AddHours(1));
+            return (DateTime.UtcNow.AddHours(-numOfHours), FloorToPreviousHour(DateTime.UtcNow));
         }
 
         public static async Task<List<TimeCriticality>> GetStatusesSinceCutOff(IRepository<Status, long> statusRepository,
@@ -203,7 +203,7 @@ namespace CoMon.Packages
                 .GroupBy(s => new { s.Time.Date, s.Time.Hour })
                 .Select(g => new PackageStatusCountDto
                 {
-                    Date = g.Key.Date.AddHours(g.Key.Hour + 1),
+                    Date = g.Key.Date.AddHours(g.Key.Hour),
                     HealthyCount = g.Count(s => s.Criticality == Criticality.Healthy),
                     WarningCount = g.Count(s => s.Criticality == Criticality.Warning),
                     AlertCount = g.Count(s => s.Criticality == Criticality.Alert)

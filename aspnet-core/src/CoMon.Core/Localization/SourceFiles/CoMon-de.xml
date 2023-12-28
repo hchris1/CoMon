@@ -237,5 +237,14 @@
 		<text name="Dashboard.StatisticsDescription">Dieses Dashboard zeigt welche Pakete den meisten Ärger im gewählten Zeitraum gemacht haben 😢.</text>
 		<text name="Dashboard.StatisticsNextRefresh">Nächster Refresh</text>
 		<text name="Dashboard.StatisticsNoPackages">Keine Pakete gefunden.</text>
+		<text name="Image.UploadSuccessMessage">Bild wurde erfolgreich hochgeladen.</text>
+		<text name="Image.UploadSuccessTitle">Bild Hochladen</text>
+		<text name="LastDay">Letzter Tag (24h)</text>
+		<text name="LastWeek">Letzte Woche (7d)</text>
+		<text name="LastMonth">Letzter Monat (30d)</text>
+		<text name="Dashboard.ChangesChartTitle">Änderungen</text>
+		<text name="Dashboard.UpdatesChartTitle">Updates</text>
+		<text name="Dashboard.ChangesChartDescription">Eine Änderung ist ein Status, der eine andere Kritikalität als der vorige hat.</text>
+		<text name="Dashboard.UpdatesChartDescription">Ein Update ist jeder Status, der in CoMon existiert.</text>
 	</texts>
 </localizationDictionary>

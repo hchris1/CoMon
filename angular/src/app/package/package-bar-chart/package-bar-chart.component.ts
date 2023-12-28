@@ -1,5 +1,6 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Injector, Input, OnInit, ViewChild} from '@angular/core';
 import {DarkModeService} from '@app/dark-mode.service';
+import {AppComponentBase} from '@shared/app-component-base';
 import {
   PackageServiceProxy,
   PackageStatusCountDto,
@@ -10,11 +11,11 @@ import {
   ApexGrid,
   ApexPlotOptions,
   ApexTheme,
+  ApexTitleSubtitle,
   ApexXAxis,
   ApexYAxis,
   ChartComponent,
 } from 'ng-apexcharts';
-import {BehaviorSubject} from 'rxjs';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -24,19 +25,22 @@ export type ChartOptions = {
   plotOptions: ApexPlotOptions;
   grid: ApexGrid;
   theme: ApexTheme;
+  title: ApexTitleSubtitle;
+  subTitle: ApexTitleSubtitle;
 };
 
 @Component({
   selector: 'app-package-bar-chart',
   templateUrl: './package-bar-chart.component.html',
 })
-export class PackageBarChartComponent implements OnInit {
+export class PackageBarChartComponent
+  extends AppComponentBase
+  implements OnInit
+{
   @Input() packageId: number;
   @Input() numHours = 24;
   @Input() useHourBuckets = true;
   @Input() useChanges = false;
-  @Input() triggerRender: BehaviorSubject<boolean>;
-  @Input() triggerReload: BehaviorSubject<boolean>;
 
   @ViewChild('chartObj') chart: ChartComponent;
 
@@ -47,27 +51,14 @@ export class PackageBarChartComponent implements OnInit {
 
   constructor(
     private _packageService: PackageServiceProxy,
-    private _darkModeService: DarkModeService
+    private _darkModeService: DarkModeService,
+    injector: Injector
   ) {
-    this._darkModeService.isDarkMode.subscribe(() => {
-      this.createChartOptions();
-    });
+    super(injector);
   }
 
   ngOnInit(): void {
     this.loadData();
-
-    if (this.triggerRender) {
-      this.triggerRender.subscribe(val => {
-        if (this.chart && val) this.chart.updateOptions(this.chartOptions);
-      });
-    }
-
-    if (this.triggerReload) {
-      this.triggerReload.subscribe(val => {
-        if (val) this.loadData();
-      });
-    }
   }
 
   loadData() {
@@ -142,13 +133,27 @@ export class PackageBarChartComponent implements OnInit {
         },
         stacked: true,
         background: 'none',
+        fontFamily: 'inherit',
       },
       series: this.series,
       xaxis: {
         type: 'datetime',
+        labels: {
+          datetimeUTC: true,
+        },
       },
       theme: {
         mode: this._darkModeService.isDarkMode.value ? 'dark' : 'light',
+      },
+      title: {
+        text: this.useChanges
+          ? this.l('Dashboard.ChangesChartTitle')
+          : this.l('Dashboard.UpdatesChartTitle'),
+      },
+      subTitle: {
+        text: this.useChanges
+          ? this.l('Dashboard.ChangesChartDescription')
+          : this.l('Dashboard.UpdatesChartDescription'),
       },
     };
   }

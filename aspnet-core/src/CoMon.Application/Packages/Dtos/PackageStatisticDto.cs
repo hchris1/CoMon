@@ -16,7 +16,7 @@ namespace CoMon.Packages.Dtos
         public List<PackageHistoryDto> Timeline { get; set; }
 
         public PackageStatisticDto(PackagePreviewDto package, Dictionary<Criticality, TimeSpan> durationByCriticality,
-            List<PackageHistoryDto> timeline)
+            List<PackageHistoryDto> timeline, TimeSpan analyzingDuration)
         {
             Package = package;
             Timeline = timeline;
@@ -29,10 +29,9 @@ namespace CoMon.Packages.Dtos
             AlertDuration = durationByCriticality.ContainsKey(Criticality.Alert)
                 ? durationByCriticality[Criticality.Alert]
                 : TimeSpan.Zero;
-            var totalDuration = HealthyDuration + WarningDuration + AlertDuration;
-            HealthyPercent = totalDuration == TimeSpan.Zero ? 0 : HealthyDuration.TotalMilliseconds / totalDuration.TotalMilliseconds;
-            WarningPercent = totalDuration == TimeSpan.Zero ? 0 : WarningDuration.TotalMilliseconds / totalDuration.TotalMilliseconds;
-            AlertPercent = totalDuration == TimeSpan.Zero ? 0 : AlertDuration.TotalMilliseconds / totalDuration.TotalMilliseconds;
+            HealthyPercent = analyzingDuration == TimeSpan.Zero ? 0 : HealthyDuration.TotalMilliseconds / analyzingDuration.TotalMilliseconds;
+            WarningPercent = analyzingDuration == TimeSpan.Zero ? 0 : WarningDuration.TotalMilliseconds / analyzingDuration.TotalMilliseconds;
+            AlertPercent = analyzingDuration == TimeSpan.Zero ? 0 : AlertDuration.TotalMilliseconds / analyzingDuration.TotalMilliseconds;
         }
     }
 }

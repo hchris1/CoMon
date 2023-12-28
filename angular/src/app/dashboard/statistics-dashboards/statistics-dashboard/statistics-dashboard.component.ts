@@ -25,7 +25,7 @@ export class StatisticsDashboardComponent extends AppComponentBase {
   timeline: PackageHistoryDto[];
 
   timespanOptions = TIMESPANOPTIONS;
-  selectedTime = this.timespanOptions[1];
+  selectedTime = this.timespanOptions[0];
 
   constructor(
     injector: Injector,

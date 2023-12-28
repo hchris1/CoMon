@@ -83,14 +83,4 @@ export class StatusModalComponent implements OnInit, OnDestroy {
     this.loadStatus();
     this.reloadHistory.emit(statusPreview);
   }
-
-  routeToPackage() {
-    this._router.navigate([
-      'app',
-      'overview',
-      'packages',
-      this.status.package.id,
-    ]);
-    this.closeClicked();
-  }
 }
