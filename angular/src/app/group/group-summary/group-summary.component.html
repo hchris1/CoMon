@@ -21,3 +21,9 @@
     </div>
   </div>
 </div>
+
+<div class="card" *ngIf="!group">
+  <div class="card-body" style="text-align: center">
+    <app-loading-animation></app-loading-animation>
+  </div>
+</div>

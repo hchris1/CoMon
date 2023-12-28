@@ -2,7 +2,7 @@
   <h4>{{ 'Edit.EditPackageTitle' | localize }}</h4>
 </div>
 
-<div class="modal-body">
+<div class="modal-body" *ngIf="!isLoading">
   <form [formGroup]="form">
     <div class="form-group">
       <label for="name">{{ 'Edit.PackageName' | localize }}</label>
@@ -162,7 +162,7 @@
   </form>
 </div>
 
-<div class="modal-footer">
+<div class="modal-footer" *ngIf="!isLoading">
   <button
     type="submit"
     class="btn btn-primary"
@@ -174,4 +174,10 @@
   <button type="button" class="btn btn-secondary" (click)="onCancel()">
     {{ 'Cancel' | localize }}
   </button>
+</div>
+
+<div class="modal-body" *ngIf="isLoading">
+  <div class="d-flex justify-content-center">
+    <app-loading-animation></app-loading-animation>
+  </div>
 </div>

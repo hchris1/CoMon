@@ -26,6 +26,7 @@ export class StatisticsDashboardComponent extends AppComponentBase {
 
   timespanOptions = TIMESPANOPTIONS;
   selectedTime = this.timespanOptions[0];
+  isLoading = true;
 
   constructor(
     injector: Injector,
@@ -54,11 +55,13 @@ export class StatisticsDashboardComponent extends AppComponentBase {
   }
 
   loadStatistics() {
+    this.isLoading = true;
     this._packageService
       .getStatistics(this.selectedTime.hours)
       .subscribe(result => {
         this.statistics = this.sortStatistics(result);
         this._changeDetector.detectChanges();
+        this.isLoading = false;
       });
   }
 

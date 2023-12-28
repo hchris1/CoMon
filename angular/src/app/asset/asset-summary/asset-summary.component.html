@@ -47,3 +47,10 @@
     </div>
   </div>
 </div>
+
+<div class="card h-100" *ngIf="!asset">
+  <!-- center -->
+  <div class="card-body" style="text-align: center">
+    <app-loading-animation></app-loading-animation>
+  </div>
+</div>

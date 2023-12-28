@@ -39,6 +39,7 @@ export class StatusTimelineComponent implements OnInit, OnDestroy {
   }
 
   loadHistory(id: number) {
+    this.statusHistory = undefined;
     this._statusService.getHistory(id).subscribe(result => {
       this.statusHistory = result;
       this._changeDetector.detectChanges();

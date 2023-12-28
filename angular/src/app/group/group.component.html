@@ -1,7 +1,7 @@
-<div [@routerTransition]>
+<div [@routerTransition] *ngIf="group">
   <section class="content-header">
     <div class="container-fluid">
-      <div *ngIf="group">
+      <div>
         <div class="row">
           <button
             *ngIf="!isRoot"
@@ -137,7 +137,7 @@
       </div>
     </div>
   </section>
-  <div *ngIf="group">
+  <div>
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -174,7 +174,7 @@
     </div>
   </section>
 
-  <div *ngIf="group">
+  <div>
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -199,4 +199,8 @@
       </div>
     </section>
   </div>
+</div>
+
+<div *ngIf="!group" style="text-align: center; padding-top: 40vh">
+  <app-loading-animation></app-loading-animation>
 </div>

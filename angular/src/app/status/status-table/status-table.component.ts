@@ -157,6 +157,7 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   loadStatuses() {
     const assetId = this.option?.isGroup ? undefined : this.option?.dto?.id;
     const groupId = this.option?.isGroup ? this.option?.dto?.id : undefined;
+    this.statusPreviews = undefined;
 
     this._statusService
       .getStatusTable(

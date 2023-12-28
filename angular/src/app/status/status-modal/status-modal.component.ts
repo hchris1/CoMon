@@ -62,7 +62,6 @@ export class StatusModalComponent implements OnInit, OnDestroy {
   loadStatus() {
     this._statusService.get(this.statusId).subscribe(result => {
       this.status = result;
-      this._changeDetector.detectChanges();
     });
   }
 
@@ -80,6 +79,7 @@ export class StatusModalComponent implements OnInit, OnDestroy {
 
   switchModal(statusPreview: StatusPreviewDto) {
     this.statusId = statusPreview.id;
+    this.status = undefined;
     this.loadStatus();
     this.reloadHistory.emit(statusPreview);
   }

@@ -8,3 +8,7 @@
   *ngIf="chartOptions"
   #chartObj
 ></apx-chart>
+
+<div *ngIf="!chartOptions" class="card-body" style="text-align: center">
+  <app-loading-animation></app-loading-animation>
+</div>

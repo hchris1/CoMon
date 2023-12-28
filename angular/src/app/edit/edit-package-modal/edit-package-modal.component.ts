@@ -22,6 +22,7 @@ export class EditPackageModalComponent extends PackageModalBase {
 
   assetId: number;
   assets: AssetPreviewDto[];
+  isLoading = true;
 
   constructor(
     private _assetService: AssetServiceProxy,
@@ -42,6 +43,7 @@ export class EditPackageModalComponent extends PackageModalBase {
         this.form.controls.asset.setValue(
           this.assets.find(x => x.id === this.assetId)
         );
+        this.isLoading = false;
       });
 
       this.form.controls.name.setValue(result.name);

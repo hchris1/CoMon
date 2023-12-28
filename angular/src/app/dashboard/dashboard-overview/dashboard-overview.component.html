@@ -96,16 +96,8 @@
       </div>
     </div>
   </section>
+</div>
 
-  <section class="content" *ngIf="isLoading">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<div *ngIf="isLoading" style="text-align: center; padding-top: 25vh">
+  <app-loading-animation></app-loading-animation>
 </div>

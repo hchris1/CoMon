@@ -89,6 +89,7 @@ import {StatisticsDashboardComponent} from './dashboard/statistics-dashboards/st
 import {PackageStatisticsModalComponent} from './package/package-statistics-modal/package-statistics-modal.component';
 import {StatisticsDashboardTileComponent} from './dashboard/statistics-dashboards/statistics-dashboard-tile/statistics-dashboard-tile.component';
 import {StatisticsDashboardTimelineComponent} from './dashboard/statistics-dashboards/statistics-dashboard-timeline/statistics-dashboard-timeline.component';
+import {LoadingAnimationComponent} from './common/loading-animation/loading-animation.component';
 
 @NgModule({
   declarations: [
@@ -163,6 +164,7 @@ import {StatisticsDashboardTimelineComponent} from './dashboard/statistics-dashb
     PackageStatisticsModalComponent,
     StatisticsDashboardTileComponent,
     StatisticsDashboardTimelineComponent,
+    LoadingAnimationComponent,
   ],
   imports: [
     CommonModule,

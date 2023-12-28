@@ -1,4 +1,4 @@
-<section class="content">
+<section class="content" *ngIf="options">
   <div class="container-fluid">
     <div class="form-group row pl-3 pt-3 pr-2">
       <select
@@ -115,6 +115,14 @@
         [customNextTemplate]="nextTemplate"
       ></pagination>
     </div>
+
+    <div
+      *ngIf="!statusPreviews"
+      class="row justify-content-center"
+      style="text-align: center"
+    >
+      <app-loading-animation></app-loading-animation>
+    </div>
   </div>
 </section>
 
@@ -137,3 +145,7 @@
     {{ 'Pagination.Previous' | localize }}
   </ng-container>
 </ng-template>
+
+<div *ngIf="!options" style="text-align: center; padding-top: 40vh">
+  <app-loading-animation></app-loading-animation>
+</div>
