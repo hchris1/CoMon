@@ -149,7 +149,7 @@ namespace CoMon.Packages
         }
 
         public static async Task<List<TimeCriticality>> GetStatusesSinceCutOff(IRepository<Status, long> statusRepository,
-            long packageId, DateTime from, DateTime utcNow)
+            long packageId, DateTime from, DateTime utcNow, bool addVirtualStatusAtUtcNow = true)
         {
             var entries = await statusRepository
                     .GetAll()
@@ -169,7 +169,7 @@ namespace CoMon.Packages
 
             entries = entries.OrderBy(s => s.Time).ToList();
 
-            if (entries.Count != 0)
+            if (entries.Count != 0 && addVirtualStatusAtUtcNow)
                 entries.Add(new TimeCriticality(utcNow, entries.Last().Criticality));
 
             return entries;
@@ -248,7 +248,7 @@ namespace CoMon.Packages
 
             var timeBuckets = GenerateTimeBuckets(startDate, endDate, useHourBuckets);
 
-            var entries = await GetStatusesSinceCutOff(statusRepository, packageId, startDate, DateTime.UtcNow);
+            var entries = await GetStatusesSinceCutOff(statusRepository, packageId, startDate, DateTime.UtcNow, false);
 
             if (onlyChanges)
                 entries = MergeTimeCriticalities(entries);
