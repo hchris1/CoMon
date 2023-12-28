@@ -3,8 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
-  OnInit,
+  OnChanges,
   Output,
 } from '@angular/core';
 import {
@@ -12,15 +11,13 @@ import {
   StatusPreviewDto,
   StatusServiceProxy,
 } from '@shared/service-proxies/service-proxies';
-import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-status-timeline',
   templateUrl: './status-timeline.component.html',
 })
-export class StatusTimelineComponent implements OnInit, OnDestroy {
-  @Input() status: StatusPreviewDto;
-  @Input() reloadHistory: BehaviorSubject<StatusPreviewDto>;
+export class StatusTimelineComponent implements OnChanges {
+  @Input() statusId: number;
   @Output() statusClicked = new EventEmitter<StatusPreviewDto>();
 
   statusHistory: StatusHistoryDto;
@@ -30,12 +27,8 @@ export class StatusTimelineComponent implements OnInit, OnDestroy {
     private _changeDetector: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    this.loadHistory(this.status.id);
-
-    this.reloadHistory.subscribe((statusPreview: StatusPreviewDto) => {
-      this.loadHistory(statusPreview.id);
-    });
+  ngOnChanges() {
+    this.loadHistory(this.statusId);
   }
 
   loadHistory(id: number) {
@@ -44,9 +37,5 @@ export class StatusTimelineComponent implements OnInit, OnDestroy {
       this.statusHistory = result;
       this._changeDetector.detectChanges();
     });
-  }
-
-  ngOnDestroy() {
-    this.reloadHistory.unsubscribe();
   }
 }

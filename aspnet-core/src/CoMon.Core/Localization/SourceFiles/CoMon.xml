@@ -172,6 +172,7 @@
 		<text name="Edit.CreatePackageTitle">Create Package</text>
 		<text name="Edit.EditPackageTitle">Edit Package</text>
 		<text name="Edit.PackageName">Package name</text>
+		<text name="Edit.PackageCycleSeconds">Cycle (seconds)</text>
 		<text name="Edit.PackageNamePlaceholder">Your custom package name</text>
 		<text name="Edit.PackageType">Package type</text>
 		<text name="Edit.PackageTypePing">Ping Package</text>

@@ -35,6 +35,7 @@ export class StatusPreviewComponent extends AppComponentBase {
   statusModalRef: BsModalRef;
   editModalRef: BsModalRef;
   statistic: PackageStatisticDto;
+  statisticInterval: NodeJS.Timeout;
 
   constructor(
     private _modalService: BsModalService,
@@ -45,18 +46,31 @@ export class StatusPreviewComponent extends AppComponentBase {
     super(injector);
   }
 
-  ngOnChanges() {
-    if (this.showTimeline && this.statusPreview) {
-      this._packageService
-        .getStatistic(this.statusPreview.package.id, 24)
-        .subscribe(result => {
-          this.statistic = result;
-        });
-    }
+  ngOnInit(): void {
+    this.loadStatistic();
+
+    this.statisticInterval = setInterval(
+      () => {
+        this.loadStatistic();
+      },
+      5 * 60 * 1000
+    );
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.statisticInterval);
   }
 
   getEmoji() {
     return DynamicStylesHelper.getEmoji(this.statusPreview.criticality);
+  }
+
+  loadStatistic() {
+    this._packageService
+      .getStatistic(this.statusPreview.package.id, 24)
+      .subscribe(result => {
+        this.statistic = result;
+      });
   }
 
   getBackgroundStyle() {

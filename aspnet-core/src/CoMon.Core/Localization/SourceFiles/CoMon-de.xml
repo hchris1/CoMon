@@ -172,13 +172,13 @@
 		<text name="Edit.CreatePackageTitle">Paket erstellen</text>
 		<text name="Edit.EditPackageTitle">Paket bearbeiten</text>
 		<text name="Edit.PackageName">Paketname</text>
+		<text name="Edit.PackageCycleSeconds">Zyklus (Sekunden)</text>
 		<text name="Edit.PackageNamePlaceholder">Benutzerdefinierter Name</text>
 		<text name="Edit.PackageType">Pakettyp</text>
 		<text name="Edit.PackageTypePing">Ping Paket</text>
 		<text name="Edit.PackageTypeExternal">Externes Paket</text>
 		<text name="Edit.PackageHost">Host</text>
 		<text name="Edit.PackageHostPlaceholder">192.168.178.1</text>
-		<text name="Edit.PackageCycleSeconds">Zyklus (Sekunden)</text>
 		<text name="Edit.PackageAssignedAsset">Asset</text>
 		<text name="Edit.PackageTypeHttp">Http Paket</text>
 		<text name="Edit.PackageUrl">URL</text>

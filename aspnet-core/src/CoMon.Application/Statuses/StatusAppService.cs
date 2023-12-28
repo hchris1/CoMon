@@ -44,8 +44,6 @@ namespace CoMon.Statuses
 
             status.IsLatest = await IsLatest(status);
 
-            await Task.Delay(2000);
-
             return _objectMapper.Map<StatusDto>(status);
         }
 

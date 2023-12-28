@@ -56,6 +56,7 @@ export class StatisticsDashboardComponent extends AppComponentBase {
 
   loadStatistics() {
     this.isLoading = true;
+    this.statistics = undefined;
     this._packageService
       .getStatistics(this.selectedTime.hours)
       .subscribe(result => {
