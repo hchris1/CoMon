@@ -18,51 +18,65 @@ namespace CoMon.Packages
 
         public static void ValidateSettings(CreatePackageDto input)
         {
-            if (input.Type == PackageType.Ping)
+            switch (input.Type)
             {
-                if (input.PingPackageSettings == null)
-                    throw new AbpValidationException("PingPackageSettings may not be null.");
+                case PackageType.Ping:
+                    ValidatePingSettings(input.PingPackageSettings);
+                    break;
+
+                case PackageType.Http:
+                    ValidateHttpSettings(input.HttpPackageSettings);
+                    break;
+
+                default:
+                    throw new AbpValidationException("Unknown PackageType.");
+            }
+        }
+
+        private static void ValidatePingSettings(PingPackageSettingsDto input)
+        {
+            if (input == null)
+                throw new AbpValidationException("PingPackageSettings may not be null.");
+        }
+
+        private static void ValidateHttpSettings(HttpPackageSettingsDto input)
+        {
+            if (input == null)
+                throw new AbpValidationException("HttpPackageSettings may not be null.");
+
+            // Validate Body
+            try
+            {
+                switch (input.Encoding)
+                {
+                    case HttpPackageBodyEncoding.Json:
+                        if (!string.IsNullOrWhiteSpace(input.Body))
+                            JToken.Parse(input.Body); // Using Newtonsoft.Json.Linq;
+                        break;
+
+                    case HttpPackageBodyEncoding.Xml:
+                        if (!string.IsNullOrWhiteSpace(input.Body))
+                            new XmlDocument().LoadXml(input.Body);
+                        break;
+
+                    default:
+                        throw new AbpValidationException("Invalid body encoding.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new AbpValidationException("Invalid body content: " + ex.Message);
             }
 
-            if (input.Type == PackageType.Http)
+            // Validate Headers
+            try
             {
-                if (input.HttpPackageSettings == null)
-                    throw new AbpValidationException("HttpPackageSettings may not be null.");
-
-                // Validate Body
-                try
-                {
-                    switch (input.HttpPackageSettings.Encoding)
-                    {
-                        case HttpPackageBodyEncoding.Json:
-                            if (!string.IsNullOrWhiteSpace(input.HttpPackageSettings.Body))
-                                JToken.Parse(input.HttpPackageSettings.Body); // Using Newtonsoft.Json.Linq;
-                            break;
-
-                        case HttpPackageBodyEncoding.Xml:
-                            if (!string.IsNullOrWhiteSpace(input.HttpPackageSettings.Body))
-                                new XmlDocument().LoadXml(input.HttpPackageSettings.Body);
-                            break;
-
-                        default:
-                            throw new AbpValidationException("Invalid body encoding.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new AbpValidationException("Invalid body content: " + ex.Message);
-                }
-
-                // Validate Headers JSON
-                try
-                {
-                    if (!string.IsNullOrWhiteSpace(input.HttpPackageSettings.Headers))
-                        JsonConvert.DeserializeObject<Dictionary<string, string>>(input.HttpPackageSettings.Headers);
-                }
-                catch (Exception ex)
-                {
-                    throw new AbpValidationException("Invalid headers format: " + ex.Message);
-                }
+                if (!string.IsNullOrWhiteSpace(input.Headers))
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(input.Headers);
+            }
+            catch (Exception ex)
+            {
+                throw new AbpValidationException("Invalid headers format: " + ex.Message);
             }
         }
 
@@ -133,19 +147,21 @@ namespace CoMon.Packages
 
         public static List<DateTime> GenerateTimeBuckets(DateTime startDate, DateTime endDate, bool useHourBuckets)
         {
+            // TODO: What are these constants being added?
             if (useHourBuckets)
                 return Enumerable.Range(0, Convert.ToInt32((endDate - startDate).TotalHours) + 3)
                 .Select(offset => FloorToPreviousHour(startDate).AddHours(offset))
                 .ToList();
 
             return Enumerable.Range(0, (endDate - startDate).Days + 2)
-            .Select(offset => startDate.AddDays(offset).Date)
-            .ToList();
+                .Select(offset => startDate.AddDays(offset).Date)
+                .ToList();
         }
 
         public static (DateTime startDate, DateTime endDate) GetDateRange(int numOfHours)
         {
-            return (DateTime.UtcNow.AddHours(-numOfHours), FloorToPreviousHour(DateTime.UtcNow));
+            var utcNow = DateTime.UtcNow;
+            return (utcNow.AddHours(-numOfHours), FloorToPreviousHour(utcNow));
         }
 
         public static async Task<List<TimeCriticality>> GetStatusesSinceCutOff(IRepository<Status, long> statusRepository,
@@ -167,7 +183,7 @@ namespace CoMon.Packages
             if (entryBeforeCutOff != null)
                 entries.Add(entryBeforeCutOff);
 
-            entries = entries.OrderBy(s => s.Time).ToList();
+            entries = [.. entries.OrderBy(s => s.Time)];
 
             if (entries.Count != 0 && addVirtualStatusAtUtcNow)
                 entries.Add(new TimeCriticality(utcNow, entries.Last().Criticality));

@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 namespace CoMon.Assets
 {
     [AbpAuthorize]
-    public class ImageAppService(IRepository<Image, long> imageRepository, IObjectMapper mapper) 
-        : CoMonAppServiceBase, IImageAppService
+    public class ImageAppService(IRepository<Image, long> imageRepository, IObjectMapper mapper) : CoMonAppServiceBase
     {
         private readonly IRepository<Image, long> _imageRepository = imageRepository;
         private readonly IObjectMapper _mapper = mapper;
@@ -21,6 +20,7 @@ namespace CoMon.Assets
         {
             var image = await _imageRepository
                 .FirstOrDefaultAsync(i => i.AssetId == assetId);
+
             return _mapper.Map<ImageDto>(image);
         }
 

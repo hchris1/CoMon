@@ -5,7 +5,7 @@ namespace CoMon.Groups
     public class CreateGroupDto
     {
         [Required]
-        [StringLength(256, MinimumLength = 1)]
+        [StringLength(Group.MaxNameLength, MinimumLength = 1)]
         public string Name { get; set; }
         public long? ParentId { get; set; }
     }

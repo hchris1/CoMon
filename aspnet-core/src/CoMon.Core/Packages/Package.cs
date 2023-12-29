@@ -15,7 +15,8 @@ namespace CoMon.Packages
     {
         public const int MaxNameLength = 256;
 
-        [StringLength(MaxNameLength)]
+        [Required]
+        [StringLength(MaxNameLength, MinimumLength = 1)]
         public string Name { get; set; }
         public PackageType Type { get; set; }
         public List<Status> Statuses { get; set; } = [];
@@ -24,7 +25,7 @@ namespace CoMon.Packages
         public Guid Guid { get; set; } = Guid.NewGuid();
 
         [ForeignKey(nameof(Asset))]
-        public long AssetId { get; set; }   
+        public long AssetId { get; set; }
         public Asset Asset { get; set; }
 
         [NotMapped]

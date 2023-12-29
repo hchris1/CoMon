@@ -14,9 +14,8 @@ using System.Threading.Tasks;
 namespace CoMon.Packages
 {
     [AbpAuthorize]
-    public class PackageAppService(IRepository<Asset, long> assetRepository,
-        IRepository<Package, long> packageRepository, IObjectMapper mapper, IRepository<Status, long> statusRepository)
-        : CoMonAppServiceBase, IPackageAppService
+    public class PackageAppService(IRepository<Asset, long> assetRepository, IRepository<Package, long> packageRepository, 
+        IObjectMapper mapper, IRepository<Status, long> statusRepository) : CoMonAppServiceBase
     {
         private readonly IRepository<Asset, long> _assetRepository = assetRepository;
         private readonly IRepository<Package, long> _packageRepository = packageRepository;
@@ -56,10 +55,10 @@ namespace CoMon.Packages
         {
             PackageAppServiceHelper.ValidateSettings(input);
 
-            var asset = _assetRepository
+            var asset = await _assetRepository
                 .GetAll()
                 .Where(a => a.Id == input.AssetId)
-                .FirstOrDefault()
+                .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Asset not found.");
 
             var package = _mapper.Map<Package>(input);

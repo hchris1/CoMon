@@ -2,12 +2,14 @@
 using CoMon.Statuses;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace CoMon.External
+namespace CoMon.External.Dtos
 {
     [AutoMapTo(typeof(Status))]
     public class CreateStatusDto
     {
+        [Required]
         public Criticality Criticality { get; set; }
         public List<string> Messages { get; set; }
         public List<CreateKpiDto> KPIs { get; set; }
@@ -17,6 +19,8 @@ namespace CoMon.External
     [AutoMapTo(typeof(KPI))]
     public class CreateKpiDto
     {
+        [Required]
+        [StringLength(KPI.MaxNameLength, MinimumLength = 1)]
         public string Name { get; set; }
         public double? Value { get; set; }
         public string Unit { get; set; }

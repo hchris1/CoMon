@@ -38,7 +38,7 @@ export class EditPackageModalComponent extends PackageModalBase {
     this._packageService.get(this.packageId).subscribe(result => {
       this.assetId = result.assetId;
 
-      this._assetService.getAll().subscribe(result => {
+      this._assetService.getAllPreviews().subscribe(result => {
         this.assets = result;
         this.form.controls.asset.setValue(
           this.assets.find(x => x.id === this.assetId)

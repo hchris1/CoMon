@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace CoMon.Notifications
 {
     public class NotificationService(CoMonHub comonHub, IUnitOfWorkManager unitOfWorkManager, IRepository<Package, long> packageRepository, ILogger<NotificationService> logger)
-        : ISingletonDependency, INotificationService, IAsyncEventHandler<EntityCreatedEventData<Status>>
+        : ISingletonDependency, IAsyncEventHandler<EntityCreatedEventData<Status>>
     {
         private readonly ILogger<NotificationService> _logger = logger;
         private readonly CoMonHub _comonHub = comonHub;

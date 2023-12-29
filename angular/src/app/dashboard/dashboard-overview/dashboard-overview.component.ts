@@ -45,7 +45,7 @@ export class DashboardOverviewComponent extends AppComponentBase {
 
   loadDashboards() {
     this.isLoading = true;
-    this._dashboardService.getAll().subscribe(result => {
+    this._dashboardService.getAllPreviews().subscribe(result => {
       this.dashboards = result.sort((a, b) => a.name.localeCompare(b.name));
       this.isLoading = false;
     });

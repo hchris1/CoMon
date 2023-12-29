@@ -5,7 +5,7 @@ using CoMon.Configuration.Dto;
 namespace CoMon.Configuration
 {
     [AbpAuthorize]
-    public class ConfigurationAppService : CoMonAppServiceBase, IConfigurationAppService
+    public class ConfigurationAppService : CoMonAppServiceBase
     {
         public async Task ChangeRetentionDays(ChangeRetentionDaysInput input)
         {

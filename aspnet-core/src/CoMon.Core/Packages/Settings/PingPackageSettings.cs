@@ -7,10 +7,14 @@ namespace CoMon.Packages.Settings
     [Table("CoMonPingPackageSettings")]
     public class PingPackageSettings : Entity<long>
     {
+        public const int MaxHostLength = 255;
+        public const int MinCycleSeconds = 30;
+
         [Required]
+        [StringLength(MaxHostLength, MinimumLength = 1)]
         public string Host { get; set; }
         [Required]
-        [Range(30, int.MaxValue)]
+        [Range(MinCycleSeconds, int.MaxValue)]
         public int CycleSeconds { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace CoMon.Assets
 {
     [AbpAuthorize]
     public class AssetAppService(IObjectMapper objectMapper, IRepository<Asset, long> assetRepository,
-        IRepository<Group, long> groupRepository) : CoMonAppServiceBase, IAssetAppService
+        IRepository<Group, long> groupRepository) : CoMonAppServiceBase
     {
         private readonly IObjectMapper _objectMapper = objectMapper;
         private readonly IRepository<Asset, long> _assetRepository = assetRepository;
@@ -32,13 +32,13 @@ namespace CoMon.Assets
                 .ThenInclude(p => p.Statuses
                     .OrderByDescending(s => s.Time)
                     .Take(1))
-                .FirstOrDefaultAsync()
+                .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Asset not found.");
 
             return _objectMapper.Map<AssetDto>(asset);
         }
 
-        public async Task<List<AssetPreviewDto>> GetAll()
+        public async Task<List<AssetPreviewDto>> GetAllPreviews()
         {
             var assets = await _assetRepository
                     .GetAll()
@@ -46,18 +46,6 @@ namespace CoMon.Assets
                     .ToListAsync();
 
             return _objectMapper.Map<List<AssetPreviewDto>>(assets);
-        }
-
-        public async Task<AssetPreviewDto> GetPreview(long id)
-        {
-            var asset = await _assetRepository
-                    .GetAll()
-                    .Where(a => a.Id == id)
-                    .Include(a => a.Group.Parent.Parent)
-                    .SingleOrDefaultAsync()
-                    ?? throw new EntityNotFoundException("Asset not found.");
-
-            return _objectMapper.Map<AssetPreviewDto>(asset);
         }
 
         public async Task<long> Create(CreateAssetDto input)
@@ -97,6 +85,7 @@ namespace CoMon.Assets
                 ?? throw new EntityNotFoundException("Asset not found.");
 
             asset.Description = description?.Trim();
+
             await _assetRepository.UpdateAsync(asset);
         }
 

@@ -116,7 +116,7 @@ export class GroupComponent {
   }
 
   activateEditGroup() {
-    this._groupService.getAll().subscribe(result => {
+    this._groupService.getAllPreviews().subscribe(result => {
       this.groups = result
         .filter(x => x.id !== this.group.id)
         .filter(x => !this.hasParentWithId(x, this.group.id));

@@ -18,26 +18,29 @@ using System.Threading.Tasks;
 namespace CoMon.Dashboards
 {
     [AbpAuthorize]
-    public class DashboardAppService : CoMonAppServiceBase
+    public class DashboardAppService(IObjectMapper mapper, IRepository<Asset, long> assetRepository,
+        IRepository<Dashboard, long> dashboardRepository, IRepository<Group, long> groupRepository,
+        IRepository<Package, long> packageRepository) : CoMonAppServiceBase
     {
-        private readonly IObjectMapper _mapper;
-        private readonly IRepository<Asset, long> _assetRepository;
-        private readonly IRepository<Dashboard, long> _dashboardRepository;
-        private readonly IRepository<Group, long> _groupRepository;
-        private readonly IRepository<Package, long> _packageRepository;
+        private readonly IObjectMapper _mapper = mapper;
+        private readonly IRepository<Asset, long> _assetRepository = assetRepository;
+        private readonly IRepository<Dashboard, long> _dashboardRepository = dashboardRepository;
+        private readonly IRepository<Group, long> _groupRepository = groupRepository;
+        private readonly IRepository<Package, long> _packageRepository = packageRepository;
 
-        public DashboardAppService(IObjectMapper mapper, IRepository<Asset, long> assetRepository,
-            IRepository<Dashboard, long> dashboardRepository, IRepository<Group, long> groupRepository,
-            IRepository<Package, long> packageRepository)
+        public async Task<DashboardDto> Get(long id)
         {
-            _mapper = mapper;
-            _assetRepository = assetRepository;
-            _dashboardRepository = dashboardRepository;
-            _groupRepository = groupRepository;
-            _packageRepository = packageRepository;
+            var dashboard = await _dashboardRepository
+                .GetAll()
+                .Where(d => d.Id == id)
+                .Include(d => d.Tiles)
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Dashboard not found for given id.");
+
+            return _mapper.Map<DashboardDto>(dashboard);
         }
 
-        public async Task<List<DashboardPreviewDto>> GetAll()
+        public async Task<List<DashboardPreviewDto>> GetAllPreviews()
         {
             var dashboards = await _dashboardRepository
                 .GetAll()
@@ -54,21 +57,12 @@ namespace CoMon.Dashboards
             }).ToList();
         }
 
-        public async Task<DashboardDto> Get(long id)
-        {
-            var dashboard = await _dashboardRepository
-                .GetAll()
-                .Where(d => d.Id == id)
-                .Include(d => d.Tiles)
-                .SingleOrDefaultAsync()
-                ?? throw new EntityNotFoundException("Dashboard not found for given id.");
-
-            return _mapper.Map<DashboardDto>(dashboard);
-        }
-
         public async Task<long> Create(string name)
         {
-            var dashboard = new Dashboard { Name = name.Trim() };
+            var dashboard = new Dashboard { Name = name?.Trim() };
+
+            if (string.IsNullOrWhiteSpace(dashboard.Name))
+                throw new AbpValidationException("Dashboard name may not be empty.");
 
             return await _dashboardRepository.InsertAndGetIdAsync(dashboard);
         }
@@ -89,7 +83,7 @@ namespace CoMon.Dashboards
             dashboard.Name = name?.Trim();
 
             if (string.IsNullOrWhiteSpace(dashboard.Name))
-                throw new AbpValidationException("Asset name may not be empty.");
+                throw new AbpValidationException("Dashboard name may not be empty.");
 
             await _dashboardRepository.UpdateAsync(dashboard);
         }
@@ -164,6 +158,7 @@ namespace CoMon.Dashboards
                     .ToListAsync()),
                 Packages = _mapper.Map<List<PackagePreviewDto>>(await _packageRepository
                     .GetAll()
+                    .OrderBy(g => g.Name)
                     .Include(p => p.Asset)
                     .ThenInclude(a => a.Group.Parent.Parent)
                     .ToListAsync())
@@ -189,13 +184,11 @@ namespace CoMon.Dashboards
             var tileToMoveDown = dashboard.Tiles
                 .OrderByDescending(t => t.Id)
                 .Where(t => t.SortIndex < tileToMoveUp.SortIndex && t.Id != tileToMoveUp.Id)
-                .FirstOrDefault();
-
-            tileToMoveUp.SortIndex = tileToMoveDown?.SortIndex
+                .FirstOrDefault()
                 ?? throw new AbpValidationException("Can't move the tile further down.");
 
-            if (tileToMoveDown != null)
-                tileToMoveDown.SortIndex = originalSortIndex;
+            tileToMoveUp.SortIndex = tileToMoveDown.SortIndex;
+            tileToMoveDown.SortIndex = originalSortIndex;
 
             await _dashboardRepository.UpdateAsync(dashboard);
         }
@@ -219,14 +212,11 @@ namespace CoMon.Dashboards
             var tileToMoveUp = dashboard.Tiles
                 .OrderBy(t => t.SortIndex)
                 .Where(t => t.SortIndex > tileToMoveDown.SortIndex && t.Id != tileToMoveDown.Id)
-                .FirstOrDefault();
-
-            tileToMoveDown.SortIndex = tileToMoveUp?.SortIndex
+                .FirstOrDefault()
                 ?? throw new AbpValidationException("Can't move the tile further down.");
 
-            if (tileToMoveUp != null)
-                tileToMoveUp.SortIndex = originalSortIndex;
-
+            tileToMoveDown.SortIndex = tileToMoveUp.SortIndex;
+            tileToMoveUp.SortIndex = originalSortIndex;
 
             await _dashboardRepository.UpdateAsync(dashboard);
         }

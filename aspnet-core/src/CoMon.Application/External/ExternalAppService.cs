@@ -1,6 +1,7 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
+using CoMon.External.Dtos;
 using CoMon.Packages;
 using CoMon.Statuses;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ namespace CoMon.External
             var status = _mapper.Map<Status>(input);
             status.Time = DateTime.UtcNow;
             status.Package = package;
+
             return await _statusRepository.InsertAndGetIdAsync(status);
         }
     }

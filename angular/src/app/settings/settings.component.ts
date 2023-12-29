@@ -23,6 +23,7 @@ export class SettingsComponent extends AppComponentBase {
     private _statusService: StatusServiceProxy
   ) {
     super(injector);
+
     this.retentionFormGroup = formBuilder.group({
       retentionDays: [30, [Validators.required, Validators.min(-1)]],
     });

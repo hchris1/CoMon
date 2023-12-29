@@ -18,7 +18,7 @@ namespace CoMon.Assets
         public virtual string Name { get; set; }
         [StringLength(MaxDescriptionLength)]
         public virtual string Description { get; set; }
-        public virtual List<Image> Images { get; set; } = new List<Image>();
+        public virtual List<Image> Images { get; set; } = [];
         public virtual List<Package> Packages { get; set; }
         public virtual Group Group { get; set; }
     }

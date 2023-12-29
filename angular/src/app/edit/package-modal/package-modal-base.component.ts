@@ -52,7 +52,6 @@ export class PackageModalBase {
 
       // Ping package
       if (this.currentType === PackageType._0) {
-        console.log('Setting validators for ping package');
         this.form.controls.host.setValidators([Validators.required]);
         this.form.controls.cycleSeconds.setValidators([
           Validators.required,
@@ -63,7 +62,6 @@ export class PackageModalBase {
 
       // Http package
       if (this.currentType === PackageType._1) {
-        console.log('Setting validators for http package');
         this.form.controls.url.setValidators([Validators.required]);
         this.form.controls.method.setValidators([Validators.required]);
         this.form.controls.httpCycleSeconds.setValidators([

@@ -9,6 +9,7 @@ using CoMon.Assets;
 using CoMon.Assets.Dtos;
 using CoMon.Groups;
 using CoMon.Groups.Dtos;
+using CoMon.Packages;
 using CoMon.Statuses.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,11 +21,12 @@ namespace CoMon.Statuses
 {
     [AbpAuthorize]
     public class StatusAppService(IRepository<Asset, long> assetRepository, IRepository<Group, long> groupRepository,
-        IRepository<Status, long> statusRepository, IObjectMapper objectMapper) : CoMonAppServiceBase, IStatusAppService
+        IRepository<Status, long> statusRepository, IRepository<Package, long> packageRepository, IObjectMapper objectMapper) : CoMonAppServiceBase
     {
         private readonly IRepository<Asset, long> _assetRepository = assetRepository;
         private readonly IRepository<Group, long> _groupRepository = groupRepository;
         private readonly IRepository<Status, long> _statusRepository = statusRepository;
+        private readonly IRepository<Package, long> _packageRepository = packageRepository;
         private readonly IObjectMapper _objectMapper = objectMapper;
 
         public async Task<StatusDto> Get(long id)
@@ -73,6 +75,9 @@ namespace CoMon.Statuses
                 .OrderByDescending(s => s.Time)
                 .FirstOrDefaultAsync();
 
+            if (latestStatus.Id == id)
+                latestStatus = null;
+
             var previousStatus = await _statusRepository
                 .GetAll()
                 .Where(s => s.Package.Id == status.Package.Id)
@@ -86,10 +91,6 @@ namespace CoMon.Statuses
                 .Where(s => s.Time > status.Time)
                 .OrderBy(s => s.Time)
                 .FirstOrDefaultAsync();
-
-            if (status.Id == latestStatus.Id)
-                latestStatus = null;
-
 
             return new StatusHistoryDto()
             {
@@ -121,6 +122,13 @@ namespace CoMon.Statuses
 
         public async Task<PagedResultDto<StatusPreviewDto>> GetStatusTable(PagedResultRequestDto request, long? assetId, long? groupId, long? packageId, Criticality? criticality, bool latestOnly = true)
         {
+            var latestStatusIds = await _packageRepository
+                .GetAll()
+                .Select(p => p.Statuses.OrderByDescending(s => s.Time).FirstOrDefault())
+                .Where(s => s != null)
+                .Select(s => s.Id)
+                .ToListAsync();
+
             IQueryable<Status> query = _statusRepository
                 .GetAll()
                 .OrderByDescending(s => s.Time)
@@ -133,7 +141,8 @@ namespace CoMon.Statuses
 
             if (groupId != null)
             {
-                // WTH is this??
+                // Thanks Copilot for this awesome fix ;( Nobody will create deeper group structures anyway... Right?
+                // TODO: Fix this
                 query = query.Where(s =>
                     s.Package.Asset.Group.Id == groupId ||
                     s.Package.Asset.Group.Parent.Id == groupId ||
@@ -155,10 +164,7 @@ namespace CoMon.Statuses
                 query = query.Where(s => s.Package.Id == packageId);
 
             if (latestOnly)
-            {
-                var latestStatuses = await query.GroupBy(s => s.Package).Select(g => g.OrderByDescending(s => s.Time).FirstOrDefault()).ToListAsync();
-                query = latestStatuses.AsQueryable();
-            }
+                query = query.Where(s => latestStatusIds.Contains(s.Id));
 
             if (criticality != null)
                 query = query.Where(s => s.Criticality == criticality);
@@ -169,34 +175,13 @@ namespace CoMon.Statuses
                 .Take(request.MaxResultCount)
                 .ToList();
 
-            var totalCount = query.Count();
-
-            if (!latestOnly)
-            {
-                foreach (var status in statuses)
-                    status.IsLatest = await IsLatest(status);
-            }
+            foreach (var status in statuses)
+                status.IsLatest = latestStatusIds.Contains(status.Id);
 
             return new PagedResultDto<StatusPreviewDto>(
-                totalCount,
+                query.Count(),
                 _objectMapper.Map<List<StatusPreviewDto>>(statuses)
             );
-        }
-
-        public async Task<List<StatusPreviewDto>> GetLatestStatusPreviews(long assetId)
-        {
-            var statuses = await _statusRepository
-                .GetAll()
-                .Include(s => s.Package)
-                .ThenInclude(p => p.Asset)
-                .ThenInclude(a => a.Group.Parent.Parent)
-                .Where(s => s.Package.Asset.Id == assetId)
-                .GroupBy(s => s.Package)
-                .OrderBy(p => p.Key.Name)
-                .Select(g => g.OrderByDescending(s => s.Time).FirstOrDefault())
-                .ToListAsync();
-
-            return _objectMapper.Map<List<StatusPreviewDto>>(statuses);
         }
 
         public async Task<StatusPreviewDto> GetLatestStatusPreview(long packageId)

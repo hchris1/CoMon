@@ -211,8 +211,8 @@ export class AssetServiceProxy {
     /**
      * @return Success
      */
-    getAll(): Observable<AssetPreviewDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/Asset/GetAll";
+    getAllPreviews(): Observable<AssetPreviewDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Asset/GetAllPreviews";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -224,11 +224,11 @@ export class AssetServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAll(response_);
+            return this.processGetAllPreviews(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAll(response_ as any);
+                    return this.processGetAllPreviews(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<AssetPreviewDto[]>;
                 }
@@ -237,7 +237,7 @@ export class AssetServiceProxy {
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<AssetPreviewDto[]> {
+    protected processGetAllPreviews(response: HttpResponseBase): Observable<AssetPreviewDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -256,62 +256,6 @@ export class AssetServiceProxy {
             else {
                 result200 = <any>null;
             }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return Success
-     */
-    getPreview(id: number | undefined): Observable<AssetPreviewDto> {
-        let url_ = this.baseUrl + "/api/services/app/Asset/GetPreview?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPreview(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetPreview(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<AssetPreviewDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<AssetPreviewDto>;
-        }));
-    }
-
-    protected processGetPreview(response: HttpResponseBase): Observable<AssetPreviewDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AssetPreviewDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -791,64 +735,6 @@ export class DashboardServiceProxy {
     }
 
     /**
-     * @return Success
-     */
-    getAll(): Observable<DashboardPreviewDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/Dashboard/GetAll";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAll(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAll(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<DashboardPreviewDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<DashboardPreviewDto[]>;
-        }));
-    }
-
-    protected processGetAll(response: HttpResponseBase): Observable<DashboardPreviewDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200.push(DashboardPreviewDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
      * @param id (optional) 
      * @return Success
      */
@@ -894,6 +780,64 @@ export class DashboardServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = DashboardDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllPreviews(): Observable<DashboardPreviewDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Dashboard/GetAllPreviews";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllPreviews(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllPreviews(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DashboardPreviewDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DashboardPreviewDto[]>;
+        }));
+    }
+
+    protected processGetAllPreviews(response: HttpResponseBase): Observable<DashboardPreviewDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(DashboardPreviewDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1487,6 +1431,176 @@ export class GroupServiceProxy {
     }
 
     /**
+     * @param id (optional) 
+     * @return Success
+     */
+    get(id: number | undefined): Observable<GroupDto> {
+        let url_ = this.baseUrl + "/api/services/app/Group/Get?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupDto>;
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<GroupDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GroupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getPreview(id: number | undefined): Observable<GroupPreviewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Group/GetPreview?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPreview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPreview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupPreviewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupPreviewDto>;
+        }));
+    }
+
+    protected processGetPreview(response: HttpResponseBase): Observable<GroupPreviewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GroupPreviewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllPreviews(): Observable<GroupPreviewDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Group/GetAllPreviews";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllPreviews(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllPreviews(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupPreviewDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupPreviewDto[]>;
+        }));
+    }
+
+    protected processGetAllPreviews(response: HttpResponseBase): Observable<GroupPreviewDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(GroupPreviewDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -1700,176 +1814,6 @@ export class GroupServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    getAll(): Observable<GroupPreviewDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/Group/GetAll";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAll(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAll(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GroupPreviewDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GroupPreviewDto[]>;
-        }));
-    }
-
-    protected processGetAll(response: HttpResponseBase): Observable<GroupPreviewDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200.push(GroupPreviewDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return Success
-     */
-    get(id: number | undefined): Observable<GroupDto> {
-        let url_ = this.baseUrl + "/api/services/app/Group/Get?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGet(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGet(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GroupDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GroupDto>;
-        }));
-    }
-
-    protected processGet(response: HttpResponseBase): Observable<GroupDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GroupDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return Success
-     */
-    getPreview(id: number | undefined): Observable<GroupPreviewDto> {
-        let url_ = this.baseUrl + "/api/services/app/Group/GetPreview?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPreview(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetPreview(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GroupPreviewDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GroupPreviewDto>;
-        }));
-    }
-
-    protected processGetPreview(response: HttpResponseBase): Observable<GroupPreviewDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GroupPreviewDto.fromJS(resultData200);
-            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -3392,69 +3336,6 @@ export class StatusServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = StatusPreviewDtoPagedResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param assetId (optional) 
-     * @return Success
-     */
-    getLatestStatusPreviews(assetId: number | undefined): Observable<StatusPreviewDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/Status/GetLatestStatusPreviews?";
-        if (assetId === null)
-            throw new Error("The parameter 'assetId' cannot be null.");
-        else if (assetId !== undefined)
-            url_ += "assetId=" + encodeURIComponent("" + assetId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetLatestStatusPreviews(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetLatestStatusPreviews(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<StatusPreviewDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<StatusPreviewDto[]>;
-        }));
-    }
-
-    protected processGetLatestStatusPreviews(response: HttpResponseBase): Observable<StatusPreviewDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200.push(StatusPreviewDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -5366,7 +5247,7 @@ export interface ICreateGroupDto {
 }
 
 export class CreateKpiDto implements ICreateKpiDto {
-    name: string | undefined;
+    name: string;
     value: number | undefined;
     unit: string | undefined;
 
@@ -5411,13 +5292,13 @@ export class CreateKpiDto implements ICreateKpiDto {
 }
 
 export interface ICreateKpiDto {
-    name: string | undefined;
+    name: string;
     value: number | undefined;
     unit: string | undefined;
 }
 
 export class CreatePackageDto implements ICreatePackageDto {
-    name: string | undefined;
+    name: string;
     type: PackageType;
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
@@ -5468,7 +5349,7 @@ export class CreatePackageDto implements ICreatePackageDto {
 }
 
 export interface ICreatePackageDto {
-    name: string | undefined;
+    name: string;
     type: PackageType;
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
@@ -6458,7 +6339,7 @@ export enum HttpPackageMethod {
 }
 
 export class HttpPackageSettingsDto implements IHttpPackageSettingsDto {
-    url: string | undefined;
+    url: string;
     cycleSeconds: number;
     method: HttpPackageMethod;
     headers: string | undefined;
@@ -6515,7 +6396,7 @@ export class HttpPackageSettingsDto implements IHttpPackageSettingsDto {
 }
 
 export interface IHttpPackageSettingsDto {
-    url: string | undefined;
+    url: string;
     cycleSeconds: number;
     method: HttpPackageMethod;
     headers: string | undefined;
@@ -7191,7 +7072,7 @@ export interface IPermissionDtoListResultDto {
 }
 
 export class PingPackageSettingsDto implements IPingPackageSettingsDto {
-    host: string | undefined;
+    host: string;
     cycleSeconds: number;
 
     constructor(data?: IPingPackageSettingsDto) {
@@ -7233,7 +7114,7 @@ export class PingPackageSettingsDto implements IPingPackageSettingsDto {
 }
 
 export interface IPingPackageSettingsDto {
-    host: string | undefined;
+    host: string;
     cycleSeconds: number;
 }
 
@@ -8417,7 +8298,7 @@ export interface ITimeSpan {
 }
 
 export class UpdatePackageDto implements IUpdatePackageDto {
-    name: string | undefined;
+    name: string;
     type: PackageType;
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
@@ -8471,7 +8352,7 @@ export class UpdatePackageDto implements IUpdatePackageDto {
 }
 
 export interface IUpdatePackageDto {
-    name: string | undefined;
+    name: string;
     type: PackageType;
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;

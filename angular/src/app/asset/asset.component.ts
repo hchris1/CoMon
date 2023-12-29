@@ -122,7 +122,7 @@ export class AssetComponent extends AppComponentBase {
   }
 
   editGroupClick() {
-    this._groupService.getAll().subscribe(result => {
+    this._groupService.getAllPreviews().subscribe(result => {
       this.groups = result;
 
       // Add undefined for root group

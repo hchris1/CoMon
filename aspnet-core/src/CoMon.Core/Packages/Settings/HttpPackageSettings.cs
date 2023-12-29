@@ -7,11 +7,15 @@ namespace CoMon.Packages
     [Table("CoMonHttpPackageSettings")]
     public class HttpPackageSettings : Entity<long>
     {
+        public const int MinCycleSeconds = 30;
+        public const int MaxUrlLength = 255;
+
         [Required]
+        [StringLength(MaxUrlLength, MinimumLength = 1)]
         public string Url { get; set; }
 
         [Required]
-        [Range(30, int.MaxValue)]
+        [Range(MinCycleSeconds, int.MaxValue)]
         public int CycleSeconds { get; set; }
 
         [Required]
