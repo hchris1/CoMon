@@ -1,0 +1,25 @@
+<!-- <li class="nav-item dropdown nav-user-menu" dropdown>
+  <a href="javascript:;" class="nav-link" dropdownToggle>
+    <i class="fas fa-user"></i>
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+    <a class="dropdown-item" [routerLink]="['update-password']">
+      <i class="fas fa-user-edit"></i> {{ "UpdatePassword" | localize }}
+    </a>
+    <a class="dropdown-item" href="javascript:;" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> {{ "Logout" | localize }}
+    </a>
+  </div>
+</li> -->
+
+<!-- Info icon to open about modal -->
+<div class="nav-item dropdown nav-user-menu" dropdown>
+  <a
+    href="javascript:;"
+    class="nav-link"
+    dropdownToggle
+    (click)="openAboutModal()"
+  >
+    <i class="fas fa-info-circle"></i>
+  </a>
+</div>

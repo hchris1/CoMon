@@ -27,6 +27,7 @@ import {SidebarComponent} from './layout/sidebar.component';
 import {SidebarLogoComponent} from './layout/sidebar-logo.component';
 import {SidebarUserPanelComponent} from './layout/sidebar-user-panel.component';
 import {SidebarMenuComponent} from './layout/sidebar-menu.component';
+import {HeaderAboutComponent} from './layout/header-about.component';
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -44,6 +45,7 @@ describe('AppComponent', () => {
         SidebarLogoComponent,
         SidebarUserPanelComponent,
         SidebarMenuComponent,
+        HeaderAboutComponent,
       ],
       imports: [
         BrowserAnimationsModule,
