@@ -12,6 +12,7 @@ using CoMon.Configuration;
 using CoMon.Localization;
 using CoMon.MultiTenancy;
 using CoMon.Packages.Workers;
+using CoMon.Retention;
 using CoMon.Timing;
 
 namespace CoMon
@@ -53,6 +54,7 @@ namespace CoMon
             var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
             workManager.Add(IocManager.Resolve<PingWorker>());
             workManager.Add(IocManager.Resolve<HttpWorker>());
+            workManager.Add(IocManager.Resolve<RetentionWorker>());
         } 
     }
 }
