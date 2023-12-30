@@ -6,6 +6,7 @@ import {
   DashboardTileOptionDto,
   DashboardTileType,
 } from '@shared/service-proxies/service-proxies';
+import {TILETYPES} from './create-dashboard-tile-modal.constants';
 
 @Component({
   selector: 'app-create-dashboard-tile-modal',
@@ -31,20 +32,7 @@ export class CreateDashboardTileModalComponent {
   ) {
     this.loadOptions();
 
-    this.types = [
-      {
-        value: DashboardTileType._0,
-        name: 'Edit.TileTypeGroup',
-      },
-      {
-        value: DashboardTileType._1,
-        name: 'Edit.TileTypeAsset',
-      },
-      {
-        value: DashboardTileType._2,
-        name: 'Edit.TileTypePackage',
-      },
-    ];
+    this.types = TILETYPES;
 
     this.form = formBuilder.group({
       type: [0],

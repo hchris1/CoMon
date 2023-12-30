@@ -5,10 +5,8 @@
 <div class="modal-body">
   <form [formGroup]="form">
     <!-- Common form fields -->
-
     <ng-content select=".additional-fields"></ng-content>
 
-    <!-- Common form fields for different package types -->
     <ng-container *ngIf="currentType === pingPackageType">
       <!-- Ping package fields -->
     </ng-container>

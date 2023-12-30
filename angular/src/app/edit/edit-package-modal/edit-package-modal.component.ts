@@ -9,7 +9,7 @@ import {
   PingPackageSettingsDto,
   UpdatePackageDto,
 } from '@shared/service-proxies/service-proxies';
-import {PackageModalBase} from '../package-modal/package-modal-base.component';
+import {PackageModalBase} from '../package-modal-base/package-modal-base.component';
 
 @Component({
   selector: 'app-edit-package-modal',

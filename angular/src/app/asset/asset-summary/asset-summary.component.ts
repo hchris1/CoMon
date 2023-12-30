@@ -74,11 +74,6 @@ export class AssetSummaryComponent
     this.connectionEstablishedSubscription.unsubscribe();
   }
 
-  getTitleClass(asset: AssetDto) {
-    const worstCriticality = DynamicStylesHelper.getWorstCriticality(asset);
-    return DynamicStylesHelper.getBackgroundClass(worstCriticality);
-  }
-
   getBadgeClass(pack: PackageDto) {
     return DynamicStylesHelper.getBadgeClass(pack.lastCriticality);
   }

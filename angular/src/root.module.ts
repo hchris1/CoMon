@@ -26,7 +26,6 @@ export function getCurrentLanguage(): string {
     return abp.localization.currentLanguage.name;
   }
 
-  // todo: Waiting for https://github.com/angular/angular/issues/31465 to be fixed.
   return 'en';
 }
 

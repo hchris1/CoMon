@@ -83,7 +83,7 @@ import {CreateDashboardModalComponent} from './edit/create-dashboard-modal/creat
 import {DashboardTileComponent} from './dashboard/custom-dashboard/dashboard-tile/dashboard-tile.component';
 import {CreateDashboardTileModalComponent} from './edit/create-dashboard-tile-modal/create-dashboard-tile-modal.component';
 import {PackagePreviewComponent} from './package/package-preview/package-preview.component';
-import {PackageModalBase} from './edit/package-modal/package-modal-base.component';
+import {PackageModalBase} from './edit/package-modal-base/package-modal-base.component';
 import {SettingsComponent} from './settings/settings.component';
 import {StatisticsDashboardComponent} from './dashboard/statistics-dashboards/statistics-dashboard/statistics-dashboard.component';
 import {PackageStatisticsModalComponent} from './package/package-statistics-modal/package-statistics-modal.component';
