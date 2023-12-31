@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -17,24 +15,24 @@ namespace CoMon.Migrations
                 name: "AbpAuditLogs",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: true),
-                    ServiceName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    MethodName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Parameters = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
-                    ReturnValue = table.Column<string>(type: "text", nullable: true),
-                    ExecutionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ExecutionDuration = table.Column<int>(type: "integer", nullable: false),
-                    ClientIpAddress = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    ClientName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    BrowserInfo = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    ExceptionMessage = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
-                    Exception = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    ImpersonatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    ImpersonatorTenantId = table.Column<int>(type: "integer", nullable: true),
-                    CustomData = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    ServiceName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    MethodName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Parameters = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
+                    ReturnValue = table.Column<string>(type: "TEXT", nullable: true),
+                    ExecutionTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ExecutionDuration = table.Column<int>(type: "INTEGER", nullable: false),
+                    ClientIpAddress = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ClientName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
+                    BrowserInfo = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    ExceptionMessage = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
+                    Exception = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true),
+                    ImpersonatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    ImpersonatorTenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    CustomData = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,17 +43,17 @@ namespace CoMon.Migrations
                 name: "AbpBackgroundJobs",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    JobType = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
-                    JobArgs = table.Column<string>(type: "character varying(1048576)", maxLength: 1048576, nullable: false),
-                    TryCount = table.Column<short>(type: "smallint", nullable: false),
-                    NextTryTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastTryTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    IsAbandoned = table.Column<bool>(type: "boolean", nullable: false),
-                    Priority = table.Column<byte>(type: "smallint", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    JobType = table.Column<string>(type: "TEXT", maxLength: 512, nullable: false),
+                    JobArgs = table.Column<string>(type: "TEXT", maxLength: 1048576, nullable: false),
+                    TryCount = table.Column<short>(type: "INTEGER", nullable: false),
+                    NextTryTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    LastTryTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    IsAbandoned = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Priority = table.Column<byte>(type: "INTEGER", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -66,13 +64,13 @@ namespace CoMon.Migrations
                 name: "AbpDynamicProperties",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PropertyName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    DisplayName = table.Column<string>(type: "text", nullable: true),
-                    InputType = table.Column<string>(type: "text", nullable: true),
-                    Permission = table.Column<string>(type: "text", nullable: true),
-                    TenantId = table.Column<int>(type: "integer", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PropertyName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    DisplayName = table.Column<string>(type: "TEXT", nullable: true),
+                    InputType = table.Column<string>(type: "TEXT", nullable: true),
+                    Permission = table.Column<string>(type: "TEXT", nullable: true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -83,17 +81,17 @@ namespace CoMon.Migrations
                 name: "AbpEditions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    DisplayName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
+                    DisplayName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeleterUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -104,18 +102,18 @@ namespace CoMon.Migrations
                 name: "AbpEntityChangeSets",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BrowserInfo = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    ClientIpAddress = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    ClientName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ExtensionData = table.Column<string>(type: "text", nullable: true),
-                    ImpersonatorTenantId = table.Column<int>(type: "integer", nullable: true),
-                    ImpersonatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    Reason = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BrowserInfo = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ClientName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ExtensionData = table.Column<string>(type: "TEXT", nullable: true),
+                    ImpersonatorTenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ImpersonatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    Reason = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -126,20 +124,20 @@ namespace CoMon.Migrations
                 name: "AbpLanguages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    DisplayName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    Icon = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    IsDisabled = table.Column<bool>(type: "boolean", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    DisplayName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Icon = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
+                    IsDisabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeleterUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -150,17 +148,17 @@ namespace CoMon.Migrations
                 name: "AbpLanguageTexts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    LanguageName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Source = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Key = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    Value = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    LanguageName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Source = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Key = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Value = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -171,20 +169,20 @@ namespace CoMon.Migrations
                 name: "AbpNotifications",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    NotificationName = table.Column<string>(type: "character varying(96)", maxLength: 96, nullable: false),
-                    Data = table.Column<string>(type: "character varying(1048576)", maxLength: 1048576, nullable: true),
-                    DataTypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    EntityTypeName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
-                    EntityTypeAssemblyQualifiedName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    EntityId = table.Column<string>(type: "character varying(96)", maxLength: 96, nullable: true),
-                    Severity = table.Column<byte>(type: "smallint", nullable: false),
-                    UserIds = table.Column<string>(type: "character varying(131072)", maxLength: 131072, nullable: true),
-                    ExcludedUserIds = table.Column<string>(type: "character varying(131072)", maxLength: 131072, nullable: true),
-                    TenantIds = table.Column<string>(type: "character varying(131072)", maxLength: 131072, nullable: true),
-                    TargetNotifiers = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    NotificationName = table.Column<string>(type: "TEXT", maxLength: 96, nullable: false),
+                    Data = table.Column<string>(type: "TEXT", maxLength: 1048576, nullable: true),
+                    DataTypeName = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    EntityTypeName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    EntityTypeAssemblyQualifiedName = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    EntityId = table.Column<string>(type: "TEXT", maxLength: 96, nullable: true),
+                    Severity = table.Column<byte>(type: "INTEGER", nullable: false),
+                    UserIds = table.Column<string>(type: "TEXT", maxLength: 131072, nullable: true),
+                    ExcludedUserIds = table.Column<string>(type: "TEXT", maxLength: 131072, nullable: true),
+                    TenantIds = table.Column<string>(type: "TEXT", maxLength: 131072, nullable: true),
+                    TargetNotifiers = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -195,16 +193,16 @@ namespace CoMon.Migrations
                 name: "AbpNotificationSubscriptions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    NotificationName = table.Column<string>(type: "character varying(96)", maxLength: 96, nullable: true),
-                    EntityTypeName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
-                    EntityTypeAssemblyQualifiedName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    EntityId = table.Column<string>(type: "character varying(96)", maxLength: 96, nullable: true),
-                    TargetNotifiers = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false),
+                    NotificationName = table.Column<string>(type: "TEXT", maxLength: 96, nullable: true),
+                    EntityTypeName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    EntityTypeAssemblyQualifiedName = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    EntityId = table.Column<string>(type: "TEXT", maxLength: 96, nullable: true),
+                    TargetNotifiers = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -215,14 +213,14 @@ namespace CoMon.Migrations
                 name: "AbpOrganizationUnitRoles",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    RoleId = table.Column<int>(type: "integer", nullable: false),
-                    OrganizationUnitId = table.Column<long>(type: "bigint", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrganizationUnitId = table.Column<long>(type: "INTEGER", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -233,19 +231,19 @@ namespace CoMon.Migrations
                 name: "AbpOrganizationUnits",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    ParentId = table.Column<long>(type: "bigint", nullable: true),
-                    Code = table.Column<string>(type: "character varying(95)", maxLength: 95, nullable: false),
-                    DisplayName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ParentId = table.Column<long>(type: "INTEGER", nullable: true),
+                    Code = table.Column<string>(type: "TEXT", maxLength: 95, nullable: false),
+                    DisplayName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeleterUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -261,17 +259,17 @@ namespace CoMon.Migrations
                 name: "AbpTenantNotifications",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    NotificationName = table.Column<string>(type: "character varying(96)", maxLength: 96, nullable: false),
-                    Data = table.Column<string>(type: "character varying(1048576)", maxLength: 1048576, nullable: true),
-                    DataTypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    EntityTypeName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
-                    EntityTypeAssemblyQualifiedName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    EntityId = table.Column<string>(type: "character varying(96)", maxLength: 96, nullable: true),
-                    Severity = table.Column<byte>(type: "smallint", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    NotificationName = table.Column<string>(type: "TEXT", maxLength: 96, nullable: false),
+                    Data = table.Column<string>(type: "TEXT", maxLength: 1048576, nullable: true),
+                    DataTypeName = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    EntityTypeName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    EntityTypeAssemblyQualifiedName = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    EntityId = table.Column<string>(type: "TEXT", maxLength: 96, nullable: true),
+                    Severity = table.Column<byte>(type: "INTEGER", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -282,20 +280,20 @@ namespace CoMon.Migrations
                 name: "AbpUserAccounts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    UserLinkId = table.Column<long>(type: "bigint", nullable: true),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    EmailAddress = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false),
+                    UserLinkId = table.Column<long>(type: "INTEGER", nullable: true),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    EmailAddress = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeleterUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -306,17 +304,17 @@ namespace CoMon.Migrations
                 name: "AbpUserLoginAttempts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    TenancyName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: true),
-                    UserNameOrEmailAddress = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    ClientIpAddress = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    ClientName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    BrowserInfo = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    Result = table.Column<byte>(type: "smallint", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    TenancyName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    UserNameOrEmailAddress = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ClientName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
+                    BrowserInfo = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    Result = table.Column<byte>(type: "INTEGER", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -327,13 +325,13 @@ namespace CoMon.Migrations
                 name: "AbpUserNotifications",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    TenantNotificationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    State = table.Column<int>(type: "integer", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    TargetNotifiers = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false),
+                    TenantNotificationId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    State = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TargetNotifiers = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -344,14 +342,14 @@ namespace CoMon.Migrations
                 name: "AbpUserOrganizationUnits",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    OrganizationUnitId = table.Column<long>(type: "bigint", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false),
+                    OrganizationUnitId = table.Column<long>(type: "INTEGER", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -362,36 +360,36 @@ namespace CoMon.Migrations
                 name: "AbpUsers",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    AuthenticationSource = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    EmailAddress = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    Surname = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    Password = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    EmailConfirmationCode = table.Column<string>(type: "character varying(328)", maxLength: 328, nullable: true),
-                    PasswordResetCode = table.Column<string>(type: "character varying(328)", maxLength: 328, nullable: true),
-                    LockoutEndDateUtc = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false),
-                    IsLockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    IsPhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    SecurityStamp = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    IsTwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    IsEmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    NormalizedEmailAddress = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeleterUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    AuthenticationSource = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    EmailAddress = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Surname = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Password = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    EmailConfirmationCode = table.Column<string>(type: "TEXT", maxLength: 328, nullable: true),
+                    PasswordResetCode = table.Column<string>(type: "TEXT", maxLength: 328, nullable: true),
+                    LockoutEndDateUtc = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsLockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
+                    IsPhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    SecurityStamp = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
+                    IsTwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsEmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    NormalizedEmailAddress = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -417,13 +415,13 @@ namespace CoMon.Migrations
                 name: "AbpWebhookEvents",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WebhookName = table.Column<string>(type: "text", nullable: false),
-                    Data = table.Column<string>(type: "text", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    WebhookName = table.Column<string>(type: "TEXT", nullable: false),
+                    Data = table.Column<string>(type: "TEXT", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -434,15 +432,15 @@ namespace CoMon.Migrations
                 name: "AbpWebhookSubscriptions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    WebhookUri = table.Column<string>(type: "text", nullable: false),
-                    Secret = table.Column<string>(type: "text", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    Webhooks = table.Column<string>(type: "text", nullable: true),
-                    Headers = table.Column<string>(type: "text", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    WebhookUri = table.Column<string>(type: "TEXT", nullable: false),
+                    Secret = table.Column<string>(type: "TEXT", nullable: false),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Webhooks = table.Column<string>(type: "TEXT", nullable: true),
+                    Headers = table.Column<string>(type: "TEXT", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -450,20 +448,33 @@ namespace CoMon.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CoMonDashboards",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoMonDashboards", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CoMonGroups",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Group = table.Column<long>(type: "bigint", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Group = table.Column<long>(type: "INTEGER", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeleterUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -476,13 +487,32 @@ namespace CoMon.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CoMonHttpPackageSettings",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Url = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    CycleSeconds = table.Column<int>(type: "INTEGER", nullable: false),
+                    Method = table.Column<int>(type: "INTEGER", nullable: false),
+                    Headers = table.Column<string>(type: "TEXT", nullable: false),
+                    Body = table.Column<string>(type: "TEXT", nullable: false),
+                    Encoding = table.Column<int>(type: "INTEGER", nullable: false),
+                    IgnoreSslErrors = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoMonHttpPackageSettings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CoMonPingPackageSettings",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Host = table.Column<string>(type: "text", nullable: false),
-                    CycleSeconds = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Host = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    CycleSeconds = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -493,17 +523,17 @@ namespace CoMon.Migrations
                 name: "AbpDynamicEntityProperties",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EntityFullName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    DynamicPropertyId = table.Column<int>(type: "integer", nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    EntityFullName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    DynamicPropertyId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbpDynamicEntityProperties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbpDynamicEntityProperties_AbpDynamicProperties_DynamicProp~",
+                        name: "FK_AbpDynamicEntityProperties_AbpDynamicProperties_DynamicPropertyId",
                         column: x => x.DynamicPropertyId,
                         principalTable: "AbpDynamicProperties",
                         principalColumn: "Id",
@@ -514,17 +544,17 @@ namespace CoMon.Migrations
                 name: "AbpDynamicPropertyValues",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Value = table.Column<string>(type: "text", nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    DynamicPropertyId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Value = table.Column<string>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    DynamicPropertyId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbpDynamicPropertyValues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbpDynamicPropertyValues_AbpDynamicProperties_DynamicProper~",
+                        name: "FK_AbpDynamicPropertyValues_AbpDynamicProperties_DynamicPropertyId",
                         column: x => x.DynamicPropertyId,
                         principalTable: "AbpDynamicProperties",
                         principalColumn: "Id",
@@ -535,15 +565,15 @@ namespace CoMon.Migrations
                 name: "AbpFeatures",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Value = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
-                    EditionId = table.Column<int>(type: "integer", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Value = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", maxLength: 21, nullable: false),
+                    EditionId = table.Column<int>(type: "INTEGER", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -560,14 +590,14 @@ namespace CoMon.Migrations
                 name: "AbpEntityChanges",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ChangeTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    ChangeType = table.Column<byte>(type: "smallint", nullable: false),
-                    EntityChangeSetId = table.Column<long>(type: "bigint", nullable: false),
-                    EntityId = table.Column<string>(type: "character varying(48)", maxLength: 48, nullable: true),
-                    EntityTypeFullName = table.Column<string>(type: "character varying(192)", maxLength: 192, nullable: true),
-                    TenantId = table.Column<int>(type: "integer", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ChangeTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangeType = table.Column<byte>(type: "INTEGER", nullable: false),
+                    EntityChangeSetId = table.Column<long>(type: "INTEGER", nullable: false),
+                    EntityId = table.Column<string>(type: "TEXT", maxLength: 48, nullable: true),
+                    EntityTypeFullName = table.Column<string>(type: "TEXT", maxLength: 192, nullable: true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -584,23 +614,23 @@ namespace CoMon.Migrations
                 name: "AbpRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Description = table.Column<string>(type: "character varying(5000)", maxLength: 5000, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    Name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    DisplayName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    IsStatic = table.Column<bool>(type: "boolean", nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false),
-                    NormalizedName = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 5000, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeleterUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
+                    DisplayName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    IsStatic = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsDefault = table.Column<bool>(type: "INTEGER", nullable: false),
+                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -626,16 +656,16 @@ namespace CoMon.Migrations
                 name: "AbpSettings",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: true),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -651,20 +681,20 @@ namespace CoMon.Migrations
                 name: "AbpTenants",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifierUserId = table.Column<long>(type: "bigint", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeleterUserId = table.Column<long>(type: "bigint", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    TenancyName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ConnectionString = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    EditionId = table.Column<int>(type: "integer", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeleterUserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    TenancyName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    ConnectionString = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EditionId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -695,14 +725,14 @@ namespace CoMon.Migrations
                 name: "AbpUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    ClaimType = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -719,12 +749,12 @@ namespace CoMon.Migrations
                 name: "AbpUserLogins",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -741,13 +771,13 @@ namespace CoMon.Migrations
                 name: "AbpUserRoles",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -764,14 +794,14 @@ namespace CoMon.Migrations
                 name: "AbpUserTokens",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Value = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    ExpireDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
+                    Value = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    ExpireDate = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -788,14 +818,14 @@ namespace CoMon.Migrations
                 name: "AbpWebhookSendAttempts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WebhookEventId = table.Column<Guid>(type: "uuid", nullable: false),
-                    WebhookSubscriptionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Response = table.Column<string>(type: "text", nullable: true),
-                    ResponseStatusCode = table.Column<int>(type: "integer", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    TenantId = table.Column<int>(type: "integer", nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    WebhookEventId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    WebhookSubscriptionId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Response = table.Column<string>(type: "TEXT", nullable: true),
+                    ResponseStatusCode = table.Column<int>(type: "INTEGER", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -809,14 +839,36 @@ namespace CoMon.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CoMonDashboardTiles",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    SortIndex = table.Column<int>(type: "INTEGER", nullable: false),
+                    ItemType = table.Column<int>(type: "INTEGER", nullable: false),
+                    ItemId = table.Column<long>(type: "INTEGER", nullable: false),
+                    DashboardId = table.Column<long>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoMonDashboardTiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CoMonDashboardTiles_CoMonDashboards_DashboardId",
+                        column: x => x.DashboardId,
+                        principalTable: "CoMonDashboards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CoMonAssets",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Description = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
-                    GroupId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: true),
+                    GroupId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -832,18 +884,18 @@ namespace CoMon.Migrations
                 name: "AbpDynamicEntityPropertyValues",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Value = table.Column<string>(type: "text", nullable: false),
-                    EntityId = table.Column<string>(type: "text", nullable: true),
-                    DynamicEntityPropertyId = table.Column<int>(type: "integer", nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Value = table.Column<string>(type: "TEXT", nullable: false),
+                    EntityId = table.Column<string>(type: "TEXT", nullable: true),
+                    DynamicEntityPropertyId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbpDynamicEntityPropertyValues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbpDynamicEntityPropertyValues_AbpDynamicEntityProperties_D~",
+                        name: "FK_AbpDynamicEntityPropertyValues_AbpDynamicEntityProperties_DynamicEntityPropertyId",
                         column: x => x.DynamicEntityPropertyId,
                         principalTable: "AbpDynamicEntityProperties",
                         principalColumn: "Id",
@@ -854,16 +906,16 @@ namespace CoMon.Migrations
                 name: "AbpEntityPropertyChanges",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EntityChangeId = table.Column<long>(type: "bigint", nullable: false),
-                    NewValue = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    OriginalValue = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
-                    PropertyName = table.Column<string>(type: "character varying(96)", maxLength: 96, nullable: true),
-                    PropertyTypeFullName = table.Column<string>(type: "character varying(192)", maxLength: 192, nullable: true),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    NewValueHash = table.Column<string>(type: "text", nullable: true),
-                    OriginalValueHash = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    EntityChangeId = table.Column<long>(type: "INTEGER", nullable: false),
+                    NewValue = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    OriginalValue = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    PropertyName = table.Column<string>(type: "TEXT", maxLength: 96, nullable: true),
+                    PropertyTypeFullName = table.Column<string>(type: "TEXT", maxLength: 192, nullable: true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    NewValueHash = table.Column<string>(type: "TEXT", nullable: true),
+                    OriginalValueHash = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -880,16 +932,16 @@ namespace CoMon.Migrations
                 name: "AbpPermissions",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    IsGranted = table.Column<bool>(type: "boolean", nullable: false),
-                    Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    IsGranted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", maxLength: 21, nullable: false),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -912,14 +964,14 @@ namespace CoMon.Migrations
                 name: "AbpRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TenantId = table.Column<int>(type: "integer", nullable: true),
-                    RoleId = table.Column<int>(type: "integer", nullable: false),
-                    ClaimType = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatorUserId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: true),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -936,11 +988,11 @@ namespace CoMon.Migrations
                 name: "CoMonImages",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Data = table.Column<byte[]>(type: "bytea", maxLength: 2097152, nullable: true),
-                    MimeType = table.Column<string>(type: "text", nullable: true),
-                    AssetId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Data = table.Column<byte[]>(type: "BLOB", maxLength: 2097152, nullable: true),
+                    MimeType = table.Column<string>(type: "TEXT", nullable: true),
+                    AssetId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -957,13 +1009,14 @@ namespace CoMon.Migrations
                 name: "CoMonPackages",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Type = table.Column<int>(type: "integer", nullable: false),
-                    PingPackageSettingsId = table.Column<long>(type: "bigint", nullable: true),
-                    Guid = table.Column<Guid>(type: "uuid", nullable: false),
-                    AssetId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
+                    PingPackageSettingsId = table.Column<long>(type: "INTEGER", nullable: true),
+                    HttpPackageSettingsId = table.Column<long>(type: "INTEGER", nullable: true),
+                    Guid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    AssetId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -975,6 +1028,11 @@ namespace CoMon.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_CoMonPackages_CoMonHttpPackageSettings_HttpPackageSettingsId",
+                        column: x => x.HttpPackageSettingsId,
+                        principalTable: "CoMonHttpPackageSettings",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_CoMonPackages_CoMonPingPackageSettings_PingPackageSettingsId",
                         column: x => x.PingPackageSettingsId,
                         principalTable: "CoMonPingPackageSettings",
@@ -985,12 +1043,12 @@ namespace CoMon.Migrations
                 name: "CoMonStatuses",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Criticality = table.Column<int>(type: "integer", nullable: true),
-                    Messages = table.Column<List<string>>(type: "text[]", nullable: true),
-                    PackageId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Time = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Criticality = table.Column<int>(type: "INTEGER", nullable: true),
+                    Messages = table.Column<string>(type: "TEXT", nullable: true),
+                    PackageId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1007,13 +1065,13 @@ namespace CoMon.Migrations
                 name: "CoMonCharts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "text", nullable: true),
-                    SubTitle = table.Column<string>(type: "text", nullable: true),
-                    Labels = table.Column<List<string>>(type: "text[]", nullable: true),
-                    Type = table.Column<int>(type: "integer", nullable: false),
-                    StatusId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    SubTitle = table.Column<string>(type: "TEXT", nullable: true),
+                    Labels = table.Column<string>(type: "TEXT", nullable: true),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
+                    StatusId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1030,12 +1088,12 @@ namespace CoMon.Migrations
                 name: "CoMonKPIs",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Value = table.Column<double>(type: "double precision", nullable: true),
-                    Unit = table.Column<string>(type: "text", nullable: true),
-                    StatusId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Value = table.Column<double>(type: "REAL", nullable: true),
+                    Unit = table.Column<string>(type: "TEXT", nullable: true),
+                    StatusId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1052,13 +1110,13 @@ namespace CoMon.Migrations
                 name: "CoMonSeries",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    VizType = table.Column<int>(type: "integer", nullable: false),
-                    XUnit = table.Column<string>(type: "text", nullable: true),
-                    YUnit = table.Column<string>(type: "text", nullable: true),
-                    ChartId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    VizType = table.Column<int>(type: "INTEGER", nullable: false),
+                    XUnit = table.Column<string>(type: "TEXT", nullable: true),
+                    YUnit = table.Column<string>(type: "TEXT", nullable: true),
+                    ChartId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1075,13 +1133,13 @@ namespace CoMon.Migrations
                 name: "CoMonDataPoints",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Time = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    Tag = table.Column<string>(type: "text", nullable: true),
-                    X = table.Column<double>(type: "double precision", nullable: true),
-                    Y = table.Column<List<double>>(type: "double precision[]", nullable: true),
-                    SeriesId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Time = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Tag = table.Column<string>(type: "TEXT", nullable: true),
+                    X = table.Column<double>(type: "REAL", nullable: true),
+                    Y = table.Column<string>(type: "TEXT", nullable: true),
+                    SeriesId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1120,7 +1178,7 @@ namespace CoMon.Migrations
                 column: "DynamicPropertyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpDynamicEntityProperties_EntityFullName_DynamicPropertyId~",
+                name: "IX_AbpDynamicEntityProperties_EntityFullName_DynamicPropertyId_TenantId",
                 table: "AbpDynamicEntityProperties",
                 columns: new[] { "EntityFullName", "DynamicPropertyId", "TenantId" },
                 unique: true);
@@ -1192,12 +1250,12 @@ namespace CoMon.Migrations
                 columns: new[] { "TenantId", "Source", "LanguageName", "Key" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpNotificationSubscriptions_NotificationName_EntityTypeNam~",
+                name: "IX_AbpNotificationSubscriptions_NotificationName_EntityTypeName_EntityId_UserId",
                 table: "AbpNotificationSubscriptions",
                 columns: new[] { "NotificationName", "EntityTypeName", "EntityId", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpNotificationSubscriptions_TenantId_NotificationName_Enti~",
+                name: "IX_AbpNotificationSubscriptions_TenantId_NotificationName_EntityTypeName_EntityId_UserId",
                 table: "AbpNotificationSubscriptions",
                 columns: new[] { "TenantId", "NotificationName", "EntityTypeName", "EntityId", "UserId" });
 
@@ -1343,7 +1401,7 @@ namespace CoMon.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpUserLoginAttempts_TenancyName_UserNameOrEmailAddress_Res~",
+                name: "IX_AbpUserLoginAttempts_TenancyName_UserNameOrEmailAddress_Result",
                 table: "AbpUserLoginAttempts",
                 columns: new[] { "TenancyName", "UserNameOrEmailAddress", "Result" });
 
@@ -1454,6 +1512,11 @@ namespace CoMon.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CoMonDashboardTiles_DashboardId",
+                table: "CoMonDashboardTiles",
+                column: "DashboardId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CoMonDataPoints_SeriesId",
                 table: "CoMonDataPoints",
                 column: "SeriesId");
@@ -1477,6 +1540,11 @@ namespace CoMon.Migrations
                 name: "IX_CoMonPackages_AssetId",
                 table: "CoMonPackages",
                 column: "AssetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CoMonPackages_HttpPackageSettingsId",
+                table: "CoMonPackages",
+                column: "HttpPackageSettingsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CoMonPackages_PingPackageSettingsId",
@@ -1579,6 +1647,9 @@ namespace CoMon.Migrations
                 name: "AbpWebhookSubscriptions");
 
             migrationBuilder.DropTable(
+                name: "CoMonDashboardTiles");
+
+            migrationBuilder.DropTable(
                 name: "CoMonDataPoints");
 
             migrationBuilder.DropTable(
@@ -1603,6 +1674,9 @@ namespace CoMon.Migrations
                 name: "AbpWebhookEvents");
 
             migrationBuilder.DropTable(
+                name: "CoMonDashboards");
+
+            migrationBuilder.DropTable(
                 name: "CoMonSeries");
 
             migrationBuilder.DropTable(
@@ -1625,6 +1699,9 @@ namespace CoMon.Migrations
 
             migrationBuilder.DropTable(
                 name: "CoMonAssets");
+
+            migrationBuilder.DropTable(
+                name: "CoMonHttpPackageSettings");
 
             migrationBuilder.DropTable(
                 name: "CoMonPingPackageSettings");

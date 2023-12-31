@@ -35,6 +35,7 @@ RUN dotnet publish "./CoMon.Web.Host.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 
 FROM base AS final
 WORKDIR /app
+RUN mkdir db && chown -R app:app /app/db
 USER root
 RUN apt-get update && apt-get install -y iputils-ping
 USER app

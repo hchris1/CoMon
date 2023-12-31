@@ -7,12 +7,12 @@ namespace CoMon.EntityFrameworkCore
     {
         public static void Configure(DbContextOptionsBuilder<CoMonDbContext> builder, string connectionString)
         {
-            builder.UseNpgsql(connectionString);
+            builder.UseSqlite(connectionString);
         }
 
         public static void Configure(DbContextOptionsBuilder<CoMonDbContext> builder, DbConnection connection)
         {
-            builder.UseNpgsql(connection);
+            builder.UseSqlite(connection);
         }
     }
 }

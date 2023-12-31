@@ -185,7 +185,7 @@ namespace CoMon.Packages
 
             entries = [.. entries.OrderBy(s => s.Time)];
 
-            if (entries.Count != 0 && addVirtualStatusAtUtcNow)
+            if (entries.Count() != 0 && addVirtualStatusAtUtcNow)
                 entries.Add(new TimeCriticality(utcNow, entries.Last().Criticality));
 
             return entries;

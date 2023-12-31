@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CoMon.EntityFrameworkCore
 {
     [DependsOn(
-        typeof(CoMonCoreModule), 
+        typeof(CoMonCoreModule),
         typeof(AbpZeroCoreEntityFrameworkCoreModule))]
     public class CoMonEntityFrameworkModule : AbpModule
     {
@@ -49,12 +49,9 @@ namespace CoMon.EntityFrameworkCore
                 var dbContextResolver = scope.Resolve<IDbContextResolver>();
                 var context = dbContextResolver.Resolve<CoMonDbContext>(Configuration.DefaultNameOrConnectionString, null);
 
-                if (context.Database.IsNpgsql())
-                {
-                    Logger.Info("Applying migrations...");
-                    context.Database.Migrate();
-                    Logger.Info("Finished migrations");
-                }
+                Logger.Info("Applying migrations...");
+                context.Database.Migrate();
+                Logger.Info("Finished migrations");
             }
 
 

@@ -32,12 +32,8 @@ namespace CoMon.EntityFrameworkCore
         public CoMonDbContext(DbContextOptions<CoMonDbContext> options)
             : base(options)
         {
-            AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
-        // add these lines to override max length of property
-        // we should set max length smaller than the PostgreSQL allowed size (10485760)
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -45,6 +41,11 @@ namespace CoMon.EntityFrameworkCore
             modelBuilder.Entity<ApplicationLanguageText>()
                 .Property(p => p.Value)
                 .HasMaxLength(100); // any integer that is smaller than 10485760
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+                foreach (var property in entityType.GetProperties())
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                        property.SetValueConverter(new UtcDateTimeConverter());
         }
     }
 }
