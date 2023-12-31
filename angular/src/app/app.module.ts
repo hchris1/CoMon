@@ -91,6 +91,7 @@ import {StatisticsDashboardTileComponent} from './dashboard/statistics-dashboard
 import {StatisticsDashboardTimelineComponent} from './dashboard/statistics-dashboards/statistics-dashboard-timeline/statistics-dashboard-timeline.component';
 import {LoadingAnimationComponent} from './common/loading-animation/loading-animation.component';
 import {HeaderAboutComponent} from './layout/header-about.component';
+import {CriticalityIndicatorComponent} from './common/criticality-indicator/criticality-indicator.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +168,7 @@ import {HeaderAboutComponent} from './layout/header-about.component';
     StatisticsDashboardTimelineComponent,
     LoadingAnimationComponent,
     HeaderAboutComponent,
+    CriticalityIndicatorComponent,
   ],
   imports: [
     CommonModule,

@@ -14,6 +14,7 @@ import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
 import {
   AssetDto,
   AssetServiceProxy,
+  Criticality,
   PackageDto,
 } from '@shared/service-proxies/service-proxies';
 import {Subscription} from 'rxjs';
@@ -35,6 +36,7 @@ export class AssetSummaryComponent
   @Output() assetDeleted = new EventEmitter();
 
   asset: AssetDto;
+  worstCriticality: Criticality;
 
   statusChangeSubscription: Subscription;
   connectionEstablishedSubscription: Subscription;
@@ -65,6 +67,7 @@ export class AssetSummaryComponent
   loadAsset() {
     this._assetService.get(this.assetId).subscribe(asset => {
       this.asset = asset;
+      this.calculateWorstCriticality();
       this._changeDetector.detectChanges();
     });
   }
@@ -88,11 +91,8 @@ export class AssetSummaryComponent
     this.assetClicked.emit(asset);
   }
 
-  getEmoji() {
-    const worstCriticality = DynamicStylesHelper.getWorstCriticality(
-      this.asset
-    );
-    return DynamicStylesHelper.getEmoji(worstCriticality);
+  calculateWorstCriticality() {
+    this.worstCriticality = DynamicStylesHelper.getWorstCriticality(this.asset);
   }
 
   deleteAssetClicked() {

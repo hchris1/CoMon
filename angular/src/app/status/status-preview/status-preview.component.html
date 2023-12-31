@@ -9,8 +9,11 @@
     (click)="openStatusModal()"
   >
     <div class="row justify-content-between">
+      <app-criticality-indicator
+        [criticality]="statusPreview.criticality"
+      ></app-criticality-indicator>
       <p class="col card-title" style="float: none">
-        {{ getEmoji() }} {{ statusPreview.package?.name }}
+        {{ statusPreview.package?.name }}
       </p>
       <p
         class="col text-right card-subtitle text-muted pt-2"

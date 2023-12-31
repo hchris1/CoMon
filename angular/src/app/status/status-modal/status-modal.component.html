@@ -4,9 +4,16 @@
     style="border-bottom: none; display: block"
     [style.background]="getBackgroundStyle()"
   >
-    <h4 class="modal-title pull-left">
-      {{ getEmoji() }} {{ status.package.name }}
-    </h4>
+    <div class="row modal-title pull-left">
+      <app-criticality-indicator
+        [criticality]="status.criticality"
+        class="col-auto pr-0"
+        style="padding-top: 0.1rem"
+      ></app-criticality-indicator>
+      <h4 class="col-auto">
+        {{ status.package.name }}
+      </h4>
+    </div>
     <p style="position: absolute; top: 0; right: 1.5rem; margin: 1.5rem">
       {{ status.time.format('DD.MM.YYYY HH:mm:ss') }}
     </p>

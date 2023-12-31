@@ -61,10 +61,6 @@ export class StatusPreviewComponent extends AppComponentBase {
     clearInterval(this.statisticInterval);
   }
 
-  getEmoji() {
-    return DynamicStylesHelper.getEmoji(this.statusPreview.criticality);
-  }
-
   loadStatistic() {
     this._packageService
       .getStatistic(this.statusPreview.package.id, 24)

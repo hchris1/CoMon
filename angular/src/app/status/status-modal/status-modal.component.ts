@@ -73,10 +73,6 @@ export class StatusModalComponent implements OnInit, OnDestroy {
     return DynamicStylesHelper.getHistoricBackgroundClass(this.status.isLatest);
   }
 
-  getEmoji() {
-    return DynamicStylesHelper.getEmoji(this.status.criticality);
-  }
-
   switchModal(statusPreview: StatusPreviewDto) {
     this.statusId = statusPreview.id;
     this.status = undefined;

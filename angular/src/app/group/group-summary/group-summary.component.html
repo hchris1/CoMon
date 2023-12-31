@@ -6,7 +6,10 @@
 >
   <div class="card-header">
     <div class="row">
-      <p class="col card-title">{{ getEmoji() }} {{ group.name }}</p>
+      <app-criticality-indicator
+        [criticality]="group.worstStatus?.criticality"
+      ></app-criticality-indicator>
+      <p class="col card-title">{{ group.name }}</p>
       <button
         class="col-1 btn btn-circle btn-link text"
         style="padding: 0 !important"

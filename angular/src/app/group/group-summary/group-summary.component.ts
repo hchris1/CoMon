@@ -93,10 +93,6 @@ export class GroupSummaryComponent
     );
   }
 
-  getEmoji() {
-    return DynamicStylesHelper.getEmoji(this.group.worstStatus?.criticality);
-  }
-
   ngOnDestroy(): void {
     this.statusChangeSubscription.unsubscribe();
     this.connectionEstablishedSubscription.unsubscribe();

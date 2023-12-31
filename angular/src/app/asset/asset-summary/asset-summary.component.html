@@ -6,7 +6,12 @@
 >
   <div class="card-header">
     <div class="row">
-      <p class="col card-title">{{ getEmoji() }} {{ asset.name }}</p>
+      <app-criticality-indicator
+        [criticality]="worstCriticality"
+      ></app-criticality-indicator>
+      <p class="col card-title">
+        {{ asset.name }}
+      </p>
       <button
         class="col-1 btn btn-circle btn-link text"
         style="padding: 0 !important"
