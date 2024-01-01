@@ -10,7 +10,6 @@ using Castle.Facilities.Logging;
 using Abp.AspNetCore;
 using Abp.AspNetCore.Mvc.Antiforgery;
 using Abp.Castle.Logging.Log4Net;
-using Abp.Extensions;
 using CoMon.Configuration;
 using CoMon.Identity;
 using Abp.AspNetCore.SignalR.Hubs;
@@ -41,8 +40,6 @@ namespace CoMon.Web.Host.Startup
 
         public void ConfigureServices(IServiceCollection services)
         {
-            AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
-
             //MVC
             services.AddControllersWithViews(
                 options => { options.Filters.Add(new AbpAutoValidateAntiforgeryTokenAttribute()); }
