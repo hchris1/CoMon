@@ -9,12 +9,13 @@ RUN pnpm install
 RUN pnpm run build
 
 # Build ASP.NET Core
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 EXPOSE 8080
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG TARGETARCH
 ARG BUILD_CONFIGURATION=Release
 COPY ./ /src
 WORKDIR /src
@@ -24,14 +25,14 @@ COPY ["aspnet-core/src/CoMon.Web.Core/CoMon.Web.Core.csproj", "aspnet-core/src/C
 COPY ["aspnet-core/src/CoMon.Application/CoMon.Application.csproj", "aspnet-core/src/CoMon.Application/"]
 COPY ["aspnet-core/src/CoMon.Core/CoMon.Core.csproj", "aspnet-core/src/CoMon.Core/"]
 COPY ["aspnet-core/src/CoMon.EntityFrameworkCore/CoMon.EntityFrameworkCore.csproj", "aspnet-core/src/CoMon.EntityFrameworkCore/"]
-RUN dotnet restore "./aspnet-core/src/CoMon.Web.Host/CoMon.Web.Host.csproj"
+RUN dotnet restore "./aspnet-core/src/CoMon.Web.Host/CoMon.Web.Host.csproj" -a $TARGETARCH
 COPY . .
 WORKDIR "/src/aspnet-core/src/CoMon.Web.Host"
-RUN dotnet build "./CoMon.Web.Host.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./CoMon.Web.Host.csproj" -c $BUILD_CONFIGURATION -o /app/build -a $TARGETARCH
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CoMon.Web.Host.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./CoMon.Web.Host.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false -a $TARGETARCH
 
 FROM base AS final
 WORKDIR /app
