@@ -1,5 +1,5 @@
 # Build Angular
-FROM node:20-alpine AS frontend
+FROM --platform=amd64 node:20-alpine AS frontend
 
 WORKDIR /app
 COPY ./angular /app/
@@ -9,12 +9,12 @@ RUN pnpm install
 RUN pnpm run build
 
 # Build ASP.NET Core
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 EXPOSE 8080
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 COPY ./ /src
 WORKDIR /src
