@@ -9,12 +9,12 @@ RUN pnpm install
 RUN pnpm run build
 
 # Build ASP.NET Core
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
 USER app
 WORKDIR /app
 EXPOSE 8080
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 ARG TARGETARCH
 ARG BUILD_CONFIGURATION=Release
 COPY ./ /src
@@ -38,7 +38,7 @@ FROM base AS final
 WORKDIR /app
 RUN mkdir db && chown -R app:app /app/db
 USER root
-RUN apt-get update && apt-get install -y iputils-ping
+RUN apk add iputils-ping icu-libs
 USER app
 
 COPY --from=publish /app/publish .
