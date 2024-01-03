@@ -32,17 +32,16 @@ RUN dotnet build "./CoMon.Web.Host.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CoMon.Web.Host.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false -a $TARGETARCH
+RUN dotnet publish "./CoMon.Web.Host.csproj" -c $BUILD_CONFIGURATION -o /app/publish -a $TARGETARCH --self-contained true
 
 FROM base AS final
 WORKDIR /app
-RUN mkdir db && chown -R app:app /app/db
 USER root
+RUN mkdir /data && chown -R app:app /data
 RUN apk add iputils-ping icu-libs
 USER app
 
 COPY --from=publish /app/publish .
 COPY --from=frontend /app/dist /app/wwwroot
 
-
-ENTRYPOINT ["dotnet", "CoMon.Web.Host.dll"]
+ENTRYPOINT ["./CoMon.Web.Host"]
