@@ -38,7 +38,7 @@ FROM base AS final
 WORKDIR /app
 USER root
 RUN mkdir /data && chown -R app:app /data
-RUN apk add iputils-ping icu-libs
+RUN apk add iputils-ping icu-libs icu-data-full
 USER app
 
 COPY --from=publish /app/publish .
