@@ -1,4 +1,4 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using Abp.Domain.Entities;
 using CoMon.Assets;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CoMon.Groups
 {
     [Table("CoMonGroups")]
-    public class Group : FullAuditedEntity<long>
+    public class Group : Entity<long>
     {
         public const int MaxNameLength = 256;
 
