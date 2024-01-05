@@ -5,7 +5,7 @@ A simple tool for Condition Monitoring.
 > [!IMPORTANT]  
 > This project was primarily developed for learning purposes. It is unknown how the future of this project will look like.
 
-![overview](./_screenshots/banner.png)
+![banner](./_screenshots/banner.png)
 
 ## Features
 
@@ -15,6 +15,8 @@ A simple tool for Condition Monitoring.
 - Create dashboards from groups, assets and packages
 - White- and darkmode
 
+![create-asset](./_screenshots/create-asset.gif)
+
 ## Installation
 
 #### Docker
@@ -23,7 +25,7 @@ A simple tool for Condition Monitoring.
 docker run -d --restart=always -p 8080:8080 -v comon:/data --name comon hchris1234/comon:latest
 ```
 
-CoMon will be available at `http://localhost:8080`.
+CoMon will be available at `http://localhost:8080`. You can login with the default user `admin` and password `123qwe`.
 
 #### Home Assistant
 
