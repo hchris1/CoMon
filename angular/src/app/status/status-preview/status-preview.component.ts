@@ -47,6 +47,8 @@ export class StatusPreviewComponent extends AppComponentBase {
   }
 
   ngOnInit(): void {
+    if (!this.showTimeline) return;
+
     this.loadStatistic();
 
     this.statisticInterval = setInterval(
