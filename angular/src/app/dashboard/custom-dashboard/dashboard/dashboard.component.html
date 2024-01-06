@@ -14,7 +14,12 @@
           </div>
           <div class="col-auto" *ngIf="editName">
             <form [formGroup]="editFormGroup">
-              <input type="text" class="form-control" formControlName="name" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                autocomplete="off"
+              />
             </form>
           </div>
           <div class="col-auto" *ngIf="editMode && !editName">
