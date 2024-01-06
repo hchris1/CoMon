@@ -46,6 +46,7 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   // Pagination
   maxResultCount = 10;
   skipCount = 0;
+  currentPage = 1;
 
   // Query params
   assetId: number;
@@ -190,7 +191,7 @@ export class StatusTableComponent implements OnInit, OnDestroy {
     }
 
     this.updateQueryParams();
-
+    this.resetPagination();
     this.loadStatuses();
   }
 
@@ -207,18 +208,27 @@ export class StatusTableComponent implements OnInit, OnDestroy {
 
   setLatestOnly(latestOnly: boolean) {
     this.latestOnly = latestOnly;
+    this.resetPagination();
     this.loadStatuses();
   }
 
   setCriticality(criticality: Criticality) {
     this.criticality = criticality;
+    this.resetPagination();
     this.loadStatuses();
   }
 
   changePage(event: PageChangedEvent): void {
+    if (event.page === this.currentPage) return;
+
     this.skipCount = (event.page - 1) * event.itemsPerPage;
     this.maxResultCount = event.itemsPerPage;
     this.loadStatuses();
+  }
+
+  resetPagination() {
+    this.skipCount = 0;
+    this.currentPage = 1;
   }
 }
 
