@@ -28,6 +28,9 @@ namespace CoMon.Packages
                     ValidateHttpSettings(input.HttpPackageSettings);
                     break;
 
+                case PackageType.External:
+                    break;
+
                 default:
                     throw new AbpValidationException("Unknown PackageType.");
             }
