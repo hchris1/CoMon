@@ -5,17 +5,23 @@ A simple tool for Condition Monitoring.
 > [!IMPORTANT]  
 > This project was primarily developed for learning purposes. It is unknown how the future of this project will look like.
 
-![banner](./_screenshots/banner.png)
-
 ## Features
 
-- Create assets with monitoring packages to monitor ping and http(s) endpoints
-- Cluster assets to groups
-- Receive package status updates via the [CoMon Python Package](https://github.com/hchris1/CoMonPython)
-- Create dashboards from groups, assets and packages
-- White- and darkmode
+#### Create assets with packages to monitor pings, http(s) endpoints or results from the [CoMon Python Package](https://github.com/hchris1/Python-CoMon)
 
 ![create-asset](./_screenshots/create-asset.gif)
+
+#### Create groups to cluster assets
+
+![create-group](./_screenshots/create-group.gif)
+
+#### See status results in table
+
+![table](./_screenshots/table.gif)
+
+#### Dashboards
+
+![dashboard](./_screenshots/dashboard.gif)
 
 ## Installation
 
