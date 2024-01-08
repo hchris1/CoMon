@@ -34,6 +34,7 @@ namespace CoMon.Dashboards
                 .GetAll()
                 .Where(d => d.Id == id)
                 .Include(d => d.Tiles)
+                .AsSplitQuery()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 
@@ -45,6 +46,7 @@ namespace CoMon.Dashboards
             var dashboards = await _dashboardRepository
                 .GetAll()
                 .Include(d => d.Tiles)
+                .AsSplitQuery()
                 .ToListAsync();
 
             return dashboards.Select(d => new DashboardPreviewDto()
@@ -94,6 +96,7 @@ namespace CoMon.Dashboards
                 .GetAll()
                 .Where(d => d.Id == id)
                 .Include(d => d.Tiles)
+                .AsSplitQuery()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 
@@ -130,6 +133,7 @@ namespace CoMon.Dashboards
                 .GetAll()
                 .Where(d => d.Id == id)
                 .Include(d => d.Tiles)
+                .AsSplitQuery()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 
@@ -150,17 +154,20 @@ namespace CoMon.Dashboards
                     .GetAll()
                     .OrderBy(g => g.Name)
                     .Include(a => a.Group.Parent.Parent)
+                    .AsSplitQuery()
                     .ToListAsync()),
                 Groups = _mapper.Map<List<GroupPreviewDto>>(await _groupRepository
                     .GetAll()
                     .OrderBy(g => g.Name)
                     .Include(g => g.Parent.Parent)
+                    .AsSplitQuery()
                     .ToListAsync()),
                 Packages = _mapper.Map<List<PackagePreviewDto>>(await _packageRepository
                     .GetAll()
                     .OrderBy(g => g.Name)
                     .Include(p => p.Asset)
                     .ThenInclude(a => a.Group.Parent.Parent)
+                    .AsSplitQuery()
                     .ToListAsync())
             };
         }
@@ -171,6 +178,7 @@ namespace CoMon.Dashboards
                 .GetAll()
                 .Where(d => d.Id == id)
                 .Include(d => d.Tiles)
+                .AsSplitQuery()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 
@@ -199,6 +207,7 @@ namespace CoMon.Dashboards
                 .GetAll()
                 .Where(d => d.Id == id)
                 .Include(d => d.Tiles)
+                .AsSplitQuery()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 

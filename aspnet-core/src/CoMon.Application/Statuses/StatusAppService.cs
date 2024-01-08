@@ -41,6 +41,7 @@ namespace CoMon.Statuses
                 .Include(s => s.Charts)
                 .ThenInclude(c => c.Series)
                 .ThenInclude(s => s.DataPoints)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Status not found.");
 
@@ -66,6 +67,7 @@ namespace CoMon.Statuses
                 .GetAll()
                 .Include(s => s.Package)
                 .Where(s => s.Id == id)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Status not found.");
 
@@ -106,11 +108,13 @@ namespace CoMon.Statuses
             var assets = await _assetRepository
                 .GetAll()
                 .Include(a => a.Group.Parent.Parent)
+                .AsSplitQuery()
                 .ToListAsync();
 
             var groups = await _groupRepository
                 .GetAll()
                 .Include(g => g.Parent.Parent)
+                .AsSplitQuery()
                 .ToListAsync();
 
             return new StatusTableOptionsDto()
@@ -173,6 +177,7 @@ namespace CoMon.Statuses
                 .OrderByDescending(s => s.Time)
                 .Skip(request.SkipCount)
                 .Take(request.MaxResultCount)
+                .AsSplitQuery()
                 .ToList();
 
             foreach (var status in statuses)
@@ -195,6 +200,7 @@ namespace CoMon.Statuses
                 .GroupBy(s => s.Package)
                 .OrderBy(p => p.Key.Name)
                 .Select(g => g.OrderByDescending(s => s.Time).FirstOrDefault())
+                .AsSplitQuery()
                 .SingleOrDefaultAsync();
 
             return _objectMapper.Map<StatusPreviewDto>(status);

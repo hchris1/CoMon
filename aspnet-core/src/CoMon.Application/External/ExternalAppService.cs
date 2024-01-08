@@ -24,6 +24,7 @@ namespace CoMon.External
                 .GetAll()
                 .Include(p => p.Asset)
                 .Where(p => p.Guid == packageGuid)
+                .AsSplitQuery()
                 .SingleOrDefault()
                 ?? throw new EntityNotFoundException($"Package not found for GUID {packageGuid}.");
 

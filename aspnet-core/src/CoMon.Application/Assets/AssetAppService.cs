@@ -32,6 +32,7 @@ namespace CoMon.Assets
                 .ThenInclude(p => p.Statuses
                     .OrderByDescending(s => s.Time)
                     .Take(1))
+                .AsSplitQuery()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Asset not found.");
 
@@ -43,6 +44,7 @@ namespace CoMon.Assets
             var assets = await _assetRepository
                     .GetAll()
                     .Include(a => a.Group.Parent.Parent)
+                    .AsSplitQuery()
                     .ToListAsync();
 
             return _objectMapper.Map<List<AssetPreviewDto>>(assets);
@@ -95,6 +97,7 @@ namespace CoMon.Assets
                 .GetAll()
                 .Include(a => a.Group)
                 .Where(a => a.Id == id)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Asset not found.");
 
@@ -120,6 +123,7 @@ namespace CoMon.Assets
                 .GetAll()
                 .Where(a => a.Id == id)
                 .Include(a => a.Images)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Asset not found.");
 

@@ -42,6 +42,7 @@ namespace CoMon.Packages.Workers
                         .OrderByDescending(s => s.Time)
                         .Take(1))
                     .Where(p => p.Type == PackageType.Ping)
+                    .AsSplitQuery()
                     .ToListAsync();
 
             foreach (var package in packages)
