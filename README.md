@@ -9,11 +9,11 @@ A simple tool for Condition Monitoring.
 
 #### Create assets with packages to monitor pings, http(s) endpoints or results from the [CoMon Python Package](https://github.com/hchris1/Python-CoMon)
 
-![create-asset](./_screenshots/create-asset.gif)
+![asset](./_screenshots/asset.gif)
 
 #### Create groups to cluster assets
 
-![create-group](./_screenshots/create-group.gif)
+![group](./_screenshots/group.gif)
 
 #### See status results in table
 
