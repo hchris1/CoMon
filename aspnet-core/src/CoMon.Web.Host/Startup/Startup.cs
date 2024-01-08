@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,18 +55,10 @@ namespace CoMon.Web.Host.Startup
 
             services.AddSignalR();
 
-            // Configure CORS for angular2 UI
             services.AddCors(
                 options => options.AddPolicy(
                     _defaultCorsPolicyName,
                     builder => builder
-                        //.WithOrigins(
-                        //    // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
-                        //    _appConfiguration["App:CorsOrigins"]
-                        //        .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                        //        .Select(o => o.RemovePostFix("/"))
-                        //        .ToArray()
-                        //)
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .SetIsOriginAllowed(_ => true)
