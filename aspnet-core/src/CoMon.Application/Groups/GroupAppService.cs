@@ -53,6 +53,7 @@ namespace CoMon.Groups
                 .Include(g => g.Parent.Parent)
                 .Include(g => g.SubGroups)
                 .Include(g => g.Assets)
+                .AsSplitQuery()
                 .SingleOrDefaultAsync();
 
             var groupDto = new GroupDto
@@ -90,6 +91,7 @@ namespace CoMon.Groups
             var groups = await _groupRepository
                 .GetAll()
                 .Include(g => g.Parent.Parent)
+                .AsSplitQuery()
                 .ToListAsync();
 
             return _objectMapper.Map<List<GroupPreviewDto>>(groups);
@@ -142,6 +144,7 @@ namespace CoMon.Groups
                 .GetAll()
                 .Include(g => g.Parent)
                 .Where(g => g.Id == id)
+                .AsSplitQuery()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Group not found.");
 
@@ -168,6 +171,7 @@ namespace CoMon.Groups
                 .ThenInclude(p => p.Statuses
                     .OrderByDescending(s => s.Time)
                     .Take(1))
+                .AsSplitQuery()
                 .SingleOrDefaultAsync() ?? throw new EntityNotFoundException("Group not found");
 
 

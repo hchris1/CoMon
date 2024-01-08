@@ -38,6 +38,7 @@ namespace CoMon.Notifications
                             .Where(s => s.Time < status.Time)
                             .OrderByDescending(s => s.Time)
                             .Take(1))
+                        .AsSplitQuery()
                         .FirstOrDefaultAsync();
                 uow.Complete();
 

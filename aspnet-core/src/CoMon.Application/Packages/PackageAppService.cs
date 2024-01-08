@@ -34,6 +34,7 @@ namespace CoMon.Packages
                     .OrderByDescending(s => s.Time)
                     .Take(1))
                 .Where(p => p.Id == id)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Package not found"));
         }
@@ -46,9 +47,9 @@ namespace CoMon.Packages
                 .Include(p => p.Asset)
                 .ThenInclude(a => a.Group.Parent.Parent)
                 .Where(p => p.Id == id)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync()
-                ?? throw new EntityNotFoundException("Package not found")
-                );
+                ?? throw new EntityNotFoundException("Package not found"));
         }
 
         public async Task<long> Create(CreatePackageDto input)
