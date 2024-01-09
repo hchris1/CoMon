@@ -11,9 +11,7 @@ namespace CoMon.Notifications
 
         public static HaSensor CreateCountSensor(MqttClient mqttClient, string name, string id, int count)
         {
-            var sensor = new HaSensor(mqttClient, name, id, CreateHaDevice(), "", count.ToString(), "mdi:counter");
-            sensor.Unit = "items";
-            return sensor;
+            return new HaSensor(mqttClient, name, id, CreateHaDevice(), "", count.ToString(), "mdi:counter", "items");
         }
 
         public static string CreatePackageName(long id, string name)

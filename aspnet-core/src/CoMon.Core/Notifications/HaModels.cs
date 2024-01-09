@@ -34,21 +34,23 @@ namespace CoMon.Notifications
 
     public class HaSensor : HaEntity
     {
-        public string Value { get; set; } = "";
+        public string DeviceClass { get; set; } = "";
         public string Icon { get; set; } = "";
         public string Unit { get; set; } = "";
-        public string DeviceClass { get; set; } = "";
+        public string Value { get; set; } = "";
 
-        private readonly string _stateTopic;
         private readonly string _configTopic;
+        private readonly string _stateTopic;
 
-        public HaSensor(MqttClient mqttClient, string name, string id, HaDevice haDevice, string deviceClass, string value, string icon) : base(mqttClient, name, id, haDevice)
+        public HaSensor(MqttClient mqttClient, string name, string id, HaDevice haDevice, string deviceClass, 
+            string value, string icon, string unit = "") : base(mqttClient, name, id, haDevice)
         {
-            _stateTopic = $"homeassistant/sensor/{_id}/state";
             _configTopic = $"homeassistant/sensor/{_id}/config";
+            _stateTopic = $"homeassistant/sensor/{_id}/state";
             DeviceClass = deviceClass;
-            Value = value;
             Icon = icon;
+            Unit = unit;
+            Value = value;
         }
 
         public override async Task PublishState()
@@ -81,7 +83,6 @@ namespace CoMon.Notifications
               "unique_id":"{{_id}}",
               "platform":"mqtt"
             }
-    
             """);
         }
     }
