@@ -11,6 +11,7 @@ using CoMon.Authorization.Users;
 using CoMon.Configuration;
 using CoMon.Localization;
 using CoMon.MultiTenancy;
+using CoMon.Notifications;
 using CoMon.Packages.Workers;
 using CoMon.Retention;
 using CoMon.Timing;
@@ -55,6 +56,7 @@ namespace CoMon
             workManager.Add(IocManager.Resolve<PingWorker>());
             workManager.Add(IocManager.Resolve<HttpWorker>());
             workManager.Add(IocManager.Resolve<RetentionWorker>());
+            IocManager.Resolve<HaSender>();
         } 
     }
 }
