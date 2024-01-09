@@ -7,6 +7,7 @@ using CoMon.Assets;
 using CoMon.Groups.Dtos;
 using CoMon.Statuses.Dtos;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -122,6 +123,28 @@ namespace CoMon.Groups
 
         public async Task Delete(long id)
         {
+            var group = await _groupRepository
+                .GetAll()
+                .Where(g => g.Id == id)
+                .Include(g => g.Parent.Parent)
+                .Include(g => g.SubGroups)
+                .Include(g => g.Assets)
+                .AsSplitQuery()
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Group not found.");
+
+            foreach (var subGroup in group.SubGroups.ToList())
+            {
+                subGroup.Parent = group.Parent;
+                await _groupRepository.UpdateAsync(subGroup);
+            }
+
+            foreach (var asset in group.Assets.ToList())
+            {
+                asset.Group = group.Parent;
+                await _assetRepository.UpdateAsync(asset);
+            }
+
             await _groupRepository.DeleteAsync(id);
         }
 
