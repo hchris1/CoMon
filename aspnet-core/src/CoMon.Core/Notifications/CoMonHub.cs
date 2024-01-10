@@ -22,7 +22,7 @@ namespace CoMon.Notifications
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         };
 
-        public async Task SendStatusUpdate(StatusUpdateDto update)
+        public async Task ProcessStatusUpdate(StatusUpdateDto update)
         {
             var jsonString = JsonSerializer.Serialize(update, _jsonSerializerOptions);
             await HubContext.Clients.All.SendAsync("CoMon.Status.Update", jsonString);
