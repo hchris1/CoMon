@@ -79,10 +79,10 @@ namespace CoMon.Groups
 
             var groupDto = _objectMapper.Map<GroupPreviewDto>(group);
 
-            groupDto.WorstStatus = (await GetLatestStatusesFromGroup(id))
+            groupDto.WorstStatus = _objectMapper.Map<StatusPreviewDto>((await GroupAppServiceHelper.GetLatestStatusesFromGroup(_groupRepository, id))
                 .OrderByDescending(s => s.Criticality)
                 .ThenByDescending(s => s.Time)
-                .FirstOrDefault();
+                .FirstOrDefault());
 
             return groupDto;
         }
@@ -181,29 +181,6 @@ namespace CoMon.Groups
                 ?? throw new EntityNotFoundException("Group not found.");
 
             await _groupRepository.UpdateAsync(group);
-        }
-
-        private async Task<List<StatusPreviewDto>> GetLatestStatusesFromGroup(long groupId)
-        {
-            var group = await _groupRepository
-                .GetAll()
-                .Where(g => g.Id == groupId)
-                .Include(g => g.SubGroups)
-                .Include(g => g.Assets)
-                .ThenInclude(a => a.Packages)
-                .ThenInclude(p => p.Statuses
-                    .OrderByDescending(s => s.Time)
-                    .Take(1))
-                .AsSplitQuery()
-                .SingleOrDefaultAsync() ?? throw new EntityNotFoundException("Group not found");
-
-
-            var statuses = _objectMapper.Map<List<StatusPreviewDto>>(group.Assets.Select(a => a.Packages).SelectMany(x => x).Select(p => p.Statuses).SelectMany(x => x));
-
-            foreach (var subGroup in group.SubGroups)
-                statuses.AddRange(await GetLatestStatusesFromGroup(subGroup.Id));
-
-            return statuses;
         }
     }
 }
