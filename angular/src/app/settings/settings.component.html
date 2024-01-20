@@ -10,53 +10,10 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">
-                {{ 'Settings.RetentionDaysTitle' | localize }}
-              </h3>
-            </div>
-            <div class="card-body">
-              <form [formGroup]="retentionFormGroup">
-                <div class="form-group">
-                  <label for="retentionDays">{{
-                    'Settings.RetentionDaysDescription' | localize
-                  }}</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="retentionDays"
-                    formControlName="retentionDays"
-                    [class.is-invalid]="
-                      retentionFormGroup.get('retentionDays').invalid &&
-                      (retentionFormGroup.get('retentionDays').dirty ||
-                        retentionFormGroup.get('retentionDays').touched)
-                    "
-                    autocomplete="off"
-                  />
-                </div>
-              </form>
-            </div>
-            <div class="card-footer">
-              <div class="row" style="justify-content: space-between">
-                <button
-                  type="button"
-                  class="col-auto btn btn-primary"
-                  (click)="saveRetentionPolicyClicked()"
-                  [disabled]="retentionFormGroup.get('retentionDays').invalid"
-                >
-                  {{ 'Save' | localize }}
-                </button>
-                <button
-                  type="button"
-                  class="col-auto btn btn-danger ml-1"
-                  (click)="deleteAllStatusesClicked()"
-                >
-                  {{ 'Settings.DeleteAllStatuses' | localize }}
-                </button>
-              </div>
-            </div>
-          </div>
+          <app-retention-setting-tile></app-retention-setting-tile>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <app-open-ai-key-setting-tile></app-open-ai-key-setting-tile>
         </div>
       </div>
     </div>
