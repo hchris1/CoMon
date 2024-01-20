@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AssistantModalComponent} from '@app/common/assistant-modal/assistant-modal.component';
 import {CreateAssetModalComponent} from '@app/edit/create-asset-modal/create-asset-modal.component';
 import {CreateGroupModalComponent} from '@app/edit/create-group-modal/create-group-modal.component';
 import {appModuleAnimation} from '@shared/animations/routerTransition';
@@ -32,6 +33,7 @@ export class GroupComponent {
 
   createGroupModalRef: BsModalRef;
   createAssetModalRef: BsModalRef;
+  assistantModalRef: BsModalRef;
 
   constructor(
     route: ActivatedRoute,
@@ -190,5 +192,20 @@ export class GroupComponent {
 
   deactivateEditMode() {
     this.editMode = false;
+  }
+
+  openAssistant() {
+    this.assistantModalRef = this._modalService.show(AssistantModalComponent, {
+      class: 'modal-lg',
+      initialState: {
+        isRoot: this.isRoot,
+        groupId: this.groupId,
+      },
+    });
+    this.assistantModalRef.content.closeBtnName = 'Close';
+
+    this.assistantModalRef.content.onClose.subscribe(() => {
+      this.assistantModalRef.hide();
+    });
   }
 }
