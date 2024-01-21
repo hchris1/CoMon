@@ -200,6 +200,11 @@
       </div>
     </section>
   </div>
+
+  <app-assistant-button
+    style="position: fixed; bottom: 1rem; right: 1rem"
+    (clicked)="openAssistant()"
+  ></app-assistant-button>
 </div>
 
 <div *ngIf="!group" style="text-align: center; padding-top: 40vh">

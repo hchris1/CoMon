@@ -92,6 +92,10 @@ import {StatisticsDashboardTimelineComponent} from './dashboard/statistics-dashb
 import {LoadingAnimationComponent} from './common/loading-animation/loading-animation.component';
 import {HeaderAboutComponent} from './layout/header-about.component';
 import {CriticalityIndicatorComponent} from './common/criticality-indicator/criticality-indicator.component';
+import {RetentionSettingTileComponent} from './settings/retention-setting-tile/retention-setting-tile.component';
+import {OpenAiKeySettingTileComponent} from './settings/open-ai-key-setting-tile/open-ai-key-setting-tile.component';
+import {AssistantModalComponent} from './common/assistant-modal/assistant-modal.component';
+import {AssistantButtonComponent} from './common/assistant-button/assistant-button.component';
 
 @NgModule({
   declarations: [
@@ -169,6 +173,10 @@ import {CriticalityIndicatorComponent} from './common/criticality-indicator/crit
     LoadingAnimationComponent,
     HeaderAboutComponent,
     CriticalityIndicatorComponent,
+    RetentionSettingTileComponent,
+    OpenAiKeySettingTileComponent,
+    AssistantModalComponent,
+    AssistantButtonComponent,
   ],
   imports: [
     CommonModule,

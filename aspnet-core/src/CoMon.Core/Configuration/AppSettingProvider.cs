@@ -12,7 +12,11 @@ namespace CoMon.Configuration
                 new SettingDefinition(AppSettingNames.RetentionDays,
                     "30",
                     scopes: SettingScopes.Application
-                )
+                ),
+                new SettingDefinition(AppSettingNames.OpenAiKey,
+                    "",
+                    scopes: SettingScopes.Application
+                                                                     )
             };
         }
     }

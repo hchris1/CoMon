@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <h4>{{ 'Assistant.ModalTitle' | localize }}</h4>
+</div>
+
+<div class="modal-body">
+  <div *ngIf="response">
+    <div [innerHTML]="response"></div>
+  </div>
+  <div *ngIf="!response">
+    <div class="col text-center">
+      <figure class="figure">
+        <img
+          src="assets/img/earth.svg"
+          class="figure-img img-fluid rounded"
+          alt="Loading"
+          style="width: 10rem"
+        />
+        <figcaption class="figure-caption text-center">
+          {{ 'Assistant.Loading' | localize }}
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="onCloseClicked()">
+    {{ 'Close' | localize }}
+  </button>
+</div>

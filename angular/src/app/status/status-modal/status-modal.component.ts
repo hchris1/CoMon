@@ -6,6 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import {AssistantModalComponent} from '@app/common/assistant-modal/assistant-modal.component';
 import {CoMonHubService} from '@app/comon-hub.service';
 import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
 import {
@@ -13,6 +14,7 @@ import {
   StatusPreviewDto,
   StatusServiceProxy,
 } from '@shared/service-proxies/service-proxies';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {Subscription, skip} from 'rxjs';
 
 @Component({
@@ -27,10 +29,12 @@ export class StatusModalComponent implements OnInit, OnDestroy {
   reloadHistory: EventEmitter<boolean> = new EventEmitter<boolean>();
   statusChangeSubscription: Subscription;
   connectionEstablishedSubscription: Subscription;
+  assistantModalRef: BsModalRef;
 
   constructor(
     private _coMonHubService: CoMonHubService,
-    private _statusService: StatusServiceProxy
+    private _statusService: StatusServiceProxy,
+    private _modalService: BsModalService
   ) {}
 
   ngOnInit(): void {
@@ -77,5 +81,19 @@ export class StatusModalComponent implements OnInit, OnDestroy {
     this.statusId = statusPreview.id;
     this.status = undefined;
     this.loadStatus();
+  }
+
+  openAssistant() {
+    this.assistantModalRef = this._modalService.show(AssistantModalComponent, {
+      initialState: {
+        statusId: this.statusId,
+      },
+      class: 'modal-lg',
+    });
+    this.assistantModalRef.content.closeBtnName = 'Close';
+
+    this.assistantModalRef.content.onClose.subscribe(() => {
+      this.assistantModalRef.hide();
+    });
   }
 }

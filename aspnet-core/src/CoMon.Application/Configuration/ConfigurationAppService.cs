@@ -16,5 +16,15 @@ namespace CoMon.Configuration
         {
             return int.Parse(await SettingManager.GetSettingValueAsync(AppSettingNames.RetentionDays));
         }
+
+        public async Task ChangeOpenAiKey(ChangeOpenAiKeyInput input)
+        {
+            await SettingManager.ChangeSettingForApplicationAsync(AppSettingNames.OpenAiKey, input.OpenAiKey);
+        }
+
+        public async Task<string> GetOpenAiKey()
+        {
+            return await SettingManager.GetSettingValueAsync(AppSettingNames.OpenAiKey);
+        }
     }
 }

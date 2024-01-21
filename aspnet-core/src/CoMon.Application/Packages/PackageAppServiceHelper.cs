@@ -90,7 +90,7 @@ namespace CoMon.Packages
             {
                 result.Add(new PackageHistoryDto()
                 {
-                    Criticality = entries[i].Criticality,
+                    Criticality = entries[i-1].Criticality,
                     From = entries[i - 1].Time,
                     To = entries[i].Time,
                     Percentage = 0
@@ -173,12 +173,14 @@ namespace CoMon.Packages
             var entries = await statusRepository
                     .GetAll()
                     .Where(s => s.PackageId == packageId && s.Time >= from)
+                    .Where(s => s.Criticality != null)
                     .Select(s => new TimeCriticality(s.Time, s.Criticality))
                     .ToListAsync();
 
             var entryBeforeCutOff = await statusRepository
                 .GetAll()
                 .Where(s => s.PackageId == packageId && s.Time < from)
+                .Where(s => s.Criticality != null)
                 .OrderByDescending(s => s.Time)
                 .Select(s => new TimeCriticality(from, s.Criticality))
                 .FirstOrDefaultAsync();

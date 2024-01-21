@@ -14,6 +14,7 @@ import {
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {CreatePackageModalComponent} from '@app/edit/create-package-modal/create-package-modal.component';
+import {AssistantModalComponent} from '@app/common/assistant-modal/assistant-modal.component';
 
 @Component({
   selector: 'app-asset',
@@ -31,6 +32,7 @@ export class AssetComponent extends AppComponentBase {
   editFormGroup: FormGroup;
   groups: GroupPreviewDto[];
   createPackageModalRef: BsModalRef;
+  assistantModalRef: BsModalRef;
 
   constructor(
     injector: Injector,
@@ -171,6 +173,20 @@ export class AssetComponent extends AppComponentBase {
 
     this.createPackageModalRef.content.onClose.subscribe(() => {
       this.createPackageModalRef.hide();
+    });
+  }
+
+  openAssistant() {
+    this.assistantModalRef = this._modalService.show(AssistantModalComponent, {
+      class: 'modal-lg',
+      initialState: {
+        assetId: this.assetId,
+      },
+    });
+    this.assistantModalRef.content.closeBtnName = 'Close';
+
+    this.assistantModalRef.content.onClose.subscribe(() => {
+      this.assistantModalRef.hide();
     });
   }
 }

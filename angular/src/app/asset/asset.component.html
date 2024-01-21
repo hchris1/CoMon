@@ -200,6 +200,11 @@
       </div>
     </div>
   </section>
+
+  <app-assistant-button
+    style="position: fixed; bottom: 1rem; right: 1rem"
+    (clicked)="openAssistant()"
+  ></app-assistant-button>
 </div>
 
 <div class="card" *ngIf="!asset">
