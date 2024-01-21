@@ -200,13 +200,11 @@
       </div>
     </div>
   </section>
-  <button
-    class="btn btn-circle btn-lg btn-primary"
+
+  <app-assistant-button
     style="position: fixed; bottom: 1rem; right: 1rem"
-    (click)="openAssistant()"
-  >
-    <i class="fa-solid fa-robot"></i>
-  </button>
+    (clicked)="openAssistant()"
+  ></app-assistant-button>
 </div>
 
 <div class="card" *ngIf="!asset">

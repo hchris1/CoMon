@@ -248,6 +248,7 @@
 		<text name="Dashboard.UpdatesChartDescription">Ein Update ist jeder Status, der in CoMon existiert.</text>
 		<text name="Assistant.ModalTitle">Assistent</text>
 		<text name="Assistant.Loading">Lade Antwort von OpenAI...</text>
+		<text name="Assistant.Unavailable">Der Assistent ist nicht verfügbar. Tragen Sie den API Key in den Einstellungen ein.</text>
 		<text name="Settings.OpenAiKeyTitle">OpenAI</text>
 		<text name="Settings.OpenAiKeyDescription">API Key</text>
 		<text name="Settings.OpenAiKeySavedTitle">OpenAI</text>

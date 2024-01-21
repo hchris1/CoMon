@@ -95,6 +95,7 @@ import {CriticalityIndicatorComponent} from './common/criticality-indicator/crit
 import {RetentionSettingTileComponent} from './settings/retention-setting-tile/retention-setting-tile.component';
 import {OpenAiKeySettingTileComponent} from './settings/open-ai-key-setting-tile/open-ai-key-setting-tile.component';
 import {AssistantModalComponent} from './common/assistant-modal/assistant-modal.component';
+import {AssistantButtonComponent} from './common/assistant-button/assistant-button.component';
 
 @NgModule({
   declarations: [
@@ -175,6 +176,7 @@ import {AssistantModalComponent} from './common/assistant-modal/assistant-modal.
     RetentionSettingTileComponent,
     OpenAiKeySettingTileComponent,
     AssistantModalComponent,
+    AssistantButtonComponent,
   ],
   imports: [
     CommonModule,
