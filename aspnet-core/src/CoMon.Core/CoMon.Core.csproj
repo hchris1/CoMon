@@ -16,7 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Abp.AutoMapper" Version="9.0.0" />
-    <PackageReference Include="Abp.ZeroCore.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Abp.ZeroCore.EntityFrameworkCore" Version="9.1.0" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="4.1.0" />
     <PackageReference Include="MQTTnet" Version="4.3.3.952" />
     <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.3.952" />
