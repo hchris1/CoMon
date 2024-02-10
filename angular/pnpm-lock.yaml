@@ -87,8 +87,8 @@ dependencies:
     specifier: ^7.8.1
     version: 7.8.1
   sweetalert2:
-    specifier: ^11.10.3
-    version: 11.10.3
+    specifier: ^11.10.5
+    version: 11.10.5
   ts-helpers:
     specifier: ^1.1.2
     version: 1.1.2(typescript@5.2.2)
@@ -9004,8 +9004,8 @@ packages:
       svg.js: 2.7.1
     dev: false
 
-  /sweetalert2@11.10.3:
-    resolution: {integrity: sha512-mZYtQR7v+khyEruq0SsVUa6XIdI9Aue8s2XAIpAwdlLN1T0w7mxKEjyubiBZ3/bLbHC/wGS4wNABvXWubCizvA==}
+  /sweetalert2@11.10.5:
+    resolution: {integrity: sha512-q9eE3EKhMcpIDU/Xcz7z5lk8axCGkgxwK47gXGrrfncnBJWxHPPHnBVAjfsVXcTt8Yi8U6HNEcBRSu+qGeyFdA==}
     dev: false
 
   /symbol-observable@4.0.0:
