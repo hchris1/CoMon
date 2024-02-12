@@ -107,8 +107,8 @@ devDependencies:
     specifier: 17.2.1
     version: 17.2.1(eslint@8.56.0)(typescript@5.3.3)
   '@angular-eslint/eslint-plugin':
-    specifier: 17.1.1
-    version: 17.1.1(eslint@8.56.0)(typescript@5.3.3)
+    specifier: 17.2.1
+    version: 17.2.1(eslint@8.56.0)(typescript@5.3.3)
   '@angular-eslint/eslint-plugin-template':
     specifier: 17.1.1
     version: 17.1.1(eslint@8.56.0)(typescript@5.3.3)
@@ -449,20 +449,6 @@ packages:
       '@typescript-eslint/utils': 6.19.0(eslint@8.56.0)(typescript@5.3.3)
       aria-query: 5.3.0
       axobject-query: 4.0.0
-      eslint: 8.56.0
-      typescript: 5.3.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /@angular-eslint/eslint-plugin@17.1.1(eslint@8.56.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-fFOBlCOVObVu3gjLj+0BypqO1ZR/0bfJnDElqMdYwJG7zRaFT8NNQbrOo/q/GQoqOFoNna6mw3teTGsd5JnL2A==}
-    peerDependencies:
-      eslint: ^7.20.0 || ^8.0.0
-      typescript: '*'
-    dependencies:
-      '@angular-eslint/utils': 17.1.1(eslint@8.56.0)(typescript@5.3.3)
-      '@typescript-eslint/utils': 6.13.1(eslint@8.56.0)(typescript@5.3.3)
       eslint: 8.56.0
       typescript: 5.3.3
     transitivePeerDependencies:
