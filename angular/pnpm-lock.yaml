@@ -182,8 +182,8 @@ devDependencies:
     specifier: ^2.1.0
     version: 2.1.0(jasmine-core@5.1.2)(karma-jasmine@5.1.0)(karma@6.4.2)
   nswag:
-    specifier: ^13.20.0
-    version: 13.20.0
+    specifier: ^14.0.3
+    version: 14.0.3
   ts-node:
     specifier: ^10.9.2
     version: 10.9.2(@types/node@20.11.19)(typescript@5.3.3)
@@ -7602,8 +7602,8 @@ packages:
       path-key: 3.1.1
     dev: true
 
-  /nswag@13.20.0:
-    resolution: {integrity: sha512-TD2VD6G1lbgRt7Wnl/vfGf5fCUoRP+H6Cmvu/DtsoTP404eg6rqL+TXEzBAvgJhAJp7Fxvuqz6f26abh//MxPg==}
+  /nswag@14.0.3:
+    resolution: {integrity: sha512-kAoGc4lZLgL8UiV+9Vb8tXgXuC6vK5K6VdYICdbiElzdiyiFuE+X3NhCgk31nl/2KsmV2kq6VA9d8b7TFB/acw==}
     engines: {npm: '>=3.10.8'}
     hasBin: true
     dev: true
