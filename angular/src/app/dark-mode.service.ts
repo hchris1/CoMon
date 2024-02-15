@@ -8,8 +8,11 @@ export class DarkModeService {
   isDarkMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() {
-    const darkMode = localStorage.getItem('darkMode');
-    this.isDarkMode.next(JSON.parse(darkMode));
+    const darkMode = JSON.parse(localStorage.getItem('darkMode'));
+
+    if (darkMode) {
+      this.isDarkMode.next(darkMode);
+    }
 
     this.isDarkMode
       .pipe(distinctUntilChanged())
