@@ -16,7 +16,6 @@ using Abp.Dependency;
 using Abp.Json;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Serialization;
 using System.IO;
 using CoMon.Notifications;
 
@@ -42,13 +41,7 @@ namespace CoMon.Web.Host.Startup
             //MVC
             services.AddControllersWithViews(
                 options => { options.Filters.Add(new AbpAutoValidateAntiforgeryTokenAttribute()); }
-            ).AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ContractResolver = new AbpMvcContractResolver(IocManager.Instance)
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                };
-            });
+            );
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);
