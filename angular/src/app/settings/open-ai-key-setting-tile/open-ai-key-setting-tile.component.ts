@@ -4,7 +4,6 @@ import {AppComponentBase} from '@shared/app-component-base';
 import {
   ChangeOpenAiKeyInput,
   ConfigurationServiceProxy,
-  StatusServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 
 @Component({
@@ -13,12 +12,12 @@ import {
 })
 export class OpenAiKeySettingTileComponent extends AppComponentBase {
   openAiKeyFormGroup: FormGroup;
+  showPassword = false;
 
   constructor(
     injector: Injector,
     formBuilder: FormBuilder,
-    private _configurationService: ConfigurationServiceProxy,
-    private _statusService: StatusServiceProxy
+    private _configurationService: ConfigurationServiceProxy
   ) {
     super(injector);
 
@@ -46,5 +45,9 @@ export class OpenAiKeySettingTileComponent extends AppComponentBase {
           this.l('Settings.OpenAiKeySavedTitle')
         );
       });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }

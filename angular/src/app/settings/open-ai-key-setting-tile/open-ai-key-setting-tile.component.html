@@ -10,18 +10,35 @@
         <label for="openAiKey">{{
           'Settings.OpenAiKeyDescription' | localize
         }}</label>
-        <input
-          type="text"
-          class="form-control"
-          id="openAiKey"
-          formControlName="openAiKey"
-          [class.is-invalid]="
-            openAiKeyFormGroup.get('openAiKey').invalid &&
-            (openAiKeyFormGroup.get('openAiKey').dirty ||
-              openAiKeyFormGroup.get('openAiKey').touched)
-          "
-          autocomplete="off"
-        />
+        <div class="input-group">
+          <input
+            class="form-control"
+            id="openAiKey"
+            formControlName="openAiKey"
+            [type]="showPassword ? 'text' : 'password'"
+            [class.is-invalid]="
+              openAiKeyFormGroup.get('openAiKey').invalid &&
+              (openAiKeyFormGroup.get('openAiKey').dirty ||
+                openAiKeyFormGroup.get('openAiKey').touched)
+            "
+            autocomplete="off"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              (click)="togglePasswordVisibility()"
+            >
+              <i
+                class="fa"
+                [ngClass]="{
+                  'fa-eye-slash': showPassword,
+                  'fa-eye': !showPassword
+                }"
+              ></i>
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   </div>
