@@ -116,8 +116,8 @@ devDependencies:
     specifier: 17.2.1
     version: 17.2.1(@angular/cli@17.1.3)(eslint@8.56.0)(typescript@5.3.3)
   '@angular-eslint/template-parser':
-    specifier: 17.1.1
-    version: 17.1.1(eslint@8.56.0)(typescript@5.3.3)
+    specifier: 17.2.1
+    version: 17.2.1(eslint@8.56.0)(typescript@5.3.3)
   '@angular/cli':
     specifier: ^17.1.3
     version: 17.1.3
@@ -505,15 +505,15 @@ packages:
       - typescript
     dev: true
 
-  /@angular-eslint/template-parser@17.1.1(eslint@8.56.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-ofL46rNhRVeSxrSQF0vwhKMco+vJuo+ZGjSOzFmT9N3KAMB0j+WXTbpyGGMy0gQSBc4W6p+j+zxGa2CR2xb6wA==}
+  /@angular-eslint/template-parser@17.2.1(eslint@8.56.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-WPQYFvRju0tCDXQ/pwrzC911pE07JvpeDgcN2elhzV6lxDHJEZpA5O9pnW9qgNA6J6XM9Q7dBkJ22ztAzC4WFw==}
     peerDependencies:
       eslint: ^7.20.0 || ^8.0.0
       typescript: '*'
     dependencies:
-      '@angular-eslint/bundled-angular-compiler': 17.1.1
+      '@angular-eslint/bundled-angular-compiler': 17.2.1
       eslint: 8.56.0
-      eslint-scope: 7.2.2
+      eslint-scope: 8.0.0
       typescript: 5.3.3
     dev: true
 
@@ -5182,6 +5182,14 @@ packages:
   /eslint-scope@7.2.2:
     resolution: {integrity: sha512-dOt21O7lTMhDM+X9mB4GX+DZrZtCUJPL/wlcTqxyrx5IvO0IYtILdtrQGQp+8n5S0gwSVmOf9NQrjMOgfQZlIg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      esrecurse: 4.3.0
+      estraverse: 5.3.0
+    dev: true
+
+  /eslint-scope@8.0.0:
+    resolution: {integrity: sha512-zj3Byw6jX4TcFCJmxOzLt6iol5FAr9xQyZZSQjEzW2UiCJXLwXdRIKCYVFftnpZckaC9Ps9xlC7jB8tSeWWOaw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dependencies:
       esrecurse: 4.3.0
       estraverse: 5.3.0
