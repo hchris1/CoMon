@@ -1,5 +1,5 @@
 ﻿<div [@routerTransition]>
-  <h4 class="text-center mb-3">{{ "LogIn" | localize }}</h4>
+  <h4 class="text-center mb-3">{{ 'LogIn' | localize }}</h4>
   <form novalidate autocomplete="off" #loginForm="ngForm" (ngSubmit)="login()">
     <div class="form-group">
       <div class="input-group">
@@ -60,7 +60,7 @@
             [(ngModel)]="authService.rememberMe"
           />
           <label for="rememberMe" class="custom-control-label">
-            {{ "RememberMe" | localize }}
+            {{ 'RememberMe' | localize }}
           </label>
         </div>
       </div>
@@ -70,14 +70,9 @@
           class="btn btn-primary btn-block"
           [disabled]="!loginForm.form.valid || submitting"
         >
-          {{ "LogIn" | localize }}
+          {{ 'LogIn' | localize }}
         </button>
       </div>
     </div>
   </form>
-  <p *ngIf="isSelfRegistrationAllowed" class="mb-1">
-    <a [routerLink]="['../register']">
-      <i class="fa fa-plus-circle"></i> {{ "Register" | localize }}
-    </a>
-  </p>
 </div>

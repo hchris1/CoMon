@@ -23,14 +23,6 @@ export class LoginComponent extends AppComponentBase {
     return this._sessionService.tenantId > 0;
   }
 
-  get isSelfRegistrationAllowed(): boolean {
-    if (!this._sessionService.tenantId) {
-      return false;
-    }
-
-    return true;
-  }
-
   login(): void {
     this.submitting = true;
     this.authService.authenticate(() => (this.submitting = false));
