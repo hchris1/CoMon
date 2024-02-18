@@ -1,0 +1,15 @@
+<div class="row justify-content-center">
+  <div class="col text-center">
+    <figure class="figure">
+      <img
+        [src]="image"
+        class="figure-img img-fluid rounded"
+        alt="{{ message | localize }}"
+        [style.width.em]="width"
+      />
+      <figcaption class="figure-caption text-center">
+        {{ message | localize }}
+      </figcaption>
+    </figure>
+  </div>
+</div>

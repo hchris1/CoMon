@@ -1,6 +1,8 @@
 <div
   class="card {{ getCardOutlineClass() }}"
   style="cursor: pointer"
+  [class.bg-light]="showShadow"
+  [class.shadow]="showShadow"
   *ngIf="statusPreview"
 >
   <div

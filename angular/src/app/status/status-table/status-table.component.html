@@ -1,120 +1,103 @@
-<section class="content" *ngIf="options">
+<section class="content">
   <div class="container-fluid">
-    <div class="form-group row pl-3 pt-3 pr-2">
-      <select
-        class="form-control col-12"
-        [(ngModel)]="option"
-        (ngModelChange)="assetGroupChanged($event)"
-        *ngIf="showAssetGroupFilter"
-      >
-        <option *ngFor="let option of options" [ngValue]="option">
-          <div *ngIf="option.isRoot">
-            <p>🌱</p>
-          </div>
-          <div *ngIf="option.isGroup && !option.isRoot">
-            <app-path [group]="option.dto"></app-path>
-          </div>
-          <div *ngIf="!option.isGroup">
-            <app-path
-              [asset]="option.dto"
-              [group]="option.dto.group"
-            ></app-path>
-          </div>
-        </option>
-      </select>
-
-      <select
-        class="form-control col-lg-2 col-md-3 col-sm-4 col-12"
-        [(ngModel)]="criticality"
-        (ngModelChange)="setCriticality($event)"
-        *ngIf="showCriticalityFilter"
-      >
-        <option
-          *ngFor="let criticality of criticalities"
-          [ngValue]="criticality"
-        >
-          <div *ngIf="criticality === undefined">
-            <p>🌈 {{ 'Criticality.All' | localize }}</p>
-          </div>
-          <div *ngIf="criticality === 1">
-            <p>🟢 {{ 'Criticality.Healthy' | localize }}</p>
-          </div>
-          <div *ngIf="criticality === 3">
-            <p>🟡 {{ 'Criticality.Warning' | localize }}</p>
-          </div>
-          <div *ngIf="criticality === 5">
-            <p>🔴 {{ 'Criticality.Alert' | localize }}</p>
-          </div>
-        </option>
-      </select>
-
-      <div
-        class="form-check col-lg-2 col-md-3 col-sm-4 col-12 pt-2"
-        style="padding-left: 2rem"
-        *ngIf="showLatestOnlyFilter"
-      >
-        <input
-          class="form-check-input"
-          type="checkbox"
-          value=""
-          id="latestOnly"
-          [(ngModel)]="latestOnly"
-          (ngModelChange)="setLatestOnly($event)"
-        />
-        <label class="form-check-label" for="latestOnly"
-          ><p>{{ 'StatusTable.LatestOnlyOption' | localize }}</p></label
-        >
-      </div>
-    </div>
+    <app-status-table-filter
+      (filterChanged)="filterChanged($event)"
+    ></app-status-table-filter>
 
     <hr />
 
-    <div class="row" *ngIf="statusChanged && showRefreshBanner">
-      <button class="btn col-12" (click)="loadStatuses()">
-        <alert type="info">
-          {{ 'StatusTable.RefreshAvailable' | localize }}
-        </alert>
-      </button>
+    <div *ngIf="statusChanged && showRefreshBanner">
+      <app-refresh-banner (bannerPressed)="loadStatuses()"></app-refresh-banner>
     </div>
 
     <div *ngIf="statusPreviews">
-      <div class="row" *ngIf="statusPreviews.totalCount === 0">
-        <div class="col text-center">
-          <figure class="figure">
-            <img
-              src="assets/img/person-with-status.svg"
-              class="figure-img img-fluid rounded"
-              alt="No statuses found."
-              style="width: 250px"
-            />
-            <figcaption class="figure-caption text-center">
-              No statuses found.
-            </figcaption>
-          </figure>
-        </div>
+      <div *ngIf="statusPreviews.totalCount === 0">
+        <app-no-data [message]="'StatusTable.NoData'"></app-no-data>
       </div>
 
-      <div *ngFor="let statusPreview of statusPreviews.items">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col">
-              <app-status-preview
-                [statusPreview]="statusPreview"
-              ></app-status-preview>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-4">
+            <div *ngFor="let statusPreview of statusPreviews.items">
+              <div class="row">
+                <app-status-preview
+                  [statusPreview]="statusPreview"
+                  [openStatusModalOnClick]="false"
+                  [showShadow]="status?.id === statusPreview.id"
+                  (statusClicked)="onStatusClicked($event)"
+                  style="width: 98%"
+                ></app-status-preview>
+              </div>
+            </div>
+            <pagination
+              [totalItems]="statusPreviews.totalCount"
+              (pageChanged)="changePage($event)"
+              [itemsPerPage]="10"
+              [maxSize]="10"
+              class="justify-content-center"
+              [customPreviousTemplate]="prevTemplate"
+              [customNextTemplate]="nextTemplate"
+              [(ngModel)]="currentPage"
+            ></pagination>
+          </div>
+          <div class="col-8" *ngIf="status">
+            <div class="card">
+              <div
+                class="card-header"
+                [style.background]="getBackgroundStyle()"
+              >
+                <div class="row">
+                  <app-criticality-indicator
+                    [criticality]="status.criticality"
+                    class="col-auto pt-1"
+                  ></app-criticality-indicator>
+                  <h4 class="col-auto pt-1">
+                    {{ status.package.name }}
+                  </h4>
+                </div>
+                <p
+                  style="
+                    position: absolute;
+                    top: 0;
+                    right: 1rem;
+                    margin: 1.3rem;
+                  "
+                >
+                  {{ status.time.format('DD.MM.YYYY HH:mm:ss') }}
+                </p>
+              </div>
+              <div class="card-body" style="border-top: none; box-shadow: none">
+                <app-status-message-section
+                  [messages]="status.messages"
+                ></app-status-message-section>
+
+                <hr />
+                <app-status-kpi-section
+                  [kpis]="status.kpIs"
+                ></app-status-kpi-section>
+
+                <hr />
+                <app-status-chart-section
+                  [charts]="status.charts"
+                ></app-status-chart-section>
+
+                <app-assistant-button
+                  style="position: absolute; bottom: 1rem; right: 1rem"
+                  (clicked)="openAssistant()"
+                ></app-assistant-button>
+              </div>
+
+              <div
+                class="card-header"
+                style="text-align: center; margin: 0 auto; width: fit-content"
+                *ngIf="!status"
+              >
+                <app-loading-animation></app-loading-animation>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <pagination
-        [totalItems]="statusPreviews.totalCount"
-        (pageChanged)="changePage($event)"
-        [itemsPerPage]="10"
-        [maxSize]="10"
-        class="justify-content-center"
-        [customPreviousTemplate]="prevTemplate"
-        [customNextTemplate]="nextTemplate"
-        [(ngModel)]="currentPage"
-      ></pagination>
     </div>
 
     <div
@@ -147,6 +130,6 @@
   </ng-container>
 </ng-template>
 
-<div *ngIf="!options" style="text-align: center; padding-top: 40vh">
+<div *ngIf="!statusFilter" style="text-align: center; padding-top: 40vh">
   <app-loading-animation></app-loading-animation>
 </div>

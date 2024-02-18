@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-12">
+    <h4>{{ 'Status.KPIsTitle' | localize }}</h4>
+  </div>
+</div>
+<div *ngIf="kpis.length === 0">
+  <app-no-data message="Status.NoKPIs" [image]="image"></app-no-data>
+</div>
+<div class="row">
+  <div *ngFor="let kpi of kpis">
+    <div class="col-auto">
+      <app-status-kpi [kpi]="kpi"></app-status-kpi>
+    </div>
+  </div>
+</div>

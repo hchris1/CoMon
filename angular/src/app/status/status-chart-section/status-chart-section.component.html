@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-12">
+    <h4>{{ 'Status.ChartsTitle' | localize }}</h4>
+  </div>
+</div>
+<div *ngIf="charts.length === 0">
+  <app-no-data message="Status.NoCharts" [image]="image"></app-no-data>
+</div>
+<div class="row">
+  <app-chart-wrapper
+    class="col-lg-4 col-md-6 col-sm-12 h-100"
+    *ngFor="let chart of charts"
+    [chart]="chart"
+  ></app-chart-wrapper>
+</div>

@@ -29,8 +29,11 @@ export class StatusPreviewComponent extends AppComponentBase {
   @Input() editMode: boolean = false;
   @Input() showDate: boolean = true;
   @Input() showTimeline: boolean = false;
+  @Input() openStatusModalOnClick: boolean = true;
+  @Input() showShadow: boolean = false;
   @Output() packageDeleted = new EventEmitter();
   @Output() packageEdited = new EventEmitter();
+  @Output() statusClicked = new EventEmitter<StatusPreviewDto>();
 
   statusModalRef: BsModalRef;
   editModalRef: BsModalRef;
@@ -84,7 +87,9 @@ export class StatusPreviewComponent extends AppComponentBase {
   }
 
   openStatusModal() {
-    if (this.editMode) return;
+    this.statusClicked.emit(this.statusPreview);
+
+    if (this.editMode || !this.openStatusModalOnClick) return;
 
     this.statusModalRef = this._modalService.show(StatusModalComponent, {
       class: 'status-modal',
