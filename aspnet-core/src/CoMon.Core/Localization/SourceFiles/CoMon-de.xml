@@ -154,6 +154,8 @@
 		<text name="StatusTable.RefreshAvailable">Im Hintergrund sind neue Statusmeldungen aufgetreten. Klicken Sie hier, um die Tabelle zu aktualisieren.</text>
 		<text name="StatusTable.NoStatusSelected">Klicke auf einen Status auf der linken Seite.</text>
 		<text name="StatusTable.NoMoreResults">Keine weiteren Einträge verfügbar.</text>
+		<text name="Kpi.NoStatistic">Keine Statistik verfügbar.</text>
+		<text name="Kpi.NoValue">🤷🏽</text>
 		<text name="Criticality.All">Alle</text>
 		<text name="Criticality.Healthy">Gut</text>
 		<text name="Criticality.Warning">Warnung</text>

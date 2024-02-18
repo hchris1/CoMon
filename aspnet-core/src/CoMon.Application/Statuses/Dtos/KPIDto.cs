@@ -8,5 +8,8 @@ namespace CoMon.Statuses.Dtos
         public string Name { get; set; }
         public double? Value { get; set; }
         public string Unit { get; set; }
+        public double? ThirtyDayAverage { get; set; }
+        public double? ThirtyDayMax { get; set; }
+        public double? ThirtyDayMin { get; set; }
     }
 }
