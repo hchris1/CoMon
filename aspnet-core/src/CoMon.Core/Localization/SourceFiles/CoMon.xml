@@ -152,6 +152,8 @@
 		<text name="Status.NoCharts">No charts.</text>
 		<text name="StatusTable.LatestOnlyOption">Latest Only</text>
 		<text name="StatusTable.RefreshAvailable">There have been status changes in the background. Click here to refresh.</text>
+		<text name="StatusTable.NoStatusSelected">Please select a status by clicking one on the left.</text>
+		<text name="StatusTable.NoMoreResults">No more entries available.</text>
 		<text name="Criticality.All">All</text>
 		<text name="Criticality.Healthy">Healthy</text>
 		<text name="Criticality.Warning">Warning</text>
