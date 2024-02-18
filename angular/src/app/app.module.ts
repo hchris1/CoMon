@@ -102,6 +102,8 @@ import {RefreshBannerComponent} from './common/refresh-banner/refresh-banner.com
 import {StatusChartSectionComponent} from './status/status-chart-section/status-chart-section.component';
 import {StatusMessageSectionComponent} from './status/status-message/status-message-section/status-message-section.component';
 import {StatusKpiSectionComponent} from './status/status-kpi/status-kpi-section/status-kpi-section.component';
+import {StatusTableNavigatorComponent} from './status/status-table/status-table-navigator/status-table-navigator.component';
+import {StatusTablePanelComponent} from './status/status-table/status-table-panel/status-table-panel.component';
 
 @NgModule({
   declarations: [
@@ -189,6 +191,8 @@ import {StatusKpiSectionComponent} from './status/status-kpi/status-kpi-section/
     StatusChartSectionComponent,
     StatusMessageSectionComponent,
     StatusKpiSectionComponent,
+    StatusTableNavigatorComponent,
+    StatusTablePanelComponent,
   ],
   imports: [
     CommonModule,

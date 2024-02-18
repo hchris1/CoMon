@@ -1,0 +1,14 @@
+<div [style.filter]="isLoading ? 'blur(.2rem)' : ''">
+  <div *ngFor="let statusPreview of statusPreviews.items">
+    <app-status-preview
+      [statusPreview]="statusPreview"
+      [openStatusModalOnClick]="openStatusModalOnClick"
+      [showShadow]="statusIdToHighlight === statusPreview.id"
+      (statusClicked)="onStatusClicked($event)"
+      style="width: 98%"
+    ></app-status-preview>
+  </div>
+  <div *ngIf="!hasMoreStatuses" style="text-align: center">
+    <i>{{ 'StatusTable.NoMoreResults' | localize }}</i>
+  </div>
+</div>
