@@ -6979,6 +6979,9 @@ export class KPIDto implements IKPIDto {
     name: string | undefined;
     value: number | undefined;
     unit: string | undefined;
+    thirtyDayAverage: number | undefined;
+    thirtyDayMax: number | undefined;
+    thirtyDayMin: number | undefined;
 
     constructor(data?: IKPIDto) {
         if (data) {
@@ -6994,6 +6997,9 @@ export class KPIDto implements IKPIDto {
             this.name = _data["name"];
             this.value = _data["value"];
             this.unit = _data["unit"];
+            this.thirtyDayAverage = _data["thirtyDayAverage"];
+            this.thirtyDayMax = _data["thirtyDayMax"];
+            this.thirtyDayMin = _data["thirtyDayMin"];
         }
     }
 
@@ -7009,6 +7015,9 @@ export class KPIDto implements IKPIDto {
         data["name"] = this.name;
         data["value"] = this.value;
         data["unit"] = this.unit;
+        data["thirtyDayAverage"] = this.thirtyDayAverage;
+        data["thirtyDayMax"] = this.thirtyDayMax;
+        data["thirtyDayMin"] = this.thirtyDayMin;
         return data;
     }
 
@@ -7024,6 +7033,9 @@ export interface IKPIDto {
     name: string | undefined;
     value: number | undefined;
     unit: string | undefined;
+    thirtyDayAverage: number | undefined;
+    thirtyDayMax: number | undefined;
+    thirtyDayMin: number | undefined;
 }
 
 export class PackageDto implements IPackageDto {

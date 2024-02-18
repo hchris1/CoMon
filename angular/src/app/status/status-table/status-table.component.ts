@@ -81,7 +81,13 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   updateStatusPreviews(update: StatusUpdateDto) {
     this.statusPreviews.items.forEach(statusPreview => {
       if (statusPreview.package.id === update.packageId) {
-        statusPreview.isLatest = false;
+        if (this.statusFilter.latestOnly && statusPreview.isLatest) {
+          this.statusPreviews.items = this.statusPreviews.items.filter(
+            x => x.id !== statusPreview.id
+          );
+        } else {
+          statusPreview.isLatest = false;
+        }
       }
     });
   }

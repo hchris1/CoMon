@@ -39,6 +39,8 @@ export class StatusPreviewComponent extends AppComponentBase {
   editModalRef: BsModalRef;
   statistic: PackageStatisticDto;
   statisticInterval: NodeJS.Timeout;
+  fromNow: string;
+  fromNowInterval: NodeJS.Timeout;
 
   constructor(
     private _modalService: BsModalService,
@@ -50,6 +52,11 @@ export class StatusPreviewComponent extends AppComponentBase {
   }
 
   ngOnInit(): void {
+    this.fromNow = this.statusPreview.time.fromNow();
+    this.fromNowInterval = setInterval(() => {
+      this.fromNow = this.statusPreview.time.fromNow();
+    }, 60 * 1000);
+
     if (!this.showTimeline) return;
 
     this.loadStatistic();
@@ -64,6 +71,7 @@ export class StatusPreviewComponent extends AppComponentBase {
 
   ngOnDestroy(): void {
     clearInterval(this.statisticInterval);
+    clearInterval(this.fromNowInterval);
   }
 
   loadStatistic() {
