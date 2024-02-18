@@ -96,6 +96,13 @@ import {RetentionSettingTileComponent} from './settings/retention-setting-tile/r
 import {OpenAiKeySettingTileComponent} from './settings/open-ai-key-setting-tile/open-ai-key-setting-tile.component';
 import {AssistantModalComponent} from './common/assistant-modal/assistant-modal.component';
 import {AssistantButtonComponent} from './common/assistant-button/assistant-button.component';
+import {StatusTableFilterComponent} from './status/status-table/status-table-filter/status-table-filter.component';
+import {NoDataComponent} from './common/no-data/no-data.component';
+import {StatusChartSectionComponent} from './status/status-chart-section/status-chart-section.component';
+import {StatusMessageSectionComponent} from './status/status-message/status-message-section/status-message-section.component';
+import {StatusKpiSectionComponent} from './status/status-kpi/status-kpi-section/status-kpi-section.component';
+import {StatusTableNavigatorComponent} from './status/status-table/status-table-navigator/status-table-navigator.component';
+import {StatusTablePanelComponent} from './status/status-table/status-table-panel/status-table-panel.component';
 
 @NgModule({
   declarations: [
@@ -177,6 +184,13 @@ import {AssistantButtonComponent} from './common/assistant-button/assistant-butt
     OpenAiKeySettingTileComponent,
     AssistantModalComponent,
     AssistantButtonComponent,
+    StatusTableFilterComponent,
+    NoDataComponent,
+    StatusChartSectionComponent,
+    StatusMessageSectionComponent,
+    StatusKpiSectionComponent,
+    StatusTableNavigatorComponent,
+    StatusTablePanelComponent,
   ],
   imports: [
     CommonModule,

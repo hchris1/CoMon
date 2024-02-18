@@ -1,0 +1,60 @@
+<div class="form-group row pl-3 pt-3 pr-2">
+  <select
+    class="form-control col-12"
+    [(ngModel)]="option"
+    (ngModelChange)="assetGroupChanged($event)"
+    *ngIf="showAssetGroupFilter"
+  >
+    <option *ngFor="let option of options" [ngValue]="option">
+      <div *ngIf="option.isRoot">
+        <p>🌱</p>
+      </div>
+      <div *ngIf="option.isGroup && !option.isRoot">
+        <app-path [group]="option.dto"></app-path>
+      </div>
+      <div *ngIf="!option.isGroup">
+        <app-path [asset]="option.dto" [group]="option.dto.group"></app-path>
+      </div>
+    </option>
+  </select>
+
+  <select
+    class="form-control col-lg-2 col-md-3 col-sm-4 col-12"
+    [(ngModel)]="statusFilter.criticality"
+    (ngModelChange)="setCriticality($event)"
+    *ngIf="showCriticalityFilter"
+  >
+    <option *ngFor="let criticality of criticalities" [ngValue]="criticality">
+      <div *ngIf="criticality === undefined">
+        <p>🌈 {{ 'Criticality.All' | localize }}</p>
+      </div>
+      <div *ngIf="criticality === 1">
+        <p>🟢 {{ 'Criticality.Healthy' | localize }}</p>
+      </div>
+      <div *ngIf="criticality === 3">
+        <p>🟡 {{ 'Criticality.Warning' | localize }}</p>
+      </div>
+      <div *ngIf="criticality === 5">
+        <p>🔴 {{ 'Criticality.Alert' | localize }}</p>
+      </div>
+    </option>
+  </select>
+
+  <div
+    class="form-check col-lg-2 col-md-3 col-sm-4 col-12 pt-2"
+    style="padding-left: 2rem"
+    *ngIf="showLatestOnlyFilter"
+  >
+    <input
+      class="form-check-input"
+      type="checkbox"
+      value=""
+      id="latestOnly"
+      [(ngModel)]="statusFilter.latestOnly"
+      (ngModelChange)="setLatestOnly($event)"
+    />
+    <label class="form-check-label" for="latestOnly"
+      ><p>{{ 'StatusTable.LatestOnlyOption' | localize }}</p></label
+    >
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div
+  class="card"
+  style="
+    min-height: 81vh;
+    animation: fadeIn 0.5s;
+    animation-fill-mode: forwards;
+  "
+  *ngIf="status"
+>
+  <div class="card-header" [style.background]="getBackgroundStyle()">
+    <div class="row">
+      <app-criticality-indicator
+        [criticality]="status.criticality"
+        class="col-auto pt-1"
+      ></app-criticality-indicator>
+      <h4 class="col-auto pt-1">
+        {{ status.package.name }}
+      </h4>
+    </div>
+    <p style="position: absolute; top: 0; right: 1rem; margin: 1.3rem">
+      {{ status.time.format('DD.MM.YYYY HH:mm:ss') }}
+    </p>
+  </div>
+  <div class="card-body" style="border-top: none; box-shadow: none">
+    <app-status-message-section
+      [messages]="status.messages"
+    ></app-status-message-section>
+
+    <hr />
+    <app-status-kpi-section [kpis]="status.kpIs"></app-status-kpi-section>
+
+    <hr />
+    <app-status-chart-section
+      [charts]="status.charts"
+    ></app-status-chart-section>
+
+    <app-assistant-button
+      style="position: absolute; bottom: 1rem; right: 1rem"
+      (clicked)="openAssistant()"
+    ></app-assistant-button>
+  </div>
+
+  <div
+    class="card-header"
+    style="text-align: center; margin: 0 auto; width: fit-content"
+    *ngIf="!status"
+  >
+    <app-loading-animation></app-loading-animation>
+  </div>
+</div>
+<div
+  class="row justify-content-center"
+  style="padding-top: 30vh"
+  *ngIf="!status && isLoading"
+>
+  <app-loading-animation></app-loading-animation>
+</div>
+<div
+  class="row justify-content-center"
+  style="padding-top: 20vh"
+  *ngIf="!status && !isLoading"
+>
+  <app-no-data
+    [message]="'StatusTable.NoStatusSelected'"
+    [width]="15"
+  ></app-no-data>
+</div>

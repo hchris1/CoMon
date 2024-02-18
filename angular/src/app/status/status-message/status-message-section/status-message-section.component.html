@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-12">
+    <h4>{{ 'Status.MessagesTitle' | localize }}</h4>
+  </div>
+</div>
+<div *ngIf="messages.length === 0">
+  <app-no-data message="Status.NoMessages" [image]="image"></app-no-data>
+</div>
+<div class="row">
+  <div class="col-auto" *ngFor="let message of messages">
+    <app-status-message [message]="message"></app-status-message>
+  </div>
+</div>

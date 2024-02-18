@@ -47,105 +47,30 @@
       ></app-status-timeline>
 
       <hr />
-
-      <div class="row">
-        <div class="col-12">
-          <h4>{{ 'Status.MessagesTitle' | localize }}</h4>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col text-center" *ngIf="status.messages.length === 0">
-          <figure class="figure">
-            <img
-              src="assets/img/message.svg"
-              class="figure-img img-fluid rounded"
-              alt="No messages."
-              style="width: 80px"
-            />
-            <figcaption class="figure-caption text-center">
-              {{ 'Status.NoMessages' | localize }}
-            </figcaption>
-          </figure>
-        </div>
-        <div class="col-auto" *ngFor="let message of status.messages">
-          <app-status-message [message]="message"></app-status-message>
-        </div>
-      </div>
+      <app-status-message-section
+        [messages]="status.messages"
+      ></app-status-message-section>
 
       <hr />
-
-      <div class="row">
-        <div class="col-12">
-          <h4>
-            {{ 'Status.KPIsTitle' | localize }}
-          </h4>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col text-center" *ngIf="status.kpIs.length === 0">
-          <figure class="figure">
-            <img
-              src="assets/img/compass.svg"
-              class="figure-img img-fluid rounded"
-              alt="No KPIs."
-              style="width: 100px"
-            />
-            <figcaption class="figure-caption text-center">
-              {{ 'Status.NoKPIs' | localize }}
-            </figcaption>
-          </figure>
-        </div>
-        <div *ngFor="let kpi of status.kpIs">
-          <div class="col">
-            <app-status-kpi [kpi]="kpi"></app-status-kpi>
-          </div>
-        </div>
-      </div>
+      <app-status-kpi-section [kpis]="status.kpIs"></app-status-kpi-section>
 
       <hr />
+      <app-status-chart-section
+        [charts]="status.charts"
+      ></app-status-chart-section>
 
-      <div class="row">
-        <div class="col-12">
-          <h4>
-            {{ 'Status.ChartsTitle' | localize }}
-          </h4>
-        </div>
-      </div>
-
-      <div *ngIf="status.charts.length === 0" class="row">
-        <div class="col text-center" *ngIf="status.charts.length === 0">
-          <figure class="figure">
-            <img
-              src="assets/img/planet.svg"
-              class="figure-img img-fluid rounded"
-              alt="No charts."
-            />
-            <figcaption class="figure-caption text-center">
-              {{ 'Status.NoCharts' | localize }}
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-      <div class="row">
-        <app-chart-wrapper
-          class="col-lg-4 col-md-6 col-sm-12 h-100"
-          *ngFor="let chart of status.charts"
-          [chart]="chart"
-        ></app-chart-wrapper>
-      </div>
+      <app-assistant-button
+        style="position: absolute; bottom: 1rem; right: 1rem"
+        (clicked)="openAssistant()"
+      ></app-assistant-button>
     </div>
-
-    <app-assistant-button
-      style="position: absolute; bottom: 1rem; right: 1rem"
-      (clicked)="openAssistant()"
-    ></app-assistant-button>
   </div>
-</div>
 
-<div
-  class="modal-header"
-  style="text-align: center; margin: 0 auto; width: fit-content"
-  *ngIf="!status"
->
-  <app-loading-animation></app-loading-animation>
+  <div
+    class="modal-header"
+    style="text-align: center; margin: 0 auto; width: fit-content"
+    *ngIf="!status"
+  >
+    <app-loading-animation></app-loading-animation>
+  </div>
 </div>
