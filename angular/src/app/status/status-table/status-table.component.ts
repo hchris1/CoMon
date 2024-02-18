@@ -1,12 +1,11 @@
 import {
   Component,
   ElementRef,
-  Input,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {CoMonHubService} from '@app/comon-hub.service';
+import {CoMonHubService, StatusUpdateDto} from '@app/comon-hub.service';
 import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
 import {
   StatusServiceProxy,
@@ -14,7 +13,7 @@ import {
   StatusPreviewDto,
   StatusDto,
 } from '@shared/service-proxies/service-proxies';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {StatusFilter} from './status-table-filter/status-table-filter.component';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {AssistantModalComponent} from '@app/common/assistant-modal/assistant-modal.component';
@@ -24,30 +23,22 @@ import {AssistantModalComponent} from '@app/common/assistant-modal/assistant-mod
   templateUrl: './status-table.component.html',
 })
 export class StatusTableComponent implements OnInit, OnDestroy {
-  @Input() showAssetGroupFilter = true;
-  @Input() showCriticalityFilter = true;
-  @Input() showLatestOnlyFilter = true;
-  @Input() packageId = undefined;
-  @Input() showRefreshBanner = true;
-  @Input() triggerReload: BehaviorSubject<boolean>;
-
   @ViewChild('scrollContainer') scrollContainer: ElementRef;
 
-  statusPreviews: StatusPreviewDtoPagedResultDto;
   status: StatusDto;
+  statusFilter: StatusFilter;
+  statusPreviews: StatusPreviewDtoPagedResultDto;
+
   hasMoreStatuses = true;
-  loadingMoreStatuses = false;
+  isLoadingMoreStatusPreviews = false;
   isLoadingStatus = false;
 
   assistantModalRef: BsModalRef;
 
-  maxLoadCount = 20;
+  batchSize = 20;
 
-  // Status change
   statusChangeSubscription: Subscription;
   connectionEstablishedSubscription: Subscription;
-
-  statusFilter: StatusFilter;
 
   constructor(
     private _statusService: StatusServiceProxy,
@@ -62,14 +53,6 @@ export class StatusTableComponent implements OnInit, OnDestroy {
       this._coMonHubService.connectionEstablished.subscribe(established => {
         if (established) this.loadStatuses();
       });
-
-    if (this.triggerReload) {
-      this.triggerReload.subscribe(val => {
-        if (val) {
-          this.loadStatuses();
-        }
-      });
-    }
   }
 
   filterChanged(filter: StatusFilter) {
@@ -112,76 +95,80 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   subscribeToStatusChanges() {
     this.statusChangeSubscription =
       this._coMonHubService.statusUpdate.subscribe(update => {
-        this.statusPreviews.items
-          .filter(
-            statusPreview => statusPreview.package.id === update.packageId
-          )
-          .forEach(statusPreview => {
-            statusPreview.isLatest = false;
-          });
+        this.updateStatusPreviews(update);
+        if (!this.isRelevantUpdate(update)) return;
+        this.markCurrentStatusAsNotLatest(update);
+        this.prependNewStatusPreview(update);
+      });
+  }
 
-        if (
-          this.statusFilter.assetId &&
-          this.statusFilter.assetId !== update.assetId
-        )
-          return;
-        if (
-          this.statusFilter.groupId &&
-          update.groupIds &&
-          !update.groupIds.includes(this.statusFilter.groupId)
-        )
-          return;
+  updateStatusPreviews(update: StatusUpdateDto) {
+    this.statusPreviews.items.forEach(statusPreview => {
+      if (statusPreview.package.id === update.packageId) {
+        statusPreview.isLatest = false;
+      }
+    });
+  }
 
-        if (this.status && this.status.package.id === update.packageId) {
-          this.status.isLatest = false;
+  isRelevantUpdate(update) {
+    if (
+      this.statusFilter.assetId &&
+      this.statusFilter.assetId !== update.assetId
+    ) {
+      return false;
+    }
+    if (
+      this.statusFilter.groupId &&
+      update.groupIds &&
+      !update.groupIds.includes(this.statusFilter.groupId)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  markCurrentStatusAsNotLatest(update) {
+    if (this.status && this.status.package.id === update.packageId) {
+      this.status.isLatest = false;
+    }
+  }
+
+  prependNewStatusPreview(update) {
+    this._statusService.getPreview(update.id).subscribe(result => {
+      this.statusPreviews.items.unshift(result);
+    });
+  }
+
+  loadStatuses(loadMore = false) {
+    if (!loadMore) {
+      this.status = undefined;
+      this.statusPreviews = undefined;
+    } else {
+      this.isLoadingMoreStatusPreviews = true;
+    }
+
+    this._statusService
+      .getStatusTable(
+        loadMore ? this.statusPreviews.items.length : 0,
+        this.batchSize,
+        this.statusFilter?.assetId,
+        this.statusFilter?.groupId,
+        undefined,
+        this.statusFilter?.criticality,
+        this.statusFilter?.latestOnly
+      )
+      .subscribe(result => {
+        if (loadMore) {
+          this.statusPreviews.items = this.statusPreviews.items.concat(
+            result.items
+          );
+          this.isLoadingMoreStatusPreviews = false;
+        } else {
+          this.statusPreviews = result;
         }
 
-        this._statusService.getPreview(update.id).subscribe(result => {
-          this.statusPreviews.items.unshift(result);
-        });
-      });
-  }
-
-  loadStatuses() {
-    this.status = undefined;
-    this.statusPreviews = undefined;
-
-    this._statusService
-      .getStatusTable(
-        0,
-        this.maxLoadCount,
-        this.statusFilter?.assetId,
-        this.statusFilter?.groupId,
-        this.packageId,
-        this.statusFilter?.criticality,
-        this.statusFilter?.latestOnly
-      )
-      .subscribe(result => {
-        this.statusPreviews = result;
-        this.hasMoreStatuses = result.totalCount > result.items.length;
-      });
-  }
-
-  loadMoreStatuses() {
-    this.loadingMoreStatuses = true;
-    this._statusService
-      .getStatusTable(
-        this.statusPreviews.items.length,
-        this.maxLoadCount,
-        this.statusFilter?.assetId,
-        this.statusFilter?.groupId,
-        this.packageId,
-        this.statusFilter?.criticality,
-        this.statusFilter?.latestOnly
-      )
-      .subscribe(result => {
-        this.statusPreviews.items = this.statusPreviews.items.concat(
-          result.items
-        );
         this.hasMoreStatuses =
           result.totalCount > this.statusPreviews.items.length;
-
-        this.loadingMoreStatuses = false;
       });
   }
 
@@ -190,8 +177,8 @@ export class StatusTableComponent implements OnInit, OnDestroy {
       event.target.offsetHeight + event.target.scrollTop >=
       event.target.scrollHeight - 10
     ) {
-      if (this.hasMoreStatuses && !this.loadingMoreStatuses) {
-        this.loadMoreStatuses();
+      if (this.hasMoreStatuses && !this.isLoadingMoreStatusPreviews) {
+        this.loadStatuses(true);
       }
     }
   }

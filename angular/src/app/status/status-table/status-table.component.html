@@ -7,18 +7,14 @@
     <hr />
 
     <div *ngIf="statusPreviews">
-      <div *ngIf="statusPreviews.totalCount === 0">
-        <app-no-data [message]="'StatusTable.NoData'"></app-no-data>
-      </div>
-
       <div class="container-fluid">
         <div class="row">
           <div
             class="col-4 d-none d-lg-block"
             #scrollContainer
             style="overflow-y: auto; max-height: 82vh"
-            [style.opacity]="loadingMoreStatuses ? 0.5 : 1"
-            [style.filter]="loadingMoreStatuses ? 'blur(2px)' : 'none'"
+            [style.opacity]="isLoadingMoreStatusPreviews ? 0.5 : 1"
+            [style.filter]="isLoadingMoreStatusPreviews ? 'blur(2px)' : 'none'"
             (scroll)="onScroll($event)"
           >
             <div *ngFor="let statusPreview of statusPreviews.items">
@@ -34,7 +30,7 @@
               <i>{{ 'StatusTable.NoMoreResults' | localize }}</i>
             </div>
             <div
-              *ngIf="loadingMoreStatuses"
+              *ngIf="isLoadingMoreStatusPreviews"
               class="overlay"
               style="
                 position: absolute;
@@ -55,8 +51,8 @@
             class="col-12 d-lg-none"
             #scrollContainer
             style="overflow-y: auto; max-height: 82vh"
-            [style.opacity]="loadingMoreStatuses ? 0.5 : 1"
-            [style.filter]="loadingMoreStatuses ? 'blur(2px)' : 'none'"
+            [style.opacity]="isLoadingMoreStatusPreviews ? 0.5 : 1"
+            [style.filter]="isLoadingMoreStatusPreviews ? 'blur(2px)' : 'none'"
             (scroll)="onScroll($event)"
           >
             <div *ngFor="let statusPreview of statusPreviews.items">
@@ -70,7 +66,7 @@
               <i>{{ 'StatusTable.NoMoreResults' | localize }}</i>
             </div>
             <div
-              *ngIf="loadingMoreStatuses"
+              *ngIf="isLoadingMoreStatusPreviews"
               class="overlay"
               style="
                 position: absolute;
@@ -173,9 +169,8 @@
       </div>
     </div>
 
-    <!-- Center and add transparent overlay when loading -->
     <div
-      *ngIf="!statusPreviews"
+      *ngIf="!statusPreviews || !statusFilter"
       style="
         position: absolute;
         top: 0;
@@ -191,7 +186,3 @@
     </div>
   </div>
 </section>
-
-<div *ngIf="!statusFilter" style="text-align: center; padding-top: 40vh">
-  <app-loading-animation></app-loading-animation>
-</div>
