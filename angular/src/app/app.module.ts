@@ -98,7 +98,6 @@ import {AssistantModalComponent} from './common/assistant-modal/assistant-modal.
 import {AssistantButtonComponent} from './common/assistant-button/assistant-button.component';
 import {StatusTableFilterComponent} from './status/status-table/status-table-filter/status-table-filter.component';
 import {NoDataComponent} from './common/no-data/no-data.component';
-import {RefreshBannerComponent} from './common/refresh-banner/refresh-banner.component';
 import {StatusChartSectionComponent} from './status/status-chart-section/status-chart-section.component';
 import {StatusMessageSectionComponent} from './status/status-message/status-message-section/status-message-section.component';
 import {StatusKpiSectionComponent} from './status/status-kpi/status-kpi-section/status-kpi-section.component';
@@ -187,7 +186,6 @@ import {StatusTablePanelComponent} from './status/status-table/status-table-pane
     AssistantButtonComponent,
     StatusTableFilterComponent,
     NoDataComponent,
-    RefreshBannerComponent,
     StatusChartSectionComponent,
     StatusMessageSectionComponent,
     StatusKpiSectionComponent,
