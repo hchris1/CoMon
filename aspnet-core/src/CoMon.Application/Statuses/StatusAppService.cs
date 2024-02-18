@@ -50,6 +50,21 @@ namespace CoMon.Statuses
             return _objectMapper.Map<StatusDto>(status);
         }
 
+        public async Task<StatusPreviewDto> GetPreview(long id)
+        {
+            var status = await _statusRepository
+                .GetAll()
+                .Where(s => s.Id == id)
+                .Include(s => s.Package)
+                .ThenInclude(p => p.Asset)
+                .ThenInclude(a => a.Group.Parent.Parent)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Status not found.");
+            status.IsLatest = await IsLatest(status);
+            return _objectMapper.Map<StatusPreviewDto>(status);
+        }
+
         private async Task<bool> IsLatest(Status status)
         {
             var latestId = await _statusRepository

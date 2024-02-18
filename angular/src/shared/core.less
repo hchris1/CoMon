@@ -16,7 +16,7 @@
 
 .form-group.required .col-form-label:after {
   color: #d00;
-  content: "*";
+  content: '*';
   position: absolute;
   margin-left: 3px;
 }
@@ -99,4 +99,26 @@ table-card-footer * {
 .status-modal {
   width: 90%;
   max-width: 1920px;
+}
+
+::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 1px grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a9a9a9;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a9a9a9;
+}
+
+.card {
+  transition: box-shadow 0.3s ease-in-out;
 }

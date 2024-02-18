@@ -6,10 +6,6 @@
 
     <hr />
 
-    <div *ngIf="statusChanged && showRefreshBanner">
-      <app-refresh-banner (bannerPressed)="loadStatuses()"></app-refresh-banner>
-    </div>
-
     <div *ngIf="statusPreviews">
       <div *ngIf="statusPreviews.totalCount === 0">
         <app-no-data [message]="'StatusTable.NoData'"></app-no-data>
@@ -17,31 +13,46 @@
 
       <div class="container-fluid">
         <div class="row">
-          <div class="col-4">
+          <div
+            class="col-4"
+            #scrollContainer
+            style="overflow-y: auto; max-height: 82vh"
+            [style.opacity]="loadingMoreStatuses ? 0.5 : 1"
+            [style.filter]="loadingMoreStatuses ? 'blur(2px)' : 'none'"
+            (scroll)="onScroll($event)"
+          >
             <div *ngFor="let statusPreview of statusPreviews.items">
-              <div class="row">
-                <app-status-preview
-                  [statusPreview]="statusPreview"
-                  [openStatusModalOnClick]="false"
-                  [showShadow]="status?.id === statusPreview.id"
-                  (statusClicked)="onStatusClicked($event)"
-                  style="width: 98%"
-                ></app-status-preview>
-              </div>
+              <app-status-preview
+                [statusPreview]="statusPreview"
+                [openStatusModalOnClick]="false"
+                [showShadow]="status?.id === statusPreview.id"
+                (statusClicked)="onStatusClicked($event)"
+                style="width: 98%"
+              ></app-status-preview>
             </div>
-            <pagination
-              [totalItems]="statusPreviews.totalCount"
-              (pageChanged)="changePage($event)"
-              [itemsPerPage]="10"
-              [maxSize]="10"
-              class="justify-content-center"
-              [customPreviousTemplate]="prevTemplate"
-              [customNextTemplate]="nextTemplate"
-              [(ngModel)]="currentPage"
-            ></pagination>
+            <div *ngIf="!hasMoreStatuses" style="text-align: center">
+              <i>{{ 'StatusTable.NoMoreResults' | localize }}</i>
+            </div>
+            <div
+              *ngIf="loadingMoreStatuses"
+              class="overlay"
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <app-loading-animation></app-loading-animation>
+            </div>
           </div>
           <div class="col-8" *ngIf="status">
-            <div class="card">
+            <div class="card" style="min-height: 81vh">
               <div
                 class="card-header"
                 [style.background]="getBackgroundStyle()"
@@ -96,39 +107,41 @@
               </div>
             </div>
           </div>
+          <div class="col-8" *ngIf="!status && isLoadingStatus">
+            <div class="row justify-content-center" style="padding-top: 30vh">
+              <app-loading-animation></app-loading-animation>
+            </div>
+          </div>
+          <div class="col-8" *ngIf="!status && !isLoadingStatus">
+            <div class="row justify-content-center" style="padding-top: 20vh">
+              <app-no-data
+                [message]="'StatusTable.NoStatusSelected'"
+                [width]="15"
+              ></app-no-data>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- Center and add transparent overlay when loading -->
     <div
       *ngIf="!statusPreviews"
-      class="row justify-content-center"
-      style="text-align: center"
+      style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
     >
       <app-loading-animation></app-loading-animation>
     </div>
   </div>
 </section>
-
-<ng-template
-  #nextTemplate
-  let-disabled="disabled"
-  let-currentPage="currentPage"
->
-  <ng-container>
-    {{ 'Pagination.Next' | localize }}
-  </ng-container>
-</ng-template>
-
-<ng-template
-  #prevTemplate
-  let-disabled="disabled"
-  let-currentPage="currentPage"
->
-  <ng-container>
-    {{ 'Pagination.Previous' | localize }}
-  </ng-container>
-</ng-template>
 
 <div *ngIf="!statusFilter" style="text-align: center; padding-top: 40vh">
   <app-loading-animation></app-loading-animation>

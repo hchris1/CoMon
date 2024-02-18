@@ -1,11 +1,11 @@
 import {
-  ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {CoMonHubService} from '@app/comon-hub.service';
 import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
 import {
@@ -14,7 +14,6 @@ import {
   StatusPreviewDto,
   StatusDto,
 } from '@shared/service-proxies/service-proxies';
-import {PageChangedEvent} from 'ngx-bootstrap/pagination';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {StatusFilter} from './status-table-filter/status-table-filter.component';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
@@ -32,39 +31,31 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   @Input() showRefreshBanner = true;
   @Input() triggerReload: BehaviorSubject<boolean>;
 
+  @ViewChild('scrollContainer') scrollContainer: ElementRef;
+
   statusPreviews: StatusPreviewDtoPagedResultDto;
   status: StatusDto;
+  hasMoreStatuses = true;
+  loadingMoreStatuses = false;
+  isLoadingStatus = false;
 
   assistantModalRef: BsModalRef;
 
-  // Pagination
-  maxResultCount = 10;
-  skipCount = 0;
-  currentPage = 1;
-
-  // Query params
-  assetId: number;
-  groupId: number;
+  maxLoadCount = 20;
 
   // Status change
   statusChangeSubscription: Subscription;
   connectionEstablishedSubscription: Subscription;
-  statusChanged = false;
 
   statusFilter: StatusFilter;
 
   constructor(
     private _statusService: StatusServiceProxy,
     private _coMonHubService: CoMonHubService,
-    private _changeDetector: ChangeDetectorRef,
-    private _route: ActivatedRoute,
     private _modalService: BsModalService
   ) {}
 
   ngOnInit(): void {
-    this.assetId = parseInt(this._route.snapshot.queryParams['assetId'], 10);
-    this.groupId = parseInt(this._route.snapshot.queryParams['groupId'], 10);
-
     this.subscribeToStatusChanges();
 
     this.connectionEstablishedSubscription =
@@ -83,7 +74,6 @@ export class StatusTableComponent implements OnInit, OnDestroy {
 
   filterChanged(filter: StatusFilter) {
     this.statusFilter = filter;
-    this.resetPagination();
     this.loadStatuses();
   }
 
@@ -93,8 +83,11 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   }
 
   onStatusClicked(status: StatusPreviewDto) {
+    this.status = undefined;
+    this.isLoadingStatus = true;
     this._statusService.get(status.id).subscribe(result => {
       this.status = result;
+      this.isLoadingStatus = false;
     });
   }
 
@@ -119,7 +112,6 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   subscribeToStatusChanges() {
     this.statusChangeSubscription =
       this._coMonHubService.statusUpdate.subscribe(update => {
-        this.statusChanged = true;
         this.statusPreviews.items
           .filter(
             statusPreview => statusPreview.package.id === update.packageId
@@ -127,39 +119,80 @@ export class StatusTableComponent implements OnInit, OnDestroy {
           .forEach(statusPreview => {
             statusPreview.isLatest = false;
           });
-        this._changeDetector.detectChanges();
+
+        if (
+          this.statusFilter.assetId &&
+          this.statusFilter.assetId !== update.assetId
+        )
+          return;
+        if (
+          this.statusFilter.groupId &&
+          update.groupIds &&
+          !update.groupIds.includes(this.statusFilter.groupId)
+        )
+          return;
+
+        if (this.status && this.status.package.id === update.packageId) {
+          this.status.isLatest = false;
+        }
+
+        this._statusService.getPreview(update.id).subscribe(result => {
+          this.statusPreviews.items.unshift(result);
+        });
       });
   }
 
   loadStatuses() {
+    this.status = undefined;
     this.statusPreviews = undefined;
 
     this._statusService
       .getStatusTable(
-        this.skipCount,
-        this.maxResultCount,
-        this.statusFilter.assetId,
-        this.statusFilter.groupId,
+        0,
+        this.maxLoadCount,
+        this.statusFilter?.assetId,
+        this.statusFilter?.groupId,
         this.packageId,
-        this.statusFilter.criticality,
-        this.statusFilter.latestOnly
+        this.statusFilter?.criticality,
+        this.statusFilter?.latestOnly
       )
       .subscribe(result => {
         this.statusPreviews = result;
-        this.statusChanged = false;
+        this.hasMoreStatuses = result.totalCount > result.items.length;
       });
   }
 
-  changePage(event: PageChangedEvent): void {
-    if (event.page === this.currentPage) return;
+  loadMoreStatuses() {
+    this.loadingMoreStatuses = true;
+    this._statusService
+      .getStatusTable(
+        this.statusPreviews.items.length,
+        this.maxLoadCount,
+        this.statusFilter?.assetId,
+        this.statusFilter?.groupId,
+        this.packageId,
+        this.statusFilter?.criticality,
+        this.statusFilter?.latestOnly
+      )
+      .subscribe(result => {
+        this.statusPreviews.items = this.statusPreviews.items.concat(
+          result.items
+        );
+        this.hasMoreStatuses =
+          result.totalCount > this.statusPreviews.items.length;
 
-    this.skipCount = (event.page - 1) * event.itemsPerPage;
-    this.maxResultCount = event.itemsPerPage;
-    this.loadStatuses();
+        this.loadingMoreStatuses = false;
+      });
   }
 
-  resetPagination() {
-    this.skipCount = 0;
-    this.currentPage = 1;
+  onScroll(event): void {
+    if (
+      event.target.offsetHeight + event.target.scrollTop >=
+      event.target.scrollHeight - 10
+    ) {
+      if (this.hasMoreStatuses && !this.loadingMoreStatuses) {
+        this.loadMoreStatuses();
+      }
+    }
   }
 }
