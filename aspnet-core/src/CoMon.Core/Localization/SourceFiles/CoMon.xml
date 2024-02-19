@@ -236,6 +236,8 @@
 		<text name="Image.DeleteConfirmationTitle">Delete Image</text>
 		<text name="Image.DeleteSuccessMessage">Image deleted successfully.</text>
 		<text name="Image.DeleteSuccessTitle">Delete Image</text>
+		<text name="Image.ImageTooLargeTitle">Upload Image</text>
+		<text name="Image.ImageTooLargeMessage">The image exceeds the maximum allowed size of 2MB.</text>
 		<text name="Dashboard.DeleteConfirmationMessage">The dashboard will be permanently deleted. Do you want to proceed?</text>
 		<text name="Dashboard.DeleteConfirmationTitle">Delete Dashboard</text>
 		<text name="Dashboard.DeleteSuccessMessage">Dashboard deleted successfully.</text>

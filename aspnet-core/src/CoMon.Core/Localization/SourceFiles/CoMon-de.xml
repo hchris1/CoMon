@@ -236,6 +236,8 @@
 		<text name="Image.DeleteConfirmationTitle">Bild Löschen</text>
 		<text name="Image.DeleteSuccessMessage">Bild erfolgreich gelöscht.</text>
 		<text name="Image.DeleteSuccessTitle">Bild Löschen</text>
+		<text name="Image.ImageTooLargeTitle">Bild Hochladen</text>
+		<text name="Image.ImageTooLargeMessage">Das Bild übersteigt die maximale Größe von 2MB.</text>
 		<text name="Dashboard.DeleteConfirmationMessage">Das Dashboard wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
 		<text name="Dashboard.DeleteConfirmationTitle">Dashboard Löschen</text>
 		<text name="Dashboard.DeleteSuccessMessage">Dashboard erfolgreich gelöscht.</text>

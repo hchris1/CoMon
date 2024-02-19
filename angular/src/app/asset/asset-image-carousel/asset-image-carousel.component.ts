@@ -52,6 +52,14 @@ export class AssetImageCarouselComponent
   }
 
   addImage(image: FileParameter) {
+    if (image.data.size > 2 * 1024 * 1024) {
+      this.notify.error(
+        this.l('Image.ImageTooLargeMessage'),
+        this.l('Image.ImageTooLargeTitle')
+      );
+      return;
+    }
+
     this._assetService.uploadImage(this.assetId, image).subscribe(() => {
       this.notify.success(
         this.l('Image.UploadSuccessMessage'),
