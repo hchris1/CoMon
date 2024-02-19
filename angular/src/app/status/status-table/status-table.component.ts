@@ -25,8 +25,8 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   status: StatusDto;
   statusFilter: StatusFilter;
   statusPreviews: StatusPreviewDtoPagedResultDto;
+  hasMoreStatuses: boolean;
 
-  hasMoreStatuses = true;
   isLoadingMoreStatusPreviews = false;
   isLoadingStatus = false;
 
@@ -79,6 +79,8 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   }
 
   updateStatusPreviews(update: StatusUpdateDto) {
+    if (!this.statusPreviews) return;
+
     this.statusPreviews.items.forEach(statusPreview => {
       if (statusPreview.package.id === update.packageId) {
         if (this.statusFilter.latestOnly && statusPreview.isLatest) {
@@ -110,7 +112,9 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   }
 
   markCurrentStatusAsNotLatest(update) {
-    if (this.status && this.status.package.id === update.packageId) {
+    if (!this.status) return;
+
+    if (this.status.package.id === update.packageId) {
       this.status.isLatest = false;
     }
   }
