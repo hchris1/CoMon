@@ -6,8 +6,11 @@
 <div *ngIf="messages.length === 0">
   <app-no-data message="Status.NoMessages" [image]="image"></app-no-data>
 </div>
-<div class="row">
+<div class="row pt-1">
   <div class="col-auto" *ngFor="let message of messages">
-    <app-status-message [message]="message"></app-status-message>
+    <app-status-message
+      [message]="message"
+      [criticality]="criticality"
+    ></app-status-message>
   </div>
 </div>
