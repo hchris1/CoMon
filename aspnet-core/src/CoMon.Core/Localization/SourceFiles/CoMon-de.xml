@@ -122,6 +122,7 @@
 		<text name="Sidebar.StatusTable">Statustabelle</text>
 		<text name="Sidebar.Dashboard">Dashboards</text>
 		<text name="Sidebar.Settings">Einstellungen</text>
+		<text name="Sidebar.Statistics">Statistik</text>
 		<text name="Overview.RootTitle">Root</text>
 		<text name="Overview.RootInfo">Die 🌱 beinhaltet alle Gruppen und Assets, die zu keiner anderen Gruppe gehören.</text>
 		<text name="Overview.GroupsTitle">Gruppen</text>
@@ -155,7 +156,13 @@
 		<text name="StatusTable.NoStatusSelected">Klicke auf einen Status auf der linken Seite.</text>
 		<text name="StatusTable.NoMoreResults">Keine weiteren Einträge verfügbar.</text>
 		<text name="Kpi.NoStatistic">Keine Statistik verfügbar.</text>
-		<text name="Kpi.NoValue">🤷🏽</text>
+		<text name="Kpi.NoValue">No value available</text>
+		<text name="Statistics.Tiles.GroupCount">📁 Gruppen</text>
+		<text name="Statistics.Tiles.AssetCount">📇 Assets</text>
+		<text name="Statistics.Tiles.PackageCount">📦 Pakete</text>
+		<text name="Statistics.Tiles.CustomDashboardCount">📊 Dashboards</text>
+		<text name="Statistics.Tiles.StatusCount">📊 Statuses</text>
+		<text name="Statistics.Tiles.UserCount">👤 Users</text>
 		<text name="Criticality.All">Alle</text>
 		<text name="Criticality.Healthy">Gut</text>
 		<text name="Criticality.Warning">Warnung</text>
@@ -220,6 +227,8 @@
 		<text name="Settings.DeleteAllStatuses">Status zurücksetzen</text>
 		<text name="Settings.DeleteAllStatusesConfirmationMessage">Es werden alle Ergebnisse von Paketen gelöscht. Wollen Sie fortfahren?</text>
 		<text name="Settings.AllStatusesDeletedDescription">Ergebnisse wurden gelöscht.</text>
+		<text name="Statistics.Title">Statistik</text>
+		<text name="Statistics.Description">Diese Ansicht beinhaltet einige globale CoMon Statistiken.</text>
 		<text name="Group.DeleteConfirmationMessage">Die Gruppe wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
 		<text name="Group.DeleteConfirmationTitle">Gruppe Löschen</text>
 		<text name="Group.DeleteSuccessMessage">Gruppe erfolgreich gelöscht.</text>

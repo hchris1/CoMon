@@ -122,6 +122,7 @@
 		<text name="Sidebar.StatusTable">Status Table</text>
 		<text name="Sidebar.Dashboard">Dashboards</text>
 		<text name="Sidebar.Settings">Settings</text>
+		<text name="Sidebar.Statistics">Statistics</text>
 		<text name="Overview.RootTitle">Root</text>
 		<text name="Overview.RootInfo">The 🌱 contains all groups and assets that don't belong to another group.</text>
 		<text name="Overview.GroupsTitle">Groups</text>
@@ -156,6 +157,12 @@
 		<text name="StatusTable.NoMoreResults">No more entries available.</text>
 		<text name="Kpi.NoStatistic">No statistics available.</text>
 		<text name="Kpi.NoValue">🤷🏽</text>
+		<text name="Statistics.Tiles.GroupCount">📁 Groups</text>
+		<text name="Statistics.Tiles.AssetCount">📇 Assets</text>
+		<text name="Statistics.Tiles.PackageCount">📦 Packages</text>
+		<text name="Statistics.Tiles.CustomDashboardCount">📊 Dashboards</text>
+		<text name="Statistics.Tiles.StatusCount">📊 Status</text>
+		<text name="Statistics.Tiles.UserCount">👤 Benutzer</text>
 		<text name="Criticality.All">All</text>
 		<text name="Criticality.Healthy">Healthy</text>
 		<text name="Criticality.Warning">Warning</text>
@@ -220,6 +227,8 @@
 		<text name="Settings.DeleteAllStatuses">Reset Statuses</text>
 		<text name="Settings.DeleteAllStatusesConfirmationMessage">This will delete all statuses of packages in the system. Do you want to proceed?</text>
 		<text name="Settings.AllStatusesDeletedDescription">Statuses have been deleted.</text>
+		<text name="Statistics.Title">Statistics</text>
+		<text name="Statistics.Description">You can find some overall CoMon statistics below.</text>
 		<text name="Group.DeleteConfirmationMessage">The group will be permanently deleted. Do you want to proceed?</text>
 		<text name="Group.DeleteConfirmationTitle">Delete Group</text>
 		<text name="Group.DeleteSuccessMessage">Group deleted successfully.</text>
