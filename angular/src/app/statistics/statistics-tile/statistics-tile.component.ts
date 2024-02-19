@@ -1,7 +1,6 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {DarkModeService} from '@app/dark-mode.service';
 import {Gradients} from '@shared/enums/Gradients';
-import {set} from 'lodash-es';
 import {Observable, interval, map, takeWhile, tap} from 'rxjs';
 
 @Component({
