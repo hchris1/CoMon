@@ -30,7 +30,7 @@ export class StatusTableComponent implements OnInit, OnDestroy {
   isLoadingMoreStatusPreviews = false;
   isLoadingStatus = false;
 
-  batchSize = 20;
+  batchSize = 30;
 
   statusChangeSubscription: Subscription;
   connectionEstablishedSubscription: Subscription;
