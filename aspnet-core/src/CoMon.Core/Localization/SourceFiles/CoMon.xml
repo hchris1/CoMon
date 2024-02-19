@@ -161,8 +161,8 @@
 		<text name="Statistics.Tiles.AssetCount">📇 Assets</text>
 		<text name="Statistics.Tiles.PackageCount">📦 Packages</text>
 		<text name="Statistics.Tiles.CustomDashboardCount">📊 Dashboards</text>
-		<text name="Statistics.Tiles.StatusCount">📊 Status</text>
-		<text name="Statistics.Tiles.UserCount">👤 Benutzer</text>
+		<text name="Statistics.Tiles.StatusCount">📊 Statuses</text>
+		<text name="Statistics.Tiles.UserCount">👤 Users</text>
 		<text name="Criticality.All">All</text>
 		<text name="Criticality.Healthy">Healthy</text>
 		<text name="Criticality.Warning">Warning</text>
