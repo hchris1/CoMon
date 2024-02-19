@@ -3,7 +3,7 @@ import {AssetDto, Criticality} from '../service-proxies/service-proxies';
 export class DynamicStylesHelper {
   static getHistoricBackgroundClass(isLatest: boolean) {
     if (isLatest) return '';
-    return 'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.03) 10px, rgba(0, 0, 0, 0.07) 10px, rgba(0, 0, 0, 0.07) 20px)';
+    return 'repeating-linear-gradient(40deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 15px, rgba(0, 0, 0, 0.1) 15px, rgba(0, 0, 0, 0.1) 30px)';
   }
 
   static getEmoji(criticality: Criticality) {
