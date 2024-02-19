@@ -2,7 +2,7 @@
 
 namespace CoMon.Images.Dtos
 {
-    [AutoMapFrom(typeof(Image))]
+    [AutoMapFrom(typeof(Image), typeof(ImageCacheItem))]
     public class ImageDto
     {
         public long Id { get; set; }
