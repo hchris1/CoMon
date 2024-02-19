@@ -17,6 +17,7 @@ export class StatusKpiComponent implements OnInit {
   percentage: number | undefined = undefined;
 
   gradientColors: string[];
+  gradientAngle = Math.floor(Math.random() * 360);
 
   constructor(private _darkModeService: DarkModeService) {
     this._darkModeService.isDarkMode.subscribe(isDarkMode => {
