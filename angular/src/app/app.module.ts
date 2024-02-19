@@ -103,6 +103,8 @@ import {StatusMessageSectionComponent} from './status/status-message/status-mess
 import {StatusKpiSectionComponent} from './status/status-kpi/status-kpi-section/status-kpi-section.component';
 import {StatusTableNavigatorComponent} from './status/status-table/status-table-navigator/status-table-navigator.component';
 import {StatusTablePanelComponent} from './status/status-table/status-table-panel/status-table-panel.component';
+import {StatisticsComponent} from './statistics/statistics.component';
+import {StatisticsTileComponent} from './statistics/statistics-tile/statistics-tile.component';
 
 @NgModule({
   declarations: [
@@ -191,6 +193,8 @@ import {StatusTablePanelComponent} from './status/status-table/status-table-pane
     StatusKpiSectionComponent,
     StatusTableNavigatorComponent,
     StatusTablePanelComponent,
+    StatisticsComponent,
+    StatisticsTileComponent,
   ],
   imports: [
     CommonModule,

@@ -8159,6 +8159,7 @@ export class StatisticsDto implements IStatisticsDto {
     groupCount: number;
     packageCount: number;
     statusCount: number;
+    userCount: number;
 
     constructor(data?: IStatisticsDto) {
         if (data) {
@@ -8176,6 +8177,7 @@ export class StatisticsDto implements IStatisticsDto {
             this.groupCount = _data["groupCount"];
             this.packageCount = _data["packageCount"];
             this.statusCount = _data["statusCount"];
+            this.userCount = _data["userCount"];
         }
     }
 
@@ -8193,6 +8195,7 @@ export class StatisticsDto implements IStatisticsDto {
         data["groupCount"] = this.groupCount;
         data["packageCount"] = this.packageCount;
         data["statusCount"] = this.statusCount;
+        data["userCount"] = this.userCount;
         return data;
     }
 
@@ -8210,6 +8213,7 @@ export interface IStatisticsDto {
     groupCount: number;
     packageCount: number;
     statusCount: number;
+    userCount: number;
 }
 
 export class StatusDto implements IStatusDto {

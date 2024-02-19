@@ -8,5 +8,6 @@ namespace CoMon.Statistics.Dtos
         public long GroupCount { get; set; }
         public long PackageCount { get; set; }
         public long StatusCount { get; set; }
+        public long UserCount { get; set; }
     }
 }

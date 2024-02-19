@@ -1,0 +1,54 @@
+<div [@routerTransition]>
+  <section class="content-header">
+    <div class="container-fluid">
+      <h1>📈 {{ 'Statistics.Title' | localize }}</h1>
+      <p>{{ 'Statistics.Description' | localize }}</p>
+    </div>
+  </section>
+
+  <section class="content" *ngIf="statistics">
+    <div class="container-fluid">
+      <div class="row pl-2 pr-3">
+        <div class="col-6 mb-3">
+          <app-statistics-tile
+            [title]="'Statistics.Tiles.GroupCount'"
+            [value]="statistics.groupCount"
+          ></app-statistics-tile>
+        </div>
+        <div class="col-6 mb-3">
+          <app-statistics-tile
+            [title]="'Statistics.Tiles.AssetCount'"
+            [value]="statistics.assetCount"
+          ></app-statistics-tile>
+        </div>
+        <div class="col-6 mb-3">
+          <app-statistics-tile
+            [title]="'Statistics.Tiles.PackageCount'"
+            [value]="statistics.packageCount"
+          ></app-statistics-tile>
+        </div>
+        <!-- Custom Dashboard Count -->
+        <div class="col-6 mb-3">
+          <app-statistics-tile
+            [title]="'Statistics.Tiles.CustomDashboardCount'"
+            [value]="statistics.customDashboardCount"
+          ></app-statistics-tile>
+        </div>
+        <!-- Status count -->
+        <div class="col-6 mb-3">
+          <app-statistics-tile
+            [title]="'Statistics.Tiles.StatusCount'"
+            [value]="statistics.statusCount"
+          ></app-statistics-tile>
+        </div>
+        <!-- Users count -->
+        <div class="col-6 mb-3">
+          <app-statistics-tile
+            [title]="'Statistics.Tiles.UserCount'"
+            [value]="statistics.userCount"
+          ></app-statistics-tile>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
