@@ -4,7 +4,11 @@
   </div>
 </div>
 <div *ngIf="kpis.length === 0">
-  <app-no-data message="Status.NoKPIs" [image]="image"></app-no-data>
+  <app-no-data
+    message="Status.NoKPIs"
+    [image]="image"
+    [width]="6"
+  ></app-no-data>
 </div>
 <div class="row">
   <div *ngFor="let kpi of kpis">

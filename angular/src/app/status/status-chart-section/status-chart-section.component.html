@@ -4,7 +4,11 @@
   </div>
 </div>
 <div *ngIf="charts.length === 0">
-  <app-no-data message="Status.NoCharts" [image]="image"></app-no-data>
+  <app-no-data
+    message="Status.NoCharts"
+    [image]="image"
+    [width]="8"
+  ></app-no-data>
 </div>
 <div class="row">
   <app-chart-wrapper
