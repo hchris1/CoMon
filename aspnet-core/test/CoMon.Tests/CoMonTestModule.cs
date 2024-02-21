@@ -11,6 +11,8 @@ using Abp.Zero.Configuration;
 using Abp.Zero.EntityFrameworkCore;
 using CoMon.EntityFrameworkCore;
 using CoMon.Tests.DependencyInjection;
+using CoMon.Notifications;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CoMon.Tests
 {
@@ -43,6 +45,12 @@ namespace CoMon.Tests
             RegisterFakeService<AbpZeroDbMigrator<CoMonDbContext>>();
 
             Configuration.ReplaceService<IEmailSender, NullEmailSender>(DependencyLifeStyle.Transient);
+            Configuration.ReplaceService<Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Configuration.ConfigurationRoot>();
+            IocManager.IocContainer.Register(
+                Component.For<IHubContext<CoMonHub>>()
+                    .UsingFactoryMethod(() => Substitute.For<IHubContext<CoMonHub>>())
+                    .LifestyleSingleton()
+            );
         }
 
         public override void Initialize()

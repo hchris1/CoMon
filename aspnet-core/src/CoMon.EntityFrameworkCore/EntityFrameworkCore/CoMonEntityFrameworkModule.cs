@@ -1,9 +1,7 @@
 ﻿using Abp.Dependency;
-using Abp.EntityFrameworkCore;
 using Abp.EntityFrameworkCore.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
-using Abp.Zero.EntityFrameworkCore;
 using CoMon.EntityFrameworkCore.Seed;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +9,7 @@ namespace CoMon.EntityFrameworkCore
 {
     [DependsOn(
         typeof(CoMonCoreModule),
-        typeof(AbpZeroCoreEntityFrameworkCoreModule))]
+        typeof(Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule))]
     public class CoMonEntityFrameworkModule : AbpModule
     {
         /* Used it tests to skip dbcontext registration, in order to use in-memory database of EF Core */
@@ -48,12 +46,15 @@ namespace CoMon.EntityFrameworkCore
         {
             using (var scope = IocManager.CreateScope())
             {
-                var dbContextResolver = scope.Resolve<IDbContextResolver>();
+                var dbContextResolver = scope.Resolve<Abp.EntityFrameworkCore.IDbContextResolver>();
                 var context = dbContextResolver.Resolve<CoMonDbContext>(Configuration.DefaultNameOrConnectionString, null);
 
-                Logger.Info("Applying migrations...");
-                context.Database.Migrate();
-                Logger.Info("Finished migrations");
+                if (context.Database.IsRelational())
+                {
+                    Logger.Info("Applying migrations...");
+                    context.Database.Migrate();
+                    Logger.Info("Finished migrations");
+                }
             }
 
 

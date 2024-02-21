@@ -30,8 +30,13 @@ namespace CoMon.Packages.Workers
             _statusRepository = statusRepository;
         }
 
-        [UnitOfWork]
         protected override async Task DoWorkAsync()
+        {
+            await PerformChecks();
+        }
+
+        [UnitOfWork]
+        public async Task PerformChecks()
         {
             var packages = await _packageRepository
                     .GetAll()

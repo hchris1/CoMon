@@ -20,6 +20,8 @@ namespace CoMon.Assets
         public virtual string Description { get; set; }
         public virtual List<Image> Images { get; set; } = [];
         public virtual List<Package> Packages { get; set; }
+        [ForeignKey(nameof(Group))]
+        public virtual long? GroupId { get; set; }
         public virtual Group Group { get; set; }
     }
 }
