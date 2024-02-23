@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Abp.Authorization;
+﻿using Abp.Authorization;
 using CoMon.Configuration.Dto;
+using System.Threading.Tasks;
 
 namespace CoMon.Configuration
 {

@@ -1,4 +1,5 @@
-﻿using Abp.Domain.Repositories;
+﻿using Abp.Domain.Entities;
+using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using Abp.UI;
 using CoMon.Assets;
@@ -33,7 +34,8 @@ namespace CoMon.Assistant
                 .Include(s => s.Package)
                 .ThenInclude(s => s.Asset)
                 .AsSplitQuery()
-                .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Status not found.");
+                .FirstOrDefaultAsync() 
+                    ?? throw new EntityNotFoundException("Status not found.");
 
                 var stringified = JsonSerializer.Serialize(_objectMapper.Map<StatusPreviewDto>(status));
 
