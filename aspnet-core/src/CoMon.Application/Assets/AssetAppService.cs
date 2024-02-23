@@ -53,7 +53,7 @@ namespace CoMon.Assets
         public async Task<long> Create(CreateAssetDto input)
         {
             Group group = null;
-            if (input.GroupId != null)
+            if (input.GroupId.HasValue)
                 group = await _groupRepository.GetAsync(input.GroupId.Value)
                     ?? throw new EntityNotFoundException("Group not found.");
 

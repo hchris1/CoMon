@@ -26,7 +26,8 @@ namespace CoMon.Tests.Assets
         public async Task Get_FilledAssetsTable_ReturnsAssetDto()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             AssetDto result;
@@ -47,17 +48,16 @@ namespace CoMon.Tests.Assets
             // Nothing to arrange
 
             // Act and Assert
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.Get(1234));
-            }
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.Get(1234));
         }
 
         [Fact]
         public async Task GetAllPreviews_FilledAssetsTable_ReturnsList()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             List<AssetPreviewDto> result;
@@ -103,7 +103,8 @@ namespace CoMon.Tests.Assets
         public async Task Create_AssetInGroup_CreatesAsset()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateGroupWithoutAssets);
+            var arrangedGroup = EntityFactory.CreateGroup();
+            UsingDbContext(context => context.Groups.Add(arrangedGroup));
             var input = new CreateAssetDto()
             {
                 Name = "Test Asset",
@@ -142,17 +143,16 @@ namespace CoMon.Tests.Assets
             };
 
             // Act and Assert
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.Create(input));
-            }
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.Create(input));
         }
 
         [Fact]
         public async Task UpdateName_AssetExists_UpdatesName()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
             var newName = "New Name";
 
             // Act
@@ -178,31 +178,29 @@ namespace CoMon.Tests.Assets
             var newName = "New Name";
 
             // Act and Assert
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UpdateName(1, newName));
-            }
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UpdateName(1, newName));
         }
 
         [Fact]
         public async Task UpdateName_NewNameIsWhiteSpace_ThrowsAbpValidationException()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
             var newName = " ";
 
             // Act and Assert
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await Assert.ThrowsAsync<AbpValidationException>(() => _assetAppService.UpdateName(1, newName));
-            }
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await Assert.ThrowsAsync<AbpValidationException>(() => _assetAppService.UpdateName(1, newName));
         }
 
         [Fact]
         public async Task UpdateDescription_AssetExists_UpdatesDescription()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
             var newDescription = "New Description";
 
             // Act
@@ -228,18 +226,21 @@ namespace CoMon.Tests.Assets
             var newDescription = "New Description";
 
             // Act and Assert
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UpdateDescription(1, newDescription));
-            }
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UpdateDescription(1, newDescription));
         }
 
         [Fact]
         public async Task UpdateGroup_AssetExists_UpdatesGroup()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateGroupWithoutAssets);
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            var arrangedGroup = EntityFactory.CreateGroup();
+            UsingDbContext(context =>
+            {
+                context.Assets.Add(arrangedAsset);
+                context.Groups.Add(arrangedGroup);
+            });
             var newGroupId = 1;
 
             UsingDbContext(context =>
@@ -267,8 +268,13 @@ namespace CoMon.Tests.Assets
         public async Task UpdateGroup_AssetExistsAndGroupIsNull_UpdatesGroup()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
-            UsingDbContext(DbPreparator.CreateGroupWithoutAssets);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            var arrangedGroup = EntityFactory.CreateGroup();
+            UsingDbContext(context =>
+            {
+                context.Assets.Add(arrangedAsset);
+                context.Groups.Add(arrangedGroup);
+            });
             var newGroupId = null as long?;
 
             UsingDbContext(context =>
@@ -302,31 +308,29 @@ namespace CoMon.Tests.Assets
             var newGroupId = 1;
 
             // Act and Assert
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UpdateGroup(1, newGroupId));
-            }
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UpdateGroup(1, newGroupId));
         }
 
         [Fact]
         public async Task UpdateGroup_GroupDoesNotExist_ThrowsNotFoundException()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
             var newGroupId = 1;
 
             // Act and Assert
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UpdateGroup(1, newGroupId));
-            }
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UpdateGroup(1, newGroupId));
         }
 
         [Fact]
         public async Task Delete_AssetExists_DeletesAsset()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
@@ -347,7 +351,8 @@ namespace CoMon.Tests.Assets
         public async Task UploadImage_AssetExists_UploadsImage()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Setup mock file using a memory stream
             var fileMock = new Mock<IFormFile>();
@@ -397,17 +402,17 @@ namespace CoMon.Tests.Assets
             fileMock.Setup(_ => _.ContentType).Returns("image/png");
 
             // Act and Assert
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UploadImage(1, fileMock.Object));
-            }
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _assetAppService.UploadImage(1, fileMock.Object));
         }
 
         [Fact]
         public async Task UploadImage_InvalidImageType_ThrowsAbpValidationException()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
+
             var fileMock = new Mock<IFormFile>();
             fileMock.Setup(_ => _.ContentType).Returns("text/plain");
 
@@ -422,7 +427,9 @@ namespace CoMon.Tests.Assets
         public async Task UploadImage_InvalidImageSize_ThrowsAbpValidationException()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
+
             var fileMock = new Mock<IFormFile>();
             fileMock.Setup(_ => _.Length).Returns(10000000);
 

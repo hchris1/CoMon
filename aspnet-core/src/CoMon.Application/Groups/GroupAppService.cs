@@ -7,7 +7,6 @@ using CoMon.Assets;
 using CoMon.Groups.Dtos;
 using CoMon.Statuses.Dtos;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,7 +54,8 @@ namespace CoMon.Groups
                 .Include(g => g.SubGroups)
                 .Include(g => g.Assets)
                 .AsSplitQuery()
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Group not found.");
 
             var groupDto = new GroupDto
             {
@@ -163,6 +163,9 @@ namespace CoMon.Groups
 
         public async Task UpdateParent(long id, long? parentId)
         {
+            if (parentId.HasValue && parentId.Value == id)
+                throw new AbpValidationException("Group may not be its own parent.");
+
             var group = await _groupRepository
                 .GetAll()
                 .Include(g => g.Parent)

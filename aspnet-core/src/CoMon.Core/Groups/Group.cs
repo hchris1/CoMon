@@ -18,6 +18,7 @@ namespace CoMon.Groups
         public List<Group> SubGroups { get; set; } = [];
 
         [ForeignKey(nameof(Group))]
+        public virtual long? ParentId { get; set; }
         public virtual Group Parent { get; set; }
     }
 }

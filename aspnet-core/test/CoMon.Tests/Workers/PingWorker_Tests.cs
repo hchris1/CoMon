@@ -7,7 +7,6 @@ using Xunit;
 
 namespace CoMon.Tests.Workers
 {
-    [Collection("Sequential")]
     public class PingWorker_Tests : CoMonTestBase
     {
         private readonly PingWorker _pingWorker;
@@ -21,7 +20,10 @@ namespace CoMon.Tests.Workers
         public async Task DoWorkAsync_ShouldProcessPackages()
         {
             // Arrange
-            UsingDbContext(context => DbPreparator.CreateAssetWithPingPackage(context, hasStatus: false));
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddPingPackage();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
@@ -42,7 +44,10 @@ namespace CoMon.Tests.Workers
         public async Task DoWorkAsync_ShouldNotProcessPackages()
         {
             // Arrange
-            UsingDbContext(context => DbPreparator.CreateAssetWithPingPackage(context, hasStatus: true));
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddPingPackageWithStatus(Statuses.Criticality.Healthy);
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())

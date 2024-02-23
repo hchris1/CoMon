@@ -21,7 +21,10 @@ namespace CoMon.Tests.Images
         public async Task GetTitleImageForAsset_AssetHasImage_ReturnsImage()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithImage);
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddImage();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             ImageDto result;
@@ -39,7 +42,8 @@ namespace CoMon.Tests.Images
         public async Task GetTitleImageForAsset_AssetHasNoImage_ReturnsNull()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             ImageDto result;
@@ -56,7 +60,10 @@ namespace CoMon.Tests.Images
         public async Task GetImagesForAsset_AssetHasImages_ReturnsImages()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithImage);
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddImage();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             List<ImageDto> result;
@@ -75,7 +82,8 @@ namespace CoMon.Tests.Images
         public async Task GetImagesForAsset_AssetHasNoImages_ReturnsEmptyList()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithoutPackages);
+            var arrangedAsset = EntityFactory.CreateAsset();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             List<ImageDto> result;
@@ -93,7 +101,10 @@ namespace CoMon.Tests.Images
         public async Task Delete_ImageExists_DeletesImage()
         {
             // Arrange
-            UsingDbContext(DbPreparator.CreateAssetWithImage);
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddImage();
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
