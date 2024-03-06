@@ -3,10 +3,7 @@ using Abp.Domain.Uow;
 using Abp.Runtime.Validation;
 using CoMon.Groups;
 using CoMon.Statuses;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -72,8 +69,6 @@ namespace CoMon.Tests.Groups
         [Fact]
         public async Task Get_GroupDoesNotExist_ThrowsNotFoundException()
         {
-            // Nothing to arrange
-
             // Act and assert
             using var uow = Resolve<IUnitOfWorkManager>().Begin();
             await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _groupAppService.Get(1));
@@ -202,7 +197,7 @@ namespace CoMon.Tests.Groups
             {
                 var group = context.Groups.FirstOrDefault(g => g.Name == "New Group");
                 Assert.NotNull(group);
-                Assert.Equal(1, group.ParentId);
+                Assert.True(context.Groups.Any(g => g.SubGroups.Contains(group)));
             });
         }
 
@@ -220,7 +215,6 @@ namespace CoMon.Tests.Groups
             {
                 using var uow = Resolve<IUnitOfWorkManager>().Begin();
                 var id = await _groupAppService.Create(input);
-                await uow.CompleteAsync();
             });
         }
 
@@ -239,7 +233,6 @@ namespace CoMon.Tests.Groups
             {
                 using var uow = Resolve<IUnitOfWorkManager>().Begin();
                 var id = await _groupAppService.Create(input);
-                await uow.CompleteAsync();
             });
         }
 
@@ -282,7 +275,6 @@ namespace CoMon.Tests.Groups
             {
                 using var uow = Resolve<IUnitOfWorkManager>().Begin();
                 await _groupAppService.Delete(1);
-                await uow.CompleteAsync();
             });
         }
 
@@ -321,7 +313,6 @@ namespace CoMon.Tests.Groups
             {
                 using var uow = Resolve<IUnitOfWorkManager>().Begin();
                 await _groupAppService.UpdateName(1, "New Name");
-                await uow.CompleteAsync();
             });
         }
 
@@ -337,7 +328,6 @@ namespace CoMon.Tests.Groups
             {
                 using var uow = Resolve<IUnitOfWorkManager>().Begin();
                 await _groupAppService.UpdateName(1, null);
-                await uow.CompleteAsync();
             });
         }
 
@@ -353,7 +343,6 @@ namespace CoMon.Tests.Groups
             {
                 using var uow = Resolve<IUnitOfWorkManager>().Begin();
                 await _groupAppService.UpdateName(1, "   ");
-                await uow.CompleteAsync();
             });
         }
 
@@ -376,7 +365,7 @@ namespace CoMon.Tests.Groups
             {
                 var group = context.Groups.FirstOrDefault();
                 Assert.NotNull(group);
-                Assert.Null(group.ParentId);
+                Assert.False(context.Groups.Any(g => g.SubGroups.Contains(group)));
             });
         }
 
@@ -390,7 +379,6 @@ namespace CoMon.Tests.Groups
             {
                 using var uow = Resolve<IUnitOfWorkManager>().Begin();
                 await _groupAppService.UpdateParent(1, null);
-                await uow.CompleteAsync();
             });
         }
 
@@ -406,7 +394,6 @@ namespace CoMon.Tests.Groups
             {
                 using var uow = Resolve<IUnitOfWorkManager>().Begin();
                 await _groupAppService.UpdateParent(1, 2);
-                await uow.CompleteAsync();
             });
         }
 
@@ -422,7 +409,6 @@ namespace CoMon.Tests.Groups
             {
                 using var uow = Resolve<IUnitOfWorkManager>().Begin();
                 await _groupAppService.UpdateParent(1, 1);
-                await uow.CompleteAsync();
             });
         }
     }

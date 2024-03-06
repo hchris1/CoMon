@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Uow;
 using CoMon.Packages.Workers;
+using CoMon.Statuses;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ namespace CoMon.Tests.Workers
             // Arrange
             var arrangedAsset = EntityFactory
                 .CreateAsset()
-                .AddPingPackageWithStatus(Statuses.Criticality.Healthy);
+                .AddPingPackageWithStatus(Criticality.Healthy);
             UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act

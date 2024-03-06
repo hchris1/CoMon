@@ -1,4 +1,5 @@
-﻿using CoMon.Statuses;
+﻿using Abp.Domain.Uow;
+using CoMon.Statuses;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -21,6 +22,7 @@ namespace CoMon.Tests.Statuses
             UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
             var status = await _statusAppService.Get(1);
 
             // Assert
