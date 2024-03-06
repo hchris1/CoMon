@@ -73,7 +73,13 @@ namespace CoMon.Tests
                 Statuses = [new Status()
                 {
                     Criticality = criticality,
-                    Time = DateTime.UtcNow
+                    Time = DateTime.UtcNow,
+                    KPIs = [new KPI()
+                    {
+                        Name = "Test KPI",
+                        Unit = "Test Unit",
+                        Value = 5
+                    }]
                 }]
             });
             return asset;
