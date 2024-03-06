@@ -21,7 +21,7 @@ namespace CoMon.Tests
     {
         protected CoMonTestBase()
         {
-            void NormalizeDbContext(CoMonDbContext context)
+            static void NormalizeDbContext(CoMonDbContext context)
             {
                 context.EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
                 context.EventBus = NullEventBus.Instance;
@@ -81,11 +81,9 @@ namespace CoMon.Tests
         {
             using (UsingTenantId(tenantId))
             {
-                using (var context = LocalIocManager.Resolve<CoMonDbContext>())
-                {
-                    action(context);
-                    context.SaveChanges();
-                }
+                using var context = LocalIocManager.Resolve<CoMonDbContext>();
+                action(context);
+                context.SaveChanges();
             }
         }
 
@@ -93,11 +91,9 @@ namespace CoMon.Tests
         {
             using (UsingTenantId(tenantId))
             {
-                using (var context = LocalIocManager.Resolve<CoMonDbContext>())
-                {
-                    await action(context);
-                    await context.SaveChangesAsync();
-                }
+                using var context = LocalIocManager.Resolve<CoMonDbContext>();
+                await action(context);
+                await context.SaveChangesAsync();
             }
         }
 
@@ -107,11 +103,9 @@ namespace CoMon.Tests
 
             using (UsingTenantId(tenantId))
             {
-                using (var context = LocalIocManager.Resolve<CoMonDbContext>())
-                {
-                    result = func(context);
-                    context.SaveChanges();
-                }
+                using var context = LocalIocManager.Resolve<CoMonDbContext>();
+                result = func(context);
+                context.SaveChanges();
             }
 
             return result;
@@ -123,11 +117,9 @@ namespace CoMon.Tests
 
             using (UsingTenantId(tenantId))
             {
-                using (var context = LocalIocManager.Resolve<CoMonDbContext>())
-                {
-                    result = await func(context);
-                    await context.SaveChangesAsync();
-                }
+                using var context = LocalIocManager.Resolve<CoMonDbContext>();
+                result = await func(context);
+                await context.SaveChangesAsync();
             }
 
             return result;
@@ -154,34 +146,22 @@ namespace CoMon.Tests
             var user =
                 UsingDbContext(
                     context =>
-                        context.Users.FirstOrDefault(u => u.TenantId == AbpSession.TenantId && u.UserName == userName));
-            if (user == null)
-            {
-                throw new Exception("There is no user: " + userName + " for host.");
-            }
-
+                        context.Users.FirstOrDefault(u => u.TenantId == AbpSession.TenantId && u.UserName == userName))
+                ?? throw new Exception("There is no user: " + userName + " for host.");
             AbpSession.UserId = user.Id;
         }
 
         protected void LoginAsTenant(string tenancyName, string userName)
         {
-            var tenant = UsingDbContext(context => context.Tenants.FirstOrDefault(t => t.TenancyName == tenancyName));
-            if (tenant == null)
-            {
-                throw new Exception("There is no tenant: " + tenancyName);
-            }
-
+            var tenant = UsingDbContext(context => context.Tenants.FirstOrDefault(t => t.TenancyName == tenancyName))
+                ?? throw new Exception("There is no tenant: " + tenancyName);
             AbpSession.TenantId = tenant.Id;
 
             var user =
                 UsingDbContext(
                     context =>
-                        context.Users.FirstOrDefault(u => u.TenantId == AbpSession.TenantId && u.UserName == userName));
-            if (user == null)
-            {
-                throw new Exception("There is no user: " + userName + " for tenant: " + tenancyName);
-            }
-
+                        context.Users.FirstOrDefault(u => u.TenantId == AbpSession.TenantId && u.UserName == userName))
+                ?? throw new Exception("There is no user: " + userName + " for tenant: " + tenancyName);
             AbpSession.UserId = user.Id;
         }
 
