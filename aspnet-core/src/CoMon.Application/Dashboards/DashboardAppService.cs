@@ -76,10 +76,7 @@ namespace CoMon.Dashboards
 
         public async Task UpdateName(long id, string name)
         {
-            var dashboard = await _dashboardRepository
-                .GetAll()
-                .Where(d => d.Id == id)
-                .SingleOrDefaultAsync()
+            var dashboard = await _dashboardRepository.GetAsync(id)
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 
             dashboard.Name = name?.Trim();

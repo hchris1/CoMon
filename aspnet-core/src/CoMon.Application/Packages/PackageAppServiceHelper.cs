@@ -10,6 +10,7 @@ using System.Xml;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using CoMon.Packages.Settings;
 
 namespace CoMon.Packages
 {
@@ -40,12 +41,18 @@ namespace CoMon.Packages
         {
             if (input == null)
                 throw new AbpValidationException("PingPackageSettings may not be null.");
+
+            if (input.CycleSeconds < PingPackageSettings.MinCycleSeconds)
+                throw new AbpValidationException("Cycle time too short.");
         }
 
         private static void ValidateHttpSettings(HttpPackageSettingsDto input)
         {
             if (input == null)
                 throw new AbpValidationException("HttpPackageSettings may not be null.");
+
+            if (input.CycleSeconds < HttpPackageSettings.MinCycleSeconds)
+                throw new AbpValidationException("Cycle time too short.");
 
             // Validate Body
             try
@@ -190,7 +197,7 @@ namespace CoMon.Packages
 
             entries = [.. entries.OrderBy(s => s.Time)];
 
-            if (entries.Count() != 0 && addVirtualStatusAtUtcNow)
+            if (entries.Count != 0 && addVirtualStatusAtUtcNow)
                 entries.Add(new TimeCriticality(utcNow, entries.Last().Criticality));
 
             return entries;

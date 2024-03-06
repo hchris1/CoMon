@@ -257,6 +257,7 @@ src/CoMon.Migrator/secrets.json
 
 # Include Packages folder in src
 !src/**/packages/*
+!test/**/packages/*
 
 # Ignore sqlite database files
 *.db

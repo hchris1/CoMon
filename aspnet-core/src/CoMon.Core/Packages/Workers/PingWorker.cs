@@ -33,6 +33,11 @@ namespace CoMon.Packages.Workers
         [UnitOfWork]
         protected override async Task DoWorkAsync()
         {
+            await PerformChecks();
+        }
+
+        public async Task PerformChecks()
+        {
             var packages = await _packageRepository
                     .GetAll()
                     .Include(p => p.PingPackageSettings)

@@ -28,6 +28,9 @@ namespace CoMon.Images
             if (file == null || file.Length <= 0)
                 throw new AbpValidationException("Invalid file.");
 
+            if (file.Length > MaxBytes)
+                throw new AbpValidationException("File size larger than 2MB.");
+
             // Check if mime type is valid
             var mimeType = file.ContentType;
             if (mimeType != "image/jpeg" && mimeType != "image/png" && mimeType != "image/gif" && mimeType != "image/svg+xml")

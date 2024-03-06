@@ -26,7 +26,7 @@ namespace CoMon.Notifications
             _server = section["MqttHost"];
             _username = section["MqttUser"];
             _password = section["MqttPassword"];
-            _port = int.Parse(section["MqttPort"]);
+            _port = int.Parse(section["MqttPort"] ?? "1883");
         }
 
         public async Task Connect()
@@ -55,7 +55,7 @@ namespace CoMon.Notifications
 
             _mqttClient.ConnectingFailedAsync += args =>
             {
-                _logger.LogWarning("MQTT connection failed: {0}", args.Exception);
+                _logger.LogWarning("MQTT connection failed: {exception}", args.Exception);
                 return Task.CompletedTask;
             };
         }
