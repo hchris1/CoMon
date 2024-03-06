@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Abp.Domain.Entities;
 using Abp.Domain.Uow;
 using Abp.Runtime.Validation;
 using CoMon.Packages;
 using CoMon.Packages.Dtos;
 using CoMon.Statuses;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace CoMon.Tests.Packages
@@ -292,5 +294,66 @@ namespace CoMon.Tests.Packages
                 }
             }));
         }
+
+        // TODO: GetStatistic
+
+        // TODO: GetStatistics
+
+        [Fact]
+        public async Task Update_ValidPingSettings_Updated()
+        {
+            // Arrange
+            var arrangedAsset = EntityFactory.CreateAsset().AddPingPackageWithStatus(Criticality.Healthy);
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
+
+            // Act
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await _packageAppService.Update(new UpdatePackageDto
+            {
+                Id = 1,
+                Name = "Updated Package",
+                PingPackageSettings = new PingPackageSettingsDto
+                {
+                    Host = "localhost",
+                    CycleSeconds = 60
+                }
+            });
+            await uow.CompleteAsync();
+
+            // Assert
+            using var evalUow = Resolve<IUnitOfWorkManager>().Begin();
+            UsingDbContext(context =>
+            {
+                var package = context.Packages
+                    .Include(p => p.PingPackageSettings)
+                    .FirstOrDefault(p => p.Id == 1);
+                Assert.NotNull(package);
+                Assert.Equal(1, package.Id);
+                Assert.Equal("Updated Package", package.Name);
+                Assert.NotNull(package.PingPackageSettings);
+                Assert.Equal("localhost", package.PingPackageSettings.Host);
+            });
+        }
+
+        [Fact]
+        public async Task Delete_PackageExists_Deleted()
+        {
+            // Arrange
+            var arrangedAsset = EntityFactory.CreateAsset().AddPingPackageWithStatus(Criticality.Healthy);
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
+
+            // Act
+            using var uow = Resolve<IUnitOfWorkManager>().Begin();
+            await _packageAppService.Delete(1);
+            await uow.CompleteAsync();
+
+            // Assert
+            using var evalUow = Resolve<IUnitOfWorkManager>().Begin();
+            await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _packageAppService.Get(1));
+        }
+
+        // TODO: GetPackageStatusUpdateBuckets
+
+        // TODO: GetPackageStatusChangeBuckets
     }
 }
