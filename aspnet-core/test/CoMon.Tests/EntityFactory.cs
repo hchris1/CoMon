@@ -5,6 +5,7 @@ using System;
 using CoMon.Groups;
 using CoMon.Images;
 using CoMon.Dashboards;
+using CoMon.Packages.Settings;
 
 namespace CoMon.Tests
 {
@@ -70,6 +71,11 @@ namespace CoMon.Tests
                 Type = PackageType.Ping,
                 Guid = Guid.NewGuid(),
                 Name = "Test Alert Package",
+                PingPackageSettings = new PingPackageSettings()
+                {
+                    Host = "localhost",
+                    CycleSeconds = 60
+                },
                 Statuses = [new Status()
                 {
                     Criticality = criticality,
