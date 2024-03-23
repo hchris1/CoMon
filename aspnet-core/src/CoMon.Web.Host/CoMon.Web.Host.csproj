@@ -36,8 +36,8 @@
     <ProjectReference Include="..\CoMon.Web.Core\CoMon.Web.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Abp.Castle.Log4Net" Version="9.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+    <PackageReference Include="Abp.Castle.Log4Net" Version="9.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
