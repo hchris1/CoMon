@@ -38,7 +38,7 @@ export class StatisticsTileComponent implements OnInit {
   animateCount(
     start: number,
     end: number,
-    duration: number = 10000
+    duration: number = 5000
   ): Observable<number> {
     const stepTime = 20; // Time between each step in ms
     const totalSteps = duration / stepTime;
