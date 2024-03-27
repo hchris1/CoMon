@@ -41,6 +41,7 @@ namespace CoMon.Statuses
                 .ThenInclude(c => c.Series)
                 .ThenInclude(s => s.DataPoints)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Status not found.");
 
@@ -84,6 +85,7 @@ namespace CoMon.Statuses
                 .ThenInclude(p => p.Asset)
                 .ThenInclude(a => a.Group.Parent.Parent)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Status not found.");
             status.IsLatest = await IsLatest(status);
@@ -108,6 +110,7 @@ namespace CoMon.Statuses
                 .Include(s => s.Package)
                 .Where(s => s.Id == id)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Status not found.");
 
@@ -115,6 +118,7 @@ namespace CoMon.Statuses
                 .GetAll()
                 .Where(s => s.Package.Id == status.Package.Id)
                 .OrderByDescending(s => s.Time)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             if (latestStatus.Id == id)
@@ -125,6 +129,7 @@ namespace CoMon.Statuses
                 .Where(s => s.Package.Id == status.Package.Id)
                 .Where(s => s.Time < status.Time)
                 .OrderByDescending(s => s.Time)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             var nextStatus = await _statusRepository
@@ -132,6 +137,7 @@ namespace CoMon.Statuses
                 .Where(s => s.Package.Id == status.Package.Id)
                 .Where(s => s.Time > status.Time)
                 .OrderBy(s => s.Time)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             return new StatusHistoryDto()
@@ -149,12 +155,14 @@ namespace CoMon.Statuses
                 .GetAll()
                 .Include(a => a.Group.Parent.Parent)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .ToListAsync();
 
             var groups = await _groupRepository
                 .GetAll()
                 .Include(g => g.Parent.Parent)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .ToListAsync();
 
             return new StatusTableOptionsDto()
@@ -218,6 +226,7 @@ namespace CoMon.Statuses
                 .Skip(request.SkipCount)
                 .Take(request.MaxResultCount)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .ToList();
 
             foreach (var status in statuses)
@@ -241,6 +250,7 @@ namespace CoMon.Statuses
                 .OrderBy(p => p.Key.Name)
                 .Select(g => g.OrderByDescending(s => s.Time).FirstOrDefault())
                 .AsSplitQuery()
+                .AsNoTracking()
                 .SingleOrDefaultAsync();
 
             return _objectMapper.Map<StatusPreviewDto>(status);

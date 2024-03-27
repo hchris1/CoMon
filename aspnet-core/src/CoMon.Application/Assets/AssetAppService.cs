@@ -33,6 +33,7 @@ namespace CoMon.Assets
                     .OrderByDescending(s => s.Time)
                     .Take(1))
                 .AsSplitQuery()
+                .AsNoTracking()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Asset not found.");
 
@@ -45,6 +46,7 @@ namespace CoMon.Assets
                     .GetAll()
                     .Include(a => a.Group.Parent.Parent)
                     .AsSplitQuery()
+                    .AsNoTracking()
                     .ToListAsync();
 
             return _objectMapper.Map<List<AssetPreviewDto>>(assets);

@@ -35,6 +35,7 @@ namespace CoMon.Packages
                     .Take(1))
                 .Where(p => p.Id == id)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Package not found"));
         }
@@ -48,6 +49,7 @@ namespace CoMon.Packages
                 .ThenInclude(a => a.Group.Parent.Parent)
                 .Where(p => p.Id == id)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Package not found"));
         }

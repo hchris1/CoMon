@@ -35,6 +35,7 @@ namespace CoMon.Dashboards
                 .Where(d => d.Id == id)
                 .Include(d => d.Tiles)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 
@@ -47,6 +48,7 @@ namespace CoMon.Dashboards
                 .GetAll()
                 .Include(d => d.Tiles)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .ToListAsync();
 
             return dashboards.Select(d => new DashboardPreviewDto()

@@ -23,6 +23,7 @@ namespace CoMon.Groups
                     .OrderByDescending(s => s.Time)
                     .Take(1))
                 .AsSplitQuery()
+                .AsNoTracking()
                 .SingleOrDefaultAsync() ?? throw new EntityNotFoundException("Group not found");
 
             var statuses = group.Assets.Select(a => a.Packages).SelectMany(x => x).Select(p => p.Statuses).SelectMany(x => x).ToList();
@@ -56,6 +57,7 @@ namespace CoMon.Groups
                     .OrderByDescending(s => s.Time)
                     .Take(1))
                 .AsSplitQuery()
+                .AsNoTracking()
                 .ToListAsync();
 
             statuses.AddRange(assets.Select(a => a.Packages).SelectMany(x => x).Select(p => p.Statuses).SelectMany(x => x).ToList());

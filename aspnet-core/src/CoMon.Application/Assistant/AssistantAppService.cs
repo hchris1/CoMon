@@ -34,6 +34,7 @@ namespace CoMon.Assistant
                 .Include(s => s.Package)
                 .ThenInclude(s => s.Asset)
                 .AsSplitQuery()
+                .AsNoTracking()
                 .FirstOrDefaultAsync() 
                     ?? throw new EntityNotFoundException("Status not found.");
 
@@ -58,6 +59,7 @@ namespace CoMon.Assistant
                         .OrderByDescending(s => s.Time)
                         .Take(1))
                 .AsSplitQuery()
+                .AsNoTracking()
                 .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Asset not found.");
 
                 var statuses = asset.Packages
