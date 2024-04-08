@@ -9,8 +9,8 @@ dependencies:
     specifier: ^17.3.1
     version: 17.3.1(@angular/core@17.3.1)
   '@angular/cdk':
-    specifier: ^17.3.1
-    version: 17.3.1(@angular/common@17.3.1)(@angular/core@17.3.1)(rxjs@7.8.1)
+    specifier: ^17.3.3
+    version: 17.3.3(@angular/common@17.3.1)(@angular/core@17.3.1)(rxjs@7.8.1)
   '@angular/common':
     specifier: ^17.3.1
     version: 17.3.1(@angular/core@17.3.1)(rxjs@7.8.1)
@@ -501,8 +501,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@angular/cdk@17.3.1(@angular/common@17.3.1)(@angular/core@17.3.1)(rxjs@7.8.1):
-    resolution: {integrity: sha512-pHSN+KlCmdo2u9jY7Yxsry/ZK+EcjOYGzdwxXxcKragMzm7etY3BJiTl4N+qZRuV6cJlMj2PRkij8ABi/HQdEA==}
+  /@angular/cdk@17.3.3(@angular/common@17.3.1)(@angular/core@17.3.1)(rxjs@7.8.1):
+    resolution: {integrity: sha512-hfS9pwaNE6CTZqP3FBh9tZPbuf//bDqZ5IpMzscfDFrwX8ycxBiI3znH/rFSf9l1rL0OQGoqWWNVfJCT+RrukA==}
     peerDependencies:
       '@angular/common': ^17.0.0 || ^18.0.0
       '@angular/core': ^17.0.0 || ^18.0.0
