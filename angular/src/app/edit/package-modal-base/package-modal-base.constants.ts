@@ -87,6 +87,6 @@ export const RTSPMETHODS: {value: RtspPackageMethod; name: string}[] = [
   },
   {
     value: RtspPackageMethod._5,
-    name: 'Setup',
+    name: 'SETUP',
   },
 ];
