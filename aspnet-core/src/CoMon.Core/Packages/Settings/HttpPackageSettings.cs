@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoMon.Packages
+namespace CoMon.Packages.Settings
 {
     [Table("CoMonHttpPackageSettings")]
     public class HttpPackageSettings : Entity<long>

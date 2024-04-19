@@ -206,6 +206,8 @@
 		<text name="Edit.PackageBodyPlaceholder">Example: { "key": "value" }</text>
 		<text name="Edit.PackageEncoding">Body Encoding</text>
 		<text name="Edit.PackageIgnoreSslErrors">Ignore SSL error</text>
+		<text name="Edit.PackageTypeRtsp">Rtsp Package</text>
+		<text name="Edit.PackageRtspUrlPlaceholder">rtsp://user:password@196.128.1.542/memeStream</text>
 		<text name="Edit.DashboardTileType">Type</text>
 		<text name="Edit.CreateDashboardTileTitle">Create Dashboard Tile</text>
 		<text name="Edit.TileTypeGroup">Group</text>

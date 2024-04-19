@@ -29,6 +29,10 @@ namespace CoMon.Packages
                     ValidateHttpSettings(input.HttpPackageSettings);
                     break;
 
+                case PackageType.Rtsp:
+                    ValidateRtspSettings(input.RtspPackageSettings);
+                    break;
+
                 case PackageType.External:
                     break;
 
@@ -90,6 +94,27 @@ namespace CoMon.Packages
             }
         }
 
+        private static void ValidateRtspSettings(RtspPackageSettingsDto input)
+        {
+            if (input == null)
+                throw new AbpValidationException("RtspPackageSettings may not be null.");
+
+            if (string.IsNullOrWhiteSpace(input.Url))
+                throw new AbpValidationException("Url may not be empty.");
+
+            if (input.CycleSeconds < RtspPackageSettings.MinCycleSeconds)
+                throw new AbpValidationException("Cycle time too short.");
+
+            try
+            {
+                new Uri(input.Url);
+            }
+            catch (Exception ex)
+            {
+                throw new AbpValidationException("Url could not be parsed: " + ex.Message);
+            }
+        }
+
         private static List<PackageHistoryDto> MapToPackageHistoryDtos(List<TimeCriticality> entries)
         {
             var result = new List<PackageHistoryDto>();
@@ -97,7 +122,7 @@ namespace CoMon.Packages
             {
                 result.Add(new PackageHistoryDto()
                 {
-                    Criticality = entries[i-1].Criticality,
+                    Criticality = entries[i - 1].Criticality,
                     From = entries[i - 1].Time,
                     To = entries[i].Time,
                     Percentage = 0

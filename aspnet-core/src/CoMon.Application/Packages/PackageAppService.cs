@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace CoMon.Packages
 {
     [AbpAuthorize]
-    public class PackageAppService(IRepository<Asset, long> assetRepository, IRepository<Package, long> packageRepository, 
+    public class PackageAppService(IRepository<Asset, long> assetRepository, IRepository<Package, long> packageRepository,
         IObjectMapper mapper, IRepository<Status, long> statusRepository) : CoMonAppServiceBase
     {
         private readonly IRepository<Asset, long> _assetRepository = assetRepository;
@@ -30,6 +30,7 @@ namespace CoMon.Packages
                 .Include(p => p.Asset)
                 .Include(p => p.PingPackageSettings)
                 .Include(p => p.HttpPackageSettings)
+                .Include(p => p.RtspPackageSettings)
                 .Include(p => p.Statuses
                     .OrderByDescending(s => s.Time)
                     .Take(1))

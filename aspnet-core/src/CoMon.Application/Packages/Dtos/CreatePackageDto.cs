@@ -17,5 +17,6 @@ namespace CoMon.Packages.Dtos
         public long AssetId { get; set; }
         public PingPackageSettingsDto PingPackageSettings { get; set; }
         public HttpPackageSettingsDto HttpPackageSettings { get; set; }
+        public RtspPackageSettingsDto RtspPackageSettings { get; set; }
     }
 }

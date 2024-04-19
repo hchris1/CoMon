@@ -22,6 +22,7 @@ namespace CoMon.Packages
         public List<Status> Statuses { get; set; } = [];
         public PingPackageSettings PingPackageSettings { get; set; }
         public HttpPackageSettings HttpPackageSettings { get; set; }
+        public RtspPackageSettings RtspPackageSettings { get; set; }
         public Guid Guid { get; set; } = Guid.NewGuid();
 
         [ForeignKey(nameof(Asset))]
@@ -51,6 +52,7 @@ namespace CoMon.Packages
     {
         Ping = 0,
         Http = 1,
+        Rtsp = 2,
         External = 10
     }
 }

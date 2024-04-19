@@ -5,6 +5,7 @@ using Abp.Domain.Uow;
 using Abp.Runtime.Validation;
 using CoMon.Packages;
 using CoMon.Packages.Dtos;
+using CoMon.Packages.Settings;
 using CoMon.Statuses;
 using Microsoft.EntityFrameworkCore;
 using Xunit;

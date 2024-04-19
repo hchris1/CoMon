@@ -7,6 +7,7 @@ import {
   PackageServiceProxy,
   PackageType,
   PingPackageSettingsDto,
+  RtspPackageSettingsDto,
   UpdatePackageDto,
 } from '@shared/service-proxies/service-proxies';
 import {PackageModalBase} from '../package-modal-base/package-modal-base.component';
@@ -67,8 +68,18 @@ export class EditPackageModalComponent extends PackageModalBase {
         this.form.controls.ignoreSslErrors.setValue(
           result.httpPackageSettings.ignoreSslErrors
         );
-        this.form.controls.httpCycleSeconds.setValue(
+        this.form.controls.cycleSeconds.setValue(
           result.httpPackageSettings.cycleSeconds
+        );
+      }
+
+      if (result.type === PackageType._2) {
+        this.form.controls.url.setValue(result.rtspPackageSettings.url);
+        this.form.controls.rtspMethod.setValue(
+          result.rtspPackageSettings.method
+        );
+        this.form.controls.cycleSeconds.setValue(
+          result.rtspPackageSettings.cycleSeconds
         );
       }
 
@@ -106,7 +117,15 @@ export class EditPackageModalComponent extends PackageModalBase {
       pack.httpPackageSettings.ignoreSslErrors =
         this.form.controls.ignoreSslErrors.value;
       pack.httpPackageSettings.cycleSeconds =
-        this.form.controls.httpCycleSeconds.value;
+        this.form.controls.cycleSeconds.value;
+    }
+
+    if (this.currentType === PackageType._2) {
+      pack.rtspPackageSettings = new RtspPackageSettingsDto();
+      pack.rtspPackageSettings.url = this.form.controls.url.value;
+      pack.rtspPackageSettings.method = this.form.controls.rtspMethod.value;
+      pack.rtspPackageSettings.cycleSeconds =
+        this.form.controls.cycleSeconds.value;
     }
 
     this._packageService.update(pack).subscribe(() => {

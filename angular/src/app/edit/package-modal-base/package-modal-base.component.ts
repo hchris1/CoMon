@@ -5,6 +5,7 @@ import {
   ENCODINGTYPES,
   HTTPMETHODS,
   PACKAGETYPES,
+  RTSPMETHODS,
 } from './package-modal-base.constants';
 
 @Component({
@@ -20,11 +21,13 @@ export class PackageModalBase {
   currentType: PackageType;
   pingPackageType = PackageType._0;
   httpPackageType = PackageType._1;
+  rtspPackageType = PackageType._2;
   externalPackageType = PackageType._10;
 
   types = PACKAGETYPES;
   httpMethods = HTTPMETHODS;
   encodingTypes = ENCODINGTYPES;
+  rtspMethods = RTSPMETHODS;
 
   constructor(formBuilder: FormBuilder) {
     this.form = formBuilder.group({
@@ -38,7 +41,7 @@ export class PackageModalBase {
       body: [''],
       encoding: [0],
       ignoreSslErrors: [false],
-      httpCycleSeconds: [''],
+      rtspMethod: [0],
     });
 
     this.form.controls.type.valueChanges.subscribe(value => {
@@ -48,7 +51,7 @@ export class PackageModalBase {
       this.form.controls.cycleSeconds.clearValidators();
       this.form.controls.url.clearValidators();
       this.form.controls.method.clearValidators();
-      this.form.controls.httpCycleSeconds.clearValidators();
+      this.form.controls.rtspMethod.clearValidators();
 
       // Ping package
       if (this.currentType === PackageType._0) {
@@ -64,20 +67,33 @@ export class PackageModalBase {
       if (this.currentType === PackageType._1) {
         this.form.controls.url.setValidators([Validators.required]);
         this.form.controls.method.setValidators([Validators.required]);
-        this.form.controls.httpCycleSeconds.setValidators([
+        this.form.controls.cycleSeconds.setValidators([
           Validators.required,
           Validators.min(30),
         ]);
         this.form.controls.url.setValue('');
         this.form.controls.method.setValue(0);
-        this.form.controls.httpCycleSeconds.setValue(60);
+        this.form.controls.cycleSeconds.setValue(60);
+      }
+
+      // Rtsp package
+      if (this.currentType === PackageType._2) {
+        this.form.controls.url.setValidators([Validators.required]);
+        this.form.controls.rtspMethod.setValidators([Validators.required]);
+        this.form.controls.cycleSeconds.setValidators([
+          Validators.required,
+          Validators.min(30),
+        ]);
+        this.form.controls.url.setValue('');
+        this.form.controls.rtspMethod.setValue(0);
+        this.form.controls.cycleSeconds.setValue(60);
       }
 
       this.form.controls.host.updateValueAndValidity();
       this.form.controls.cycleSeconds.updateValueAndValidity();
       this.form.controls.url.updateValueAndValidity();
       this.form.controls.method.updateValueAndValidity();
-      this.form.controls.httpCycleSeconds.updateValueAndValidity();
+      this.form.controls.rtspMethod.updateValueAndValidity();
     });
 
     this.form.controls.type.setValue(this.pingPackageType);

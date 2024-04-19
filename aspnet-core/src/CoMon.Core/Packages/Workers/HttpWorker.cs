@@ -3,6 +3,7 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Threading.BackgroundWorkers;
 using Abp.Threading.Timers;
+using CoMon.Packages.Settings;
 using CoMon.Statuses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

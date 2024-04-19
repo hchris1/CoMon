@@ -2,6 +2,7 @@ import {
   HttpPackageBodyEncoding,
   HttpPackageMethod,
   PackageType,
+  RtspPackageMethod,
 } from '../../../shared/service-proxies/service-proxies';
 
 export const PACKAGETYPES: {
@@ -15,6 +16,10 @@ export const PACKAGETYPES: {
   {
     value: PackageType._1,
     name: 'Edit.PackageTypeHttp',
+  },
+  {
+    value: PackageType._2,
+    name: 'Edit.PackageTypeRtsp',
   },
   {
     value: PackageType._10,
@@ -56,5 +61,32 @@ export const ENCODINGTYPES: {
   {
     value: HttpPackageBodyEncoding._1,
     name: 'Xml',
+  },
+];
+
+export const RTSPMETHODS: {value: RtspPackageMethod; name: string}[] = [
+  {
+    value: RtspPackageMethod._0,
+    name: 'DESCRIBE',
+  },
+  {
+    value: RtspPackageMethod._1,
+    name: 'OPTIONS',
+  },
+  {
+    value: RtspPackageMethod._2,
+    name: 'PLAY',
+  },
+  {
+    value: RtspPackageMethod._3,
+    name: 'PAUSE',
+  },
+  {
+    value: RtspPackageMethod._4,
+    name: 'TEARDOWN',
+  },
+  {
+    value: RtspPackageMethod._5,
+    name: 'Setup',
   },
 ];

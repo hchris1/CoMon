@@ -55,6 +55,7 @@ namespace CoMon
             var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
             workManager.Add(IocManager.Resolve<PingWorker>());
             workManager.Add(IocManager.Resolve<HttpWorker>());
+            workManager.Add(IocManager.Resolve<RtspWorker>());
             workManager.Add(IocManager.Resolve<RetentionWorker>());
             IocManager.Resolve<MqttClient>();
             IocManager.Resolve<HaSender>();

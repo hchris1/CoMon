@@ -5752,6 +5752,7 @@ export class CreatePackageDto implements ICreatePackageDto {
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
     httpPackageSettings: HttpPackageSettingsDto;
+    rtspPackageSettings: RtspPackageSettingsDto;
 
     constructor(data?: ICreatePackageDto) {
         if (data) {
@@ -5769,6 +5770,7 @@ export class CreatePackageDto implements ICreatePackageDto {
             this.assetId = _data["assetId"];
             this.pingPackageSettings = _data["pingPackageSettings"] ? PingPackageSettingsDto.fromJS(_data["pingPackageSettings"]) : <any>undefined;
             this.httpPackageSettings = _data["httpPackageSettings"] ? HttpPackageSettingsDto.fromJS(_data["httpPackageSettings"]) : <any>undefined;
+            this.rtspPackageSettings = _data["rtspPackageSettings"] ? RtspPackageSettingsDto.fromJS(_data["rtspPackageSettings"]) : <any>undefined;
         }
     }
 
@@ -5786,6 +5788,7 @@ export class CreatePackageDto implements ICreatePackageDto {
         data["assetId"] = this.assetId;
         data["pingPackageSettings"] = this.pingPackageSettings ? this.pingPackageSettings.toJSON() : <any>undefined;
         data["httpPackageSettings"] = this.httpPackageSettings ? this.httpPackageSettings.toJSON() : <any>undefined;
+        data["rtspPackageSettings"] = this.rtspPackageSettings ? this.rtspPackageSettings.toJSON() : <any>undefined;
         return data;
     }
 
@@ -5803,6 +5806,7 @@ export interface ICreatePackageDto {
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
     httpPackageSettings: HttpPackageSettingsDto;
+    rtspPackageSettings: RtspPackageSettingsDto;
 }
 
 export class CreateRoleDto implements ICreateRoleDto {
@@ -7109,6 +7113,7 @@ export class PackageDto implements IPackageDto {
     guid: string;
     pingPackageSettings: PingPackageSettingsDto;
     httpPackageSettings: HttpPackageSettingsDto;
+    rtspPackageSettings: RtspPackageSettingsDto;
     lastCriticality: Criticality;
 
     constructor(data?: IPackageDto) {
@@ -7129,6 +7134,7 @@ export class PackageDto implements IPackageDto {
             this.guid = _data["guid"];
             this.pingPackageSettings = _data["pingPackageSettings"] ? PingPackageSettingsDto.fromJS(_data["pingPackageSettings"]) : <any>undefined;
             this.httpPackageSettings = _data["httpPackageSettings"] ? HttpPackageSettingsDto.fromJS(_data["httpPackageSettings"]) : <any>undefined;
+            this.rtspPackageSettings = _data["rtspPackageSettings"] ? RtspPackageSettingsDto.fromJS(_data["rtspPackageSettings"]) : <any>undefined;
             this.lastCriticality = _data["lastCriticality"];
         }
     }
@@ -7149,6 +7155,7 @@ export class PackageDto implements IPackageDto {
         data["guid"] = this.guid;
         data["pingPackageSettings"] = this.pingPackageSettings ? this.pingPackageSettings.toJSON() : <any>undefined;
         data["httpPackageSettings"] = this.httpPackageSettings ? this.httpPackageSettings.toJSON() : <any>undefined;
+        data["rtspPackageSettings"] = this.rtspPackageSettings ? this.rtspPackageSettings.toJSON() : <any>undefined;
         data["lastCriticality"] = this.lastCriticality;
         return data;
     }
@@ -7169,6 +7176,7 @@ export interface IPackageDto {
     guid: string;
     pingPackageSettings: PingPackageSettingsDto;
     httpPackageSettings: HttpPackageSettingsDto;
+    rtspPackageSettings: RtspPackageSettingsDto;
     lastCriticality: Criticality;
 }
 
@@ -7423,6 +7431,7 @@ export interface IPackageStatusCountDto {
 export enum PackageType {
     _0 = 0,
     _1 = 1,
+    _2 = 2,
     _10 = 10,
 }
 
@@ -8084,6 +8093,66 @@ export class RoleListDtoListResultDto implements IRoleListDtoListResultDto {
 
 export interface IRoleListDtoListResultDto {
     items: RoleListDto[] | undefined;
+}
+
+export enum RtspPackageMethod {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+}
+
+export class RtspPackageSettingsDto implements IRtspPackageSettingsDto {
+    url: string;
+    cycleSeconds: number;
+    method: RtspPackageMethod;
+
+    constructor(data?: IRtspPackageSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.url = _data["url"];
+            this.cycleSeconds = _data["cycleSeconds"];
+            this.method = _data["method"];
+        }
+    }
+
+    static fromJS(data: any): RtspPackageSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RtspPackageSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["url"] = this.url;
+        data["cycleSeconds"] = this.cycleSeconds;
+        data["method"] = this.method;
+        return data;
+    }
+
+    clone(): RtspPackageSettingsDto {
+        const json = this.toJSON();
+        let result = new RtspPackageSettingsDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRtspPackageSettingsDto {
+    url: string;
+    cycleSeconds: number;
+    method: RtspPackageMethod;
 }
 
 export class SeriesDto implements ISeriesDto {
@@ -8827,6 +8896,7 @@ export class UpdatePackageDto implements IUpdatePackageDto {
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
     httpPackageSettings: HttpPackageSettingsDto;
+    rtspPackageSettings: RtspPackageSettingsDto;
     id: number;
 
     constructor(data?: IUpdatePackageDto) {
@@ -8845,6 +8915,7 @@ export class UpdatePackageDto implements IUpdatePackageDto {
             this.assetId = _data["assetId"];
             this.pingPackageSettings = _data["pingPackageSettings"] ? PingPackageSettingsDto.fromJS(_data["pingPackageSettings"]) : <any>undefined;
             this.httpPackageSettings = _data["httpPackageSettings"] ? HttpPackageSettingsDto.fromJS(_data["httpPackageSettings"]) : <any>undefined;
+            this.rtspPackageSettings = _data["rtspPackageSettings"] ? RtspPackageSettingsDto.fromJS(_data["rtspPackageSettings"]) : <any>undefined;
             this.id = _data["id"];
         }
     }
@@ -8863,6 +8934,7 @@ export class UpdatePackageDto implements IUpdatePackageDto {
         data["assetId"] = this.assetId;
         data["pingPackageSettings"] = this.pingPackageSettings ? this.pingPackageSettings.toJSON() : <any>undefined;
         data["httpPackageSettings"] = this.httpPackageSettings ? this.httpPackageSettings.toJSON() : <any>undefined;
+        data["rtspPackageSettings"] = this.rtspPackageSettings ? this.rtspPackageSettings.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data;
     }
@@ -8881,6 +8953,7 @@ export interface IUpdatePackageDto {
     assetId: number;
     pingPackageSettings: PingPackageSettingsDto;
     httpPackageSettings: HttpPackageSettingsDto;
+    rtspPackageSettings: RtspPackageSettingsDto;
     id: number;
 }
 
