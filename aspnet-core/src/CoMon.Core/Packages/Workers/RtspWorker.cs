@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Net.Sockets;
 
 namespace CoMon.Packages.Workers
 {
@@ -77,16 +78,16 @@ namespace CoMon.Packages.Workers
                 var stopWatch = Stopwatch.StartNew();
                 var isHealthy = await CheckHealth(url, package.RtspPackageSettings.Method);
                 return CreateStatus(isHealthy, url.ToMaskedString(),
-                    package.RtspPackageSettings.Method.ToString(), stopWatch.Elapsed);
+                    package.RtspPackageSettings.Method.ToString().ToUpper(), stopWatch.Elapsed);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while performing http check for package with id {packageId}: {message}", package.Id, ex.Message);
+                _logger.LogError("Error while performing rtsp check for package with id {packageId}: {message}", package.Id, ex.Message);
                 return new Status
                 {
                     Time = DateTime.UtcNow,
                     Criticality = Criticality.Alert,
-                    Messages = ["An error occurred when running the http check. Check the log for details."]
+                    Messages = ["An error occurred when running the rtsp check. Check the log for details."]
                 };
             }
         }
@@ -95,8 +96,8 @@ namespace CoMon.Packages.Workers
         {
             try
             {
-                var tcpSocket = new RtspTcpTransport(url);
-                var rtspClient = new RtspListener(tcpSocket);
+                using var tcpSocket = new RtspTcpTransport(url);
+                using var rtspClient = new RtspListener(tcpSocket);
                 rtspClient.Start();
 
                 var message = CreateRequestMessage(method);
@@ -124,14 +125,13 @@ namespace CoMon.Packages.Workers
                 finally
                 {
                     rtspClient.Stop();
-                    rtspClient.Dispose();
                 }
 
                 return isHealthy;
             }
-            catch (Exception ex)
+            catch (SocketException)
             {
-                _logger.LogError("Health check failed: {0}", ex.Message);
+                // SocketException is thrown when the connection is refused
                 return false;
             }
         }
