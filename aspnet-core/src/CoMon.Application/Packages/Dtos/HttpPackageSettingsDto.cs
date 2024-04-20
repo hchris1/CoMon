@@ -1,4 +1,5 @@
 ﻿using Abp.AutoMapper;
+using CoMon.Packages.Settings;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoMon.Packages.Dtos

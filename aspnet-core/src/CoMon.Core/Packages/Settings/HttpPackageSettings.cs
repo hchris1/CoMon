@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoMon.Packages
+namespace CoMon.Packages.Settings
 {
     [Table("CoMonHttpPackageSettings")]
     public class HttpPackageSettings : Entity<long>
@@ -40,7 +40,8 @@ namespace CoMon.Packages
         Post = 1,
         Put = 2,
         Patch = 3,
-        Delete = 4
+        Delete = 4,
+        Options = 5,
     }
 
     public enum HttpPackageBodyEncoding

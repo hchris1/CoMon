@@ -49,7 +49,14 @@
       />
     </div>
 
-    <div class="form-group" *ngIf="currentType === pingPackageType">
+    <div
+      class="form-group"
+      *ngIf="
+        currentType === pingPackageType ||
+        currentType === httpPackageType ||
+        currentType === rtspPackageType
+      "
+    >
       <label for="cycleSeconds">{{
         'Edit.PackageCycleSeconds' | localize
       }}</label>
@@ -146,23 +153,38 @@
       />
     </div>
 
-    <div class="form-group" *ngIf="currentType === httpPackageType">
-      <label for="httpCycleSeconds">{{
-        'Edit.PackageCycleSeconds' | localize
-      }}</label>
+    <div class="form-group" *ngIf="currentType === rtspPackageType">
+      <h5>{{ 'Edit.PackageTypeRtsp' | localize }}</h5>
+    </div>
+
+    <div class="form-group" *ngIf="currentType === rtspPackageType">
+      <label for="url">{{ 'Edit.PackageUrl' | localize }}</label>
       <input
-        type="number"
+        type="text"
         class="form-control"
-        id="httpCycleSeconds"
-        formControlName="httpCycleSeconds"
-        min="30"
+        id="url"
+        formControlName="url"
+        placeholder="{{ 'Edit.PackageRtspUrlPlaceholder' | localize }}"
         [class.is-invalid]="
-          form.get('httpCycleSeconds').invalid &&
-          (form.get('httpCycleSeconds').dirty ||
-            form.get('httpCycleSeconds').touched)
+          form.get('url').invalid &&
+          (form.get('url').dirty || form.get('url').touched)
         "
         autocomplete="off"
       />
+    </div>
+
+    <div class="form-group" *ngIf="currentType === rtspPackageType">
+      <label for="rtspMethod">{{ 'Edit.PackageMethod' | localize }}</label>
+      <select
+        class="form-control"
+        id="rtspMethod"
+        formControlName="rtspMethod"
+        class="form-control"
+      >
+        <option *ngFor="let method of rtspMethods" [value]="method.value">
+          {{ method.name | localize }}
+        </option>
+      </select>
     </div>
   </form>
 </div>

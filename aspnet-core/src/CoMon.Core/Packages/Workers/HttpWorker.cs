@@ -3,6 +3,7 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Threading.BackgroundWorkers;
 using Abp.Threading.Timers;
+using CoMon.Packages.Settings;
 using CoMon.Statuses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -86,6 +87,7 @@ namespace CoMon.Packages.Workers
                     HttpPackageMethod.Put => HttpMethod.Put,
                     HttpPackageMethod.Delete => HttpMethod.Delete,
                     HttpPackageMethod.Patch => HttpMethod.Patch,
+                    HttpPackageMethod.Options => HttpMethod.Options,
                     _ => throw new Exception($"Unknown http method {package.HttpPackageSettings.Method}"),
                 };
 

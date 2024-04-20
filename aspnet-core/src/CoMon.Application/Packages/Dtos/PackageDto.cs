@@ -14,6 +14,7 @@ namespace CoMon.Packages.Dtos
         public Guid Guid { get; set; }
         public PingPackageSettingsDto PingPackageSettings { get; set; }
         public HttpPackageSettingsDto HttpPackageSettings { get; set; }
+        public RtspPackageSettingsDto RtspPackageSettings { get; set; }
         public Criticality? LastCriticality { get; set; }
     }
 }

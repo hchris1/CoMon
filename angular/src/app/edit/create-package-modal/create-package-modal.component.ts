@@ -6,6 +6,7 @@ import {
   PackageServiceProxy,
   PackageType,
   PingPackageSettingsDto,
+  RtspPackageSettingsDto,
 } from '@shared/service-proxies/service-proxies';
 import {PackageModalBase} from '../package-modal-base/package-modal-base.component';
 
@@ -56,7 +57,17 @@ export class CreatePackageModalComponent extends PackageModalBase {
       createPackageDto.httpPackageSettings.ignoreSslErrors =
         this.form.controls.ignoreSslErrors.value;
       createPackageDto.httpPackageSettings.cycleSeconds =
-        this.form.controls.httpCycleSeconds.value;
+        this.form.controls.cycleSeconds.value;
+    }
+
+    // Rtsp package settings
+    if (this.currentType === PackageType._2) {
+      createPackageDto.rtspPackageSettings = new RtspPackageSettingsDto();
+      createPackageDto.rtspPackageSettings.url = this.form.controls.url.value;
+      createPackageDto.rtspPackageSettings.method =
+        this.form.controls.rtspMethod.value;
+      createPackageDto.rtspPackageSettings.cycleSeconds =
+        this.form.controls.cycleSeconds.value;
     }
 
     this.packageService.create(createPackageDto).subscribe(id => {

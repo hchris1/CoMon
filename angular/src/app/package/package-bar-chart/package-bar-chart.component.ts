@@ -94,7 +94,7 @@ export class PackageBarChartComponent
         name: 'Healthy',
         data: this.data.map(e => {
           return {
-            x: e.date.valueOf(),
+            x: e.date,
             y: e.healthyCount,
           };
         }),
@@ -104,7 +104,7 @@ export class PackageBarChartComponent
         name: 'Warning',
         data: this.data.map(e => {
           return {
-            x: e.date.valueOf(),
+            x: e.date,
             y: e.warningCount,
           };
         }),
@@ -114,7 +114,7 @@ export class PackageBarChartComponent
         name: 'Alert',
         data: this.data.map(e => {
           return {
-            x: e.date.valueOf(),
+            x: e.date,
             y: e.alertCount,
           };
         }),
@@ -139,7 +139,7 @@ export class PackageBarChartComponent
       xaxis: {
         type: 'datetime',
         labels: {
-          datetimeUTC: true,
+          datetimeUTC: false,
         },
       },
       theme: {
