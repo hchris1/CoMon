@@ -10,6 +10,7 @@ import {Observable, interval, map, takeWhile, tap} from 'rxjs';
 export class StatisticsTileComponent implements OnInit {
   @Input() title: string;
   @Input() value: number;
+  @Input() shouldAnimate: boolean = false;
 
   currentValue: number = 0;
 
@@ -28,6 +29,11 @@ export class StatisticsTileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.shouldAnimate) {
+      this.currentValue = this.value;
+      return;
+    }
+
     // Do an animation by counting up to the value
     this.animateCount(0, this.value).subscribe(value => {
       this.currentValue = Math.round(value);
