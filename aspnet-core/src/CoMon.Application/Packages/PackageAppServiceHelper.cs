@@ -239,10 +239,10 @@ namespace CoMon.Packages
 
             for (int i = 1; i < entries.Count; i++)
             {
-                if (!entries[i].Criticality.HasValue)
-                    continue;
-
-                durationByCriticality[entries[i].Criticality.Value] += entries[i].Time - entries[i - 1].Time;
+                if (entries[i].Criticality.HasValue && entries[i - 1].Criticality.HasValue)
+                {
+                    durationByCriticality[entries[i - 1].Criticality.Value] += entries[i].Time - entries[i - 1].Time;
+                }
             }
 
             return durationByCriticality;
