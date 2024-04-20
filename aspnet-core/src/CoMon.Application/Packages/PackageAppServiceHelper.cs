@@ -175,28 +175,27 @@ namespace CoMon.Packages
             return packageHistoryItems;
         }
 
-        public static DateTime FloorToPreviousHour(DateTime dateTime)
+        public static DateTime RoundToNextHour(DateTime dateTime)
         {
-            return new(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
+            return new(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour + 1, 0, 0);
         }
 
         public static List<DateTime> GenerateTimeBuckets(DateTime startDate, DateTime endDate, bool useHourBuckets)
         {
-            // TODO: What are these constants being added?
             if (useHourBuckets)
-                return Enumerable.Range(0, Convert.ToInt32((endDate - startDate).TotalHours) + 3)
-                .Select(offset => FloorToPreviousHour(startDate).AddHours(offset))
+                return Enumerable.Range(0, Convert.ToInt32((endDate - startDate).TotalHours) + 1)
+                .Select(offset => RoundToNextHour(startDate).AddHours(offset))
                 .ToList();
 
-            return Enumerable.Range(0, (endDate - startDate).Days + 2)
+            return Enumerable.Range(0, (endDate - startDate).Days + 1)
                 .Select(offset => startDate.AddDays(offset).Date)
                 .ToList();
         }
 
         public static (DateTime startDate, DateTime endDate) GetDateRange(int numOfHours)
         {
-            var utcNow = DateTime.UtcNow;
-            return (utcNow.AddHours(-numOfHours), FloorToPreviousHour(utcNow));
+            var rounded = RoundToNextHour(DateTime.UtcNow);
+            return (rounded.AddHours(-numOfHours), rounded);
         }
 
         public static async Task<List<TimeCriticality>> GetStatusesSinceCutOff(IRepository<Status, long> statusRepository,
