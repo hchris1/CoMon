@@ -6789,6 +6789,7 @@ export enum HttpPackageMethod {
     _2 = 2,
     _3 = 3,
     _4 = 4,
+    _5 = 5,
 }
 
 export class HttpPackageSettingsDto implements IHttpPackageSettingsDto {

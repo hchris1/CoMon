@@ -87,6 +87,7 @@ namespace CoMon.Packages.Workers
                     HttpPackageMethod.Put => HttpMethod.Put,
                     HttpPackageMethod.Delete => HttpMethod.Delete,
                     HttpPackageMethod.Patch => HttpMethod.Patch,
+                    HttpPackageMethod.Options => HttpMethod.Options,
                     _ => throw new Exception($"Unknown http method {package.HttpPackageSettings.Method}"),
                 };
 

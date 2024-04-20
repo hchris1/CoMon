@@ -40,7 +40,8 @@ namespace CoMon.Packages.Settings
         Post = 1,
         Put = 2,
         Patch = 3,
-        Delete = 4
+        Delete = 4,
+        Options = 5,
     }
 
     public enum HttpPackageBodyEncoding

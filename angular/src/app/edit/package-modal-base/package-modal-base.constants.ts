@@ -30,23 +30,27 @@ export const PACKAGETYPES: {
 export const HTTPMETHODS: {value: HttpPackageMethod; name: string}[] = [
   {
     value: HttpPackageMethod._0,
-    name: 'Edit.PackageMethodGet',
+    name: 'GET',
   },
   {
     value: HttpPackageMethod._1,
-    name: 'Edit.PackageMethodPost',
+    name: 'POST',
   },
   {
     value: HttpPackageMethod._2,
-    name: 'Edit.PackageMethodPut',
+    name: 'PUT',
   },
   {
     value: HttpPackageMethod._3,
-    name: 'Edit.PackageMethodPatch',
+    name: 'PATCH',
   },
   {
     value: HttpPackageMethod._4,
-    name: 'Edit.PackageMethodDelete',
+    name: 'DELETE',
+  },
+  {
+    value: HttpPackageMethod._5,
+    name: 'OPTIONS',
   },
 ];
 
