@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CoMon.Packages.Settings
 {
     [Table("CoMonHttpPackageSettings")]
-    public class HttpPackageSettings : Entity<long>
+    public class HttpPackageSettings : Entity<long>, IPackageSettings
     {
         public const int MinCycleSeconds = 30;
         public const int MaxUrlLength = 255;

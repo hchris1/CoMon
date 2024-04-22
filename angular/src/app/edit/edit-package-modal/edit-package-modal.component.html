@@ -198,6 +198,15 @@
   >
     {{ 'Save' | localize }}
   </button>
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="form.invalid"
+    [tooltip]="'Edit.SaveAndCheckTooltip' | localize"
+    (click)="onSubmit(true)"
+  >
+    {{ 'Edit.SaveAndCheck' | localize }}
+  </button>
   <button type="button" class="btn btn-secondary" (click)="onCancel()">
     {{ 'Cancel' | localize }}
   </button>

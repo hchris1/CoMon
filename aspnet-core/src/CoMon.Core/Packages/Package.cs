@@ -46,6 +46,17 @@ namespace CoMon.Packages
                 return LastStatus?.Criticality ?? null;
             }
         }
+
+        public IPackageSettings GetSettings<TSettings>() where TSettings : class
+        {
+            if (Type == PackageType.Ping)
+                return PingPackageSettings;
+            if (Type == PackageType.Http)
+                return HttpPackageSettings;
+            if (Type == PackageType.Rtsp)
+                return RtspPackageSettings;
+            return null;
+        }
     }
 
     public enum PackageType

@@ -88,7 +88,7 @@ export class EditPackageModalComponent extends PackageModalBase {
     });
   }
 
-  onSubmit() {
+  onSubmit(enqueueCheck: boolean = false) {
     if (!this.form.valid) {
       this.form.markAllAsTouched();
       return;
@@ -128,7 +128,7 @@ export class EditPackageModalComponent extends PackageModalBase {
         this.form.controls.cycleSeconds.value;
     }
 
-    this._packageService.update(pack).subscribe(() => {
+    this._packageService.update(enqueueCheck, pack).subscribe(() => {
       this.onEdited.emit(this.packageId);
       this.onClose.emit();
     });
