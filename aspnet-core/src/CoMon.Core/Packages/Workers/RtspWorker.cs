@@ -75,6 +75,9 @@ namespace CoMon.Packages.Workers
             try
             {
                 var url = new Uri(package.RtspPackageSettings.Url);
+                if (url.Port == -1)
+                    url = new UriBuilder(url) { Port = 554 }.Uri;
+
                 var stopWatch = Stopwatch.StartNew();
                 var isHealthy = await CheckHealth(url, package.RtspPackageSettings.Method);
                 return CreateStatus(isHealthy, url.ToMaskedString(),
