@@ -204,6 +204,7 @@
     [disabled]="form.invalid"
     [tooltip]="'Edit.SaveAndCheckTooltip' | localize"
     (click)="onSubmit(true)"
+    *ngIf="currentType !== externalPackageType"
   >
     {{ 'Edit.SaveAndCheck' | localize }}
   </button>
