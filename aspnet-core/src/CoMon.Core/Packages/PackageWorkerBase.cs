@@ -1,6 +1,7 @@
 ﻿using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.EntityFrameworkCore.Repositories;
 using Abp.Threading.BackgroundWorkers;
 using Abp.Threading.Timers;
 using CoMon.Statuses;
@@ -22,7 +23,8 @@ namespace CoMon.Packages
         protected readonly ILogger logger;
         private readonly ConcurrentDictionary<long, bool> manualCheckDict = new();
 
-        protected const int WorkerCycleSeconds = 5;
+        protected const int WorkerCycleSeconds = 1;
+        protected const int MaxDegreeOfParallelism = 10;
 
         protected PackageWorkerBase(AbpAsyncTimer timer, IRepository<Package, long> packageRepo, ILogger log, IRepository<Status, long> statusRepo)
             : base(timer)
@@ -35,7 +37,6 @@ namespace CoMon.Packages
 
         public void EnqueueManualCheck(long packageId)
         {
-            logger.LogError("Enqueue package with {packageId}", packageId);
             manualCheckDict.TryAdd(packageId, true);
         }
 
@@ -43,28 +44,35 @@ namespace CoMon.Packages
         protected override async Task DoWorkAsync()
         {
             var packages = await LoadPackages();
-            foreach (var package in packages)
+            var packagesToProcess = packages.Where(ShouldPerformCheck).ToList();
+
+            var options = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = MaxDegreeOfParallelism
+            };
+
+            var statuses = new ConcurrentBag<Status>();
+
+            await Parallel.ForEachAsync(packagesToProcess, options, async (package, ct) =>
             {
                 try
                 {
-                    var isManuallyQueued = manualCheckDict.TryRemove(package.Id, out _);
-                    if (!ShouldPerformCheck(package) && !isManuallyQueued)
-                        continue;
-
                     var status = await PerformCheck(package);
                     status.PackageId = package.Id;
-                    await statusRepository.InsertAsync(status);
+                    statuses.Add(status);
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError($"Error while performing check for package with id {package.Id}: {ex.Message}");
+                    logger.LogError("Error while performing check for package with id {packageId}: {message}", package.Id, ex.Message);
                 }
-            }
+            });
+
+            await statusRepository.InsertRangeAsync(statuses);
         }
 
-        protected virtual Task<List<Package>> LoadPackages()
+        protected async Task<List<Package>> LoadPackages()
         {
-            return packageRepository
+            return await packageRepository
                 .GetAll()
                 .Include(p => p.Asset)
                 .Include(p => p.PingPackageSettings)
@@ -78,10 +86,14 @@ namespace CoMon.Packages
                 .ToListAsync();
         }
 
-        protected abstract Task<Status> PerformCheck(Package package);
+        public abstract Task<Status> PerformCheck(Package package);
 
-        protected bool ShouldPerformCheck(Package package)
+        public bool ShouldPerformCheck(Package package)
         {
+            var isManuallyQueued = manualCheckDict.TryRemove(package.Id, out _);
+            if (isManuallyQueued)
+                return true;
+
             var lastStatus = package.Statuses.FirstOrDefault();
             if (lastStatus == null)
                 return true;
