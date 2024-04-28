@@ -9,17 +9,12 @@ using System.Threading.Tasks;
 
 namespace CoMon.Packages.Workers
 {
-    public class PingWorker : PackageWorkerBase<PingPackageSettings>
+    public class PingWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository, ILogger<PingWorker> log, IRepository<Status, long> statusRepository)
+        : PackageWorkerBase<PingPackageSettings>(timer, packageRepository, log, statusRepository)
     {
-
-        public PingWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository,
-            ILogger<PingWorker> logger, IRepository<Status, long> statusRepository)
-                : base(timer, packageRepository, logger, statusRepository)
-        { }
-
         protected override PackageType Type => PackageType.Ping;
 
-        protected override async Task<Status> PerformCheck(Package package)
+        public override async Task<Status> PerformCheck(Package package)
         {
             try
             {

@@ -13,18 +13,14 @@ using System.Threading.Tasks;
 
 namespace CoMon.Packages.Workers
 {
-    public class HttpWorker : PackageWorkerBase<HttpPackageSettings>
+    public class HttpWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository, ILogger<HttpWorker> log, IRepository<Status, long> statusRepository)
+        : PackageWorkerBase<HttpPackageSettings>(timer, packageRepository, log, statusRepository)
     {
         private const int TimeoutSeconds = 5;
 
         protected override PackageType Type => PackageType.Http;
 
-        public HttpWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository,
-            ILogger<HttpWorker> logger, IRepository<Status, long> statusRepository)
-                : base(timer, packageRepository, logger, statusRepository)
-        { }
-
-        protected override async Task<Status> PerformCheck(Package package)
+        public override async Task<Status> PerformCheck(Package package)
         {
             try
             {
@@ -78,7 +74,7 @@ namespace CoMon.Packages.Workers
             }
         }
 
-        private Status CreateStatus(HttpResponseMessage response, HttpPackageSettings settings, TimeSpan responseTime)
+        private static Status CreateStatus(HttpResponseMessage response, HttpPackageSettings settings, TimeSpan responseTime)
         {
             return new Status
             {

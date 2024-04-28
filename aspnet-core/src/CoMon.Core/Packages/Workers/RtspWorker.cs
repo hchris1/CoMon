@@ -14,18 +14,14 @@ using System.Net.Sockets;
 
 namespace CoMon.Packages.Workers
 {
-    public class RtspWorker : PackageWorkerBase<RtspPackageSettings>
+    public class RtspWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository, ILogger<RtspWorker> log, IRepository<Status, long> statusRepository)
+        : PackageWorkerBase<RtspPackageSettings>(timer, packageRepository, log, statusRepository)
     {
         private const int TimeoutSeconds = 5;
 
         protected override PackageType Type => PackageType.Rtsp;
 
-        public RtspWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository,
-            ILogger<RtspWorker> logger, IRepository<Status, long> statusRepository)
-                : base(timer, packageRepository, logger, statusRepository)
-        { }
-
-        protected override async Task<Status> PerformCheck(Package package)
+        public override async Task<Status> PerformCheck(Package package)
         {
             try
             {
@@ -50,7 +46,7 @@ namespace CoMon.Packages.Workers
             }
         }
 
-        private async Task<bool> CheckHealth(Uri url, RtspPackageMethod method)
+        private static async Task<bool> CheckHealth(Uri url, RtspPackageMethod method)
         {
             try
             {
@@ -94,7 +90,7 @@ namespace CoMon.Packages.Workers
             }
         }
 
-        private RtspRequest CreateRequestMessage(RtspPackageMethod method)
+        private static RtspRequest CreateRequestMessage(RtspPackageMethod method)
         {
             return method switch
             {
@@ -108,7 +104,7 @@ namespace CoMon.Packages.Workers
             };
         }
 
-        private Status CreateStatus(bool isHealthy, string url, string method, TimeSpan responseTime)
+        private static Status CreateStatus(bool isHealthy, string url, string method, TimeSpan responseTime)
         {
             return new Status
             {
