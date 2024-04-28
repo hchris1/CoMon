@@ -1,7 +1,6 @@
 ﻿using Abp.Domain.Uow;
 using CoMon.Packages.Workers;
 using CoMon.Statuses;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -18,51 +17,114 @@ namespace CoMon.Tests.Workers
         }
 
         [Fact]
-        public async Task DoWorkAsync_ShouldProcessPackages()
+        public async Task PerformCheck_AvailableHost_ShouldReturnHealthyStatus()
         {
             // Arrange
             var arrangedAsset = EntityFactory
                 .CreateAsset()
-                .AddPingPackage();
+                .AddPingPackage(host: "localhost");
             UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await _pingWorker.PerformChecks();
-                await uow.CompleteAsync();
-            }
+            var status = await _pingWorker.PerformCheck(arrangedAsset.Packages.First());
 
             // Assert
-            UsingDbContext(context =>
-            {
-                var status = context.Statuses.FirstOrDefault();
-                Assert.NotNull(status);
-            });
+            Assert.NotNull(status);
+            Assert.Equal(Criticality.Healthy, status.Criticality);
         }
 
         [Fact]
-        public async Task DoWorkAsync_ShouldNotProcessPackages()
+        public async Task PerformCheck_UnavailableHost_ShouldReturnAlertStatus()
+        {
+            // Arrange
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddPingPackage(host: "unavailableHost");
+            UsingDbContext(context => context.Assets.Add(arrangedAsset));
+
+            // Act
+            var status = await _pingWorker.PerformCheck(arrangedAsset.Packages.First());
+
+            // Assert
+            Assert.NotNull(status);
+            Assert.Equal(Criticality.Alert, status.Criticality);
+        }
+
+        [Fact]
+        public void ShouldPerformCheck_NoLastStatus_ShouldReturnTrue()
+        {
+            // Arrange
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddPingPackage(host: "localhost");
+
+            // Act
+            var shouldPerformCheck = _pingWorker.ShouldPerformCheck(arrangedAsset.Packages.First());
+
+            // Assert
+            Assert.True(shouldPerformCheck);
+        }
+
+        [Fact]
+        public void ShouldPerformCheck_RecentLastStatus_ShouldReturnFalse()
         {
             // Arrange
             var arrangedAsset = EntityFactory
                 .CreateAsset()
                 .AddPingPackageWithStatus(Criticality.Healthy);
-            UsingDbContext(context => context.Assets.Add(arrangedAsset));
 
             // Act
-            using (var uow = Resolve<IUnitOfWorkManager>().Begin())
-            {
-                await _pingWorker.PerformChecks();
-                await uow.CompleteAsync();
-            }
+            var shouldPerformCheck = _pingWorker.ShouldPerformCheck(arrangedAsset.Packages.First());
 
             // Assert
-            UsingDbContext(context =>
-            {
-                var statusCount = context.Statuses.Count();
-                Assert.Equal(1, statusCount);
-            });
+            Assert.False(shouldPerformCheck);
+        }
+
+        [Fact]
+        public void ShouldPerformCheck_LongGoneLastStatus_ShouldReturnTrue()
+        {
+            // Arrange
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddPingPackageWithStatus(Criticality.Healthy, secondsSinceStatus: 4269);
+
+            // Act
+            var shouldPerformCheck = _pingWorker.ShouldPerformCheck(arrangedAsset.Packages.First());
+
+            // Assert
+            Assert.True(shouldPerformCheck);
+        }
+
+        [Fact]
+        public void ShouldPerformCheck_PackageSettingsNull_ShouldReturnFalse()
+        {
+            // Arrange
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddPingPackageWithStatus(Criticality.Healthy);
+            arrangedAsset.Packages.First().PingPackageSettings = null;
+
+            // Act
+            var shouldPerformCheck = _pingWorker.ShouldPerformCheck(arrangedAsset.Packages.First());
+
+            // Assert
+            Assert.False(shouldPerformCheck);
+        }
+
+        [Fact]
+        public void ShouldPerformCheck_PackageInManualQueue_ShouldReturnTrue()
+        {
+            // Arrange
+            var arrangedAsset = EntityFactory
+                .CreateAsset()
+                .AddPingPackageWithStatus(Criticality.Healthy);
+            _pingWorker.EnqueueManualCheck(arrangedAsset.Packages.First().Id);
+
+            // Act
+            var shouldPerformCheck = _pingWorker.ShouldPerformCheck(arrangedAsset.Packages.First());
+
+            // Assert
+            Assert.True(shouldPerformCheck);
         }
     }
 }

@@ -53,18 +53,23 @@ namespace CoMon.Tests
             return asset;
         }
 
-        public static Asset AddPingPackage(this Asset asset)
+        public static Asset AddPingPackage(this Asset asset, string host = "localhost")
         {
             asset.Packages.Add(new Package()
             {
                 Type = PackageType.Ping,
                 Guid = Guid.NewGuid(),
-                Name = "Test Alert Package"
+                Name = "Test Alert Package",
+                PingPackageSettings = new PingPackageSettings()
+                {
+                    Host = host,
+                    CycleSeconds = 60
+                }
             });
             return asset;
         }
 
-        public static Asset AddPingPackageWithStatus(this Asset asset, Criticality criticality)
+        public static Asset AddPingPackageWithStatus(this Asset asset, Criticality criticality, int secondsSinceStatus = 0)
         {
             asset.Packages.Add(new Package()
             {
@@ -79,7 +84,7 @@ namespace CoMon.Tests
                 Statuses = [new Status()
                 {
                     Criticality = criticality,
-                    Time = DateTime.UtcNow,
+                    Time = DateTime.UtcNow - TimeSpan.FromSeconds(secondsSinceStatus),
                     KPIs = [new KPI()
                     {
                         Name = "Test KPI",
