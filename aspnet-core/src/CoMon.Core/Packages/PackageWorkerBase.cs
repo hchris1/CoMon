@@ -23,7 +23,7 @@ namespace CoMon.Packages
         protected readonly ILogger logger;
         private readonly ConcurrentDictionary<long, bool> manualCheckDict = new();
 
-        protected const int WorkerCycleSeconds = 1;
+        protected const int WorkerCycleSeconds = 2;
         protected const int MaxDegreeOfParallelism = 10;
 
         protected PackageWorkerBase(AbpAsyncTimer timer, IRepository<Package, long> packageRepo, ILogger log, IRepository<Status, long> statusRepo)
