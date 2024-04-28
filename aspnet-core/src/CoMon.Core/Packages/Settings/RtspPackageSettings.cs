@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CoMon.Packages.Settings
 {
     [Table("CoMonRtspPackageSettings")]
-    public class RtspPackageSettings : Entity<long>
+    public class RtspPackageSettings : Entity<long>, IPackageSettings
     {
         public const int MinCycleSeconds = 30;
         public const int MaxUrlLength = 255;

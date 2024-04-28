@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CoMon.Packages.Settings
 {
     [Table("CoMonPingPackageSettings")]
-    public class PingPackageSettings : Entity<long>
+    public class PingPackageSettings : Entity<long>, IPackageSettings
     {
         public const int MaxHostLength = 255;
         public const int MinCycleSeconds = 30;

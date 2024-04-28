@@ -208,6 +208,8 @@
 		<text name="Edit.TileTypeGroup">Group</text>
 		<text name="Edit.TileTypeAsset">Asset</text>
 		<text name="Edit.TileTypePackage">Package</text>
+		<text name="Edit.SaveAndCheck">Save and Check</text>
+		<text name="Edit.SaveAndCheckTooltip">This will enqueue a check to be processed ASAP.</text>
 		<text name="Dashboard.Overview">Dashboards</text>
 		<text name="Dashboard.OverviewDescription">You can create dashboards using your groups, assets and packages.</text>
 		<text name="Edit.CreateDashboardTitle">Create Dashboard</text>

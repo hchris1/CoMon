@@ -1,75 +1,26 @@
-﻿using Abp.Dependency;
-using Abp.Domain.Repositories;
-using Abp.Domain.Uow;
-using Abp.Threading.BackgroundWorkers;
+﻿using Abp.Domain.Repositories;
 using Abp.Threading.Timers;
 using CoMon.Packages.Settings;
 using CoMon.Statuses;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CoMon.Packages.Workers
 {
-    public class HttpWorker : AsyncPeriodicBackgroundWorkerBase, ISingletonDependency
+    public class HttpWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository, ILogger<HttpWorker> log, IRepository<Status, long> statusRepository)
+        : PackageWorkerBase<HttpPackageSettings>(timer, packageRepository, log, statusRepository)
     {
-        private readonly IRepository<Package, long> _packageRepository;
-        private readonly IRepository<Status, long> _statusRepository;
-        private readonly ILogger<HttpWorker> _logger;
-
-        private const int WorkerCycleSeconds = 5;
         private const int TimeoutSeconds = 5;
 
-        public HttpWorker(AbpAsyncTimer timer, IRepository<Package, long> packageRepository,
-            ILogger<HttpWorker> logger, IRepository<Status, long> statusRepository) : base(timer)
-        {
-            Timer.Period = WorkerCycleSeconds * 1000;
-            _packageRepository = packageRepository;
-            _logger = logger;
-            _statusRepository = statusRepository;
-        }
+        protected override PackageType Type => PackageType.Http;
 
-        [UnitOfWork]
-        protected override async Task DoWorkAsync()
-        {
-            var packages = await _packageRepository
-                    .GetAll()
-                    .Include(p => p.HttpPackageSettings)
-                    .Include(p => p.Asset)
-                    .Include(p => p.Statuses
-                        .Where(s => s.Criticality != null)
-                        .OrderByDescending(s => s.Time)
-                        .Take(1))
-                    .Where(p => p.Type == PackageType.Http)
-                    .AsSplitQuery()
-                    .ToListAsync();
-
-            foreach (var package in packages)
-            {
-                try
-                {
-                    if (!ShouldPerformCheck(package))
-                        continue;
-
-                    var status = await PerformCheck(package);
-                    status.PackageId = package.Id;
-                    await _statusRepository.InsertAsync(status);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError("Error while performing http check for package with id {packageId}: {message}", package.Id, ex.Message);
-                }
-            }
-        }
-
-        private async Task<Status> PerformCheck(Package package)
+        public override async Task<Status> PerformCheck(Package package)
         {
             try
             {
@@ -88,7 +39,7 @@ namespace CoMon.Packages.Workers
                     HttpPackageMethod.Delete => HttpMethod.Delete,
                     HttpPackageMethod.Patch => HttpMethod.Patch,
                     HttpPackageMethod.Options => HttpMethod.Options,
-                    _ => throw new Exception($"Unknown http method {package.HttpPackageSettings.Method}"),
+                    _ => throw new ArgumentException($"Unknown http method {package.HttpPackageSettings.Method}"),
                 };
 
                 using var requestMessage = new HttpRequestMessage(method, package.HttpPackageSettings.Url);
@@ -113,7 +64,7 @@ namespace CoMon.Packages.Workers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while performing http check for package with id {packageId}: {message}", package.Id, ex.Message);
+                logger.LogError("Error while performing http check for package with id {packageId}: {message}", package.Id, ex.Message);
                 return new Status
                 {
                     Time = DateTime.UtcNow,
@@ -123,7 +74,7 @@ namespace CoMon.Packages.Workers
             }
         }
 
-        private Status CreateStatus(HttpResponseMessage response, HttpPackageSettings settings, TimeSpan responseTime)
+        private static Status CreateStatus(HttpResponseMessage response, HttpPackageSettings settings, TimeSpan responseTime)
         {
             return new Status
             {
@@ -143,23 +94,6 @@ namespace CoMon.Packages.Workers
                     ]
                     : []
             };
-        }
-
-        private bool ShouldPerformCheck(Package package)
-        {
-            var lastStatus = package.Statuses.FirstOrDefault();
-            if (lastStatus == null)
-                return true;
-
-            if (package.HttpPackageSettings == null)
-            {
-                _logger.LogWarning("Skipping http check for package with id {packageId} because the http settings are null.", package.Id);
-                return false;
-            }
-
-            var timeSinceLastRun = DateTime.UtcNow - lastStatus.Time;
-
-            return timeSinceLastRun.TotalSeconds > package.HttpPackageSettings.CycleSeconds;
         }
     }
 }

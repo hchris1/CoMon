@@ -4,6 +4,7 @@ using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using CoMon.Assets;
 using CoMon.Packages.Dtos;
+using CoMon.Packages.Workers;
 using CoMon.Statuses;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,12 +16,16 @@ namespace CoMon.Packages
 {
     [AbpAuthorize]
     public class PackageAppService(IRepository<Asset, long> assetRepository, IRepository<Package, long> packageRepository,
-        IObjectMapper mapper, IRepository<Status, long> statusRepository) : CoMonAppServiceBase
+        IObjectMapper mapper, IRepository<Status, long> statusRepository, RtspWorker rtspWorker, HttpWorker httpWorker, PingWorker pingWorker) : CoMonAppServiceBase
     {
         private readonly IRepository<Asset, long> _assetRepository = assetRepository;
         private readonly IRepository<Package, long> _packageRepository = packageRepository;
         private readonly IRepository<Status, long> _statusRepository = statusRepository;
         private readonly IObjectMapper _mapper = mapper;
+
+        private readonly PingWorker _pingWorker = pingWorker;
+        private readonly HttpWorker _httpWorker = httpWorker;
+        private readonly RtspWorker _rtspWorker = rtspWorker;
 
         public async Task<PackageDto> Get(long id)
         {
@@ -111,13 +116,16 @@ namespace CoMon.Packages
                 .ToList();
         }
 
-        public async Task Update(UpdatePackageDto input)
+        public async Task Update(UpdatePackageDto input, bool enqueueCheck = false)
         {
             PackageAppServiceHelper.ValidateSettings(input);
 
             var package = _mapper.Map<Package>(input);
 
             await _packageRepository.UpdateAsync(package);
+
+            if (enqueueCheck)
+                await EnqueueCheck(package.Id);
         }
 
         public async Task Delete(long id)
@@ -133,6 +141,34 @@ namespace CoMon.Packages
         public async Task<List<PackageStatusCountDto>> GetPackageStatusChangeBuckets(long packageId, int numOfHours = 24, bool useHourBuckets = true)
         {
             return await PackageAppServiceHelper.GetPackageStatusBuckets(_statusRepository, packageId, numOfHours, useHourBuckets, true);
+        }
+
+        public async Task EnqueueCheck(long packageId)
+        {
+            var package = await _packageRepository
+                .GetAll()
+                .Where(p => p.Id == packageId)
+                .AsNoTracking()
+                .FirstOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Package not found.");
+
+            switch (package.Type)
+            {
+                case PackageType.Ping:
+                    _pingWorker.EnqueueManualCheck(packageId);
+                    break;
+
+                case PackageType.Http:
+                    _httpWorker.EnqueueManualCheck(packageId);
+                    break;
+
+                case PackageType.Rtsp:
+                    _rtspWorker.EnqueueManualCheck(packageId);
+                    break;
+
+                default:
+                    throw new ArgumentException("Cannot enqueue check for this package type.");
+            }
         }
     }
 }
