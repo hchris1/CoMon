@@ -70,6 +70,7 @@ namespace CoMon.Notifications
                 Time = status.Time,
                 PreviousCriticality = package.LastStatus?.Criticality,
                 Criticality = status.Criticality,
+                TriggerCause = status.TriggerCause,
                 PackageId = package.Id,
                 PackageName = package.Name,
                 AssetId = package.Asset.Id,

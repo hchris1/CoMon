@@ -10,6 +10,7 @@ namespace CoMon.Notifications
         public DateTime Time { get; set; }
         public Criticality? PreviousCriticality { get; set; }
         public Criticality? Criticality { get; set; }
+        public TriggerCause TriggerCause { get; set; }
         public long PackageId { get; set; }
         public string PackageName { get; set; }
         public long AssetId { get; set; }
