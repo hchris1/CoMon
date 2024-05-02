@@ -247,6 +247,10 @@
 		<text name="Package.DeleteConfirmationMessage">Das Paket wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
 		<text name="Package.DeleteConfirmationTitle">Paket Löschen</text>
 		<text name="Package.DeleteSuccessMessage">Paket erfolgreich gelöscht.</text>
+		<text name="Package.CopyGUID">GUID in Zwischenablage kopieren</text>
+		<text name="Package.EnqueueCheck">Ausführung Einreihen</text>
+		<text name="Package.EnqueueCheckSuccessTitle">Ausführung Eingereiht</text>
+		<text name="Package.EnqueueCheckSuccessMessage">Ein Worker wird das Paket bald bearbeiten.</text>
 		<text name="Dashboard.StatisticsTitle">Paket Statistiken</text>
 		<text name="Dashboard.StatisticsDescription">Dieses Dashboard zeigt welche Pakete den meisten Ärger im gewählten Zeitraum gemacht haben 😢.</text>
 		<text name="Dashboard.StatisticsNextRefresh">Nächster Refresh</text>

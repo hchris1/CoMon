@@ -247,6 +247,10 @@
 		<text name="Package.DeleteConfirmationMessage">The package will be permanently deleted. Do you want to proceed?</text>
 		<text name="Package.DeleteConfirmationTitle">Delete Package</text>
 		<text name="Package.DeleteSuccessMessage">Package deleted successfully.</text>
+		<text name="Package.CopyGUID">Copy GUID to clipboard</text>
+		<text name="Package.EnqueueCheck">Enqueue Check</text>
+		<text name="Package.EnqueueCheckSuccessTitle">Check Enqueued</text>
+		<text name="Package.EnqueueCheckSuccessMessage">A worker will process the package soon.</text>
 		<text name="Dashboard.StatisticsTitle">Package Statistics</text>
 		<text name="Dashboard.StatisticsDescription">This dashboard shows you which packages caused the most trouble in the selected timerange 😢.</text>
 		<text name="Dashboard.StatisticsNextRefresh">Next refresh</text>

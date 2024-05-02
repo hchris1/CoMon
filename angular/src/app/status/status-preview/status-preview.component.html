@@ -28,9 +28,18 @@
         class="col-1 btn btn-circle btn-link"
         (click)="copyClicked()"
         *ngIf="editMode && statusPreview.package?.type === 10"
-        tooltip="Copy GUID to clipboard"
+        tooltip="{{ 'Package.CopyGUID' | localize }}"
       >
         <i class="fa-solid fa-copy"></i>
+      </button>
+      <button
+        type="button"
+        class="col-1 btn btn-circle btn-link"
+        (click)="enqueueCheckClicked()"
+        *ngIf="editMode && statusPreview.package?.type !== 10"
+        tooltip="{{ 'Package.EnqueueCheck' | localize }}"
+      >
+        <i class="fa-solid fa-repeat"></i>
       </button>
       <button
         type="button"
