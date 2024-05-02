@@ -11,6 +11,7 @@ namespace CoMon.Statuses
     {
         public DateTime Time { get; set; }
         public Criticality? Criticality { get; set; }
+        public TriggerCause TriggerCause { get; set; } = TriggerCause.Unknown;
         public List<string> Messages { get; set; } = [];
         public List<KPI> KPIs { get; set; } = [];
         public List<Chart> Charts { get; set; } = [];
@@ -21,6 +22,15 @@ namespace CoMon.Statuses
 
         [NotMapped]
         public bool IsLatest { get; set; } = true;
+    }
+
+    public enum TriggerCause
+    {
+        Unknown = 0,
+        Initialized = 1,
+        Scheduled = 2,
+        Manual = 3,
+        External = 4,
     }
 
     public enum Criticality

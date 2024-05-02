@@ -10814,6 +10814,7 @@ export class StatusDto implements IStatusDto {
   id: number;
   time: moment.Moment;
   criticality: Criticality;
+  triggerCause: TriggerCause;
   isLatest: boolean;
   messages: string[] | undefined;
   kpIs: KPIDto[] | undefined;
@@ -10836,6 +10837,7 @@ export class StatusDto implements IStatusDto {
         ? moment(_data['time'].toString())
         : <any>undefined;
       this.criticality = _data['criticality'];
+      this.triggerCause = _data['triggerCause'];
       this.isLatest = _data['isLatest'];
       if (Array.isArray(_data['messages'])) {
         this.messages = [] as any;
@@ -10868,6 +10870,7 @@ export class StatusDto implements IStatusDto {
     data['id'] = this.id;
     data['time'] = this.time ? this.time.toISOString() : <any>undefined;
     data['criticality'] = this.criticality;
+    data['triggerCause'] = this.triggerCause;
     data['isLatest'] = this.isLatest;
     if (Array.isArray(this.messages)) {
       data['messages'] = [];
@@ -10897,6 +10900,7 @@ export interface IStatusDto {
   id: number;
   time: moment.Moment;
   criticality: Criticality;
+  triggerCause: TriggerCause;
   isLatest: boolean;
   messages: string[] | undefined;
   kpIs: KPIDto[] | undefined;
@@ -10977,6 +10981,7 @@ export class StatusPreviewDto implements IStatusPreviewDto {
   id: number;
   time: moment.Moment;
   criticality: Criticality;
+  triggerCause: TriggerCause;
   isLatest: boolean;
   messages: string[] | undefined;
   package: PackagePreviewDto;
@@ -10997,6 +11002,7 @@ export class StatusPreviewDto implements IStatusPreviewDto {
         ? moment(_data['time'].toString())
         : <any>undefined;
       this.criticality = _data['criticality'];
+      this.triggerCause = _data['triggerCause'];
       this.isLatest = _data['isLatest'];
       if (Array.isArray(_data['messages'])) {
         this.messages = [] as any;
@@ -11020,6 +11026,7 @@ export class StatusPreviewDto implements IStatusPreviewDto {
     data['id'] = this.id;
     data['time'] = this.time ? this.time.toISOString() : <any>undefined;
     data['criticality'] = this.criticality;
+    data['triggerCause'] = this.triggerCause;
     data['isLatest'] = this.isLatest;
     if (Array.isArray(this.messages)) {
       data['messages'] = [];
@@ -11041,6 +11048,7 @@ export interface IStatusPreviewDto {
   id: number;
   time: moment.Moment;
   criticality: Criticality;
+  triggerCause: TriggerCause;
   isLatest: boolean;
   messages: string[] | undefined;
   package: PackagePreviewDto;
@@ -11426,6 +11434,14 @@ export interface ITimeSpan {
   totalNanoseconds: number;
   totalMinutes: number;
   totalSeconds: number;
+}
+
+export enum TriggerCause {
+  _0 = 0,
+  _1 = 1,
+  _2 = 2,
+  _3 = 3,
+  _4 = 4,
 }
 
 export class UpdatePackageDto implements IUpdatePackageDto {

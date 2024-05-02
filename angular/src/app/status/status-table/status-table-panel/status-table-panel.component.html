@@ -22,6 +22,7 @@
     </p>
   </div>
   <div class="card-body" style="border-top: none; box-shadow: none">
+    <app-status-chip-section [status]="status" />
     <app-status-message-section
       [messages]="status.messages"
       [criticality]="status.criticality"

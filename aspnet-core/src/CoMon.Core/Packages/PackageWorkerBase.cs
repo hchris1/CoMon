@@ -44,6 +44,7 @@ namespace CoMon.Packages
         protected override async Task DoWorkAsync()
         {
             var packages = await LoadPackages();
+            var manualPackageIds = manualCheckDict.Keys.ToList();
             var packagesToProcess = packages.Where(ShouldPerformCheck).ToList();
 
             var options = new ParallelOptions
@@ -59,6 +60,7 @@ namespace CoMon.Packages
                 {
                     var status = await PerformCheck(package);
                     status.PackageId = package.Id;
+                    status.TriggerCause = manualPackageIds.Contains(package.Id) ? TriggerCause.Manual : TriggerCause.Scheduled;
                     statuses.Add(status);
                 }
                 catch (Exception ex)

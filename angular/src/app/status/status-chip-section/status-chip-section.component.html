@@ -1,0 +1,6 @@
+<div class="col-auto pl-0 pt-0 pb-1" *ngFor="let chip of chips">
+  <span class="badge {{ chip.badgeClass }}" [tooltip]="chip.tooltip | localize">
+    <i *ngIf="chip.icon" class="fa-solid {{ chip.icon }} pr-1"></i>
+    {{ chip.text | localize }}
+  </span>
+</div>

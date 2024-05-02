@@ -44,11 +44,11 @@ import {SidebarUserPanelComponent} from './layout/sidebar-user-panel.component';
 import {SidebarMenuComponent} from './layout/sidebar-menu.component';
 import {HeaderModeToggleComponent} from './layout/header-mode-toggle.component';
 import {AssetComponent} from './asset/asset.component';
-import {StatusKpiComponent} from './status/status-kpi/status-kpi.component';
+import {StatusKpiComponent} from './status/status-kpi-section/status-kpi/status-kpi.component';
 import {GroupComponent} from './group/group.component';
 import {AssetSummaryComponent} from './asset/asset-summary/asset-summary.component';
 import {GroupSummaryComponent} from './group/group-summary/group-summary.component';
-import {StatusMessageComponent} from './status/status-message/status-message.component';
+import {StatusMessageComponent} from './status/status-message-section/status-message/status-message.component';
 import {PathComponent} from './common/path/path.component';
 import {CarouselComponent} from './common/carousel/carousel.component';
 import {NgApexchartsModule} from 'ng-apexcharts';
@@ -99,12 +99,13 @@ import {AssistantButtonComponent} from './common/assistant-button/assistant-butt
 import {StatusTableFilterComponent} from './status/status-table/status-table-filter/status-table-filter.component';
 import {NoDataComponent} from './common/no-data/no-data.component';
 import {StatusChartSectionComponent} from './status/status-chart-section/status-chart-section.component';
-import {StatusMessageSectionComponent} from './status/status-message/status-message-section/status-message-section.component';
-import {StatusKpiSectionComponent} from './status/status-kpi/status-kpi-section/status-kpi-section.component';
+import {StatusMessageSectionComponent} from './status/status-message-section/status-message-section.component';
+import {StatusKpiSectionComponent} from './status/status-kpi-section/status-kpi-section.component';
 import {StatusTableNavigatorComponent} from './status/status-table/status-table-navigator/status-table-navigator.component';
 import {StatusTablePanelComponent} from './status/status-table/status-table-panel/status-table-panel.component';
 import {StatisticsComponent} from './statistics/statistics.component';
 import {StatisticsTileComponent} from './statistics/statistics-tile/statistics-tile.component';
+import {StatusChipSectionComponent} from './status/status-chip-section/status-chip-section.component';
 
 @NgModule({
   declarations: [
@@ -195,6 +196,7 @@ import {StatisticsTileComponent} from './statistics/statistics-tile/statistics-t
     StatusTablePanelComponent,
     StatisticsComponent,
     StatisticsTileComponent,
+    StatusChipSectionComponent,
   ],
   imports: [
     CommonModule,

@@ -267,5 +267,15 @@
 		<text name="Settings.OpenAiKeyDescription">API key</text>
 		<text name="Settings.OpenAiKeySavedTitle">OpenAI</text>
 		<text name="Settings.OpenAiKeySavedDescription">The API key has been saved.</text>
+		<text name="Status.TriggerCause.Unknown">Unknown</text>
+		<text name="Status.TriggerCause.Unknown.Tooltip">The reason might be unknown because the status was produced before v0.7.0.</text>
+		<text name="Status.TriggerCause.Initialized">Initialized</text>
+		<text name="Status.TriggerCause.Initialized.Tooltip">The status was created when creating the package.</text>
+		<text name="Status.TriggerCause.Scheduled">Scheduled</text>
+		<text name="Status.TriggerCause.Scheduled.Tooltip">The status was created by a worker because the cycle time elapsed.</text>
+		<text name="Status.TriggerCause.Manual">Manual</text>
+		<text name="Status.TriggerCause.Manual.Tooltip">The status was created by a worker because it was manually requested.</text>
+		<text name="Status.TriggerCause.External">External</text>
+		<text name="Status.TriggerCause.External.Tooltip">The status was created by an external source.</text>
 	</texts>
 </localizationDictionary>
