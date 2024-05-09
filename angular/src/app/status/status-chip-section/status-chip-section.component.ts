@@ -18,16 +18,12 @@ export class StatusChipSectionComponent implements OnInit {
     switch (this.status.triggerCause) {
       case TriggerCause._0: // Unknown
         this.chips.push({
-          text: 'Status.TriggerCause.Unknown',
-          badgeClass: this.triggerCauseBadgeClass,
           tooltip: 'Status.TriggerCause.Unknown.Tooltip',
           icon: 'fa-question',
         });
         break;
       case TriggerCause._1: // Initialized
         this.chips.push({
-          text: 'Status.TriggerCause.Initialized',
-          badgeClass: this.triggerCauseBadgeClass,
           tooltip: 'Status.TriggerCause.Initialized.Tooltip',
           icon: 'fa-rocket',
         });
@@ -35,8 +31,6 @@ export class StatusChipSectionComponent implements OnInit {
 
       case TriggerCause._2: // Scheduled
         this.chips.push({
-          text: 'Status.TriggerCause.Scheduled',
-          badgeClass: this.triggerCauseBadgeClass,
           tooltip: 'Status.TriggerCause.Scheduled.Tooltip',
           icon: 'fa-clock',
         });
@@ -44,8 +38,6 @@ export class StatusChipSectionComponent implements OnInit {
 
       case TriggerCause._3: // Manual
         this.chips.push({
-          text: 'Status.TriggerCause.Manual',
-          badgeClass: this.triggerCauseBadgeClass,
           tooltip: 'Status.TriggerCause.Manual.Tooltip',
           icon: 'fa-hand-pointer',
         });
@@ -53,8 +45,6 @@ export class StatusChipSectionComponent implements OnInit {
 
       case TriggerCause._4: // External
         this.chips.push({
-          text: 'Status.TriggerCause.External',
-          badgeClass: this.triggerCauseBadgeClass,
           tooltip: 'Status.TriggerCause.External.Tooltip',
           icon: 'fa-external-link',
         });
@@ -64,8 +54,6 @@ export class StatusChipSectionComponent implements OnInit {
 }
 
 interface Chip {
-  text: string;
-  badgeClass: string;
   tooltip: string;
   icon: string;
 }
