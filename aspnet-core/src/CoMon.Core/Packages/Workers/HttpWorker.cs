@@ -82,7 +82,7 @@ namespace CoMon.Packages.Workers
                 Criticality = response.IsSuccessStatusCode ? Criticality.Healthy : Criticality.Alert,
                 Messages = [response.IsSuccessStatusCode
                     ? $"Successfully requested {settings.Url} ({response.StatusCode})."
-                    : $"Unable to request {settings.Url} ({response.StatusCode})."],
+                    : $"Unsuccessful status code {settings.Url} ({response.StatusCode})."],
                 KPIs = response.IsSuccessStatusCode
                     ? [
                         new KPI()
