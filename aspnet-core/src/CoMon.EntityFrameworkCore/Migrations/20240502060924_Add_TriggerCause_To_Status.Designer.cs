@@ -3,6 +3,7 @@ using System;
 using CoMon.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoMon.Migrations
 {
     [DbContext(typeof(CoMonDbContext))]
-    partial class CoMonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240502060924_Add_TriggerCause_To_Status")]
+    partial class Add_TriggerCause_To_Status
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");

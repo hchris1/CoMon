@@ -8,13 +8,14 @@
   *ngIf="status"
 >
   <div class="card-header" [style.background]="getBackgroundStyle()">
-    <div class="row">
+    <div class="row align-items-center">
       <app-criticality-indicator
         [criticality]="status.criticality"
-        class="col-auto pt-1"
+        class="col-auto"
       ></app-criticality-indicator>
-      <h4 class="col-auto pt-1">
+      <h4 class="col-auto pt-2">
         {{ status.package.name }}
+        <sup><app-status-chip [status]="status"></app-status-chip></sup>
       </h4>
     </div>
     <p style="position: absolute; top: 0; right: 1rem; margin: 1.3rem">

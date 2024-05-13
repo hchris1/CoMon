@@ -247,6 +247,10 @@
 		<text name="Package.DeleteConfirmationMessage">Das Paket wird unwiderruflich gelöscht. Wollen Sie fortfahren?</text>
 		<text name="Package.DeleteConfirmationTitle">Paket Löschen</text>
 		<text name="Package.DeleteSuccessMessage">Paket erfolgreich gelöscht.</text>
+		<text name="Package.CopyGUID">GUID in Zwischenablage kopieren</text>
+		<text name="Package.EnqueueCheck">Ausführung Einreihen</text>
+		<text name="Package.EnqueueCheckSuccessTitle">Ausführung Eingereiht</text>
+		<text name="Package.EnqueueCheckSuccessMessage">Ein Worker wird das Paket bald bearbeiten.</text>
 		<text name="Dashboard.StatisticsTitle">Paket Statistiken</text>
 		<text name="Dashboard.StatisticsDescription">Dieses Dashboard zeigt welche Pakete den meisten Ärger im gewählten Zeitraum gemacht haben 😢.</text>
 		<text name="Dashboard.StatisticsNextRefresh">Nächster Refresh</text>
@@ -267,5 +271,15 @@
 		<text name="Settings.OpenAiKeyDescription">API Key</text>
 		<text name="Settings.OpenAiKeySavedTitle">OpenAI</text>
 		<text name="Settings.OpenAiKeySavedDescription">Der API Key wurde gespeichert.</text>
+		<text name="Status.TriggerCause.Unknown">Unbekannt</text>
+		<text name="Status.TriggerCause.Unknown.Tooltip">Der Grund ist unbekannt, weil der Status vor v0.7.0 erstellt wurde.</text>
+		<text name="Status.TriggerCause.Initialized">Initialisiert</text>
+		<text name="Status.TriggerCause.Initialized.Tooltip">Der Status wurde mit der Erstellung des Pakets angelegt.</text>
+		<text name="Status.TriggerCause.Scheduled">Zyklisch</text>
+		<text name="Status.TriggerCause.Scheduled.Tooltip">Der Status wurde durch einen Worker angelegt, weil die Zykluszeit abgelaufen ist.</text>
+		<text name="Status.TriggerCause.Manual">Manuell</text>
+		<text name="Status.TriggerCause.Manual.Tooltip">Der Status wurde durch einen Worker angelegt, weil es manuell angefragt worden ist.</text>
+		<text name="Status.TriggerCause.External">Extern</text>
+		<text name="Status.TriggerCause.External.Tooltip">Der Status wurde durch eine externe Quelle angelegt.</text>
 	</texts>
 </localizationDictionary>

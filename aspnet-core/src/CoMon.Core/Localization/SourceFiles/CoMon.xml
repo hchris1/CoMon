@@ -247,6 +247,10 @@
 		<text name="Package.DeleteConfirmationMessage">The package will be permanently deleted. Do you want to proceed?</text>
 		<text name="Package.DeleteConfirmationTitle">Delete Package</text>
 		<text name="Package.DeleteSuccessMessage">Package deleted successfully.</text>
+		<text name="Package.CopyGUID">Copy GUID to clipboard</text>
+		<text name="Package.EnqueueCheck">Enqueue Check</text>
+		<text name="Package.EnqueueCheckSuccessTitle">Check Enqueued</text>
+		<text name="Package.EnqueueCheckSuccessMessage">A worker will process the package soon.</text>
 		<text name="Dashboard.StatisticsTitle">Package Statistics</text>
 		<text name="Dashboard.StatisticsDescription">This dashboard shows you which packages caused the most trouble in the selected timerange 😢.</text>
 		<text name="Dashboard.StatisticsNextRefresh">Next refresh</text>
@@ -267,5 +271,15 @@
 		<text name="Settings.OpenAiKeyDescription">API key</text>
 		<text name="Settings.OpenAiKeySavedTitle">OpenAI</text>
 		<text name="Settings.OpenAiKeySavedDescription">The API key has been saved.</text>
+		<text name="Status.TriggerCause.Unknown">Unknown</text>
+		<text name="Status.TriggerCause.Unknown.Tooltip">The reason might be unknown because the status was produced before v0.7.0.</text>
+		<text name="Status.TriggerCause.Initialized">Initialized</text>
+		<text name="Status.TriggerCause.Initialized.Tooltip">The status was created when creating the package.</text>
+		<text name="Status.TriggerCause.Scheduled">Scheduled</text>
+		<text name="Status.TriggerCause.Scheduled.Tooltip">The status was created by a worker because the cycle time elapsed.</text>
+		<text name="Status.TriggerCause.Manual">Manual</text>
+		<text name="Status.TriggerCause.Manual.Tooltip">The status was created by a worker because it was manually requested.</text>
+		<text name="Status.TriggerCause.External">External</text>
+		<text name="Status.TriggerCause.External.Tooltip">The status was created by an external source.</text>
 	</texts>
 </localizationDictionary>

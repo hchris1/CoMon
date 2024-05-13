@@ -30,9 +30,9 @@ namespace CoMon.Packages.Workers
                     url = new UriBuilder(url) { Port = 554 }.Uri;
 
                 var stopWatch = Stopwatch.StartNew();
-                var isHealthy = await CheckHealth(url, package.RtspPackageSettings.Method);
-                return CreateStatus(isHealthy, url.ToMaskedString(),
-                    package.RtspPackageSettings.Method.ToString().ToUpper(), stopWatch.Elapsed);
+                var (canConnect, isHealthy, statusCode) = await CheckHealth(url, package.RtspPackageSettings.Method);
+                return CreateStatus(canConnect, isHealthy, url.ToMaskedString(),
+                    statusCode, stopWatch.Elapsed);
             }
             catch (Exception ex)
             {
@@ -46,7 +46,7 @@ namespace CoMon.Packages.Workers
             }
         }
 
-        private static async Task<bool> CheckHealth(Uri url, RtspPackageMethod method)
+        private static async Task<(bool, bool, int)> CheckHealth(Uri url, RtspPackageMethod method)
         {
             try
             {
@@ -58,11 +58,16 @@ namespace CoMon.Packages.Workers
                 message.RtspUri = url;
 
                 var isHealthy = false;
+                var statusCode = 0;
                 var cancellationToken = new CancellationTokenSource();
 
-                rtspClient.MessageReceived += (sender, message) =>
+                rtspClient.MessageReceived += (sender, e) =>
                 {
-                    isHealthy = true;
+                    if (e.Message is not RtspResponse message)
+                        return;
+
+                    isHealthy = message.IsOk;
+                    statusCode = message.ReturnCode;
                     cancellationToken.Cancel();
                 };
 
@@ -81,12 +86,12 @@ namespace CoMon.Packages.Workers
                     rtspClient.Stop();
                 }
 
-                return isHealthy;
+                return (true, isHealthy, statusCode);
             }
             catch (SocketException)
             {
                 // SocketException is thrown when the connection is refused
-                return false;
+                return (false, false, -1);
             }
         }
 
@@ -104,15 +109,17 @@ namespace CoMon.Packages.Workers
             };
         }
 
-        private static Status CreateStatus(bool isHealthy, string url, string method, TimeSpan responseTime)
+        private static Status CreateStatus(bool canConnect, bool isHealthy, string url, int statusCode, TimeSpan responseTime)
         {
             return new Status
             {
                 Time = DateTime.UtcNow,
-                Criticality = isHealthy ? Criticality.Healthy : Criticality.Alert,
-                Messages = [isHealthy
-                    ? $"Successfully requested {url} ({method})."
-                    : $"Unable to request {url} ({method})."],
+                Criticality = canConnect && isHealthy ? Criticality.Healthy : Criticality.Alert,
+                Messages = [canConnect ?
+                    (isHealthy
+                        ? $"Successfully requested {url} ({statusCode})."
+                        : $"Unsuccessful status code {url} ({statusCode}).")
+                    : $"Unable to connect to {url}."],
                 KPIs = isHealthy
                     ? [
                         new KPI()

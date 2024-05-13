@@ -149,4 +149,15 @@ export class StatusPreviewComponent extends AppComponentBase {
   copyClicked() {
     this._clipboard.copy(this.statusPreview.package.guid);
   }
+
+  enqueueCheckClicked() {
+    this._packageService
+      .enqueueCheck(this.statusPreview.package.id)
+      .subscribe(() => {
+        this.notify.success(
+          this.l('Package.EnqueueCheckSuccessMessage'),
+          this.l('Package.EnqueueCheckSuccessTitle')
+        );
+      });
+  }
 }

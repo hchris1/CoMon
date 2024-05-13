@@ -12,6 +12,9 @@
       ></app-criticality-indicator>
       <h4 class="col-auto">
         {{ status.package.name }}
+        <sup>
+          <app-status-chip [status]="status"></app-status-chip>
+        </sup>
       </h4>
     </div>
     <p style="position: absolute; top: 0; right: 1.5rem; margin: 1.5rem">

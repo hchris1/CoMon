@@ -80,6 +80,7 @@ namespace CoMon.Packages
                 {
                     Time = DateTime.UtcNow,
                     Criticality = null,
+                    TriggerCause = TriggerCause.Initialized,
                     Messages = ["The package was initialized."]
                 }
             ];

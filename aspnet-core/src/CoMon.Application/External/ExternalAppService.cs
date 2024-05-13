@@ -30,6 +30,7 @@ namespace CoMon.External
 
             var status = _mapper.Map<Status>(input);
             status.Time = DateTime.UtcNow;
+            status.TriggerCause = TriggerCause.External;
             status.Package = package;
 
             return await _statusRepository.InsertAndGetIdAsync(status);

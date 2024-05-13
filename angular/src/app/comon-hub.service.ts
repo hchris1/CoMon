@@ -1,7 +1,10 @@
 import {EventEmitter, Injectable, Output} from '@angular/core';
 import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {AppConsts} from '@shared/AppConsts';
-import {Criticality} from '@shared/service-proxies/service-proxies';
+import {
+  Criticality,
+  TriggerCause,
+} from '@shared/service-proxies/service-proxies';
 import * as moment from 'moment';
 import {Moment} from 'moment';
 import {ActiveToast, ToastrService} from 'ngx-toastr';
@@ -15,6 +18,7 @@ export interface StatusUpdateDto {
   time: Date;
   previousCriticality: Criticality;
   criticality: Criticality;
+  triggerCause: TriggerCause;
   packageId: number;
   packageName: string;
   assetId: number;
@@ -57,8 +61,12 @@ export class CoMonHubService {
       const status = JSON.parse(json);
       this.statusUpdate.emit(status);
 
-      if (status.criticality !== status.previousCriticality)
-        this.createStatusChangeToast(status);
+      // Show toast only if criticality has changed or if the trigger cause is manual
+      if (
+        status.criticality !== status.previousCriticality ||
+        status.triggerCause === TriggerCause._3
+      )
+        this.createStatusToast(status);
     });
   }
 
@@ -78,12 +86,16 @@ export class CoMonHubService {
       });
   }
 
-  createStatusChangeToast(update: StatusUpdateDto) {
+  createStatusToast(update: StatusUpdateDto) {
     const criticality: Criticality = update.criticality;
     const previousCriticality: Criticality = update.previousCriticality;
     const time: Moment = moment(update.time);
 
-    const title = update.assetName + ': ' + update.packageName;
+    const title =
+      (update.triggerCause === TriggerCause._3 ? '☝🏼' : '') +
+      update.assetName +
+      ': ' +
+      update.packageName;
     const message =
       DynamicStylesHelper.getEmoji(previousCriticality) +
       '→' +
