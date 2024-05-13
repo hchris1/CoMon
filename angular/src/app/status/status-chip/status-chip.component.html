@@ -1,0 +1,14 @@
+<button
+  type="button"
+  containerClass="wider-tooltip"
+  class="btn btn-outline-light tooltip-wide btn-circle btn-sm border-0 p-0 pl-1"
+  style="
+    cursor: default;
+    background-color: inherit;
+    color: inherit;
+    font-size: 0.65rem;
+  "
+  tooltip="{{ chip.tooltip | localize }}"
+>
+  <i *ngIf="chip.icon" class="fa-solid {{ chip.icon }}"></i>
+</button>

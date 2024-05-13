@@ -105,7 +105,7 @@ import {StatusTableNavigatorComponent} from './status/status-table/status-table-
 import {StatusTablePanelComponent} from './status/status-table/status-table-panel/status-table-panel.component';
 import {StatisticsComponent} from './statistics/statistics.component';
 import {StatisticsTileComponent} from './statistics/statistics-tile/statistics-tile.component';
-import {StatusChipSectionComponent} from './status/status-chip-section/status-chip-section.component';
+import {StatusChipSectionComponent} from './status/status-chip/status-chip.component';
 
 @NgModule({
   declarations: [

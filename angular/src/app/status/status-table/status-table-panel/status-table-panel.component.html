@@ -15,11 +15,8 @@
       ></app-criticality-indicator>
       <h4 class="col-auto pt-2">
         {{ status.package.name }}
+        <sup><app-status-chip [status]="status"></app-status-chip></sup>
       </h4>
-      <app-status-chip-section
-        [status]="status"
-        style="line-height: 0"
-      ></app-status-chip-section>
     </div>
     <p style="position: absolute; top: 0; right: 1rem; margin: 1.3rem">
       {{ status.time.format('DD.MM.YYYY HH:mm:ss') }}
