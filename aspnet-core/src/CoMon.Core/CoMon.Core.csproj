@@ -18,8 +18,8 @@
     <PackageReference Include="Abp.AutoMapper" Version="9.2.2" />
     <PackageReference Include="Abp.ZeroCore.EntityFrameworkCore" Version="9.2.2" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="4.1.0" />
-    <PackageReference Include="MQTTnet" Version="4.3.3.952" />
-    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.3.952" />
+    <PackageReference Include="MQTTnet" Version="4.3.5.1141" />
+    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.5.1141" />
     <PackageReference Include="OpenAI" Version="1.11.0" />
     <PackageReference Include="SharpRTSP" Version="1.4.2" />
   </ItemGroup>
