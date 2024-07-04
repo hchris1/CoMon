@@ -1,31 +1,59 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Criticality} from '@shared/service-proxies/service-proxies';
+import {PackageType} from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-criticality-indicator',
   templateUrl: './criticality-indicator.component.html',
 })
-export class CriticalityIndicatorComponent {
+export class CriticalityIndicatorComponent implements OnInit, OnChanges{
   @Input() criticality: Criticality;
+  @Input() packageType: PackageType;
 
-  image: string;
+  colorClass: string;
+  iconClass: string;
 
   constructor() {}
 
-  ngOnChanges() {
-    this.image = this.getImage();
+  ngOnInit() {
+    this.iconClass = this.getIconClass();
+    this.colorClass = this.getColorClass();
   }
 
-  getImage() {
+  ngOnChanges() {
+    this.colorClass = this.getColorClass();
+  }
+
+  private getIconClass(): string {
+    switch (this.packageType) {
+      // Ping
+      case PackageType._0:
+        return 'fa-solid fa-network-wired';
+      // HTTP
+      case PackageType._1:
+        return 'fa-solid fa-server';
+      // RTSP
+      case PackageType._2:
+        return 'fa-solid fa-video';
+      // External
+      case PackageType._10:
+        return 'fa-solid fa-cloud';
+
+      default:
+        return 'fa-solid fa-circle';
+    }
+  }
+
+  private getColorClass(): string {
     switch (this.criticality) {
       case Criticality._1:
-        return 'assets/img/green-circle.svg';
+        return 'text-success';
       case Criticality._3:
-        return 'assets/img/yellow-circle.svg';
+        return 'text-warning';
       case Criticality._5:
-        return 'assets/img/red-circle.svg';
+        return 'text-danger';
       default:
-        return 'assets/img/grey-circle.svg';
+        return 'text-secondary';
     }
   }
 }

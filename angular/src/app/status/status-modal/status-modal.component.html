@@ -7,8 +7,9 @@
     <div class="row modal-title pull-left">
       <app-criticality-indicator
         [criticality]="status.criticality"
+        [packageType]="status.package.type"
         class="col-auto pr-0"
-        style="padding-top: 0.1rem"
+        style="padding-top: 0.1rem; padding-left: 1rem"
       ></app-criticality-indicator>
       <h4 class="col-auto">
         {{ status.package.name }}
