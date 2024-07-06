@@ -117,6 +117,7 @@
 		<text name="ResetPasswordStepOneInfo">1. Geben Sie Ihr Administratorpasswort ein</text>
 		<text name="ResetPasswordStepTwoInfo">2. Kopieren Sie dieses zufällige Passwort, um es dem Benutzer zu senden</text>
 		<text name="UsersActivation">Benutzeraktivierung</text>
+		<text name="NoDataAvailable">Keine Daten verfügbar</text>
 		<text name="Sidebar.Overview">Übersicht</text>
 		<text name="Sidebar.Assets">Assets</text>
 		<text name="Sidebar.StatusTable">Statustabelle</text>

@@ -1,6 +1,4 @@
 ﻿using Abp.Domain.Entities;
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoMon.Dashboards
@@ -8,10 +6,13 @@ namespace CoMon.Dashboards
     [Table("CoMonDashboardTiles")]
     public class DashboardTile : Entity<long>
     {
-        [Range(0, int.MaxValue)]
-        public int SortIndex { get; set; }
-        public DashboardTileType ItemType { get; set; } 
+        public DashboardTileType ItemType { get; set; }
         public long ItemId { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public string Content { get; set; }
 
         [ForeignKey(nameof(Dashboard))]
         public long DashboardId { get; set; }
@@ -22,6 +23,7 @@ namespace CoMon.Dashboards
     {
         Group = 0,
         Asset = 1,
-        Package = 2
+        Package = 2,
+        Markdown = 3,
     }
 }

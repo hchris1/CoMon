@@ -1,5 +1,5 @@
 <div
-  class="card h-100 {{ getCardOutlineClass(asset) }}"
+  class="card {{ getCardOutlineClass(asset) }} h-100"
   style="cursor: pointer"
   (click)="onAssetClick(asset)"
   *ngIf="asset"
@@ -36,7 +36,7 @@
       style="max-height: 8rem; min-height: 8rem"
     ></app-asset-image-carousel>
   </div>
-  <div class="card-footer" *ngIf="showPackages">
+  <div class="card-footer" *ngIf="showPackages" style="flex-grow: 1">
     <div class="row">
       <div
         class="col-auto"

@@ -17,7 +17,7 @@ import {
   Criticality,
   PackageDto,
 } from '@shared/service-proxies/service-proxies';
-import {Subscription} from 'rxjs';
+import {debounceTime, filter, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-asset-summary',
@@ -51,8 +51,13 @@ export class AssetSummaryComponent
   }
 
   ngOnInit(): void {
-    this.statusChangeSubscription =
-      this._comonHubService.statusUpdate.subscribe(update => {
+    this.statusChangeSubscription = this._comonHubService.statusUpdate
+      .pipe(
+        filter(update => update.assetId === this.assetId),
+        // Prevent lots of requests when multiple packages are updated at the same time
+        debounceTime(500)
+      )
+      .subscribe(update => {
         if (this.assetId === update.assetId) {
           this.loadAsset();
         }

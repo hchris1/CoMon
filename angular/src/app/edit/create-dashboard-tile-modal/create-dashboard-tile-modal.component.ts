@@ -21,6 +21,7 @@ export class CreateDashboardTileModalComponent {
   groupTileType = DashboardTileType._0;
   assetTileType = DashboardTileType._1;
   packageTileType = DashboardTileType._2;
+  markdownTileType = DashboardTileType._3;
   types: {value: DashboardTileType; name: string}[];
   currentType: DashboardTileType;
 
@@ -101,6 +102,9 @@ export class CreateDashboardTileModalComponent {
         createDto.itemId = this.form.controls.assetId.value;
       else if (createDto.itemType === DashboardTileType._2)
         createDto.itemId = this.form.controls.packageId.value;
+      else if (createDto.itemType === DashboardTileType._3)
+        createDto.content =
+          '#### Markdown Tile\n\nEnter edit mode and start typing.';
       else throw new Error('Invalid tile type');
 
       this._dashboardService

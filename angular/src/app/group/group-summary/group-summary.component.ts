@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import {debounceTime, filter, Subscription} from 'rxjs';
 import {CoMonHubService} from '@app/comon-hub.service';
 import {appModuleAnimation} from '@shared/animations/routerTransition';
 import {AppComponentBase} from '@shared/app-component-base';
@@ -15,7 +16,6 @@ import {
   GroupPreviewDto,
   GroupServiceProxy,
 } from '@shared/service-proxies/service-proxies';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-group-summary',
@@ -45,11 +45,14 @@ export class GroupSummaryComponent
   }
 
   ngOnInit(): void {
-    this.statusChangeSubscription =
-      this._comonHubService.statusUpdate.subscribe(update => {
-        if (update.groupIds.includes(this.groupId)) {
-          this.loadGroup();
-        }
+    this.statusChangeSubscription = this._comonHubService.statusUpdate
+      .pipe(
+        filter(update => update.groupIds.includes(this.groupId)),
+        // Prevent lots of requests when multiple packages are updated at the same time
+        debounceTime(500)
+      )
+      .subscribe(() => {
+        this.loadGroup();
       });
 
     this.connectionEstablishedSubscription =

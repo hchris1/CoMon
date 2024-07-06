@@ -1,51 +1,27 @@
-<div class="container-fluid">
-  <div class="row pr-3" style="justify-content: right">
-    <button
-      type="button"
-      class="col-1 btn btn-circle btn-link"
-      (click)="moveUp()"
-      *ngIf="editMode && !isFirst"
-    >
-      <i class="fa-solid fa-arrow-up"></i>
-    </button>
-    <button
-      type="button"
-      class="col-1 btn btn-circle btn-link"
-      (click)="moveDown()"
-      *ngIf="editMode && !isLast"
-    >
-      <i class="fa-solid fa-arrow-down"></i>
-    </button>
-    <button
-      type="button"
-      class="col-1 btn btn-circle btn-link"
-      (click)="deleteTileClicked()"
-      *ngIf="editMode"
-    >
-      <i class="fa-solid fa-trash"></i>
-    </button>
-  </div>
-</div>
-
-<div class="container-fluid">
-  <app-package-preview
-    *ngIf="isPackageTile()"
-    [packageId]="tile.itemId"
-    [showDate]="false"
-    [showPath]="true"
-  ></app-package-preview>
-  <app-asset-summary
-    *ngIf="isAssetTile()"
-    [assetId]="tile.itemId"
-    [showImage]="false"
-    [showPackages]="false"
-    [showPath]="true"
-    (assetClicked)="routeToAsset()"
-  ></app-asset-summary>
-  <app-group-summary
-    *ngIf="isGroupTile()"
-    [groupId]="tile.itemId"
-    [showPath]="true"
-    (groupClicked)="routeToGroup()"
-  ></app-group-summary>
-</div>
+<app-package-preview
+  *ngIf="isPackageTile()"
+  [packageId]="tile.itemId"
+  [showDate]="false"
+  [showPath]="true"
+  [showTimeline]="tile.height > 2"
+></app-package-preview>
+<app-asset-summary
+  *ngIf="isAssetTile()"
+  [assetId]="tile.itemId"
+  [showImage]="tile.height > 6"
+  [showPackages]="tile.height > 2"
+  [showPath]="true"
+  (assetClicked)="routeToAsset()"
+></app-asset-summary>
+<app-group-summary
+  *ngIf="isGroupTile()"
+  [groupId]="tile.itemId"
+  [showPath]="true"
+  (groupClicked)="routeToGroup()"
+></app-group-summary>
+<app-markdown-tile
+  *ngIf="isMarkdownTile()"
+  [dashboardId]="dashboardId"
+  [editMode]="editMode"
+  [tile]="tile"
+></app-markdown-tile>
