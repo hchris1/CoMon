@@ -7,6 +7,7 @@ import {
   DashboardTileType,
 } from '@shared/service-proxies/service-proxies';
 import {TILETYPES} from './create-dashboard-tile-modal.constants';
+import {CONSTRAINTSBYTYPE} from '@app/dashboard/custom-dashboard/dashboard/dashboard.constants';
 
 @Component({
   selector: 'app-create-dashboard-tile-modal',
@@ -24,8 +25,8 @@ export class CreateDashboardTileModalComponent {
   markdownTileType = DashboardTileType._3;
   types: {value: DashboardTileType; name: string}[];
   currentType: DashboardTileType;
-
   options: DashboardTileOptionDto;
+  constraintsByType = CONSTRAINTSBYTYPE;
 
   constructor(
     formBuilder: FormBuilder,
@@ -95,6 +96,9 @@ export class CreateDashboardTileModalComponent {
         this.form.controls.type.value,
         10
       ) as DashboardTileType;
+
+      createDto.width = this.constraintsByType[createDto.itemType].minW;
+      createDto.height = this.constraintsByType[createDto.itemType].minH;
 
       if (createDto.itemType === DashboardTileType._0)
         createDto.itemId = this.form.controls.groupId.value;

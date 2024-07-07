@@ -1,4 +1,11 @@
-import {Component, Injector, Input} from '@angular/core';
+import {
+  Component,
+  Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {AppComponentBase} from '@shared/app-component-base';
 import {
   DashboardServiceProxy,
@@ -9,25 +16,31 @@ import {
   selector: 'app-markdown-tile',
   templateUrl: './markdown-tile.component.html',
 })
-export class MarkdownTileComponent extends AppComponentBase {
+export class MarkdownTileComponent
+  extends AppComponentBase
+  implements OnInit, OnChanges
+{
   @Input() dashboardId: number;
   @Input() tile: DashboardTileDto;
   @Input() editMode: boolean = false;
 
+  initialized = false;
   markdown: string;
 
   constructor(
-    private _dashboardService: DashboardServiceProxy,
-    injector: Injector
+    injector: Injector,
+    private _dashboardService: DashboardServiceProxy
   ) {
     super(injector);
   }
 
-  ngOnChanges(changes) {
-    if (!this.markdown) {
-      this.markdown = this.tile.content;
-      return;
-    }
+  ngOnInit() {
+    this.markdown = this.tile.content;
+    this.initialized = true;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!this.initialized) return;
 
     if (!!changes.editMode && changes.editMode.currentValue === false) {
       if (this.markdown !== this.tile.content) {
