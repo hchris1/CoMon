@@ -17,6 +17,8 @@ import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {AlertModule} from 'ngx-bootstrap/alert';
 import {ProgressbarModule} from 'ngx-bootstrap/progressbar';
+import {GridstackModule} from 'gridstack/dist/angular';
+import {MarkdownModule} from 'ngx-markdown';
 
 // tenants
 import {TenantsComponent} from '@app/tenants/tenants.component';
@@ -106,6 +108,7 @@ import {StatusTablePanelComponent} from './status/status-table/status-table-pane
 import {StatisticsComponent} from './statistics/statistics.component';
 import {StatisticsTileComponent} from './statistics/statistics-tile/statistics-tile.component';
 import {StatusChipSectionComponent} from './status/status-chip/status-chip.component';
+import {MarkdownTileComponent} from './dashboard/custom-dashboard/dashboard-tile/markdown-tile/markdown-tile.component';
 
 @NgModule({
   declarations: [
@@ -197,6 +200,7 @@ import {StatusChipSectionComponent} from './status/status-chip/status-chip.compo
     StatisticsComponent,
     StatisticsTileComponent,
     StatusChipSectionComponent,
+    MarkdownTileComponent,
   ],
   imports: [
     CommonModule,
@@ -219,6 +223,8 @@ import {StatusChipSectionComponent} from './status/status-chip/status-chip.compo
     TooltipModule,
     AlertModule.forRoot(),
     ProgressbarModule.forRoot(),
+    GridstackModule,
+    MarkdownModule.forRoot(),
   ],
   providers: [],
 })

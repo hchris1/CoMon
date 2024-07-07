@@ -1,4 +1,4 @@
-<div [@routerTransition] *ngIf="dashboard">
+<div [@routerTransition] *ngIf="dashboard" class="view-container">
   <section class="content-header">
     <div class="container-fluid">
       <div class="row" style="justify-content: space-between">
@@ -45,7 +45,7 @@
         <div class="row">
           <button
             class="col-auto text-right btn btn-circle btn-link"
-            (click)="onCreateDashboardModal()"
+            (click)="onCreateDashboardTileModal()"
             *ngIf="editMode"
           >
             <i class="fa-solid fa-plus"></i>
@@ -71,25 +71,41 @@
     </div>
   </section>
 
-  <section class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <p *ngIf="dashboard.tiles.length === 0" class="ml-3">
-          {{ 'Dashboard.NoTiles' | localize }}
-        </p>
-        <app-dashboard-tile
-          class="col-auto"
-          *ngFor="let tile of dashboard.tiles"
-          [dashboardId]="dashboard.id"
-          [tile]="tile"
-          [editMode]="editMode"
-          [isFirst]="isFirst(tile)"
-          [isLast]="isLast(tile)"
-          (tileDeleted)="loadDashboard()"
-          (tileMoved)="loadDashboard()"
-        ></app-dashboard-tile>
-      </div>
+  <section class="content" style="overflow: auto">
+    <div
+      class="row"
+      style="position: absolute; z-index: 1000; bottom: 0; min-width: 20rem"
+      [hidden]="!isTrashVisible"
+    >
+      <alert
+        id="trash"
+        type="danger"
+        class="trash w-100 pl-3 pr-3 text-center mb-0"
+      >
+        <p class="mb-0">{{ 'DragToRemove' | localize }}</p>
+      </alert>
     </div>
+    <gridstack
+      [options]="gridOptions"
+      (changeCB)="onGridChange($event)"
+      (removedCB)="onGridRemove($event)"
+      (dragStartCB)="onDragStart()"
+      (dragStopCB)="onDragStop()"
+      style="min-width: 1500px"
+    >
+      <gridstack-item
+        *ngFor="let widget of gridWidgets; trackBy: identify"
+        [options]="widget"
+      >
+        <div style="overflow: hidden" class="grid-stack-item-content h-100">
+          <app-dashboard-tile
+            [dashboardId]="dashboard.id"
+            [tile]="widget.tile"
+            [editMode]="editMode"
+          ></app-dashboard-tile>
+        </div>
+      </gridstack-item>
+    </gridstack>
   </section>
 </div>
 

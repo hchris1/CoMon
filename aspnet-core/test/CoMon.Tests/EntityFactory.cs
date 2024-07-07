@@ -110,13 +110,12 @@ namespace CoMon.Tests
             return dashboard;
         }
 
-        public static DashboardTile CreateTile(DashboardTileType type, long itemId, int sortIndex)
+        public static DashboardTile CreateTile(DashboardTileType type, long itemId)
         {
             return new DashboardTile()
             {
                 ItemType = type,
                 ItemId = itemId,
-                SortIndex = sortIndex
             };
         }
     }

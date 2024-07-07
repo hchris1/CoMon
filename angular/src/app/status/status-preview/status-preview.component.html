@@ -1,12 +1,12 @@
 <div
-  class="card {{ getCardOutlineClass() }}"
+  class="card {{ getCardOutlineClass() }} h-100"
   style="cursor: pointer"
   [class.bg-light]="showShadow"
   [class.shadow]="showShadow"
   *ngIf="statusPreview"
 >
   <div
-    class="card-header"
+    class="card-header h-100"
     [style.background]="getBackgroundStyle()"
     (click)="openStatusModal()"
   >

@@ -302,7 +302,7 @@ namespace CoMon.Tests.Dashboards
         public async Task DeleteTile_DashboardExistsAndTileExists_ShouldDeleteTile()
         {
             // Arrange
-            var arrangedTile = EntityFactory.CreateTile(DashboardTileType.Group, 1, 0);
+            var arrangedTile = EntityFactory.CreateTile(DashboardTileType.Group, 1);
             var arrangedDashboard = EntityFactory.CreateDashboard().AddTile(arrangedTile);
             UsingDbContext(context =>
             {
@@ -328,7 +328,7 @@ namespace CoMon.Tests.Dashboards
         public async Task DeleteTile_DashboardDoesNotExist_ShouldThrowEntityNotFoundException()
         {
             // Arrange
-            var arrangedTile = EntityFactory.CreateTile(DashboardTileType.Group, 1, 0);
+            var arrangedTile = EntityFactory.CreateTile(DashboardTileType.Group, 1);
             UsingDbContext(context =>
             {
                 context.DashboardTiles.Add(arrangedTile);
@@ -376,146 +376,6 @@ namespace CoMon.Tests.Dashboards
             Assert.NotEmpty(options.Groups);
             Assert.NotEmpty(options.Assets);
             Assert.NotEmpty(options.Packages);
-        }
-
-        [Fact]
-        public async Task MoveTileUp_DashboardExistsAndTileExists_ShouldMoveTileUp()
-        {
-            // Arrange
-            var arrangedTile1 = EntityFactory.CreateTile(DashboardTileType.Group, 1, 0);
-            var arrangedTile2 = EntityFactory.CreateTile(DashboardTileType.Group, 2, 1);
-            var arrangedDashboard = EntityFactory.CreateDashboard().AddTile(arrangedTile1).AddTile(arrangedTile2);
-            UsingDbContext(context =>
-            {
-                context.Dashboards.Add(arrangedDashboard);
-            });
-
-            // Act
-            using var uow = Resolve<IUnitOfWorkManager>().Begin();
-            await _dashboardAppService.MoveTileUp(1, 2);
-            await uow.CompleteAsync();
-
-            // Assert
-            UsingDbContext(context =>
-            {
-                var dashboard = context.Dashboards.FirstOrDefault();
-                var tile1 = context.DashboardTiles.FirstOrDefault(t => t.Id == 1);
-                var tile2 = context.DashboardTiles.FirstOrDefault(t => t.Id == 2);
-                Assert.NotNull(dashboard);
-                Assert.NotNull(tile1);
-                Assert.NotNull(tile2);
-                Assert.Equal(1, tile1.SortIndex);
-                Assert.Equal(0, tile2.SortIndex);
-            });
-        }
-
-        [Fact]
-        public async Task MoveTileUp_DashboardDoesNotExist_ShouldThrowEntityNotFoundException()
-        {
-            // Act & Assert
-            using var uow = Resolve<IUnitOfWorkManager>().Begin();
-            await Assert.ThrowsAsync<EntityNotFoundException>(() => _dashboardAppService.MoveTileUp(1, 1));
-        }
-
-        [Fact]
-        public async Task MoveTileUp_TileDoesNotExist_ShouldThrowEntityNotFoundException()
-        {
-            // Arrange
-            var arrangedDashboard = EntityFactory.CreateDashboard();
-            UsingDbContext(context =>
-            {
-                context.Dashboards.Add(arrangedDashboard);
-            });
-
-            // Act & Assert
-            using var uow = Resolve<IUnitOfWorkManager>().Begin();
-            await Assert.ThrowsAsync<EntityNotFoundException>(() => _dashboardAppService.MoveTileUp(1, 1));
-        }
-
-        [Fact]
-        public async Task MoveTileUp_TileIsFirst_ShouldThrowValidationException()
-        {
-            // Arrange
-            var arrangedTile = EntityFactory.CreateTile(DashboardTileType.Group, 1, 0);
-            var arrangedDashboard = EntityFactory.CreateDashboard().AddTile(arrangedTile);
-            UsingDbContext(context =>
-            {
-                context.Dashboards.Add(arrangedDashboard);
-            });
-
-            // Act & Assert
-            using var uow = Resolve<IUnitOfWorkManager>().Begin();
-            await Assert.ThrowsAsync<AbpValidationException>(() => _dashboardAppService.MoveTileUp(1, 1));
-        }
-
-        [Fact]
-        public async Task MoveTileDown_DashboardExistsAndTileExists_ShouldMoveTileDown()
-        {
-            // Arrange
-            var arrangedTile1 = EntityFactory.CreateTile(DashboardTileType.Group, 1, 0);
-            var arrangedTile2 = EntityFactory.CreateTile(DashboardTileType.Group, 2, 1);
-            var arrangedDashboard = EntityFactory.CreateDashboard().AddTile(arrangedTile1).AddTile(arrangedTile2);
-            UsingDbContext(context =>
-            {
-                context.Dashboards.Add(arrangedDashboard);
-            });
-
-            // Act
-            using var uow = Resolve<IUnitOfWorkManager>().Begin();
-            await _dashboardAppService.MoveTileDown(1, 1);
-            await uow.CompleteAsync();
-
-            // Assert
-            UsingDbContext(context =>
-            {
-                var dashboard = context.Dashboards.FirstOrDefault();
-                var tile1 = context.DashboardTiles.FirstOrDefault(t => t.Id == 1);
-                var tile2 = context.DashboardTiles.FirstOrDefault(t => t.Id == 2);
-                Assert.NotNull(dashboard);
-                Assert.NotNull(tile1);
-                Assert.NotNull(tile2);
-                Assert.Equal(1, tile1.SortIndex);
-                Assert.Equal(0, tile2.SortIndex);
-            });
-        }
-
-        [Fact]
-        public async Task MoveTileDown_DashboardDoesNotExist_ShouldThrowEntityNotFoundException()
-        {
-            // Act & Assert
-            using var uow = Resolve<IUnitOfWorkManager>().Begin();
-            await Assert.ThrowsAsync<EntityNotFoundException>(() => _dashboardAppService.MoveTileDown(1, 1));
-        }
-
-        [Fact]
-        public async Task MoveTileDown_TileDoesNotExist_ShouldThrowEntityNotFoundException()
-        {
-            // Arrange
-            var arrangedDashboard = EntityFactory.CreateDashboard();
-            UsingDbContext(context =>
-            {
-                context.Dashboards.Add(arrangedDashboard);
-            });
-
-            // Act & Assert
-            using var uow = Resolve<IUnitOfWorkManager>().Begin();
-            await Assert.ThrowsAsync<EntityNotFoundException>(() => _dashboardAppService.MoveTileDown(1, 1));
-        }
-
-        [Fact]
-        public async Task MoveTileDown_TileIsLast_ShouldThrowValidationException()
-        {
-            // Arrange
-            var arrangedTile = EntityFactory.CreateTile(DashboardTileType.Group, 1, 0);
-            var arrangedDashboard = EntityFactory.CreateDashboard().AddTile(arrangedTile);
-            UsingDbContext(context =>
-            {
-                context.Dashboards.Add(arrangedDashboard);
-            });
-
-            // Act & Assert
-            using var uow = Resolve<IUnitOfWorkManager>().Begin();
-            await Assert.ThrowsAsync<AbpValidationException>(() => _dashboardAppService.MoveTileDown(1, 1));
         }
     }
 }

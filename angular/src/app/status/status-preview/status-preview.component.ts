@@ -3,7 +3,10 @@ import {
   EventEmitter,
   Injector,
   Input,
+  OnChanges,
+  OnInit,
   Output,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import {DynamicStylesHelper} from '@shared/helpers/DynamicStylesHelper';
@@ -23,7 +26,10 @@ import {AppComponentBase} from '@shared/app-component-base';
   templateUrl: './status-preview.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class StatusPreviewComponent extends AppComponentBase {
+export class StatusPreviewComponent
+  extends AppComponentBase
+  implements OnInit, OnChanges
+{
   @Input() statusPreview: StatusPreviewDto;
   @Input() showPath: boolean = true;
   @Input() editMode: boolean = false;
@@ -57,10 +63,28 @@ export class StatusPreviewComponent extends AppComponentBase {
       this.fromNow = this.statusPreview.time.fromNow();
     }, 60 * 1000);
 
-    if (!this.showTimeline) return;
+    if (this.showTimeline) {
+      this.setupStatisticLoading();
+    }
+  }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['showTimeline']) {
+      if (this.showTimeline) {
+        this.setupStatisticLoading();
+      } else {
+        this.clearStatisticLoading();
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.clearStatisticLoading();
+    clearInterval(this.fromNowInterval);
+  }
+
+  setupStatisticLoading() {
     this.loadStatistic();
-
     this.statisticInterval = setInterval(
       () => {
         this.loadStatistic();
@@ -69,9 +93,10 @@ export class StatusPreviewComponent extends AppComponentBase {
     );
   }
 
-  ngOnDestroy(): void {
-    clearInterval(this.statisticInterval);
-    clearInterval(this.fromNowInterval);
+  clearStatisticLoading() {
+    if (this.statisticInterval) {
+      clearInterval(this.statisticInterval);
+    }
   }
 
   loadStatistic() {

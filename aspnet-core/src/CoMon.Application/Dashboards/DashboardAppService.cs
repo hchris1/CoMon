@@ -89,6 +89,52 @@ namespace CoMon.Dashboards
             await _dashboardRepository.UpdateAsync(dashboard);
         }
 
+        public async Task UpdateTilePositions(long id, List<UpdateTilePositionDto> positionDtos)
+        {
+            var dashboard = await _dashboardRepository
+                .GetAll()
+                .Where(d => d.Id == id)
+                .Include(d => d.Tiles)
+                .AsSplitQuery()
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Dashboard not found for given id.");
+
+            foreach (var positionDto in positionDtos)
+            {
+                var tile = dashboard.Tiles
+                    .Where(t => t.Id == positionDto.TileId)
+                    .SingleOrDefault()
+                    ?? throw new EntityNotFoundException("Tile not found for given tile id.");
+
+                tile.X = positionDto.X;
+                tile.Y = positionDto.Y;
+                tile.Width = positionDto.Width;
+                tile.Height = positionDto.Height;
+            }
+
+            await _dashboardRepository.UpdateAsync(dashboard);
+        }
+
+        public async Task UpdateTileContent(long id, long tileId, string content)
+        {
+            var dashboard = await _dashboardRepository
+                .GetAll()
+                .Where(d => d.Id == id)
+                .Include(d => d.Tiles)
+                .AsSplitQuery()
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Dashboard not found for given id.");
+
+            var tile = dashboard.Tiles
+                .Where(t => t.Id == tileId)
+                .SingleOrDefault()
+                ?? throw new EntityNotFoundException("Tile not found for given tile id.");
+
+            tile.Content = content;
+
+            await _dashboardRepository.UpdateAsync(dashboard);
+        }
+
         public async Task AddTile(long id, CreateDashboardTileDto tileDto)
         {
             var dashboard = await _dashboardRepository
@@ -100,7 +146,7 @@ namespace CoMon.Dashboards
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 
             var tile = _mapper.Map<DashboardTile>(tileDto);
-            tile.SortIndex = dashboard.Tiles.Select(t => t.SortIndex).DefaultIfEmpty(-1).Max() + 1;
+            tile.Y = dashboard.Tiles.Count > 0 ? dashboard.Tiles.Max(t => t.Y + t.Height) + 1 : 0;
 
             // Verify that the group/asset/package exists
             switch (tileDto.ItemType)
@@ -115,6 +161,9 @@ namespace CoMon.Dashboards
 
                 case DashboardTileType.Package:
                     await _packageRepository.GetAsync(tileDto.ItemId);
+                    break;
+
+                case DashboardTileType.Markdown:
                     break;
 
                 default:
@@ -169,64 +218,6 @@ namespace CoMon.Dashboards
                     .AsSplitQuery()
                     .ToListAsync())
             };
-        }
-
-        public async Task MoveTileUp(long id, long tileId)
-        {
-            var dashboard = await _dashboardRepository
-                .GetAll()
-                .Where(d => d.Id == id)
-                .Include(d => d.Tiles)
-                .AsSplitQuery()
-                .SingleOrDefaultAsync()
-                ?? throw new EntityNotFoundException("Dashboard not found for given id.");
-
-            var tileToMoveUp = dashboard.Tiles
-                .Where(t => t.Id == tileId)
-                .SingleOrDefault()
-                ?? throw new EntityNotFoundException("Tile not found for given tile id.");
-
-            var originalSortIndex = tileToMoveUp.SortIndex;
-
-            var tileToMoveDown = dashboard.Tiles
-                .OrderByDescending(t => t.Id)
-                .Where(t => t.SortIndex < tileToMoveUp.SortIndex && t.Id != tileToMoveUp.Id)
-                .FirstOrDefault()
-                ?? throw new AbpValidationException("Can't move the tile further down.");
-
-            tileToMoveUp.SortIndex = tileToMoveDown.SortIndex;
-            tileToMoveDown.SortIndex = originalSortIndex;
-
-            await _dashboardRepository.UpdateAsync(dashboard);
-        }
-
-        public async Task MoveTileDown(long id, long tileId)
-        {
-            var dashboard = await _dashboardRepository
-                .GetAll()
-                .Where(d => d.Id == id)
-                .Include(d => d.Tiles)
-                .AsSplitQuery()
-                .SingleOrDefaultAsync()
-                ?? throw new EntityNotFoundException("Dashboard not found for given id.");
-
-            var tileToMoveDown = dashboard.Tiles
-                .Where(t => t.Id == tileId)
-                .SingleOrDefault()
-                ?? throw new EntityNotFoundException("Tile not found for given tile id.");
-
-            var originalSortIndex = tileToMoveDown.SortIndex;
-
-            var tileToMoveUp = dashboard.Tiles
-                .OrderBy(t => t.SortIndex)
-                .Where(t => t.SortIndex > tileToMoveDown.SortIndex && t.Id != tileToMoveDown.Id)
-                .FirstOrDefault()
-                ?? throw new AbpValidationException("Can't move the tile further down.");
-
-            tileToMoveDown.SortIndex = tileToMoveUp.SortIndex;
-            tileToMoveUp.SortIndex = originalSortIndex;
-
-            await _dashboardRepository.UpdateAsync(dashboard);
         }
     }
 }

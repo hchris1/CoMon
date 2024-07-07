@@ -3,6 +3,7 @@ using System;
 using CoMon.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoMon.Migrations
 {
     [DbContext(typeof(CoMonDbContext))]
-    partial class CoMonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240706151831_Add_Content_To_Dashboard_Tiles")]
+    partial class Add_Content_To_Dashboard_Tiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.6");

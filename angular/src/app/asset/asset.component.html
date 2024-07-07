@@ -1,4 +1,4 @@
-<div [@routerTransition] *ngIf="asset">
+<div [@routerTransition] *ngIf="asset" class="view-container">
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
@@ -179,7 +179,7 @@
 
       <div class="row pt-3">
         <div
-          class="col-xl-4 col-md-6 col-12"
+          class="col-xl-4 col-md-6 col-12 pb-2"
           *ngFor="let package of asset.packages"
         >
           <app-package-preview

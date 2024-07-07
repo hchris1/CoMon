@@ -7,6 +7,7 @@ import {
   DashboardTileType,
 } from '@shared/service-proxies/service-proxies';
 import {TILETYPES} from './create-dashboard-tile-modal.constants';
+import {CONSTRAINTSBYTYPE} from '@app/dashboard/custom-dashboard/dashboard/dashboard.constants';
 
 @Component({
   selector: 'app-create-dashboard-tile-modal',
@@ -21,10 +22,11 @@ export class CreateDashboardTileModalComponent {
   groupTileType = DashboardTileType._0;
   assetTileType = DashboardTileType._1;
   packageTileType = DashboardTileType._2;
+  markdownTileType = DashboardTileType._3;
   types: {value: DashboardTileType; name: string}[];
   currentType: DashboardTileType;
-
   options: DashboardTileOptionDto;
+  constraintsByType = CONSTRAINTSBYTYPE;
 
   constructor(
     formBuilder: FormBuilder,
@@ -95,12 +97,18 @@ export class CreateDashboardTileModalComponent {
         10
       ) as DashboardTileType;
 
+      createDto.width = this.constraintsByType[createDto.itemType].minW;
+      createDto.height = this.constraintsByType[createDto.itemType].minH;
+
       if (createDto.itemType === DashboardTileType._0)
         createDto.itemId = this.form.controls.groupId.value;
       else if (createDto.itemType === DashboardTileType._1)
         createDto.itemId = this.form.controls.assetId.value;
       else if (createDto.itemType === DashboardTileType._2)
         createDto.itemId = this.form.controls.packageId.value;
+      else if (createDto.itemType === DashboardTileType._3)
+        createDto.content =
+          '#### Markdown Tile\n\nEnter edit mode and start typing.';
       else throw new Error('Invalid tile type');
 
       this._dashboardService

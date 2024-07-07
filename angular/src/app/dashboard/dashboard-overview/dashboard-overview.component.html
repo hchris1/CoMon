@@ -1,4 +1,4 @@
-<div [@routerTransition]>
+<div [@routerTransition] class="view-container">
   <section class="content-header">
     <div class="container-fluid">
       <div class="row" style="justify-content: space-between">
@@ -42,9 +42,9 @@
   <section class="content" *ngIf="dashboards && !isLoading">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 pb-2">
           <div
-            class="card card-outline"
+            class="card card-outline h-100"
             style="cursor: pointer"
             (click)="routeToStatisticsDashboard()"
           >
@@ -59,12 +59,12 @@
           </div>
         </div>
         <div
-          class="col-auto"
+          class="col-auto pb-2"
           style="min-width: 12rem"
           *ngFor="let dashboard of dashboards"
           (click)="routeToDashboard(dashboard)"
         >
-          <div class="card card-outline">
+          <div class="card card-outline h-100">
             <div class="card-header">
               <div class="row">
                 <h3 class="col card-title">{{ dashboard.name }}</h3>

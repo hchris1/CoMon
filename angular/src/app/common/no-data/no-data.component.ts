@@ -6,7 +6,7 @@ import {NoDataImage} from '@shared/enums/NoDataImage';
   templateUrl: './no-data.component.html',
 })
 export class NoDataComponent {
-  @Input() message: string = 'No data available'; // TODO: Use a translation key
+  @Input() message: string = 'NoDataAvailable';
   @Input() width: number = 7;
   @Input() image: NoDataImage = NoDataImage.PersonWithStatus;
 }

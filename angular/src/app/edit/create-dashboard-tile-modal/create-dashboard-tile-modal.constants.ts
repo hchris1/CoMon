@@ -13,4 +13,8 @@ export const TILETYPES = [
     value: DashboardTileType._2,
     name: 'Edit.TileTypePackage',
   },
+  {
+    value: DashboardTileType._3,
+    name: 'Edit.TileTypeMarkdown',
+  },
 ];

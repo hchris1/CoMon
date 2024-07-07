@@ -1,0 +1,10 @@
+<textarea
+  *ngIf="editMode"
+  style="width: 100%; height: 100%"
+  class="form-control"
+  [(ngModel)]="markdown"
+></textarea>
+
+<div class="card card-body h-100" *ngIf="!editMode">
+  <markdown style="overflow: auto">{{ markdown }}</markdown>
+</div>
