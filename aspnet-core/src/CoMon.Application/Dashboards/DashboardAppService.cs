@@ -125,12 +125,12 @@ namespace CoMon.Dashboards
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Dashboard not found for given id.");
 
-            var tileToMoveUp = dashboard.Tiles
+            var tile = dashboard.Tiles
                 .Where(t => t.Id == tileId)
                 .SingleOrDefault()
                 ?? throw new EntityNotFoundException("Tile not found for given tile id.");
 
-            tileToMoveUp.Content = content;
+            tile.Content = content;
 
             await _dashboardRepository.UpdateAsync(dashboard);
         }
