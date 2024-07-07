@@ -118,6 +118,7 @@
 		<text name="ResetPasswordStepTwoInfo">2. Copy this random password so you can send it to the user</text>
 		<text name="UsersActivation">Users activation</text>
 		<text name="NoDataAvailable">No data available</text>
+		<text name="DragToRemove">Drag the widget here to remove it.</text>
 		<text name="Sidebar.Overview">Overview</text>
 		<text name="Sidebar.Assets">Assets</text>
 		<text name="Sidebar.StatusTable">Status Table</text>
@@ -209,6 +210,7 @@
 		<text name="Edit.TileTypeGroup">Group</text>
 		<text name="Edit.TileTypeAsset">Asset</text>
 		<text name="Edit.TileTypePackage">Package</text>
+		<text name="Edit.TileTypeMarkdown">Markdown</text>
 		<text name="Edit.SaveAndCheck">Save and Check</text>
 		<text name="Edit.SaveAndCheckTooltip">This will enqueue a check to be processed ASAP.</text>
 		<text name="Dashboard.Overview">Dashboards</text>

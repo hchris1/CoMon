@@ -118,6 +118,7 @@
 		<text name="ResetPasswordStepTwoInfo">2. Kopieren Sie dieses zufällige Passwort, um es dem Benutzer zu senden</text>
 		<text name="UsersActivation">Benutzeraktivierung</text>
 		<text name="NoDataAvailable">Keine Daten verfügbar</text>
+		<text name="DragToRemove">Ziehe das Widget hierher, um es zu entfernen.</text>
 		<text name="Sidebar.Overview">Übersicht</text>
 		<text name="Sidebar.Assets">Assets</text>
 		<text name="Sidebar.StatusTable">Statustabelle</text>
@@ -209,6 +210,7 @@
 		<text name="Edit.TileTypeGroup">Gruppe</text>
 		<text name="Edit.TileTypeAsset">Asset</text>
 		<text name="Edit.TileTypePackage">Paket</text>
+		<text name="Edit.TileTypeMarkdown">Markdown</text>
 		<text name="Edit.SaveAndCheck">Speichern und Ausführen</text>
 		<text name="Edit.SaveAndCheckTooltip">Hiermit wird ein Check zur sofortigen Verarbeitung in die Warteschlange eingereiht.</text>
 		<text name="Dashboard.Overview">Dashboards</text>
