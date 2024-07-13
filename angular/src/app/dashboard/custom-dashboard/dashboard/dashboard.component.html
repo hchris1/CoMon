@@ -86,12 +86,37 @@
       </alert>
     </div>
     <gridstack
-      [options]="gridOptions"
+      [options]="staticGridOptions"
       (changeCB)="onGridChange($event)"
       (removedCB)="onGridRemove($event)"
       (dragStartCB)="onDragStart()"
       (dragStopCB)="onDragStop()"
+      class="grid-stack"
       style="min-width: 1500px"
+      *ngIf="!editMode"
+    >
+      <gridstack-item
+        *ngFor="let widget of gridWidgets; trackBy: identify"
+        [options]="widget"
+      >
+        <div style="overflow: hidden" class="grid-stack-item-content h-100">
+          <app-dashboard-tile
+            [dashboardId]="dashboard.id"
+            [tile]="widget.tile"
+            [editMode]="editMode"
+          ></app-dashboard-tile>
+        </div>
+      </gridstack-item>
+    </gridstack>
+    <gridstack
+      [options]="editGridOptions"
+      (changeCB)="onGridChange($event)"
+      (removedCB)="onGridRemove($event)"
+      (dragStartCB)="onDragStart()"
+      (dragStopCB)="onDragStop()"
+      class="grid-stack"
+      style="min-width: 1500px"
+      *ngIf="editMode"
     >
       <gridstack-item
         *ngFor="let widget of gridWidgets; trackBy: identify"
