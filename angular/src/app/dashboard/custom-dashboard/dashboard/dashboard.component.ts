@@ -1,4 +1,4 @@
-import {Component, Injector} from '@angular/core';
+import {Component, Injector, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CreateDashboardTileModalComponent} from '@app/edit/create-dashboard-tile-modal/create-dashboard-tile-modal.component';
@@ -12,7 +12,11 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import {NgGridStackOptions, NgGridStackWidget} from 'gridstack/dist/angular';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
-import {CONSTRAINTSBYTYPE, GRIDOPTIONS} from './dashboard.constants';
+import {
+  CONSTRAINTSBYTYPE,
+  EDITGRIDOPTIONS,
+  STATICGRIDOPTIONS,
+} from './dashboard.constants';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +28,8 @@ export class DashboardComponent extends AppComponentBase {
   id: number;
   dashboard: DashboardDto;
 
-  gridOptions: NgGridStackOptions;
+  staticGridOptions: NgGridStackOptions = STATICGRIDOPTIONS;
+  editGridOptions: NgGridStackOptions = EDITGRIDOPTIONS;
   gridWidgets: CustomGridStackWidget[];
   constraintsByType = CONSTRAINTSBYTYPE;
 
@@ -51,8 +56,6 @@ export class DashboardComponent extends AppComponentBase {
       this.id = params['id'];
       this.loadDashboard();
     });
-
-    this.gridOptions = GRIDOPTIONS;
   }
 
   loadDashboard() {
@@ -100,6 +103,10 @@ export class DashboardComponent extends AppComponentBase {
   }
 
   deactivateEditMode() {
+    // Required so static grid gets changes
+    this.gridWidgets = this.dashboard.tiles.map(tile =>
+      this.createWidget(tile)
+    );
     this.editMode = false;
   }
 
