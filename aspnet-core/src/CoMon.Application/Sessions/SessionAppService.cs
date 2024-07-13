@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Auditing;
-using CoMon.Sessions.Dto;
+using CoMon.Authorization.Dtos;
 
 namespace CoMon.Sessions
 {

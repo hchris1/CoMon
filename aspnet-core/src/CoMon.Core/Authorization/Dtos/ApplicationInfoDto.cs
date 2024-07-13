@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoMon.Sessions.Dto
+namespace CoMon.Authorization.Dtos
 {
     public class ApplicationInfoDto
     {

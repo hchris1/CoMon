@@ -2,7 +2,7 @@
 using Abp.AutoMapper;
 using CoMon.Authorization.Users;
 
-namespace CoMon.Sessions.Dto
+namespace CoMon.Authorization.Dtos
 {
     [AutoMapFrom(typeof(User))]
     public class UserLoginInfoDto : EntityDto<long>

@@ -1,4 +1,4 @@
-﻿namespace CoMon.Sessions.Dto
+﻿namespace CoMon.Authorization.Dtos
 {
     public class GetCurrentLoginInformationsOutput
     {

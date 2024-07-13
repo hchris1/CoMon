@@ -62,7 +62,7 @@ namespace CoMon.Packages
 
         public async Task<long> Create(CreatePackageDto input)
         {
-            PackageAppServiceHelper.ValidateSettings(input);
+            Helpers.ValidateSettings(input);
 
             var asset = await _assetRepository
                 .GetAll()
@@ -90,36 +90,17 @@ namespace CoMon.Packages
 
         public async Task<PackageStatisticDto> GetStatistic(long packageId, int hours)
         {
-            var utcNow = DateTime.UtcNow;
-            var analyzingDuration = TimeSpan.FromHours(hours);
-            var from = utcNow - analyzingDuration;
-
-            var entries = await PackageAppServiceHelper.GetStatusesSinceCutOff(_statusRepository, packageId, from, utcNow);
-
-            var durationByCriticality = PackageAppServiceHelper.CalculateDurationByCriticality(entries);
-
-            var packagePreview = await GetPreview(packageId);
-            var timeline = PackageAppServiceHelper.BuildTimeline(entries, from, analyzingDuration);
-
-            return new PackageStatisticDto(packagePreview, durationByCriticality, timeline, analyzingDuration);
+            return await Helpers.GetStatistic(_packageRepository, _statusRepository, _mapper, packageId, hours);
         }
 
         public async Task<List<PackageStatisticDto>> GetStatistics(int hours)
         {
-            var packageIds = await _packageRepository
-                .GetAll()
-                .Select(p => p.Id)
-                .ToListAsync();
-
-            return packageIds
-                .Select(async id => await GetStatistic(id, hours))
-                .Select(t => t.Result)
-                .ToList();
+            return await Helpers.GetStatistics(_packageRepository, _statusRepository, _mapper, hours);
         }
 
         public async Task Update(UpdatePackageDto input, bool enqueueCheck = false)
         {
-            PackageAppServiceHelper.ValidateSettings(input);
+            Helpers.ValidateSettings(input);
 
             var package = _mapper.Map<Package>(input);
 
@@ -136,12 +117,12 @@ namespace CoMon.Packages
 
         public async Task<List<PackageStatusCountDto>> GetPackageStatusUpdateBuckets(long packageId, int numOfHours = 24, bool useHourBuckets = true)
         {
-            return await PackageAppServiceHelper.GetPackageStatusBuckets(_statusRepository, packageId, numOfHours, useHourBuckets, false);
+            return await Helpers.GetPackageStatusBuckets(_statusRepository, packageId, numOfHours, useHourBuckets, false);
         }
 
         public async Task<List<PackageStatusCountDto>> GetPackageStatusChangeBuckets(long packageId, int numOfHours = 24, bool useHourBuckets = true)
         {
-            return await PackageAppServiceHelper.GetPackageStatusBuckets(_statusRepository, packageId, numOfHours, useHourBuckets, true);
+            return await Helpers.GetPackageStatusBuckets(_statusRepository, packageId, numOfHours, useHourBuckets, true);
         }
 
         public async Task EnqueueCheck(long packageId)

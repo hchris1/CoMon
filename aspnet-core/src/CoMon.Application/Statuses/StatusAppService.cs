@@ -45,35 +45,10 @@ namespace CoMon.Statuses
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Status not found.");
 
-            status.IsLatest = await IsLatest(status);
+            status.IsLatest = await Helper.IsLatest(_statusRepository, status);
 
             var statusDto = _objectMapper.Map<StatusDto>(status);
-            return await AddKpiStatistics(statusDto);
-        }
-
-        private async Task<StatusDto> AddKpiStatistics(StatusDto status)
-        {
-            foreach (var kpi in status.KPIs)
-            {
-                var cutOff = DateTime.UtcNow - TimeSpan.FromDays(30);
-                var query = _statusRepository
-                    .GetAll()
-                    .Include(s => s.Package)
-                    .Include(s => s.KPIs)
-                    .Select(s => new { s.Time, s.KPIs, s.PackageId })
-                    .Where(s => s.Time >= cutOff)
-                    .Where(s => s.PackageId == status.Package.Id)
-                    .Select(s => s.KPIs)
-                    .SelectMany(x => x)
-                    .Where(k => k.Name == kpi.Name)
-                    .Select(k => k.Value)
-                    .Where(v => v.HasValue);
-
-                kpi.ThirtyDayAverage = await query.AverageAsync();
-                kpi.ThirtyDayMax = await query.MaxAsync();
-                kpi.ThirtyDayMin = await query.MinAsync();
-            }
-            return status;
+            return await Helper.AddKpiStatistics(_statusRepository, statusDto);
         }
 
         public async Task<StatusPreviewDto> GetPreview(long id)
@@ -88,19 +63,8 @@ namespace CoMon.Statuses
                 .AsNoTracking()
                 .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Status not found.");
-            status.IsLatest = await IsLatest(status);
+            status.IsLatest = await Helper.IsLatest(_statusRepository, status);
             return _objectMapper.Map<StatusPreviewDto>(status);
-        }
-
-        private async Task<bool> IsLatest(Status status)
-        {
-            var latestId = await _statusRepository
-                .GetAll()
-                .Where(s => s.Package.Id == status.Package.Id)
-                .OrderByDescending(s => s.Time)
-                .Select(s => s.Id)
-                .FirstOrDefaultAsync();
-            return latestId == status.Id;
         }
 
         public async Task<StatusHistoryDto> GetHistory(long id)

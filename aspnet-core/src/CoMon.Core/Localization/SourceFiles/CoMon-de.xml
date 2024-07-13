@@ -114,6 +114,7 @@
 		<text name="TotalRecordsCount">Gesamt: {0}</text>
 		<text name="Search">Suche</text>
 		<text name="Clear">Löschen</text>
+		<text name="Send">Senden</text>
 		<text name="ResetPasswordStepOneInfo">1. Geben Sie Ihr Administratorpasswort ein</text>
 		<text name="ResetPasswordStepTwoInfo">2. Kopieren Sie dieses zufällige Passwort, um es dem Benutzer zu senden</text>
 		<text name="UsersActivation">Benutzeraktivierung</text>
@@ -268,8 +269,10 @@
 		<text name="Dashboard.ChangesChartDescription">Eine Änderung ist ein Status, der eine andere Kritikalität als der vorige hat.</text>
 		<text name="Dashboard.UpdatesChartDescription">Ein Update ist jeder Status, der in CoMon existiert.</text>
 		<text name="Assistant.ModalTitle">Assistent</text>
-		<text name="Assistant.Loading">Lade Antwort von OpenAI...</text>
-		<text name="Assistant.Unavailable">Der Assistent ist nicht verfügbar. Tragen Sie den API Key in den Einstellungen ein.</text>
+		<text name="Assistant.ExamplePrompt1">Welche Features bietest du?</text>
+		<text name="Assistant.ExamplePrompt2">Fasse den aktuellen Systemzustand zusammen.</text>
+		<text name="Assistant.ExamplePrompt3">Erstelle ein Asset.</text>
+		<text name="Assistant.ExamplePrompt4">Erstelle ein Ping Paket.</text>
 		<text name="Settings.OpenAiKeyTitle">OpenAI</text>
 		<text name="Settings.OpenAiKeyDescription">API Key</text>
 		<text name="Settings.OpenAiKeySavedTitle">OpenAI</text>
