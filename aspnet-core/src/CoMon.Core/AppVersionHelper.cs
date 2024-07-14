@@ -13,7 +13,7 @@ namespace CoMon
         /// Gets current version of the application.
         /// It's also shown in the web page.
         /// </summary>
-        public const string Version = "0.8.0";
+        public const string Version = "0.9.1";
 
         /// <summary>
         /// Gets release (last build) date of the application.
