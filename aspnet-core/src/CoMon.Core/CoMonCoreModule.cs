@@ -62,7 +62,6 @@ namespace CoMon
             IocManager.Resolve<HaSender>();
             IocManager.Resolve<MqttClient>();
             IocManager.Resolve<Assistant.Assistant>();
-            IocManager.Register<AssetPlugin>();
         }
     }
 }
