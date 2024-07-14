@@ -70,6 +70,7 @@ export class AssistantModalComponent extends AppComponentBase {
         this.isRoot
       )
       .subscribe(response => {
+        this.userInput = '';
         this.chatId = response.chatId;
         this.messages.push({text: response.message, sender: 'bot'});
         this.scrollToBottom();
