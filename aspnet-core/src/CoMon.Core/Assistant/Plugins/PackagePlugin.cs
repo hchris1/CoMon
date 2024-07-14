@@ -72,7 +72,7 @@ namespace CoMon.Assistant.Plugins
             return await Helpers.GetStatistic(_packageRepository, _statusRepository, _mapper, packageId, hours);
         }
 
-        [KernelFunction, Description("Update the name of a package. Always ask for confirmation before updating.")]
+        [KernelFunction, Description("Update the name of a package.")]
         public async Task UpdateName(int id, string name)
         {
             var package = await _packageRepository.GetAsync(id)
@@ -82,8 +82,8 @@ namespace CoMon.Assistant.Plugins
             await _packageRepository.UpdateAsync(package);
         }
 
-        [KernelFunction, Description("Create a new PING package. Always ask for confirmation before creating.")]
-        public async Task<long> CreatePingPackage(string name, long assetId, string host, int cycleSeconds)
+        [KernelFunction, Description("Create a new PING package.")]
+        public async Task<long> CreatePingPackage(string name, long assetId, string host, int cycleSeconds = 60)
         {
             var input = new CreatePackageDto()
             {
@@ -122,8 +122,8 @@ namespace CoMon.Assistant.Plugins
             return await _packageRepository.InsertAndGetIdAsync(package);
         }
 
-        [KernelFunction, Description("Create a new HTTP package. Always ask for confirmation before creating. Ask for missing information if necessary.")]
-        public async Task<long> CreateHttpPackage(string name, long assetId, string url, HttpPackageMethod method, int cycleSeconds)
+        [KernelFunction, Description("Create a new HTTP package.")]
+        public async Task<long> CreateHttpPackage(string name, long assetId, string url, HttpPackageMethod method, int cycleSeconds = 60)
         {
             var input = new CreatePackageDto()
             {
@@ -163,8 +163,8 @@ namespace CoMon.Assistant.Plugins
             return await _packageRepository.InsertAndGetIdAsync(package);
         }
 
-        [KernelFunction, Description("Create a new RTSP package. Always ask for confirmation before creating. Ask for missing information if necessary.")]
-        public async Task<long> CreateRtspPackage(string name, long assetId, string url, int cycleSeconds, RtspPackageMethod method)
+        [KernelFunction, Description("Create a new RTSP package.")]
+        public async Task<long> CreateRtspPackage(string name, long assetId, string url, RtspPackageMethod method, int cycleSeconds = 60)
         {
             var input = new CreatePackageDto()
             {

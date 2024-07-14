@@ -47,8 +47,8 @@ namespace CoMon.Assistant.Plugins
             return _mapper.Map<AssetDto>(asset);
         }
 
-        [KernelFunction, Description("Create an asset. If the groupId is left null, the asset will be created in the root group. Always ask for confirmation before creating.")]
-        public async Task<long> Create(string name, string description, long? groupId = null)
+        [KernelFunction, Description("Create an asset. If the groupId is left null, the asset will be created in the root group.")]
+        public async Task<long> Create(string name, string description = "", long? groupId = null)
         {
             Group group = null;
             if (groupId.HasValue)
@@ -66,7 +66,7 @@ namespace CoMon.Assistant.Plugins
             return await _assetRepository.InsertAndGetIdAsync(asset);
         }
 
-        [KernelFunction, Description("Update the name of an asset. Always ask for confirmation before updating.")]
+        [KernelFunction, Description("Update the name of an asset.")]
         public async Task UpdateName(int id, string name)
         {
             var asset = await _assetRepository.GetAsync(id)
@@ -76,7 +76,7 @@ namespace CoMon.Assistant.Plugins
             await _assetRepository.UpdateAsync(asset);
         }
 
-        [KernelFunction, Description("Update the description of an asset. Always ask for confirmation before updating.")]
+        [KernelFunction, Description("Update the description of an asset.")]
         public async Task UpdateDescription(int id, string description)
         {
             var asset = await _assetRepository.GetAsync(id)
@@ -86,7 +86,7 @@ namespace CoMon.Assistant.Plugins
             await _assetRepository.UpdateAsync(asset);
         }
 
-        [KernelFunction, Description("Update the group of an asset to move it. Always ask for confirmation before updating.")]
+        [KernelFunction, Description("Update the group of an asset to move it.")]
         public async Task UpdateGroup(int assetId, int groupId)
         {
             var asset = await _assetRepository.GetAsync(assetId)

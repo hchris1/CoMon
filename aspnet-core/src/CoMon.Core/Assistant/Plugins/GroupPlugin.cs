@@ -93,7 +93,7 @@ namespace CoMon.Assistant.Plugins
             return await _groupRepository.InsertAndGetIdAsync(group);
         }
 
-        [KernelFunction, Description("Update the name of a group. Always ask for confirmation before updating.")]
+        [KernelFunction, Description("Update the name of a group.")]
         public async Task UpdateName(int id, string name)
         {
             var group = await _groupRepository.GetAsync(id)
@@ -103,7 +103,7 @@ namespace CoMon.Assistant.Plugins
             await _groupRepository.UpdateAsync(group);
         }
 
-        [KernelFunction, Description("Update the parent group of a group. When the parendGroupId is null, it is moved to the root. Always ask for confirmation before updating.")]
+        [KernelFunction, Description("Update the parent group of a group. When the parentGroupId is null, it is moved to the root.")]
         public async Task UpdateParent(int id, int? parentGroupId)
         {
             if (parentGroupId.HasValue && parentGroupId.Value == id)
