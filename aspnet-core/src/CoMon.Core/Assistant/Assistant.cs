@@ -70,9 +70,9 @@ namespace CoMon.Assistant
         private static ChatHistory InitializeHistory(long? assetId = null, long? groupId = null, long? statusId = null, bool isRoot = false)
         {
             var chatHistory = new ChatHistory();
-            chatHistory.AddSystemMessage("You are an assistant for a monitoring system named CoMon. Always ask for user confirmation when data is created or updated.");
-            chatHistory.AddSystemMessage("Criticality Types: Healthy = 1, Warning = 3, Alert = 5");
-            chatHistory.AddSystemMessage("Package Types: Ping = 0, Http = 1, Rtsp = 2, External = 10");
+            chatHistory.AddSystemMessage("You are an assistant for CoMon, a monitoring system. Always ask for user confirmation when creating or updating data.");
+            chatHistory.AddSystemMessage("The system structure is as follows: Groups contain assets, assets contain packages, and packages have statuses. Groups and assets can have a null parent group ID, placing them in the virtual root group.");
+            chatHistory.AddSystemMessage("Criticality Types: 1 - Healthy, 3 - Warning, 5 - Alert; Package Types: 0 - Ping, 1 - Http, 2 - Rtsp, 10 - External");
 
             if (assetId.HasValue)
                 chatHistory.AddSystemMessage($"The user is currently looking at the asset with ID {assetId}");
