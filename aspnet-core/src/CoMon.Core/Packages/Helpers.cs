@@ -1,5 +1,4 @@
 ﻿using Abp.Runtime.Validation;
-using CoMon.Packages.Dtos;
 using CoMon.Statuses;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -11,12 +10,14 @@ using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using CoMon.Packages.Settings;
+using CoMon.Packages.Dtos;
+using Abp.Domain.Entities;
+using Abp.ObjectMapping;
 
 namespace CoMon.Packages
 {
-    public static class PackageAppServiceHelper
+    public static class Helpers
     {
-
         public static void ValidateSettings(CreatePackageDto input)
         {
             switch (input.Type)
@@ -107,7 +108,7 @@ namespace CoMon.Packages
 
             try
             {
-                new Uri(input.Url);
+                _ = new Uri(input.Url);
             }
             catch (Exception ex)
             {
@@ -308,6 +309,47 @@ namespace CoMon.Packages
             var statusCounts = CreatePackageStatusCountDtos(entries, useHourBuckets);
 
             return FillMissingBuckets(timeBuckets, statusCounts);
+        }
+
+        public static async Task<PackageStatisticDto> GetStatistic(IRepository<Package, long> packageRepository, IRepository<Status, long> statusRepository,
+            IObjectMapper mapper, long packageId, int hours)
+        {
+            var utcNow = DateTime.UtcNow;
+            var analyzingDuration = TimeSpan.FromHours(hours);
+            var from = utcNow - analyzingDuration;
+
+            var entries = await GetStatusesSinceCutOff(statusRepository, packageId, from, utcNow);
+
+            var durationByCriticality = CalculateDurationByCriticality(entries);
+
+            var packagePreview = mapper.Map<PackagePreviewDto>(
+                await packageRepository
+                .GetAll()
+                .Include(p => p.Asset)
+                .ThenInclude(a => a.Group.Parent.Parent)
+                .Where(p => p.Id == packageId)
+                .AsSplitQuery()
+                .AsNoTracking()
+                .FirstOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Package not found"));
+
+            var timeline = BuildTimeline(entries, from, analyzingDuration);
+
+            return new PackageStatisticDto(packagePreview, durationByCriticality, timeline, analyzingDuration);
+        }
+
+        public static async Task<List<PackageStatisticDto>> GetStatistics(IRepository<Package, long> packageRepository, IRepository<Status, long> statusRepository,
+            IObjectMapper mapper, int hours)
+        {
+            var packageIds = await packageRepository
+                    .GetAll()
+                    .Select(p => p.Id)
+                    .ToListAsync();
+
+            return packageIds
+                .Select(async id => await GetStatistic(packageRepository, statusRepository, mapper, id, hours))
+                .Select(t => t.Result)
+                .ToList();
         }
     }
 

@@ -3,28 +3,68 @@
 </div>
 
 <div class="modal-body">
-  <div *ngIf="response">
-    <div [innerHTML]="response"></div>
-  </div>
-  <div *ngIf="!response">
-    <div class="col text-center">
-      <figure class="figure">
-        <img
-          src="assets/img/earth.svg"
-          class="figure-img img-fluid rounded"
-          alt="Loading"
-          style="width: 10rem"
-        />
-        <figcaption class="figure-caption text-center">
-          {{ 'Assistant.Loading' | localize }}
-        </figcaption>
-      </figure>
+  <div
+    #messageContainer
+    class="chat-history"
+    style="max-height: 40rem; overflow-y: auto"
+  >
+    <div *ngIf="messages.length === 0">
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          style="cursor: pointer"
+          *ngFor="let prompt of examplePrompts"
+          (click)="sendMessage(prompt)"
+        >
+          {{ prompt }}
+        </li>
+      </ul>
+    </div>
+    <div
+      *ngFor="let message of messages; index as i"
+      class="message row"
+      [ngStyle]="{
+        'justify-content': message.sender === 'user' ? 'flex-end' : 'flex-start'
+      }"
+    >
+      <div
+        class="alert pb-0"
+        [ngClass]="{
+          'alert-primary': message.sender === 'user',
+          'alert-dark': message.sender === 'bot'
+        }"
+      >
+        <markdown
+          [data]="message.text"
+          class="p-0"
+          style="overflow: auto"
+        ></markdown>
+      </div>
+      <div
+        class="loading-dots alert"
+        *ngIf="isLoading && i === messages.length - 1"
+      >
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="onCloseClicked()">
-    {{ 'Close' | localize }}
+  <textarea
+    class="form-control"
+    [(ngModel)]="userInput"
+    (keydown.enter)="sendMessage()"
+    placeholder="{{ 'TypeHere' | localize }}"
+  ></textarea>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="sendMessage()"
+    [disabled]="!userInput || isLoading"
+  >
+    {{ 'Send' | localize }}
   </button>
 </div>

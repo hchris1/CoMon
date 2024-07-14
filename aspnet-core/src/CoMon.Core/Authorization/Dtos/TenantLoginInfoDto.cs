@@ -2,7 +2,7 @@
 using Abp.AutoMapper;
 using CoMon.MultiTenancy;
 
-namespace CoMon.Sessions.Dto
+namespace CoMon.Authorization.Dtos
 {
     [AutoMapFrom(typeof(Tenant))]
     public class TenantLoginInfoDto : EntityDto

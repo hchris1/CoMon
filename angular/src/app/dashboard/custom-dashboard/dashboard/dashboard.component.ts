@@ -1,4 +1,4 @@
-import {Component, Injector, ViewChild} from '@angular/core';
+import {Component, Injector} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CreateDashboardTileModalComponent} from '@app/edit/create-dashboard-tile-modal/create-dashboard-tile-modal.component';

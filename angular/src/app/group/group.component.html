@@ -146,7 +146,7 @@
             {{ 'Overview.NoGroups' | localize }}
           </p>
           <div
-            class="col-12 col-sm-6 col-md-4"
+            class="col-12 col-sm-6 col-md-4 pb-2"
             *ngFor="let subGroupId of group.subGroupIds"
           >
             <app-group-summary
@@ -186,7 +186,7 @@
             {{ 'Overview.NoAssets' | localize }}
           </p>
           <div
-            class="col-12 col-sm-6 col-md-4 pb-3"
+            class="col-12 col-sm-6 col-md-4 pb-2"
             *ngFor="let assetId of group.assetIds"
           >
             <app-asset-summary

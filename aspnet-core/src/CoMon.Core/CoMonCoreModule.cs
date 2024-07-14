@@ -1,4 +1,4 @@
-﻿using Abp.Localization;
+﻿using Abp.AutoMapper;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Runtime.Security;
@@ -6,6 +6,7 @@ using Abp.Threading.BackgroundWorkers;
 using Abp.Timing;
 using Abp.Zero;
 using Abp.Zero.Configuration;
+using CoMon.Assistant.Plugins;
 using CoMon.Authorization.Roles;
 using CoMon.Authorization.Users;
 using CoMon.Configuration;
@@ -19,6 +20,7 @@ using CoMon.Timing;
 namespace CoMon
 {
     [DependsOn(typeof(AbpZeroCoreModule))]
+    [DependsOn(typeof(AbpAutoMapperModule))]
     public class CoMonCoreModule : AbpModule
     {
         public override void PreInitialize()
@@ -39,7 +41,7 @@ namespace CoMon
             AppRoleConfig.Configure(Configuration.Modules.Zero().RoleManagement);
 
             Configuration.Settings.Providers.Add<AppSettingProvider>();
-            
+
             Configuration.Settings.SettingEncryptionConfiguration.DefaultPassPhrase = CoMonConsts.DefaultPassPhrase;
             SimpleStringCipher.DefaultPassPhrase = CoMonConsts.DefaultPassPhrase;
         }
@@ -57,8 +59,9 @@ namespace CoMon
             workManager.Add(IocManager.Resolve<HttpWorker>());
             workManager.Add(IocManager.Resolve<RtspWorker>());
             workManager.Add(IocManager.Resolve<RetentionWorker>());
-            IocManager.Resolve<MqttClient>();
             IocManager.Resolve<HaSender>();
-        } 
+            IocManager.Resolve<MqttClient>();
+            IocManager.Resolve<Assistant.Assistant>();
+        }
     }
 }

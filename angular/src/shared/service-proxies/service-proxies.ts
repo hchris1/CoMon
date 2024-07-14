@@ -916,187 +916,46 @@ export class AssistantServiceProxy {
   }
 
   /**
-   * @param statusId (optional)
-   * @return OK
-   */
-  getRecommendations(statusId: number | undefined): Observable<string> {
-    let url_ = this.baseUrl + '/api/services/app/Assistant/GetRecommendations?';
-    if (statusId === null)
-      throw new Error("The parameter 'statusId' cannot be null.");
-    else if (statusId !== undefined)
-      url_ += 'statusId=' + encodeURIComponent('' + statusId) + '&';
-    url_ = url_.replace(/[?&]$/, '');
-
-    let options_: any = {
-      observe: 'response',
-      responseType: 'blob',
-      headers: new HttpHeaders({
-        Accept: 'text/plain',
-      }),
-    };
-
-    return this.http
-      .request('get', url_, options_)
-      .pipe(
-        _observableMergeMap((response_: any) => {
-          return this.processGetRecommendations(response_);
-        })
-      )
-      .pipe(
-        _observableCatch((response_: any) => {
-          if (response_ instanceof HttpResponseBase) {
-            try {
-              return this.processGetRecommendations(response_ as any);
-            } catch (e) {
-              return _observableThrow(e) as any as Observable<string>;
-            }
-          } else
-            return _observableThrow(response_) as any as Observable<string>;
-        })
-      );
-  }
-
-  protected processGetRecommendations(
-    response: HttpResponseBase
-  ): Observable<string> {
-    const status = response.status;
-    const responseBlob =
-      response instanceof HttpResponse
-        ? response.body
-        : (response as any).error instanceof Blob
-          ? (response as any).error
-          : undefined;
-
-    let _headers: any = {};
-    if (response.headers) {
-      for (let key of response.headers.keys()) {
-        _headers[key] = response.headers.get(key);
-      }
-    }
-    if (status === 200) {
-      return blobToText(responseBlob).pipe(
-        _observableMergeMap((_responseText: string) => {
-          let result200: any = null;
-          let resultData200 =
-            _responseText === ''
-              ? null
-              : JSON.parse(_responseText, this.jsonParseReviver);
-          result200 = resultData200 !== undefined ? resultData200 : <any>null;
-
-          return _observableOf(result200);
-        })
-      );
-    } else if (status !== 200 && status !== 204) {
-      return blobToText(responseBlob).pipe(
-        _observableMergeMap((_responseText: string) => {
-          return throwException(
-            'An unexpected server error occurred.',
-            status,
-            _responseText,
-            _headers
-          );
-        })
-      );
-    }
-    return _observableOf(null as any);
-  }
-
-  /**
+   * @param id (optional)
+   * @param message (optional)
    * @param assetId (optional)
+   * @param groupId (optional)
+   * @param statusId (optional)
+   * @param isRoot (optional)
    * @return OK
    */
-  getAssetSummary(assetId: number | undefined): Observable<string> {
-    let url_ = this.baseUrl + '/api/services/app/Assistant/GetAssetSummary?';
+  getAnswer(
+    id: string | undefined,
+    message: string | undefined,
+    assetId: number | undefined,
+    groupId: number | undefined,
+    statusId: number | undefined,
+    isRoot: boolean | undefined
+  ): Observable<AssistantAnswer> {
+    let url_ = this.baseUrl + '/api/services/app/Assistant/GetAnswer?';
+    if (id === null) throw new Error("The parameter 'id' cannot be null.");
+    else if (id !== undefined)
+      url_ += 'id=' + encodeURIComponent('' + id) + '&';
+    if (message === null)
+      throw new Error("The parameter 'message' cannot be null.");
+    else if (message !== undefined)
+      url_ += 'message=' + encodeURIComponent('' + message) + '&';
     if (assetId === null)
       throw new Error("The parameter 'assetId' cannot be null.");
     else if (assetId !== undefined)
       url_ += 'assetId=' + encodeURIComponent('' + assetId) + '&';
-    url_ = url_.replace(/[?&]$/, '');
-
-    let options_: any = {
-      observe: 'response',
-      responseType: 'blob',
-      headers: new HttpHeaders({
-        Accept: 'text/plain',
-      }),
-    };
-
-    return this.http
-      .request('get', url_, options_)
-      .pipe(
-        _observableMergeMap((response_: any) => {
-          return this.processGetAssetSummary(response_);
-        })
-      )
-      .pipe(
-        _observableCatch((response_: any) => {
-          if (response_ instanceof HttpResponseBase) {
-            try {
-              return this.processGetAssetSummary(response_ as any);
-            } catch (e) {
-              return _observableThrow(e) as any as Observable<string>;
-            }
-          } else
-            return _observableThrow(response_) as any as Observable<string>;
-        })
-      );
-  }
-
-  protected processGetAssetSummary(
-    response: HttpResponseBase
-  ): Observable<string> {
-    const status = response.status;
-    const responseBlob =
-      response instanceof HttpResponse
-        ? response.body
-        : (response as any).error instanceof Blob
-          ? (response as any).error
-          : undefined;
-
-    let _headers: any = {};
-    if (response.headers) {
-      for (let key of response.headers.keys()) {
-        _headers[key] = response.headers.get(key);
-      }
-    }
-    if (status === 200) {
-      return blobToText(responseBlob).pipe(
-        _observableMergeMap((_responseText: string) => {
-          let result200: any = null;
-          let resultData200 =
-            _responseText === ''
-              ? null
-              : JSON.parse(_responseText, this.jsonParseReviver);
-          result200 = resultData200 !== undefined ? resultData200 : <any>null;
-
-          return _observableOf(result200);
-        })
-      );
-    } else if (status !== 200 && status !== 204) {
-      return blobToText(responseBlob).pipe(
-        _observableMergeMap((_responseText: string) => {
-          return throwException(
-            'An unexpected server error occurred.',
-            status,
-            _responseText,
-            _headers
-          );
-        })
-      );
-    }
-    return _observableOf(null as any);
-  }
-
-  /**
-   * @param groupId (optional)
-   * @return OK
-   */
-  getGroupSummary(groupId: number | undefined): Observable<string> {
-    let url_ = this.baseUrl + '/api/services/app/Assistant/GetGroupSummary?';
     if (groupId === null)
       throw new Error("The parameter 'groupId' cannot be null.");
     else if (groupId !== undefined)
       url_ += 'groupId=' + encodeURIComponent('' + groupId) + '&';
+    if (statusId === null)
+      throw new Error("The parameter 'statusId' cannot be null.");
+    else if (statusId !== undefined)
+      url_ += 'statusId=' + encodeURIComponent('' + statusId) + '&';
+    if (isRoot === null)
+      throw new Error("The parameter 'isRoot' cannot be null.");
+    else if (isRoot !== undefined)
+      url_ += 'isRoot=' + encodeURIComponent('' + isRoot) + '&';
     url_ = url_.replace(/[?&]$/, '');
 
     let options_: any = {
@@ -1111,26 +970,28 @@ export class AssistantServiceProxy {
       .request('get', url_, options_)
       .pipe(
         _observableMergeMap((response_: any) => {
-          return this.processGetGroupSummary(response_);
+          return this.processGetAnswer(response_);
         })
       )
       .pipe(
         _observableCatch((response_: any) => {
           if (response_ instanceof HttpResponseBase) {
             try {
-              return this.processGetGroupSummary(response_ as any);
+              return this.processGetAnswer(response_ as any);
             } catch (e) {
-              return _observableThrow(e) as any as Observable<string>;
+              return _observableThrow(e) as any as Observable<AssistantAnswer>;
             }
           } else
-            return _observableThrow(response_) as any as Observable<string>;
+            return _observableThrow(
+              response_
+            ) as any as Observable<AssistantAnswer>;
         })
       );
   }
 
-  protected processGetGroupSummary(
+  protected processGetAnswer(
     response: HttpResponseBase
-  ): Observable<string> {
+  ): Observable<AssistantAnswer> {
     const status = response.status;
     const responseBlob =
       response instanceof HttpResponse
@@ -1153,8 +1014,7 @@ export class AssistantServiceProxy {
             _responseText === ''
               ? null
               : JSON.parse(_responseText, this.jsonParseReviver);
-          result200 = resultData200 !== undefined ? resultData200 : <any>null;
-
+          result200 = AssistantAnswer.fromJS(resultData200);
           return _observableOf(result200);
         })
       );
@@ -7531,6 +7391,53 @@ export interface IAssetPreviewDto {
   name: string | undefined;
   description: string | undefined;
   group: GroupPreviewDto;
+}
+
+export class AssistantAnswer implements IAssistantAnswer {
+  chatId: string;
+  message: string | undefined;
+
+  constructor(data?: IAssistantAnswer) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
+    }
+  }
+
+  init(_data?: any) {
+    if (_data) {
+      this.chatId = _data['chatId'];
+      this.message = _data['message'];
+    }
+  }
+
+  static fromJS(data: any): AssistantAnswer {
+    data = typeof data === 'object' ? data : {};
+    let result = new AssistantAnswer();
+    result.init(data);
+    return result;
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === 'object' ? data : {};
+    data['chatId'] = this.chatId;
+    data['message'] = this.message;
+    return data;
+  }
+
+  clone(): AssistantAnswer {
+    const json = this.toJSON();
+    let result = new AssistantAnswer();
+    result.init(json);
+    return result;
+  }
+}
+
+export interface IAssistantAnswer {
+  chatId: string;
+  message: string | undefined;
 }
 
 export class AuthenticateModel implements IAuthenticateModel {

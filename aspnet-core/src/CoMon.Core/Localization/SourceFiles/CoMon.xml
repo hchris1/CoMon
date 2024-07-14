@@ -114,6 +114,8 @@
 		<text name="TotalRecordsCount">Total: {0}</text>
 		<text name="Search">Search</text>
 		<text name="Clear">Clear</text>
+		<text name="Send">Send</text>
+		<text name="TypeHere">Type here...</text>
 		<text name="ResetPasswordStepOneInfo">1. Enter your administrator password</text>
 		<text name="ResetPasswordStepTwoInfo">2. Copy this random password so you can send it to the user</text>
 		<text name="UsersActivation">Users activation</text>
@@ -268,8 +270,10 @@
 		<text name="Dashboard.ChangesChartDescription">A Change is any status that has a different criticality from the previous one.</text>
 		<text name="Dashboard.UpdatesChartDescription">An Update is any status pushed to CoMon.</text>
 		<text name="Assistant.ModalTitle">Assistant</text>
-		<text name="Assistant.Loading">Loading response from OpenAI...</text>
-		<text name="Assistant.Unavailable">The assistant is unavailable. Enter your API key in the settings.</text>
+		<text name="Assistant.ExamplePrompt1">Which features do you offer?</text>
+		<text name="Assistant.ExamplePrompt2">Summarize the current system state.</text>
+		<text name="Assistant.ExamplePrompt3">Create an asset.</text>
+		<text name="Assistant.ExamplePrompt4">Create a ping package.</text>
 		<text name="Settings.OpenAiKeyTitle">OpenAI</text>
 		<text name="Settings.OpenAiKeyDescription">API key</text>
 		<text name="Settings.OpenAiKeySavedTitle">OpenAI</text>
