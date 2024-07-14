@@ -53,13 +53,12 @@
 </div>
 
 <div class="modal-footer">
-  <input
-    type="text"
+  <textarea
     class="form-control"
     [(ngModel)]="userInput"
     (keydown.enter)="sendMessage()"
     placeholder="{{ 'TypeHere' | localize }}"
-  />
+  ></textarea>
   <button
     type="button"
     class="btn btn-primary"
