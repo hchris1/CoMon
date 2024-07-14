@@ -22,6 +22,12 @@ namespace CoMon.Assistant.Plugins
             var assets = await _assetRepository
                 .GetAll()
                 .Where(a => a.Name.ToLower().Contains(name.ToLower()))
+                .Include(a => a.Group.Parent.Parent)
+                .Include(a => a.Packages)
+                .ThenInclude(p => p.Statuses
+                    .OrderByDescending(s => s.Time)
+                    .Take(1))
+                .AsSplitQuery()
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -86,16 +92,23 @@ namespace CoMon.Assistant.Plugins
             await _assetRepository.UpdateAsync(asset);
         }
 
-        [KernelFunction, Description("Update the group of an asset to move it.")]
-        public async Task UpdateGroup(int assetId, int groupId)
+        [KernelFunction, Description("Update the group of an asset to move it. When the groupId is null, it is moved to the root group.")]
+        public async Task UpdateGroup(long id, long? groupId)
         {
-            var asset = await _assetRepository.GetAsync(assetId)
+            var asset = await _assetRepository
+                .GetAll()
+                .Include(a => a.Group)
+                .Where(a => a.Id == id)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Asset not found.");
 
-            var group = await _groupRepository.GetAsync(groupId)
-                ?? throw new EntityNotFoundException("Group not found.");
+            if (groupId == null)
+                asset.Group = null;
+            else
+                asset.Group = (await _groupRepository.GetAsync(groupId.Value))
+                    ?? throw new EntityNotFoundException("Group not found.");
 
-            asset.Group = group;
             await _assetRepository.UpdateAsync(asset);
         }
     }

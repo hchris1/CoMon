@@ -46,10 +46,27 @@ namespace CoMon.Assistant.Plugins
             var groups = await _groupRepository
                 .GetAll()
                 .Where(g => g.Name.ToLower().Contains(name.ToLower()))
+                .Include(g => g.Parent.Parent)
+                .Include(g => g.SubGroups)
+                .Include(g => g.Assets)
+                .AsSplitQuery()
                 .AsNoTracking()
                 .ToListAsync();
 
-            return _mapper.Map<List<GroupDto>>(groups);
+            var groupDtos = new List<GroupDto>();
+            foreach (var group in groups)
+            {
+                groupDtos.Add(new GroupDto
+                {
+                    Id = group.Id,
+                    Name = group.Name,
+                    Parent = _mapper.Map<GroupPreviewDto>(group.Parent),
+                    AssetIds = group.Assets.Select(a => a.Id).ToList(),
+                    SubGroupIds = group.SubGroups.Select(g => g.Id).ToList()
+                });
+            }
+
+            return groupDtos;
         }
 
         [KernelFunction, Description("Get a group by its ID along with its parent group, child groups and the assets in the group.")]
@@ -58,7 +75,7 @@ namespace CoMon.Assistant.Plugins
             var group = await _groupRepository
                 .GetAll()
                 .Where(g => g.Id == id)
-                .Include(g => g.Parent)
+                .Include(g => g.Parent.Parent)
                 .Include(g => g.SubGroups)
                 .Include(g => g.Assets)
                 .AsSplitQuery()
@@ -66,7 +83,14 @@ namespace CoMon.Assistant.Plugins
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Group not found.");
 
-            return _mapper.Map<GroupDto>(group);
+            return new GroupDto
+            {
+                Id = group.Id,
+                Name = group.Name,
+                Parent = _mapper.Map<GroupPreviewDto>(group.Parent),
+                AssetIds = group.Assets.Select(a => a.Id).ToList(),
+                SubGroupIds = group.SubGroups.Select(g => g.Id).ToList()
+            };
         }
 
         [KernelFunction, Description("Create a new group. When the parentGroupId is left empty, it is created as in the root.")]
