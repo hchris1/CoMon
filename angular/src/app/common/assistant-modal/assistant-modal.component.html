@@ -20,25 +20,32 @@
         </li>
       </ul>
     </div>
-    <div
-      *ngFor="let message of messages; index as i"
-      class="message row"
-      [ngStyle]="{
-        'justify-content': message.sender === 'user' ? 'flex-end' : 'flex-start'
-      }"
-    >
+    <div *ngFor="let message of messages; index as i">
       <div
-        class="alert pb-0"
+        class="row"
         [ngClass]="{
-          'alert-primary': message.sender === 'user',
-          'alert-dark': message.sender === 'bot'
+          'justify-content-end': message.sender === 'user',
+          'justify-content-start': message.sender === 'bot'
         }"
       >
-        <markdown
-          [data]="message.text"
-          class="p-0"
-          style="overflow: auto"
-        ></markdown>
+        <div class="col-1" *ngIf="message.sender === 'bot'">
+          <i class="icon fas fa-robot pl-2"></i>
+        </div>
+
+        <div class="col-11 alert pb-0 pr-0 pl-0">
+          <markdown
+            [data]="message.text"
+            class="p-0"
+            style="overflow: auto"
+            [ngClass]="{
+              'text-right': message.sender === 'user',
+              'text-left': message.sender === 'bot'
+            }"
+          ></markdown>
+        </div>
+        <div class="col-1" *ngIf="message.sender === 'user'">
+          <i class="icon fas fa-user pl-3"></i>
+        </div>
       </div>
       <div
         class="loading-dots alert"
