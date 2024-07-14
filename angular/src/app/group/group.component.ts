@@ -207,5 +207,9 @@ export class GroupComponent {
     this.assistantModalRef.content.onClose.subscribe(() => {
       this.assistantModalRef.hide();
     });
+
+    this.assistantModalRef.onHide.subscribe(() => {
+      this.loadGroup();
+    });
   }
 }
