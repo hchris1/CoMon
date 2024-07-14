@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Injector} from '@angular/core';
+import {ChangeDetectorRef, Component, Injector, OnDestroy} from '@angular/core';
 import {appModuleAnimation} from '@shared/animations/routerTransition';
 import {AppComponentBase} from '@shared/app-component-base';
 import {
@@ -18,7 +18,10 @@ import {
   templateUrl: './statistics-dashboard.component.html',
   animations: [appModuleAnimation()],
 })
-export class StatisticsDashboardComponent extends AppComponentBase {
+export class StatisticsDashboardComponent
+  extends AppComponentBase
+  implements OnDestroy
+{
   statistics: PackageStatisticDto[];
   nextRefresh: moment.Moment;
   refreshInterval: NodeJS.Timeout;
@@ -89,5 +92,9 @@ export class StatisticsDashboardComponent extends AppComponentBase {
 
   routeToDashboards() {
     this._router.navigate(['/app/dashboard']);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.refreshInterval);
   }
 }

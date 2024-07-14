@@ -4,6 +4,7 @@ import {
   Injector,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -28,7 +29,7 @@ import {AppComponentBase} from '@shared/app-component-base';
 })
 export class StatusPreviewComponent
   extends AppComponentBase
-  implements OnInit, OnChanges
+  implements OnInit, OnChanges, OnDestroy
 {
   @Input() statusPreview: StatusPreviewDto;
   @Input() showPath: boolean = true;
@@ -149,6 +150,7 @@ export class StatusPreviewComponent
                 this.l('Package.DeleteSuccessMessage'),
                 this.statusPreview.package.name
               );
+              this.clearStatisticLoading();
             });
         }
       }
