@@ -115,6 +115,7 @@
 		<text name="Search">Suche</text>
 		<text name="Clear">Löschen</text>
 		<text name="Send">Senden</text>
+		<text name="TypeHere">Hier tippen...</text>
 		<text name="ResetPasswordStepOneInfo">1. Geben Sie Ihr Administratorpasswort ein</text>
 		<text name="ResetPasswordStepTwoInfo">2. Kopieren Sie dieses zufällige Passwort, um es dem Benutzer zu senden</text>
 		<text name="UsersActivation">Benutzeraktivierung</text>

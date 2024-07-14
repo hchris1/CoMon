@@ -115,6 +115,7 @@
 		<text name="Search">Search</text>
 		<text name="Clear">Clear</text>
 		<text name="Send">Send</text>
+		<text name="TypeHere">Type here...</text>
 		<text name="ResetPasswordStepOneInfo">1. Enter your administrator password</text>
 		<text name="ResetPasswordStepTwoInfo">2. Copy this random password so you can send it to the user</text>
 		<text name="UsersActivation">Users activation</text>
