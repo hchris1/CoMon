@@ -7,7 +7,7 @@ using CoMon.Authorization.Users;
 
 namespace CoMon.Users.Dto
 {
-    [AutoMapFrom(typeof(User))]
+    [AutoMap(typeof(User))]
     public class UserDto : EntityDto<long>
     {
         [Required]

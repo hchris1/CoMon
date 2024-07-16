@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Authorization.Roles;
+using Abp.AutoMapper;
 using CoMon.Authorization.Roles;
 
 namespace CoMon.Roles.Dto
 {
-    public class RoleEditDto: EntityDto<int>
+    [AutoMap(typeof(Role))]
+    public class RoleEditDto : EntityDto<int>
     {
         [Required]
         [StringLength(AbpRoleBase.MaxNameLength)]
