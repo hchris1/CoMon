@@ -1,11 +1,4 @@
-import {
-  Component,
-  Injector,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import {Component, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {AppComponentBase} from '@shared/app-component-base';
 import {
   DashboardServiceProxy,
@@ -18,13 +11,12 @@ import {
 })
 export class MarkdownTileComponent
   extends AppComponentBase
-  implements OnInit, OnChanges
+  implements OnInit, OnDestroy
 {
   @Input() dashboardId: number;
   @Input() tile: DashboardTileDto;
   @Input() editMode: boolean = false;
 
-  initialized = false;
   markdown: string;
 
   constructor(
@@ -36,17 +28,12 @@ export class MarkdownTileComponent
 
   ngOnInit() {
     this.markdown = this.tile.content;
-    this.initialized = true;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (!this.initialized) return;
-
-    if (!!changes.editMode && changes.editMode.currentValue === false) {
-      if (this.markdown !== this.tile.content) {
-        this.tile.content = this.markdown;
-        this.saveMarkdown();
-      }
+  ngOnDestroy() {
+    if (this.markdown !== this.tile.content) {
+      this.tile.content = this.markdown;
+      this.saveMarkdown();
     }
   }
 
