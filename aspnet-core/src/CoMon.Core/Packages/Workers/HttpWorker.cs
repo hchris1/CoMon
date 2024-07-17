@@ -62,6 +62,10 @@ namespace CoMon.Packages.Workers
                 var response = await client.SendAsync(requestMessage);
                 return CreateStatus(response, package.HttpPackageSettings, stopWatch.Elapsed);
             }
+            catch (HttpRequestException ex)
+            {
+                return CreateHttpRequestExceptionStatus(ex);
+            }
             catch (Exception ex)
             {
                 logger.LogError("Error while performing http check for package with id {packageId}: {message}", package.Id, ex.Message);
@@ -93,6 +97,16 @@ namespace CoMon.Packages.Workers
                         }
                     ]
                     : []
+            };
+        }
+
+        private static Status CreateHttpRequestExceptionStatus(HttpRequestException httpRequestException)
+        {
+            return new Status
+            {
+                Time = DateTime.UtcNow,
+                Criticality = Criticality.Alert,
+                Messages = ["An exception occured while trying to send the request: " + httpRequestException.Message]
             };
         }
     }
