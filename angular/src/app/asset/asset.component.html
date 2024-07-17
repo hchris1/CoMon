@@ -132,7 +132,7 @@
               </div>
 
               <p *ngIf="!editDescription" style="white-space: pre-wrap">
-                {{ asset.description }}
+                <markdown [data]="asset.description"></markdown>
               </p>
               <form [formGroup]="editFormGroup">
                 <textarea
