@@ -274,6 +274,9 @@
 		<text name="Assistant.ExamplePrompt2">Summarize the current system state.</text>
 		<text name="Assistant.ExamplePrompt3">Create an asset.</text>
 		<text name="Assistant.ExamplePrompt4">Create a ping package.</text>
+		<text name="Assistant.ErrorOpenAIKeyNotSet">The OpenAI key is not set. Please go to the [settings](/app/settings) to configure it.</text>
+		<text name="Assistant.ErrorCreateCompletionService">Sorry, an error occurred while initializing the completion service: {0}</text>
+		<text name="Assistant.ErrorCompletion">Sorry, an error occurred while processing the request: {0}</text>
 		<text name="Settings.OpenAiKeyTitle">OpenAI</text>
 		<text name="Settings.OpenAiKeyDescription">API key</text>
 		<text name="Settings.OpenAiKeySavedTitle">OpenAI</text>

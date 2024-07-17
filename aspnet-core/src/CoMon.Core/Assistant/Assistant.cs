@@ -2,6 +2,7 @@
 using Abp.Configuration;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
+using Abp.Localization;
 using Abp.ObjectMapping;
 using CoMon.Assets;
 using CoMon.Assistant.Plugins;
@@ -21,7 +22,7 @@ namespace CoMon.Assistant
 {
     public class Assistant(ISettingManager _settingManager, IRepository<Asset, long> _assetRepository,
         IRepository<Group, long> _groupRepository, IRepository<Package, long> _packageRepository, IRepository<Status, long> _statusRepository,
-        IObjectMapper _mapper, ILogger<Assistant> _logger) : ISingletonDependency, IShouldInitialize
+        IObjectMapper _mapper, ILogger<Assistant> _logger, ILocalizationManager _localizationManager) : ISingletonDependency, IShouldInitialize
     {
         private Kernel _kernel;
         private readonly MemoryCache _historyCache = new(new MemoryCacheOptions()
@@ -94,7 +95,11 @@ namespace CoMon.Assistant
             var openAiKey = _settingManager.GetSettingValue(AppSettingNames.OpenAiKey);
 
             if (string.IsNullOrEmpty(openAiKey))
-                return new AssistantAnswer { ChatId = id, Message = "The OpenAI key is not set. Please go to the settings to configure it." };
+                return new AssistantAnswer
+                {
+                    ChatId = id,
+                    Message = _localizationManager.GetString(CoMonConsts.LocalizationSourceName, "Assistant.ErrorOpenAIKeyNotSet")
+                };
 
             IChatCompletionService chatCompletionService;
             try
@@ -104,7 +109,11 @@ namespace CoMon.Assistant
             catch (Exception ex)
             {
                 _logger.LogError("Error occurred while initializing the completion service: {message}", ex.Message);
-                return new AssistantAnswer { ChatId = id, Message = string.Format("Sorry, an error occurred while initializing the completion service. {0}", ex.Message) };
+                return new AssistantAnswer
+                {
+                    ChatId = id,
+                    Message = string.Format(_localizationManager.GetString(CoMonConsts.LocalizationSourceName, "Assistant.ErrorCreateCompletionService"), ex.Message)
+                };
             }
 
             if (!_historyCache.TryGetValue(id, out ChatHistory chatHistory))
@@ -130,7 +139,11 @@ namespace CoMon.Assistant
             catch (Exception ex)
             {
                 _logger.LogError("Error occurred while processing the request: {message}", ex.Message);
-                return new AssistantAnswer { ChatId = id, Message = "Sorry, an error occurred while processing the request. " + ex.Message };
+                return new AssistantAnswer
+                {
+                    ChatId = id,
+                    Message = string.Format(_localizationManager.GetString(CoMonConsts.LocalizationSourceName, "Assistant.ErrorCompletion"), ex.Message)
+                };
             }
         }
     }
