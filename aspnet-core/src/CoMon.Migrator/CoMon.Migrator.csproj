@@ -15,7 +15,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Abp.Castle.Log4Net" Version="9.2.2" />
+    <PackageReference Include="Abp.Castle.Log4Net" Version="9.3.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoMon.Core\CoMon.Core.csproj" />
