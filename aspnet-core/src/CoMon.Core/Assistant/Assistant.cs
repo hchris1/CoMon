@@ -65,7 +65,7 @@ namespace CoMon.Assistant
             if (string.IsNullOrEmpty(openAiKey))
                 throw new ArgumentException("OpenAI key is not set");
 
-            return new OpenAIChatCompletionService("gpt-4o", openAiKey);
+            return new OpenAIChatCompletionService("gpt-4o-mini", openAiKey);
         }
 
         private static ChatHistory InitializeHistory(long? assetId = null, long? groupId = null, long? statusId = null, bool isRoot = false)
