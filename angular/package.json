@@ -45,7 +45,7 @@
     "rxjs": "^7.8.1",
     "sweetalert2": "^11.12.4",
     "ts-helpers": "^1.1.2",
-    "tslib": "^2.6.3",
+    "tslib": "^2.7.0",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
