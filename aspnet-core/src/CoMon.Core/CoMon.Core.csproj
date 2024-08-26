@@ -18,7 +18,7 @@
     <PackageReference Include="Abp.AutoMapper" Version="9.3.0" />
     <PackageReference Include="Abp.ZeroCore.EntityFrameworkCore" Version="9.3.0" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="4.1.0" />
-    <PackageReference Include="Microsoft.SemanticKernel" Version="1.17.1" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.17.2" />
     <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
     <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.6.1152" />
     <PackageReference Include="OpenAI" Version="1.11.0" />
